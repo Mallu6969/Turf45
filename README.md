@@ -1,73 +1,98 @@
-# Welcome to your Lovable project
+# Cuephoria Tech - TipNTop Club Management Portal
 
-## Project info
+<div align="center">
 
-**URL**: https://lovable.dev/projects/1a46da40-620c-4f55-9f80-b0b990917809
+**Proprietary Software by Cuephoria Tech**  
+Trichy's Gaming & Entertainment Innovation Hub
 
-## How can I edit this code?
+[Cuephoria Website](https://cuephoria.in) • [Contact Us](tel:+918637625155)
 
-There are several ways of editing your application.
+</div>
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/1a46da40-620c-4f55-9f80-b0b990917809) and start prompting.
+## 🎮 About Cuephoria Tech
 
-Changes made via Lovable will be committed automatically to this repo.
+Cuephoria Tech is the technology division of Cuephoria, Trichy's premier gaming lounge and entertainment destination. We build innovative digital solutions for gaming, entertainment, and hospitality businesses [web:1][web:2].
 
-**Use your preferred IDE**
+## 🛠️ Tech Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+This application is built with modern, industry-standard technologies:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- **Vite** - Lightning-fast build tool
+- **TypeScript** - Type-safe development
+- **React** - Component-based UI framework
+- **shadcn-ui** - Beautifully designed components
+- **Tailwind CSS** - Utility-first styling
 
-Follow these steps:
+## 🚀 Development Setup
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Prerequisites
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- Node.js & npm installed ([install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Installation
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## 💻 Development Workflow
 
-**Edit a file directly in GitHub**
+### Local Development
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Work with your preferred IDE. All changes should be committed following the project's contribution guidelines [web:21][web:24].
 
-**Use GitHub Codespaces**
+### GitHub Editor
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Navigate to files directly on GitHub, click the edit icon, make changes, and commit [web:25].
 
-## What technologies are used for this project?
+### GitHub Codespaces
 
-This project is built with .
+1. Click the "Code" button on the repository
+2. Select "Codespaces" tab
+3. Click "New codespace"
+4. Edit and commit in the cloud environment
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 📞 Contact & Support
 
-## How can I deploy this project?
+**Cuephoria Tech**  
+Shivani Complex, Kattur  
+Tiruchirappalli, Tamil Nadu 620013
 
-Simply open [Lovable](https://lovable.dev/projects/1a46da40-620c-4f55-9f80-b0b990917809) and click on Share -> Publish.
+📱 Phone: 86376 25155  
+🌐 Website: [cuephoria.in](https://cuephoria.in)  
+📸 Instagram: [@cuephoriaclub](https://www.instagram.com/cuephoriaclub/)
 
-## Can I connect a custom domain to my Lovable project?
+---
 
-Yes it is!
+## 📄 License & Copyright
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+**© 2025 Cuephoria Tech. All Rights Reserved.**
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+This software and associated documentation files (the "Software") are proprietary and confidential to Cuephoria Tech [web:21][web:27].
+
+### Proprietary License Terms
+
+This Software is licensed, not sold. Cuephoria Tech retains all rights, title, and interest in and to the Software, including all intellectual property rights [web:24][web:25].
+
+**Restrictions:**
+- You may NOT copy, modify, merge, publish, distribute, sublicense, or sell copies of the Software
+- You may NOT reverse engineer, decompile, or disassemble the Software
+- You may NOT remove or alter any proprietary notices or labels on the Software
+- Unauthorized use, reproduction, or distribution is strictly prohibited and will result in severe civil and criminal penalties
+
+**Permitted Use:**
+- Authorized personnel may use this Software solely for internal business purposes of Cuephoria Tech
+- All modifications and derivative works remain the exclusive property of Cuephoria Tech
+
+**Confidentiality:**
+All source code, documentation, and technical information are considered Confidential Information and trade secrets of Cuephoria Tech [web:22][web:27].
+
+For licensing inquiries or permission requests, contact: **86376 25155**
+
+---
+
+<div align="center">
+
+**Cuephoria Tech** | *Where Gaming Meets Innovation*
+
+**Unauthorized replication, distribution, or use is prohibited**
+
+</div>
