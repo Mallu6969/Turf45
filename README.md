@@ -1,4 +1,5 @@
 # Cuephoria Tech - TipNTop Club Management Portal
+
 <div align="center">
 
 **Proprietary Software by Cuephoria Tech**  
