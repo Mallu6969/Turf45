@@ -1,4 +1,6 @@
+<div align="center">
 # Cuephoria Tech - TipNTop Club Management Portal
+</div>
 
 <div align="center">
 
