@@ -20,7 +20,7 @@ const Index: React.FC = () => {
   }, [user, navigate]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1a1a1a] via-[#0f1f0f] to-[#1a1a1a] flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#1a1a1a] via-[#1a0f1a] to-[#1a1a1a] flex flex-col relative overflow-hidden">
       {/* Elegant animated background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {/* Luxury grid pattern */}
@@ -230,7 +230,7 @@ const Index: React.FC = () => {
                 >
                   Terms
                 </Button>
-                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-[#1a1a1a] to-[#0f1f0f] border-nerfturf-purple/40 text-white">
+                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-[#1a1a1a] to-[#1a0f1a] border-nerfturf-purple/40 text-white">
                   <DialogHeader>
                     <DialogTitle className="text-2xl font-bold text-white">Terms and Conditions</DialogTitle>
                   </DialogHeader>
@@ -297,7 +297,7 @@ const Index: React.FC = () => {
                 >
                   Privacy
                 </Button>
-                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-[#1a1a1a] to-[#0f1f0f] border-nerfturf-purple/40 text-white">
+                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-[#1a1a1a] to-[#1a0f1a] border-nerfturf-purple/40 text-white">
                   <DialogHeader>
                     <DialogTitle className="text-2xl font-bold text-white">Privacy Policy</DialogTitle>
                   </DialogHeader>
@@ -369,7 +369,7 @@ const Index: React.FC = () => {
                     Contact
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-80 bg-gradient-to-br from-[#1a1a1a] to-[#0f1f0f] border-nerfturf-purple/40 text-white p-5 backdrop-blur-md">
+                <PopoverContent className="w-80 bg-gradient-to-br from-[#1a1a1a] to-[#1a0f1a] border-nerfturf-purple/40 text-white p-5 backdrop-blur-md">
                   <h3 className="font-semibold text-lg mb-4 text-nerfturf-lightpurple">Contact Us</h3>
                   
                   <div className="space-y-4">
