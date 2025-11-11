@@ -10,7 +10,7 @@ const HowToBanner: React.FC = () => (
       "
     style={{
       boxShadow:
-        "0 2px 20px 0 rgba(34,197,94,0.12), 0 1.5px 14px 0 rgba(16,185,129,0.15)",
+        "0 2px 20px 0 rgba(110,89,165,0.12), 0 1.5px 14px 0 rgba(155,135,245,0.15)",
     }}
   >
     {/* Logo image */}

@@ -165,14 +165,14 @@ const PaymentAnalyticsWidget: React.FC<PaymentAnalyticsWidgetProps> = ({ startDa
   }, [bills, startDate, endDate]);
 
   return (
-    <Card className="bg-gradient-to-br from-gray-900/95 to-gray-800/90 border-gray-700/50 shadow-xl hover:shadow-green-500/20 hover:border-green-500/30 transition-all duration-300 backdrop-blur-sm">
+    <Card className="bg-gradient-to-br from-gray-900/95 to-gray-800/90 border-gray-700/50 shadow-xl hover:shadow-nerfturf-purple/20 hover:border-nerfturf-purple/30 transition-all duration-300 backdrop-blur-sm">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 border-b border-gray-700/30">
         <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
-          <CreditCard className="h-5 w-5 text-green-400" />
+          <CreditCard className="h-5 w-5 text-nerfturf-magenta" />
           Payment Analytics
         </CardTitle>
-        <div className="h-8 w-8 rounded-full bg-green-500/20 flex items-center justify-center">
-          <TrendingUp className="h-4 w-4 text-green-400" />
+        <div className="h-8 w-8 rounded-full bg-nerfturf-purple/20 flex items-center justify-center">
+          <TrendingUp className="h-4 w-4 text-nerfturf-magenta" />
         </div>
       </CardHeader>
       <CardContent className="p-6">
@@ -180,7 +180,7 @@ const PaymentAnalyticsWidget: React.FC<PaymentAnalyticsWidgetProps> = ({ startDa
           <div className="bg-gray-800/30 rounded-lg p-4 border border-gray-700/30">
             <div className="flex justify-between items-center">
               <span className="text-sm font-medium text-gray-200">Total Sales</span>
-              <span className="font-bold text-xl text-green-400">
+              <span className="font-bold text-xl text-nerfturf-magenta">
                 <CurrencyDisplay amount={paymentData.totalRevenue} />
               </span>
             </div>
@@ -277,7 +277,7 @@ const PaymentAnalyticsWidget: React.FC<PaymentAnalyticsWidgetProps> = ({ startDa
               <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/30">
                 <div className="text-center">
                   <p className="text-xs text-gray-400">Cash Preference</p>
-                  <p className="text-lg font-bold text-green-400">{paymentData.cashPreference.toFixed(1)}%</p>
+                  <p className="text-lg font-bold text-nerfturf-magenta">{paymentData.cashPreference.toFixed(1)}%</p>
                 </div>
               </div>
               
@@ -371,7 +371,7 @@ const PaymentAnalyticsWidget: React.FC<PaymentAnalyticsWidgetProps> = ({ startDa
                 <div className="bg-gray-800/30 rounded-lg p-2 border border-gray-700/30">
                   <div className="flex justify-between text-xs font-medium">
                     <span className="text-gray-300">Split total:</span>
-                    <span className="text-green-400"><CurrencyDisplay amount={paymentData.splitBreakdown.total} /></span>
+                    <span className="text-nerfturf-magenta"><CurrencyDisplay amount={paymentData.splitBreakdown.total} /></span>
                   </div>
                 </div>
               </div>

@@ -76,7 +76,7 @@ const Index: React.FC = () => {
             <img
               src="https://iili.io/KpFz28x.jpg"
               alt="NerfTurf Logo" 
-              className="h-36 md:h-44 relative z-10 drop-shadow-[0_0_20px_rgba(34,197,94,0.6)]"
+              className="h-36 md:h-44 relative z-10 drop-shadow-[0_0_20px_rgba(110, 89, 165, 0.6)]"
             />
           </div>
         </div>

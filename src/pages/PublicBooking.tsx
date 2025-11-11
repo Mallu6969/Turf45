@@ -1248,7 +1248,7 @@ export default function PublicBooking() {
           <span
             className={cn(
               base,
-              "bg-emerald-500/15 text-emerald-300 border border-emerald-400/20"
+              "bg-nerfturf-purple/15 text-nerfturf-lightpurple border border-nerfturf-purple/20"
             )}
           >
             completed
@@ -1463,7 +1463,7 @@ export default function PublicBooking() {
                     </CardTitle>
                   </div>
                   {isStationSelectionAvailable() && selectedStations.length > 0 && (
-                    <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2.5 py-1 text-xs text-emerald-300">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-nerfturf-purple/20 bg-nerfturf-purple/10 px-2.5 py-1 text-xs text-nerfturf-lightpurple">
                       <CheckCircle className="h-3.5 w-3.5" />
                       {selectedStations.length} selected
                     </div>
@@ -1511,8 +1511,8 @@ export default function PublicBooking() {
                     className={cn(
                       "h-9 rounded-full border-white/15 text-[12px]",
                       stationType === "8ball"
-                        ? "bg-emerald-400/15 text-emerald-300"
-                        : "bg-transparent text-emerald-300"
+                        ? "bg-nerfturf-purple/15 text-nerfturf-lightpurple"
+                        : "bg-transparent text-nerfturf-lightpurple"
                     )}
                   >
                     8-Ball

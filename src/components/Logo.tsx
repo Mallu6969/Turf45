@@ -42,7 +42,7 @@ const Logo: React.FC<LogoProps> = ({ size = 'md', className }) => {
             maxWidth: width,
             filter: "drop-shadow(0 0 8px rgba(110, 89, 165, 0.4))",
           }}
-          className={`select-none relative z-10 group-hover:drop-shadow-[0_0_12px_rgba(34,197,94,0.6)] transition-all duration-300 ${className || ""}`}
+            className={`select-none relative z-10 group-hover:drop-shadow-[0_0_12px_rgba(110,89,165,0.6)] transition-all duration-300 ${className || ""}`}
           draggable={false}
           loading="lazy"
         />

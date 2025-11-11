@@ -723,7 +723,7 @@ const Login = () => {
         <div className="absolute top-1/3 left-0 h-px w-full bg-gradient-to-r from-transparent via-nerfturf-lightpurple/20 to-transparent"></div>
         <div className="absolute top-2/3 left-0 h-px w-full bg-gradient-to-r from-transparent via-nerfturf-magenta/20 to-transparent"></div>
         
-        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle, rgba(34,197,94,0.15) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle, rgba(110, 89, 165, 0.15) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
       </div>
       
       <div className={`w-full max-w-md z-10 ${animationClass}`}>
@@ -733,12 +733,10 @@ const Login = () => {
             <img 
               src="https://iili.io/KpFz28x.jpg" 
               alt="NerfTurf - Premier Snooker & 8-Ball" 
-              className="relative w-full h-auto mx-auto drop-shadow-[0_0_15px_rgba(34,197,94,0.4)]"
+              className="relative w-full h-auto mx-auto drop-shadow-[0_0_15px_rgba(110, 89, 165, 0.4)]"
             />
           </div>
-          <p className="mt-2 text-muted-foreground font-bold tracking-wider animate-fade-in bg-gradient-to-r from-nerfturf-lightpurple via-nerfturf-magenta to-nerfturf-lightpurple bg-clip-text text-transparent text-sm sm:text-base">
-            ADMINISTRATOR PORTAL
-          </p>
+          <p className="mt-3 text-muted-foreground/70 font-semibold tracking-widest animate-fade-in bg-gradient-to-r from-nerfturf-lightpurple via-nerfturf-magenta to-nerfturf-lightpurple bg-clip-text text-transparent text-xs sm:text-sm uppercase">ADMINISTRATOR PORTAL</p>
         </div>
         
         <Card className="bg-black/80 border border-nerfturf-purple/30 shadow-xl shadow-nerfturf-purple/40 backdrop-blur-lg animate-fade-in delay-100 rounded-xl overflow-hidden">

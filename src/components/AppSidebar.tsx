@@ -74,7 +74,7 @@ const AppSidebar: React.FC = () => {
                     <img
                       src="https://iili.io/KpFz28x.jpg"
                       alt="NerfTurf Logo"
-                      className="h-12 w-12 object-contain animate-bounce filter drop-shadow-[0_0_15px_rgba(34,197,94,0.8)] animate-neon-pulse"
+                      className="h-12 w-12 object-contain animate-bounce filter drop-shadow-[0_0_15px_rgba(110,89,165,0.8)] animate-neon-pulse"
                     />
                     <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-nerfturf-lightpurple to-nerfturf-purple font-heading">NerfTurf</span>
                   </div>
@@ -137,9 +137,9 @@ const AppSidebar: React.FC = () => {
     <Sidebar className="border-r-0 bg-[#1A1F2C] text-white w-[250px]">
       <SidebarHeader className="p-4 flex items-center gap-3">
         <img
-          src="https://iili.io/KgkdS1f.png"
+          src="https://iili.io/KpFz28x.jpg"
           alt="NerfTurf Logo"
-          className="h-14 w-14 object-contain animate-bounce filter drop-shadow-[0_0_15px_rgba(34,197,94,0.8)] animate-neon-pulse"
+          className="h-14 w-14 object-contain animate-bounce filter drop-shadow-[0_0_15px_rgba(110,89,165,0.8)] animate-neon-pulse"
         />
         <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-nerfturf-lightpurple to-nerfturf-purple font-heading">NerfTurf</span>
       </SidebarHeader>

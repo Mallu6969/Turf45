@@ -39,7 +39,7 @@ const StatCardSection: React.FC<StatCardSectionProps> = ({
       return {
         isSalesTrendPositive: true,
         trendIcon: TrendingUp,
-        trendClass: 'text-green-500'
+        trendClass: 'text-nerfturf-magenta'
       };
     } else if (salesChange.includes('-')) {
       return {
@@ -111,9 +111,9 @@ const StatCardSection: React.FC<StatCardSectionProps> = ({
         value={customersCount}
         icon={Users}
         subValue={`${newMembersCount || 'No'} new member${newMembersCount !== 1 ? 's' : ''} today`}
-        iconColor="text-[#10B981]"
-        iconBgColor="bg-[#10B981]/20"
-        className="hover:shadow-green-900/10"
+        iconColor="text-nerfturf-magenta"
+        iconBgColor="bg-nerfturf-magenta/20"
+        className="hover:shadow-nerfturf-magenta/10"
       />
 
       <StatsCard
