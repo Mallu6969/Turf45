@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { DollarSign, Save, Lock, Settings, Calendar, CreditCard } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
-import { SUBSCRIPTION_PLANS, getPlanById } from '@/lib/subscriptionPlans';
+import { SUBSCRIPTION_PLANS, getPlanById, getPlanByName } from '@/lib/subscriptionPlans';
 
 const ADMIN_PIN = '210198';
 
@@ -82,11 +82,11 @@ const AdminSubscription: React.FC = () => {
     return format(date, 'yyyy-MM-dd');
   };
 
-  const handlePlanChange = (planId: string) => {
-    const plan = getPlanById(planId);
+  const handlePlanChange = (planName: string) => {
+    const plan = getPlanByName(planName);
     if (!plan) return;
 
-    const calculatedEndDate = calculateEndDate(formData.start_date, planId);
+    const calculatedEndDate = calculateEndDate(formData.start_date, plan.id);
     
     setFormData(prev => ({
       ...prev,
