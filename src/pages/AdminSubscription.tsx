@@ -9,7 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { DollarSign, Save, Lock, Settings, Calendar, CreditCard } from 'lucide-react';
+import { DollarSign, Save, Lock, Settings, Calendar, CreditCard, XCircle, CheckCircle, Sparkles } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { SUBSCRIPTION_PLANS, getPlanById, getPlanByName } from '@/lib/subscriptionPlans';
