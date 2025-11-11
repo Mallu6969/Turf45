@@ -26,7 +26,11 @@ const UpgradeDialog: React.FC<UpgradeDialogProps> = ({
   const navigate = useNavigate();
 
   const handleViewPlans = () => {
-    onOpenChange(false);
+    navigate('/subscription');
+  };
+
+  const handleCloseAttempt = () => {
+    // Redirect to subscription page on any close attempt
     navigate('/subscription');
   };
 
@@ -41,11 +45,18 @@ const UpgradeDialog: React.FC<UpgradeDialogProps> = ({
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange} modal={true}>
+    <Dialog open={open} onOpenChange={handleCloseAttempt} modal={true}>
       <DialogContent 
-        className="sm:max-w-[600px] bg-gradient-to-br from-[#1A1F2C] via-[#1a1a2e] to-[#1A1F2C] border-nerfturf-purple/30 text-white" 
-        onPointerDownOutside={(e) => e.preventDefault()} 
-        onEscapeKeyDown={(e) => e.preventDefault()}
+        className="sm:max-w-[600px] bg-gradient-to-br from-[#1A1F2C] via-[#1a1a2e] to-[#1A1F2C] border-nerfturf-purple/30 text-white [&>button]:hidden" 
+        onPointerDownOutside={(e) => {
+          e.preventDefault();
+          handleCloseAttempt();
+        }} 
+        onEscapeKeyDown={(e) => {
+          e.preventDefault();
+          handleCloseAttempt();
+        }}
+        onInteractOutside={(e) => e.preventDefault()}
       >
         <DialogHeader>
           <div className="flex items-center gap-3 mb-2">
@@ -107,21 +118,18 @@ const UpgradeDialog: React.FC<UpgradeDialogProps> = ({
             </div>
           )}
 
-          <div className="flex gap-3 pt-2">
-            <Button
-              onClick={() => onOpenChange(false)}
-              variant="outline"
-              className="flex-1 border-nerfturf-purple/30 hover:bg-nerfturf-purple/10"
-            >
-              Cancel
-            </Button>
+          <div className="pt-2">
             <Button
               onClick={handleViewPlans}
-              className="flex-1 bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta hover:from-nerfturf-purple/90 hover:to-nerfturf-magenta/90"
+              className="w-full bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta hover:from-nerfturf-purple/90 hover:to-nerfturf-magenta/90 shadow-lg shadow-nerfturf-purple/20"
+              size="lg"
             >
               <CreditCard className="h-4 w-4 mr-2" />
-              View Plans
+              View Subscription Plans
             </Button>
+            <p className="text-center text-xs text-gray-400 mt-3">
+              Access to this feature requires an active subscription plan upgrade
+            </p>
           </div>
         </div>
       </DialogContent>
