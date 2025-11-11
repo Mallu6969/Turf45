@@ -3,21 +3,71 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import Logo from '@/components/Logo';
 import { Button } from '@/components/ui/button';
-import { Monitor, Trophy, Users, Star, ShieldCheck, Sparkles, Calendar, LogIn } from 'lucide-react';
+import { Monitor, Trophy, Users, Star, ShieldCheck, Sparkles, Calendar, LogIn, Gamepad2, Timer, Headset, Radio, CheckCircle2, XCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Mail, Phone, Clock, MapPin } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { Badge } from '@/components/ui/badge';
+
+interface Station {
+  id: string;
+  name: string;
+  type: 'ps5' | '8ball' | 'vr';
+  hourly_rate: number;
+  is_occupied: boolean;
+}
 
 const Index: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [openDialog, setOpenDialog] = useState<string | null>(null);
+  const [liveStations, setLiveStations] = useState<Station[]>([]);
+  const [stationsLoading, setStationsLoading] = useState(true);
 
   useEffect(() => {
     if (user) {
       navigate('/dashboard');
     }
   }, [user, navigate]);
+
+  // Fetch live station data
+  useEffect(() => {
+    const fetchLiveStations = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('stations')
+          .select('*')
+          .order('name');
+        
+        if (error) throw error;
+        setLiveStations(data || []);
+        setStationsLoading(false);
+      } catch (error) {
+        console.error('Error fetching stations:', error);
+        setStationsLoading(false);
+      }
+    };
+
+    fetchLiveStations();
+    
+    // Refresh every 30 seconds
+    const interval = setInterval(fetchLiveStations, 30000);
+    
+    // Real-time subscription
+    const channel = supabase
+      .channel('stations-live')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'stations' },
+        () => fetchLiveStations()
+      )
+      .subscribe();
+
+    return () => {
+      clearInterval(interval);
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1a1a1a] via-[#1a0f1a] to-[#1a1a1a] flex flex-col relative overflow-hidden">
@@ -126,47 +176,199 @@ const Index: React.FC = () => {
             <Monitor className="mr-2 h-5 w-5 animate-pulse-soft" />
             <span>View Table Availability</span>
           </Button>
-          <Button
-            size="lg"
-            variant="ghost"
-            className="text-gray-400 hover:text-nerfturf-lightpurple hover:bg-nerfturf-purple/10 transition-all duration-300 text-lg px-8"
-            onClick={() => navigate('/login')}
-          >
-            <ShieldCheck className="mr-2 h-5 w-5" />
-            Management Login
-          </Button>
+        </div>
+
+        {/* Live Station Status Section */}
+        <div className="w-full max-w-6xl mx-auto mb-20">
+          <div className="bg-gradient-to-br from-black/70 via-nerfturf-purple/20 to-black/70 border border-nerfturf-purple/50 rounded-3xl p-8 md:p-12 relative overflow-hidden backdrop-blur-md">
+            <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+            <div className="absolute top-0 right-0 h-96 w-96 bg-nerfturf-purple/10 blur-3xl rounded-full"></div>
+            <div className="absolute bottom-0 left-0 h-96 w-96 bg-nerfturf-magenta/10 blur-3xl rounded-full"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-nerfturf-purple/30 to-nerfturf-magenta/30 border border-nerfturf-purple/40">
+                    <Radio className="h-6 w-6 text-nerfturf-lightpurple animate-pulse" />
+                  </div>
+                  <div>
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-1">Live Station Status</h2>
+                    <p className="text-gray-400 text-sm flex items-center gap-2">
+                      <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse"></span>
+                      Real-time updates every 30 seconds
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-nerfturf-lightpurple border-nerfturf-purple/50 hover:bg-nerfturf-purple/30"
+                  onClick={() => navigate('/public/stations')}
+                >
+                  View All Stations
+                </Button>
+              </div>
+
+              {stationsLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="animate-spin-slow h-8 w-8 rounded-full border-4 border-nerfturf-purple border-t-transparent"></div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {liveStations.map((station) => {
+                    const isPS5 = station.type === 'ps5';
+                    const isPool = station.type === '8ball';
+                    const isVR = station.type === 'vr';
+                    
+                    return (
+                      <div
+                        key={station.id}
+                        className={`group relative overflow-hidden rounded-xl border-2 transition-all duration-300 ${
+                          station.is_occupied
+                            ? 'bg-gradient-to-br from-red-500/10 via-red-500/5 to-red-500/10 border-red-500/40'
+                            : 'bg-gradient-to-br from-green-500/10 via-green-500/5 to-green-500/10 border-green-500/40'
+                        } hover:scale-[1.02] hover:shadow-xl`}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                        
+                        <div className="p-5 relative z-10">
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                              <div className={`p-2.5 rounded-lg ${
+                                isPS5 ? 'bg-blue-500/20 border border-blue-500/30' :
+                                isPool ? 'bg-amber-500/20 border border-amber-500/30' :
+                                'bg-purple-500/20 border border-purple-500/30'
+                              }`}>
+                                {isPS5 ? (
+                                  <Gamepad2 className={`h-5 w-5 ${isPS5 ? 'text-blue-400' : ''}`} />
+                                ) : isPool ? (
+                                  <Timer className="h-5 w-5 text-amber-400" />
+                                ) : (
+                                  <Headset className="h-5 w-5 text-purple-400" />
+                                )}
+                              </div>
+                              <div>
+                                <h3 className="text-lg font-bold text-white">{station.name}</h3>
+                                <p className="text-xs text-gray-400 capitalize">{station.type === '8ball' ? 'Pool Table' : station.type === 'ps5' ? 'PlayStation 5' : 'VR Station'}</p>
+                              </div>
+                            </div>
+                            <Badge className={
+                              station.is_occupied
+                                ? 'bg-red-500/20 text-red-300 border-red-500/30'
+                                : 'bg-green-500/20 text-green-300 border-green-500/30 animate-pulse-soft'
+                            }>
+                              {station.is_occupied ? (
+                                <XCircle className="h-3 w-3 mr-1" />
+                              ) : (
+                                <CheckCircle2 className="h-3 w-3 mr-1" />
+                              )}
+                              {station.is_occupied ? 'Occupied' : 'Available'}
+                            </Badge>
+                          </div>
+                          
+                          <div className="flex items-center justify-between pt-3 border-t border-white/10">
+                            <span className="text-gray-400 text-sm">Rate:</span>
+                            <span className="text-white font-bold text-lg">
+                              ₹{station.hourly_rate}/hr
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {liveStations.length === 0 && !stationsLoading && (
+                <div className="text-center py-12">
+                  <p className="text-gray-400">No stations available at the moment</p>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
         
-        {/* Features */}
+        {/* Features - Enhanced */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mx-auto mb-20">
-          <div className="bg-gradient-to-br from-black/60 to-nerfturf-purple/30 p-8 rounded-2xl border border-nerfturf-purple/40 hover:border-nerfturf-purple/60 transition-all duration-500 hover:shadow-2xl hover:shadow-nerfturf-purple/40 hover:-translate-y-2 group backdrop-blur-sm">
-            <div className="flex items-center mb-5">
-              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-nerfturf-purple/20 to-nerfturf-magenta/20 flex items-center justify-center text-nerfturf-lightpurple group-hover:scale-110 transition-transform duration-300 border border-nerfturf-purple/30">
-                <Trophy size={24} />
+          <div className="bg-gradient-to-br from-black/70 via-nerfturf-purple/30 to-black/70 p-8 rounded-2xl border-2 border-nerfturf-purple/40 hover:border-nerfturf-purple/60 transition-all duration-500 hover:shadow-2xl hover:shadow-nerfturf-purple/40 hover:-translate-y-2 group backdrop-blur-sm relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-nerfturf-purple/0 via-white/5 to-nerfturf-purple/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            <div className="relative z-10">
+              <div className="flex items-center mb-5">
+                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-nerfturf-purple/30 to-nerfturf-magenta/30 flex items-center justify-center text-nerfturf-lightpurple group-hover:scale-110 transition-transform duration-300 border-2 border-nerfturf-purple/40 shadow-lg shadow-nerfturf-purple/20">
+                  <Trophy size={28} />
+                </div>
+                <h3 className="ml-4 text-2xl font-bold text-white">Professional Tables</h3>
               </div>
-              <h3 className="ml-4 text-xl font-semibold text-white">Professional Tables</h3>
+              <p className="text-gray-300 leading-relaxed mb-4">Experience world-class snooker and pool tables, meticulously maintained to professional tournament standards.</p>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-400" />
+                  <span>3 Premium Snooker Tables</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-400" />
+                  <span>1 American Pool Table</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-400" />
+                  <span>Tournament-Grade Equipment</span>
+                </li>
+              </ul>
             </div>
-            <p className="text-gray-300 leading-relaxed">Two medium snooker tables, one standard snooker table, and one American pool table, meticulously maintained for optimal play.</p>
           </div>
           
-          <div className="bg-gradient-to-br from-black/60 to-nerfturf-purple/30 p-8 rounded-2xl border border-nerfturf-purple/40 hover:border-nerfturf-magenta/60 transition-all duration-500 hover:shadow-2xl hover:shadow-nerfturf-magenta/40 hover:-translate-y-2 group backdrop-blur-sm">
-            <div className="flex items-center mb-5">
-              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-nerfturf-magenta/20 to-nerfturf-purple/20 flex items-center justify-center text-nerfturf-magenta group-hover:scale-110 transition-transform duration-300 border border-nerfturf-magenta/30">
-                <Sparkles size={24} />
+          <div className="bg-gradient-to-br from-black/70 via-nerfturf-magenta/30 to-black/70 p-8 rounded-2xl border-2 border-nerfturf-magenta/40 hover:border-nerfturf-magenta/60 transition-all duration-500 hover:shadow-2xl hover:shadow-nerfturf-magenta/40 hover:-translate-y-2 group backdrop-blur-sm relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-nerfturf-magenta/0 via-white/5 to-nerfturf-magenta/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            <div className="relative z-10">
+              <div className="flex items-center mb-5">
+                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-nerfturf-magenta/30 to-nerfturf-purple/30 flex items-center justify-center text-nerfturf-magenta group-hover:scale-110 transition-transform duration-300 border-2 border-nerfturf-magenta/40 shadow-lg shadow-nerfturf-magenta/20">
+                  <Sparkles size={28} />
+                </div>
+                <h3 className="ml-4 text-2xl font-bold text-white">Refined Ambiance</h3>
               </div>
-              <h3 className="ml-4 text-xl font-semibold text-white">Refined Ambiance</h3>
+              <p className="text-gray-300 leading-relaxed mb-4">Immerse yourself in our sophisticated lounge atmosphere, designed for serious players and enthusiasts alike.</p>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-400" />
+                  <span>Premium Lighting & Acoustics</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-400" />
+                  <span>Climate-Controlled Environment</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-400" />
+                  <span>Elegant Lounge Seating</span>
+                </li>
+              </ul>
             </div>
-            <p className="text-gray-300 leading-relaxed">Immerse yourself in our sophisticated lounge atmosphere, designed for serious players and enthusiasts alike.</p>
           </div>
           
-          <div className="bg-gradient-to-br from-black/60 to-nerfturf-purple/30 p-8 rounded-2xl border border-nerfturf-purple/40 hover:border-nerfturf-purple/60 transition-all duration-500 hover:shadow-2xl hover:shadow-nerfturf-purple/40 hover:-translate-y-2 group backdrop-blur-sm">
-            <div className="flex items-center mb-5">
-              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-nerfturf-purple/20 to-nerfturf-magenta/20 flex items-center justify-center text-nerfturf-lightpurple group-hover:scale-110 transition-transform duration-300 border border-nerfturf-purple/30">
-                <Users size={24} />
+          <div className="bg-gradient-to-br from-black/70 via-nerfturf-purple/30 to-black/70 p-8 rounded-2xl border-2 border-nerfturf-purple/40 hover:border-nerfturf-purple/60 transition-all duration-500 hover:shadow-2xl hover:shadow-nerfturf-purple/40 hover:-translate-y-2 group backdrop-blur-sm relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-nerfturf-purple/0 via-white/5 to-nerfturf-purple/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            <div className="relative z-10">
+              <div className="flex items-center mb-5">
+                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-nerfturf-purple/30 to-nerfturf-magenta/30 flex items-center justify-center text-nerfturf-lightpurple group-hover:scale-110 transition-transform duration-300 border-2 border-nerfturf-purple/40 shadow-lg shadow-nerfturf-purple/20">
+                  <Users size={28} />
+                </div>
+                <h3 className="ml-4 text-2xl font-bold text-white">Elite Community</h3>
               </div>
-              <h3 className="ml-4 text-xl font-semibold text-white">Elite Community</h3>
+              <p className="text-gray-300 leading-relaxed mb-4">Join our exclusive community of skilled players, participate in tournaments, and refine your game.</p>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-400" />
+                  <span>Regular Tournaments & Events</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-400" />
+                  <span>Skill Development Programs</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-400" />
+                  <span>Networking Opportunities</span>
+                </li>
+              </ul>
             </div>
-            <p className="text-gray-300 leading-relaxed">Join our exclusive community of skilled players, participate in tournaments, and refine your game.</p>
           </div>
         </div>
         
@@ -221,7 +423,7 @@ const Index: React.FC = () => {
               <p className="text-sm text-gray-400 text-center max-w-md">
                 Reserve your preferred table or gaming station in just a few clicks
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 mt-4">
+              <div className="flex flex-col sm:flex-row gap-4 mt-4 justify-center">
                 <Button
                   size="lg"
                   variant="outline"
@@ -229,16 +431,7 @@ const Index: React.FC = () => {
                   onClick={() => navigate('/public/stations')}
                 >
                   <Monitor className="mr-2 h-4 w-4" />
-                  View Tables
-                </Button>
-                <Button
-                  size="lg"
-                  variant="ghost"
-                  className="text-gray-400 hover:text-nerfturf-lightpurple hover:bg-nerfturf-purple/10 transition-all duration-300 text-base px-6"
-                  onClick={() => navigate('/login')}
-                >
-                  <LogIn className="mr-2 h-4 w-4" />
-                  Management Login
+                  View All Stations
                 </Button>
               </div>
             </div>
