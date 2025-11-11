@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import Logo from '@/components/Logo';
 import { Button } from '@/components/ui/button';
-import { Monitor, Trophy, Users, Star, ShieldCheck, Sparkles } from 'lucide-react';
+import { Monitor, Trophy, Users, Star, ShieldCheck, Sparkles, Calendar, LogIn } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Mail, Phone, Clock, MapPin } from 'lucide-react';
@@ -50,7 +50,15 @@ const Index: React.FC = () => {
       {/* Header */}
       <header className="h-24 flex items-center px-8 border-b border-nerfturf-purple/30 relative z-10 backdrop-blur-md bg-black/40">
         <Logo />
-        <div className="ml-auto space-x-4">
+        <div className="ml-auto flex items-center gap-3">
+          <Button
+            variant="ghost"
+            className="text-nerfturf-lightpurple hover:bg-nerfturf-purple/20 hover:text-white transition-all duration-300"
+            onClick={() => navigate('/login')}
+          >
+            <LogIn className="h-4 w-4 mr-2" />
+            Management Login
+          </Button>
           <Button
             variant="outline"
             className="text-nerfturf-lightpurple border-nerfturf-purple/50 hover:bg-nerfturf-purple/30 hover:border-nerfturf-purple/70 transition-all duration-300"
@@ -61,9 +69,10 @@ const Index: React.FC = () => {
           <Button
             variant="default"
             className="bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta text-white hover:from-nerfturf-purple hover:to-nerfturf-magenta shadow-lg shadow-nerfturf-purple/50 transition-all duration-300"
-            onClick={() => window.open('https://nerfturf.in/book', '_blank')}
+            onClick={() => window.open('https://app.nerfturf.in/public/booking', '_blank')}
           >
-            Reserve Table
+            <Calendar className="h-4 w-4 mr-2" />
+            Book a Slot
           </Button>
         </div>
       </header>
@@ -92,19 +101,28 @@ const Index: React.FC = () => {
           Chennai's Premier Snooker & Gaming Lounge
         </p>
         
-        <p className="text-lg text-center text-gray-300 max-w-2xl mb-12">
+        <p className="text-lg text-center text-gray-300 max-w-2xl mb-8">
           Experience the elegance of professional snooker, pool tables, and PlayStation 5 gaming in a sophisticated, world-class setting.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 mb-20">
+        {/* Primary Booking CTA - Prominent */}
+        <div className="mb-16 flex flex-col items-center">
           <Button
             size="lg"
-            className="bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta text-white hover:from-nerfturf-purple hover:to-nerfturf-magenta shadow-xl shadow-nerfturf-purple/40 transition-all duration-300 text-lg px-8"
-            onClick={() => navigate('/login')}
+            className="bg-gradient-to-r from-nerfturf-purple via-nerfturf-magenta to-nerfturf-purple text-white hover:from-nerfturf-purple hover:via-nerfturf-magenta hover:to-nerfturf-purple shadow-2xl shadow-nerfturf-purple/50 transition-all duration-300 text-xl px-12 py-6 rounded-full group relative overflow-hidden animate-pulse-soft"
+            onClick={() => window.open('https://app.nerfturf.in/public/booking', '_blank')}
           >
-            <ShieldCheck className="mr-2 h-5 w-5" />
-            Member Login
+            <div className="absolute inset-0 w-full bg-gradient-to-r from-nerfturf-purple/0 via-white/20 to-nerfturf-purple/0 animate-shimmer pointer-events-none"></div>
+            <Calendar className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
+            <span className="font-bold">Reserve a Slot</span>
           </Button>
+          <p className="text-sm text-gray-400 mt-4 text-center max-w-md">
+            Click above to book your snooker table, pool table, or PlayStation 5 gaming session
+          </p>
+        </div>
+        
+        {/* Secondary Actions */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-20 justify-center">
           <Button
             size="lg"
             variant="outline"
@@ -114,6 +132,15 @@ const Index: React.FC = () => {
             <div className="absolute inset-0 w-full bg-gradient-to-r from-nerfturf-purple/0 via-nerfturf-lightpurple/20 to-nerfturf-purple/0 animate-shimmer pointer-events-none"></div>
             <Monitor className="mr-2 h-5 w-5 animate-pulse-soft" />
             <span>View Table Availability</span>
+          </Button>
+          <Button
+            size="lg"
+            variant="ghost"
+            className="text-gray-400 hover:text-nerfturf-lightpurple hover:bg-nerfturf-purple/10 transition-all duration-300 text-lg px-8"
+            onClick={() => navigate('/login')}
+          >
+            <ShieldCheck className="mr-2 h-5 w-5" />
+            Management Login
           </Button>
         </div>
         
@@ -188,24 +215,39 @@ const Index: React.FC = () => {
             <p className="text-center text-gray-300 mb-10 max-w-2xl mx-auto text-lg leading-relaxed">
               Step into Chennai's most sophisticated snooker, pool, and gaming venue. Reserve your table and experience excellence.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-6">
+            <div className="flex flex-col items-center gap-6">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta text-white hover:from-nerfturf-purple hover:to-nerfturf-magenta shadow-xl group transition-all duration-300 text-lg px-8"
-                onClick={() => navigate('/login')}
+                className="bg-gradient-to-r from-nerfturf-purple via-nerfturf-magenta to-nerfturf-purple text-white hover:from-nerfturf-purple hover:via-nerfturf-magenta hover:to-nerfturf-purple shadow-2xl shadow-nerfturf-purple/50 group transition-all duration-300 text-xl px-12 py-6 rounded-full relative overflow-hidden animate-pulse-soft"
+                onClick={() => window.open('https://app.nerfturf.in/public/booking', '_blank')}
               >
-                <ShieldCheck className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                Member Access
+                <div className="absolute inset-0 w-full bg-gradient-to-r from-nerfturf-purple/0 via-white/20 to-nerfturf-purple/0 animate-shimmer pointer-events-none"></div>
+                <Calendar className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
+                <span className="font-bold">Book a Slot Now</span>
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-nerfturf-lightpurple border-nerfturf-purple/60 hover:bg-nerfturf-purple/30 hover:border-nerfturf-lightpurple/80 transition-all duration-300 text-lg px-8"
-                onClick={() => navigate('/public/stations')}
-              >
-                <Monitor className="mr-2 h-5 w-5" />
-                View Tables
-              </Button>
+              <p className="text-sm text-gray-400 text-center max-w-md">
+                Reserve your preferred table or gaming station in just a few clicks
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 mt-4">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="text-nerfturf-lightpurple border-nerfturf-purple/60 hover:bg-nerfturf-purple/30 hover:border-nerfturf-lightpurple/80 transition-all duration-300 text-base px-6"
+                  onClick={() => navigate('/public/stations')}
+                >
+                  <Monitor className="mr-2 h-4 w-4" />
+                  View Tables
+                </Button>
+                <Button
+                  size="lg"
+                  variant="ghost"
+                  className="text-gray-400 hover:text-nerfturf-lightpurple hover:bg-nerfturf-purple/10 transition-all duration-300 text-base px-6"
+                  onClick={() => navigate('/login')}
+                >
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Management Login
+                </Button>
+              </div>
             </div>
           </div>
         </div>
