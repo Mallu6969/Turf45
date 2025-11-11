@@ -6,15 +6,13 @@ const SupportBanner: React.FC = () => (
     <div
       className="
         w-full flex items-center gap-3 px-5 py-3 md:py-3.5 rounded-xl
-        bg-gradient-to-br from-black/80 via-nerfturf-purple/40 to-black/80
-        border border-nerfturf-purple/20
-        shadow-xl
+        bg-gradient-to-br from-black/20 via-nerfturf-purple/10 to-black/20
+        border border-nerfturf-purple/10
+        backdrop-blur-sm
         max-w-3xl
         "
       style={{
         fontFamily: "'Poppins', 'Inter', sans-serif",
-        boxShadow:
-          "0 2px 20px 0 rgba(110,89,165,0.12), 0 1.5px 14px 0 rgba(155,135,245,0.15)",
       }}
     >
       <Info className="h-5 w-5 md:h-6 md:w-6 text-nerfturf-lightpurple flex-shrink-0" />

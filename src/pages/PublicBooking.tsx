@@ -1291,14 +1291,15 @@ export default function PublicBooking() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#0b0b12] via-black to-[#0b0b12]">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#1a1a1a] via-[#1a0f1a] to-[#1a1a1a]">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-nerfturf-purple/20 blur-3xl" />
         <div className="absolute top-1/3 -right-24 h-64 w-64 rounded-full bg-nerfturf-cyan/20 blur-3xl" />
         <div className="absolute bottom-10 left-1/3 h-56 w-56 rounded-full bg-nerfturf-magenta/20 blur-3xl" />
       </div>
 
-      <CouponPromotionalPopup onCouponSelect={applyCoupon} />
+      {/* Coupon Promotional Popup - Hidden for now */}
+      {/* <CouponPromotionalPopup onCouponSelect={applyCoupon} /> */}
 
       <header className="py-10 px-4 sm:px-6 md:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
@@ -1695,7 +1696,8 @@ export default function PublicBooking() {
                   </div>
                 )}
 
-                <div>
+                {/* Coupon Code Section - Hidden for now */}
+                <div className="hidden">
                   <Label className="text-xs font-semibold text-gray-400 uppercase">
                     Coupon Code
                   </Label>
@@ -1793,13 +1795,12 @@ export default function PublicBooking() {
                       )}
                     >
                       <CreditCard className="h-4 w-4" />
-                      Pay Online (PhonePe)
+                      Pay Online
                     </button>
                   </div>
                   {paymentMethod === "phonepe" && (
                     <p className="mt-2 text-[11px] text-gray-400">
-                      You'll be redirected to PhonePe. Booking is created only after
-                      payment success.
+                      <span className="text-nerfturf-magenta font-semibold">Coming soon</span> - Online payment will be available shortly. For now, please use "Pay at Venue" option.
                     </p>
                   )}
                 </div>
@@ -1815,8 +1816,9 @@ export default function PublicBooking() {
                         </span>
                       </div>
 
+                      {/* Discount Breakdown - Hidden for now */}
                       {discount > 0 && (
-                        <>
+                        <div className="hidden">
                           <div className="border p-2 rounded bg-black/10 text-green-400">
                             <Label className="font-semibold text-xs uppercase">
                               Discount Breakdown
@@ -1835,7 +1837,7 @@ export default function PublicBooking() {
                             </Label>
                             <span className="text-sm text-green-400">-{INR(discount)}</span>
                           </div>
-                        </>
+                        </div>
                       )}
 
                       <Separator className="bg-gradient-to-r from-transparent via-white/10 to-transparent" />
