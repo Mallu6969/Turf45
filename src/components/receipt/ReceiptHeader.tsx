@@ -15,7 +15,7 @@ const ReceiptHeader: React.FC<ReceiptHeaderProps> = ({ bill }) => {
       {/* Company Logo/Name */}
       <div className="text-center mb-4">
         <h1 className="text-4xl font-bold text-emerald-700 mb-1" style={{ fontFamily: 'Arial Black, sans-serif' }}>
-          TIPNTOP CLUB
+          NERFTURF
         </h1>
         <p className="text-sm text-gray-600 uppercase tracking-wider">
           Premier Snooker & 8-Ball Club
@@ -41,7 +41,7 @@ const ReceiptHeader: React.FC<ReceiptHeaderProps> = ({ bill }) => {
         
         <div className="flex items-center justify-center gap-1">
           <Mail className="h-3 w-3 text-emerald-600" />
-          <span>contact@tipntop.club</span>
+          <span>contact@nerfturf.in</span>
         </div>
         
         <div className="flex items-center justify-center gap-1">

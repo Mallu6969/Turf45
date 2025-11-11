@@ -9,7 +9,7 @@ const ReceiptFooter: React.FC = () => {
           Thank You for Visiting!
         </h3>
         <p className="text-xs text-gray-600">
-          We hope you enjoyed your experience at TipNtop Club
+          We hope you enjoyed your experience at NerfTurf
         </p>
       </div>
       
@@ -28,14 +28,14 @@ const ReceiptFooter: React.FC = () => {
       {/* Social Media & Contact */}
       <div className="text-xs text-gray-600 mb-3">
         <p className="font-semibold mb-1">Stay Connected!</p>
-        <p>Follow us on Instagram & Facebook: <span className="font-medium text-emerald-700">@tipntopclub</span></p>
-        <p className="mt-1">Visit us: <span className="font-medium text-emerald-700">www.tipntop.club</span></p>
+        <p>Follow us on Instagram & Facebook: <span className="font-medium text-emerald-700">@nerfturf</span></p>
+        <p className="mt-1">Visit us: <span className="font-medium text-emerald-700">www.nerfturf.in</span></p>
       </div>
       
       {/* Powered By */}
       <div className="text-[10px] text-gray-400 border-t border-gray-200 pt-2">
         <p>Powered by Cuephoria Tech</p>
-        <p className="mt-1">For support: contact@tipntop.club</p>
+        <p className="mt-1">For support: contact@nerfturf.in</p>
       </div>
       
       {/* Decorative Bottom */}

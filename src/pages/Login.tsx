@@ -732,7 +732,7 @@ const Login = () => {
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-emerald-500/20 to-green-500/10 blur-lg"></div>
             <img 
               src="https://iili.io/KgkdS1f.png" 
-              alt="TipNtop Club - Premier Snooker & 8-Ball" 
+              alt="NerfTurf - Premier Snooker & 8-Ball" 
               className="relative w-full h-auto mx-auto drop-shadow-[0_0_15px_rgba(34,197,94,0.4)]"
             />
           </div>

@@ -17,7 +17,7 @@ const HowToBanner: React.FC = () => (
     <div className="flex-shrink-0">
       <img
         src="https://iili.io/KgkdS1f.png"
-        alt="TipNtop Club Logo"
+        alt="NerfTurf Logo"
         className="w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover shadow border-2 border-emerald-500/20 bg-black/60"
         loading="lazy"
       />
@@ -38,7 +38,7 @@ const HowToBanner: React.FC = () => (
               display: "inline-block",
             }}
           >
-            TipNtop Club
+            NerfTurf
           </span>
           !
         </h1>

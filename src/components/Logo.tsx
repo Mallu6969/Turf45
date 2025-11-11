@@ -2,13 +2,13 @@ import React from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 /**
- * This custom logo component renders the TipNtop Club logo for all use cases.
+ * This custom logo component renders the NerfTurf logo for all use cases.
  */
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
   className?: string;
   /**
-   * Use the TipNtop brand graphic with green theme styling
+   * Use the NerfTurf brand graphic with green theme styling
    * for all logo purposes, scaling with prop or parent container
    */
 }
@@ -32,7 +32,7 @@ const Logo: React.FC<LogoProps> = ({ size = 'md', className }) => {
         <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-green-500/20 rounded-full opacity-60 blur-md group-hover:opacity-90 transition-opacity duration-300"></div>
         <img
           src="https://iili.io/KgkdS1f.png"
-          alt="TipNtop Club - Premier Snooker & 8-Ball"
+          alt="NerfTurf - Premier Snooker & 8-Ball"
           height={height}
           width={width}
           style={{
@@ -49,7 +49,7 @@ const Logo: React.FC<LogoProps> = ({ size = 'md', className }) => {
       </div>
       {!isMobile && size !== 'sm' && (
         <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-green-500 font-heading group-hover:from-emerald-300 group-hover:to-green-400 transition-all duration-300">
-          TipNtop Club
+          NerfTurf
         </span>
       )}
     </div>

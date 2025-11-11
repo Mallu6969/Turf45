@@ -1,4 +1,4 @@
-# Cuephoria Tech - TipNTop Club Management Portal
+# Cuephoria Tech - NerfTurf Management Portal
 
 <div align="center">
 

@@ -15,7 +15,7 @@
     --popover: 225 20% 13%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 142 76% 36%;  /* emerald-600 for TipNtop */
+    --primary: 142 76% 36%;  /* emerald-600 for NerfTurf */
     --primary-foreground: 0 0% 98%;
 
     --secondary: 142 71% 45%;  /* emerald-500 */
@@ -68,7 +68,7 @@
   }
 }
 
-/* Custom styles for TipNtop Club */
+/* Custom styles for NerfTurf */
 .indian-rupee::before {
   content: "₹";
   display: inline-block;
@@ -95,18 +95,18 @@
   background: rgba(16, 185, 129, 0.7);  /* emerald hover */
 }
 
-/* Better outlines for focus - TipNtop green */
+/* Better outlines for focus - NerfTurf green */
 :focus-visible {
   outline: 2px solid #10b981;  /* emerald-500 */
   outline-offset: 2px;
 }
 
-/* Gradient text for headings - TipNtop green gradient */
+/* Gradient text for headings - NerfTurf green gradient */
 .gradient-text {
   @apply bg-gradient-to-r from-emerald-500 via-green-400 to-emerald-600 bg-clip-text text-transparent;
 }
 
-/* Cards hover effects - TipNtop green glow */
+/* Cards hover effects - NerfTurf green glow */
 .card-hover {
   @apply transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/20 hover:translate-y-[-4px];
 }
@@ -377,7 +377,7 @@
   }
 }
 
-/* Custom animations for action buttons - TipNtop green glow */
+/* Custom animations for action buttons - NerfTurf green glow */
 @keyframes pulse-glow {
   0%, 100% {
     box-shadow: 0 0 5px rgba(16, 185, 129, 0.3);  /* emerald */
@@ -393,17 +393,17 @@
 }
 
 /* --- Hide scrollbar elegantly for the product tags filter --- */
-.tipntop-scrollbar-hide {
+.nerfturf-scrollbar-hide {
   overflow-x: auto;
   -ms-overflow-style: none;        /* IE and Edge */
   scrollbar-width: none;           /* Firefox */
 }
-.tipntop-scrollbar-hide::-webkit-scrollbar {
+.nerfturf-scrollbar-hide::-webkit-scrollbar {
   display: none !important;        /* Chrome, Safari, Opera */
 }
 
-/* --- Product Filter Tag Custom Styling - TipNtop Green Theme --- */
-.tipntop-filter-tag {
+/* --- Product Filter Tag Custom Styling - NerfTurf Green Theme --- */
+.nerfturf-filter-tag {
   background: transparent;
   border: none;
   outline: none;
@@ -426,22 +426,22 @@
   justify-content: center;
 }
 
-.tipntop-filter-tag:last-child {
+.nerfturf-filter-tag:last-child {
   margin-right: 0;
 }
 
-.tipntop-filter-tag:hover:not([data-state="active"]) {
+.nerfturf-filter-tag:hover:not([data-state="active"]) {
   background: rgba(16, 185, 129, 0.08);  /* emerald hover */
   color: #10b981;  /* emerald-500 */
 }
 
-.tipntop-filter-tag[data-state="active"] {
+.nerfturf-filter-tag[data-state="active"] {
   background: #10b981;  /* emerald-500 */
   color: #fff;
   box-shadow: 0 2px 10px 0 rgba(16, 185, 129, 0.15);  /* emerald shadow */
 }
 
-.tipntop-filter-tag[data-state="active"]::after {
+.nerfturf-filter-tag[data-state="active"]::after {
   content: "";
   display: block;
   position: absolute;
@@ -454,13 +454,13 @@
   opacity: 0.9;
 }
 
-.tipntop-filter-tag:focus-visible {
+.nerfturf-filter-tag:focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.7);  /* emerald focus */
 }
 
 @media (max-width: 600px) {
-  .tipntop-filter-tag {
+  .nerfturf-filter-tag {
     padding: 0.5rem 0.7rem;
     font-size: 0.98rem;
     min-width: 68px;

@@ -54,14 +54,14 @@ const Index: React.FC = () => {
           <Button
             variant="outline"
             className="text-emerald-100 border-emerald-700/50 hover:bg-emerald-900/30 hover:border-emerald-500/70 transition-all duration-300"
-            onClick={() => window.open('https://tipntop.in', '_blank')}
+            onClick={() => window.open('https://nerfturf.in', '_blank')}
           >
             Official Website
           </Button>
           <Button
             variant="default"
             className="bg-gradient-to-r from-emerald-600 to-green-600 text-white hover:from-emerald-500 hover:to-green-500 shadow-lg shadow-emerald-900/50 transition-all duration-300"
-            onClick={() => window.open('https://tipntop.in/book', '_blank')}
+            onClick={() => window.open('https://nerfturf.in/book', '_blank')}
           >
             Reserve Table
           </Button>
@@ -75,7 +75,7 @@ const Index: React.FC = () => {
             <div className="absolute -inset-3 bg-gradient-to-r from-emerald-500/30 to-green-500/30 rounded-full opacity-80 blur-2xl animate-pulse-glow"></div>
             <img
               src="https://iili.io/KgkdS1f.png"
-              alt="TipNtop Club Logo" 
+              alt="NerfTurf Logo" 
               className="h-36 md:h-44 relative z-10 drop-shadow-[0_0_20px_rgba(34,197,94,0.6)]"
             />
           </div>
@@ -84,7 +84,7 @@ const Index: React.FC = () => {
         <h1 className="text-5xl md:text-7xl font-bold text-center text-white font-heading leading-tight mb-6 tracking-tight">
           Welcome to{" "}
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-green-400 to-emerald-500 animate-text-gradient">
-            TipNtop Club
+            NerfTurf
           </span>
         </h1>
         
@@ -184,7 +184,7 @@ const Index: React.FC = () => {
           <div className="absolute bottom-0 left-0 h-80 w-80 bg-green-500/10 blur-3xl rounded-full"></div>
           
           <div className="relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-6 tracking-tight">Ready to Experience TipNtop Club?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-6 tracking-tight">Ready to Experience NerfTurf?</h2>
             <p className="text-center text-gray-300 mb-10 max-w-2xl mx-auto text-lg leading-relaxed">
               Step into Tiruchirappalli's most sophisticated snooker and 8-ball venue. Reserve your table and experience excellence.
             </p>
@@ -217,7 +217,7 @@ const Index: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center mb-10">
             <div className="flex items-center mb-6 md:mb-0">
               <Logo size="sm" />
-              <span className="ml-3 text-gray-400">© {new Date().getFullYear()} TipNtop Club. All rights reserved.</span>
+              <span className="ml-3 text-gray-400">© {new Date().getFullYear()} NerfTurf. All rights reserved.</span>
             </div>
             
             <div className="flex space-x-6">
@@ -238,7 +238,7 @@ const Index: React.FC = () => {
                     <section className="space-y-4">
                       <h2 className="text-lg font-semibold text-emerald-400">1. Acceptance of Terms</h2>
                       <p>
-                        By accessing and using TipNtop Club's services, you agree to be bound by these Terms and Conditions. 
+                        By accessing and using NerfTurf's services, you agree to be bound by these Terms and Conditions. 
                         If you do not agree to these terms, please do not use our services.
                       </p>
                     </section>
@@ -246,7 +246,7 @@ const Index: React.FC = () => {
                     <section className="space-y-4">
                       <h2 className="text-lg font-semibold text-emerald-400">2. Table Reservations</h2>
                       <p>
-                        TipNtop Club provides snooker and 8-ball pool facilities on a reservation or walk-in basis, subject to availability.
+                        NerfTurf provides snooker and 8-ball pool facilities on a reservation or walk-in basis, subject to availability.
                         Members receive preferential rates and booking privileges.
                       </p>
                       <p>
@@ -257,7 +257,7 @@ const Index: React.FC = () => {
                     <section className="space-y-4">
                       <h2 className="text-lg font-semibold text-emerald-400">3. Club Conduct</h2>
                       <p>
-                        Members and guests must maintain appropriate conduct within our premises. TipNtop Club reserves the right to refuse service 
+                        Members and guests must maintain appropriate conduct within our premises. NerfTurf reserves the right to refuse service 
                         to anyone engaging in disruptive, abusive, or inappropriate behavior.
                       </p>
                       <p>
@@ -280,7 +280,7 @@ const Index: React.FC = () => {
                     <section className="space-y-4">
                       <h2 className="text-lg font-semibold text-emerald-400">5. Modifications</h2>
                       <p>
-                        TipNtop Club reserves the right to modify these terms at any time. Changes take effect immediately 
+                        NerfTurf reserves the right to modify these terms at any time. Changes take effect immediately 
                         upon posting. Continued use constitutes acceptance of modified terms.
                       </p>
                     </section>
@@ -305,7 +305,7 @@ const Index: React.FC = () => {
                     <section className="space-y-4">
                       <h2 className="text-lg font-semibold text-emerald-400">1. Information Collection</h2>
                       <p>
-                        TipNtop Club collects personal information including name, contact details, 
+                        NerfTurf collects personal information including name, contact details, 
                         and payment information when you register or reserve tables.
                       </p>
                       <p>
@@ -351,7 +351,7 @@ const Index: React.FC = () => {
                     <section className="space-y-4">
                       <h2 className="text-lg font-semibold text-emerald-400">5. Policy Changes</h2>
                       <p>
-                        TipNtop Club may update this policy anytime. Changes are posted on our website. 
+                        NerfTurf may update this policy anytime. Changes are posted on our website. 
                         Continued use after modifications constitutes acceptance.
                       </p>
                     </section>
@@ -387,8 +387,8 @@ const Index: React.FC = () => {
                       <Mail className="h-5 w-5 text-green-400 mr-3 mt-0.5" />
                       <div>
                         <p className="text-sm font-medium text-white">Email</p>
-                        <a href="mailto:contact@tipntop.club" className="text-gray-300 text-sm hover:text-green-400 transition-colors">
-                          contact@tipntop.club
+                        <a href="mailto:contact@nerfturf.in" className="text-gray-300 text-sm hover:text-green-400 transition-colors">
+                          contact@nerfturf.in
                         </a>
                       </div>
                     </div>
@@ -427,7 +427,7 @@ const Index: React.FC = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="h-3 w-3 text-emerald-500" />
-                <a href="mailto:contact@tipntop.club" className="hover:text-emerald-400 transition-colors">contact@tipntop.club</a>
+                <a href="mailto:contact@nerfturf.in" className="hover:text-emerald-400 transition-colors">contact@nerfturf.in</a>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-3 w-3 text-emerald-500" />

@@ -73,10 +73,10 @@ const AppSidebar: React.FC = () => {
                   <div className="p-4 flex items-center gap-3">
                     <img
                       src="https://iili.io/KgkdS1f.png"
-                      alt="TipNtop Logo"
+                      alt="NerfTurf Logo"
                       className="h-12 w-12 object-contain animate-bounce filter drop-shadow-[0_0_15px_rgba(34,197,94,0.8)] animate-neon-pulse"
                     />
-                    <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500 font-heading">TipNtop</span>
+                    <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500 font-heading">NerfTurf</span>
                   </div>
                   <div className="mx-4 h-px bg-green-500/30" />
                   <div className="flex-1 overflow-auto py-2">
@@ -124,7 +124,7 @@ const AppSidebar: React.FC = () => {
                 </div>
               </SheetContent>
             </Sheet>
-            <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500 font-heading">TipNtop</span>
+            <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500 font-heading">NerfTurf</span>
           </div>
         </div>
         <div className="pt-16"></div>
@@ -138,10 +138,10 @@ const AppSidebar: React.FC = () => {
       <SidebarHeader className="p-4 flex items-center gap-3">
         <img
           src="https://iili.io/KgkdS1f.png"
-          alt="TipNtop Logo"
+          alt="NerfTurf Logo"
           className="h-14 w-14 object-contain animate-bounce filter drop-shadow-[0_0_15px_rgba(34,197,94,0.8)] animate-neon-pulse"
         />
-        <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500 font-heading">TipNtop</span>
+        <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500 font-heading">NerfTurf</span>
       </SidebarHeader>
       <SidebarSeparator className="mx-4 bg-green-500/30" />
       <SidebarContent className="mt-2">
