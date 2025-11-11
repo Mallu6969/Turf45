@@ -2051,8 +2051,8 @@ export default function PublicBooking() {
             <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-400">
               <div className="flex items-center gap-1">
                 <Phone className="h-4 w-4" />
-                <a href="tel:918637625155" className="hover:text-white transition-colors">
-                  +91 86376 25155
+                <a href="tel:+919345187098" className="hover:text-white transition-colors">
+                  +91 93451 87098
                 </a>
               </div>
               <div className="flex items-center gap-1">
@@ -2122,8 +2122,8 @@ export default function PublicBooking() {
 
               <p className="mt-4 text-xs text-gray-400">
                 Need help? Call{' '}
-                <a className="underline hover:text-white" href="tel:918637625155">
-                  +91 86376 25155
+                <a className="underline hover:text-white" href="tel:+919345187098">
+                  +91 93451 87098
                 </a>{' '}
                 or email{' '}
                 <a className="ml-1 underline hover:text-white" href="mailto:contact@nerfturf.in">

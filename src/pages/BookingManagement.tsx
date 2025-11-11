@@ -1238,7 +1238,7 @@ export default function BookingManagement() {
           </Button>
           <Button
             className="flex items-center gap-2"
-            onClick={() => window.open('https://admin.cuephoria.in/public/booking', '_blank', 'noopener,noreferrer')}
+            onClick={() => window.open('https://app.nerfturf.in/public/booking', '_blank', 'noopener,noreferrer')}
           >
             <Plus className="h-4 w-4" />
             New Booking

@@ -1122,7 +1122,7 @@ const PublicTournaments = () => {
               <div className="space-y-3">
                 <div className="flex items-center justify-center gap-2 text-cuephoria-grey hover:text-white transition-colors">
                   <Phone className="h-4 w-4 text-cuephoria-lightpurple" />
-                  <span className="text-sm">+91 86376 25155</span>
+                  <span className="text-sm">+91 93451 87098</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 text-cuephoria-grey hover:text-white transition-colors">
                   <Mail className="h-4 w-4 text-cuephoria-lightpurple" />
@@ -1345,7 +1345,7 @@ const PublicTournaments = () => {
             </div>
             <div>
               <h4 className="text-white font-semibold mb-2">Contact Us</h4>
-              <p>If you have any questions about this Privacy Policy, please contact us at contact@cuephoria.in or +91 86376 25155.</p>
+              <p>If you have any questions about this Privacy Policy, please contact us at contact@nerfturf.in or +91 93451 87098.</p>
             </div>
           </div>
         </DialogContent>

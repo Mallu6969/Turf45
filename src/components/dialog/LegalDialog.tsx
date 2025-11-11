@@ -154,8 +154,8 @@ const LegalDialog: React.FC<LegalDialogProps> = ({ isOpen, onClose, type }) => {
                       <Phone className="h-5 w-5 text-cuephoria-purple" />
                     </div>
                     <h4 className="font-semibold mb-2 text-white">Phone</h4>
-                    <a href="tel:+918637625155" className="text-gray-300 hover:text-white transition-colors text-sm">
-                      +91 86376 25155
+                    <a href="tel:+919345187098" className="text-gray-300 hover:text-white transition-colors text-sm">
+                      +91 93451 87098
                     </a>
                   </CardContent>
                 </Card>

@@ -69,7 +69,7 @@ ${bookingData.couponCode ? `Coupon: ${bookingData.couponCode}` : ''}
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md bg-background border text-foreground">
+      <DialogContent className="max-w-md bg-[#1a1a1a] border-gray-800 text-white">
         <DialogHeader className="text-center">
           <div className="mx-auto mb-4 w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center">
             <CheckCircle2 className="h-8 w-8 text-green-400" />
