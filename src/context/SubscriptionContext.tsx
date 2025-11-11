@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { getPlanByName } from '@/lib/subscriptionPlans';
 
 interface Subscription {
   id: string;
@@ -105,7 +106,23 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({ 
         // Create new subscription
         const subscriptionType = data.subscription_type || 'monthly';
         const startDate = data.start_date ? new Date(data.start_date) : new Date();
-        const endDate = calculateEndDate(startDate, subscriptionType);
+        
+        // Use plan duration if plan_name is provided for accurate calculation
+        let endDate: Date;
+        if (data.plan_name) {
+          const plan = getPlanByName(data.plan_name);
+          if (plan && plan.type !== 'lifetime') {
+            endDate = new Date(startDate);
+            endDate.setMonth(endDate.getMonth() + plan.duration);
+          } else if (plan && plan.type === 'lifetime') {
+            endDate = new Date(startDate);
+            endDate.setFullYear(endDate.getFullYear() + 100);
+          } else {
+            endDate = calculateEndDate(startDate, subscriptionType);
+          }
+        } else {
+          endDate = calculateEndDate(startDate, subscriptionType);
+        }
         
         const newSubscription = {
           is_active: data.is_active ?? true,
@@ -130,10 +147,28 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({ 
         // Update existing subscription
         const updateData: any = { ...data };
         
-        if (data.subscription_type && data.start_date) {
-          const startDate = new Date(data.start_date);
-          const endDate = calculateEndDate(startDate, data.subscription_type);
-          updateData.end_date = endDate.toISOString().split('T')[0];
+        // Only recalculate end_date if it's not already provided and we have the necessary data
+        if (!data.end_date && data.start_date) {
+          // If plan_name is provided, use plan duration for accurate calculation
+          if (data.plan_name) {
+            const plan = getPlanByName(data.plan_name);
+            if (plan && plan.type !== 'lifetime') {
+              const startDate = new Date(data.start_date);
+              const endDate = new Date(startDate);
+              endDate.setMonth(endDate.getMonth() + plan.duration);
+              updateData.end_date = endDate.toISOString().split('T')[0];
+            } else if (plan && plan.type === 'lifetime') {
+              const startDate = new Date(data.start_date);
+              const endDate = new Date(startDate);
+              endDate.setFullYear(endDate.getFullYear() + 100);
+              updateData.end_date = endDate.toISOString().split('T')[0];
+            }
+          } else if (data.subscription_type) {
+            // Fallback to type-based calculation if plan_name not available
+            const startDate = new Date(data.start_date);
+            const endDate = calculateEndDate(startDate, data.subscription_type);
+            updateData.end_date = endDate.toISOString().split('T')[0];
+          }
         }
         
         updateData.updated_at = new Date().toISOString();
