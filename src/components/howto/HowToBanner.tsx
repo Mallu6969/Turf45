@@ -28,43 +28,25 @@ const HowToBanner: React.FC = () => (
         <BookOpenText className="h-6 w-6 text-nerfturf-lightpurple" />
         <h1 className="text-2xl font-heading font-bold text-white tracking-tight">
           Welcome to{" "}
-          <span
-            className="gradient-text font-heading font-bold"
-            style={{
-              background:
-                "linear-gradient(90deg, #10b981 0%, #059669 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              display: "inline-block",
-            }}
-          >
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-nerfturf-lightpurple via-nerfturf-magenta to-nerfturf-purple font-heading font-bold">
             NerfTurf
           </span>
           !
         </h1>
       </div>
       <p className="text-base md:text-lg font-quicksand text-white/85 mt-0.5 leading-normal">
-        Manage your snooker club, staff, members, and tables{" "}
-        <span
-          className="gradient-text font-heading font-bold"
-          style={{
-            background:
-              "linear-gradient(90deg, #10b981 0%, #059669 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            display: "inline-block",
-          }}
-        >
-          efficiently
+        Complete management system for your gaming lounge - POS, stations, products, customers, bookings, tournaments, and more{" "}
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-nerfturf-lightpurple to-nerfturf-purple font-heading font-semibold">
+          all in one place
         </span>
         .<br />
         <span className="text-white/75">
-          This interactive guide unlocks every feature for your workflow.
+          This comprehensive guide covers every feature to help you master the system.
         </span>
         <br />
         <span className="text-nerfturf-lightpurple font-semibold">Tip:</span>
         <span className="ml-1 text-white/75">
-          Click any section below for pro tips!
+          Click any section below to expand and learn more!
         </span>
       </p>
     </div>

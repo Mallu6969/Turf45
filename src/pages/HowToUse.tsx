@@ -20,11 +20,22 @@ const HowToUse: React.FC = () => (
       <HowToFAQ />
 
       <div className="w-full flex justify-center mt-10">
-        <span className="text-xs text-cuephoria-lightpurple/70 px-2 text-center font-quicksand">
-          For security, you will be automatically logged out after 5 hours of inactivity.
-          Save your work and login daily for best results.<br />
-          <b>Questions?</b> Contact your admin or the developer (RK).
-        </span>
+        <div className="text-xs text-nerfturf-lightpurple/70 px-4 py-3 text-center font-quicksand bg-nerfturf-purple/5 rounded-lg border border-nerfturf-purple/20 max-w-2xl">
+          <p className="mb-2">
+            <b className="text-nerfturf-lightpurple">Security Note:</b> You will be automatically logged out after 5 hours of inactivity for security. Always save your work and log in daily for best results.
+          </p>
+          <p>
+            <b className="text-nerfturf-lightpurple">Need Help?</b> Contact your administrator or reach out to{" "}
+            <b className="text-nerfturf-magenta">Cuephoria Tech Support Line</b> at{" "}
+            <a href="tel:+919345187098" className="underline text-nerfturf-magenta hover:text-nerfturf-lightpurple">
+              +91 93451 87098
+            </a>
+            {" "}or email{" "}
+            <a href="mailto:contact@nerfturf.in" className="underline text-nerfturf-magenta hover:text-nerfturf-lightpurple">
+              contact@nerfturf.in
+            </a>.
+          </p>
+        </div>
       </div>
     </div>
   </div>
