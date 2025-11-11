@@ -1293,9 +1293,9 @@ export default function PublicBooking() {
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#0b0b12] via-black to-[#0b0b12]">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-NerfTurf-purple/20 blur-3xl" />
-        <div className="absolute top-1/3 -right-24 h-64 w-64 rounded-full bg-NerfTurf-blue/20 blur-3xl" />
-        <div className="absolute bottom-10 left-1/3 h-56 w-56 rounded-full bg-NerfTurf-lightpurple/20 blur-3xl" />
+        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-nerfturf-purple/20 blur-3xl" />
+        <div className="absolute top-1/3 -right-24 h-64 w-64 rounded-full bg-nerfturf-cyan/20 blur-3xl" />
+        <div className="absolute bottom-10 left-1/3 h-56 w-56 rounded-full bg-nerfturf-magenta/20 blur-3xl" />
       </div>
 
       <CouponPromotionalPopup onCouponSelect={applyCoupon} />
@@ -1305,14 +1305,14 @@ export default function PublicBooking() {
           <div className="flex flex-col items-center mb-8">
             <div className="mb-6">
               <img
-                src="https://iili.io/KgkdS1f.png"
+                src="/nerfturf-logo.png"
                 alt="NerfTurf Logo"
                 className="h-24 drop-shadow-[0_0_25px_rgba(168,85,247,0.15)]"
               />
             </div>
 
             <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs tracking-widest uppercase text-gray-300 backdrop-blur-md">
-              <Sparkles className="h-3.5 w-3.5 text-NerfTurf-lightpurple" />
+              <Sparkles className="h-3.5 w-3.5 text-nerfturf-magenta" />
               Premium Gaming Lounge
             </span>
 
@@ -1352,8 +1352,8 @@ export default function PublicBooking() {
             <Card className="bg-white/5 backdrop-blur-xl border-white/10 rounded-2xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
-                  <div className="w-8 h-8 rounded-lg bg-NerfTurf-purple/20 ring-1 ring-white/10 flex items-center justify-center">
-                    <User className="h-4 w-4 text-NerfTurf-purple" />
+                  <div className="w-8 h-8 rounded-lg bg-nerfturf-purple/20 ring-1 ring-white/10 flex items-center justify-center">
+                    <User className="h-4 w-4 text-nerfturf-purple" />
                   </div>
                   Step 1: Customer Information
                   {isCustomerInfoComplete() && (
@@ -1362,8 +1362,8 @@ export default function PublicBooking() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="bg-NerfTurf-purple/10 border border-NerfTurf-purple/20 rounded-xl p-3">
-                  <p className="text-sm text-NerfTurf-purple/90 font-medium flex items-center gap-2">
+                <div className="bg-nerfturf-purple/10 border border-nerfturf-purple/20 rounded-xl p-3">
+                  <p className="text-sm text-nerfturf-purple/90 font-medium flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4" /> Please complete customer
                     information to proceed with booking
                   </p>
@@ -1395,7 +1395,7 @@ export default function PublicBooking() {
                   <Button
                     onClick={searchCustomer}
                     disabled={searchingCustomer}
-                    className="rounded-xl bg-gradient-to-r from-NerfTurf-purple to-NerfTurf-lightpurple"
+                    className="rounded-xl bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta"
                   >
                     {searchingCustomer ? "Searching..." : "Search"}
                   </Button>
@@ -1451,11 +1451,11 @@ export default function PublicBooking() {
               <CardHeader className="relative pb-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg ring-1 ring-white/10 bg-gradient-to-br from-NerfTurf-blue/25 to-transparent">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg ring-1 ring-white/10 bg-gradient-to-br from-nerfturf-cyan/25 to-transparent">
                       {!isStationSelectionAvailable() ? (
                         <Lock className="h-4 w-4 text-gray-500" />
                       ) : (
-                        <MapPin className="h-4 w-4 text-NerfTurf-blue" />
+                        <MapPin className="h-4 w-4 text-nerfturf-cyan" />
                       )}
                     </div>
                     <CardTitle className="m-0 p-0 text-white">
@@ -1498,8 +1498,8 @@ export default function PublicBooking() {
                     className={cn(
                       "h-9 rounded-full border-white/15 text-[12px]",
                       stationType === "ps5"
-                        ? "bg-NerfTurf-purple/15 text-NerfTurf-purple"
-                        : "bg-transparent text-NerfTurf-purple"
+                        ? "bg-nerfturf-purple/15 text-nerfturf-purple"
+                        : "bg-transparent text-nerfturf-purple"
                     )}
                   >
                     PS5
@@ -1558,11 +1558,11 @@ export default function PublicBooking() {
             <Card className="bg-white/5 backdrop-blur-xl border-white/10 rounded-2xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
-                  <div className="w-8 h-8 rounded-lg bg-NerfTurf-lightpurple/20 ring-1 ring-white/10 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-nerfturf-magenta/20 ring-1 ring-white/10 flex items-center justify-center">
                     {!isTimeSelectionAvailable() ? (
                       <Lock className="h-4 w-4 text-gray-500" />
                     ) : (
-                      <CalendarIcon className="h-4 w-4 text-NerfTurf-lightpurple" />
+                      <CalendarIcon className="h-4 w-4 text-nerfturf-magenta" />
                     )}
                   </div>
                   Step 3: Choose Date & Time
@@ -1642,9 +1642,9 @@ export default function PublicBooking() {
                         if (!s) return null;
                         return (
                           <div key={id} className="flex items-center gap-2">
-                            <div className="w-5 h-5 rounded-md bg-NerfTurf-purple/20 border border-white/10 flex items-center justify-center">
+                            <div className="w-5 h-5 rounded-md bg-nerfturf-purple/20 border border-white/10 flex items-center justify-center">
                               {s.type === "ps5" ? (
-                                <Gamepad2 className="h-3.5 w-3.5 text-NerfTurf-purple" />
+                                <Gamepad2 className="h-3.5 w-3.5 text-nerfturf-purple" />
                               ) : s.type === "vr" ? (
                                 <Headset className="h-3.5 w-3.5 text-blue-400" />
                               ) : (
@@ -1717,7 +1717,7 @@ export default function PublicBooking() {
                   <p className="mt-1 text-[11px] text-gray-400">
                     All discounts and totals are calculated in INR (₹).
                   </p>
-                  <p className="mt-2 text-xs text-NerfTurf-lightpurple">
+                  <p className="mt-2 text-xs text-nerfturf-magenta">
                     📝 Coupon rules:<br />
                     NIT50/ALMA50: 50% off for students;<br />
                     HH99: PS5 & 8-Ball @ ₹99/hr only Mon–Fri 11 AM–4 PM (not VR);<br />
@@ -1844,7 +1844,7 @@ export default function PublicBooking() {
                         <Label className="text-base font-semibold text-gray-100">
                           Total Amount
                         </Label>
-                        <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-NerfTurf-purple to-NerfTurf-lightpurple">
+                        <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta">
                           {INR(finalPrice)}
                         </span>
                       </div>
@@ -1857,7 +1857,7 @@ export default function PublicBooking() {
                   disabled={
                     !selectedSlot || selectedStations.length === 0 || !customerNumber || loading
                   }
-                  className="w-full rounded-xl bg-gradient-to-r from-NerfTurf-purple to-NerfTurf-lightpurple"
+                  className="w-full rounded-xl bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta"
                   size="lg"
                 >
                   {loading
@@ -1897,7 +1897,7 @@ export default function PublicBooking() {
                 setLegalDialogType("terms");
                 setShowLegalDialog(true);
               }}
-              className="mt-3 text-sm text-NerfTurf-lightpurple hover:underline"
+              className="mt-3 text-sm text-nerfturf-magenta hover:underline"
             >
               View full Terms & Conditions
             </button>
@@ -1915,7 +1915,7 @@ export default function PublicBooking() {
                 setLegalDialogType("privacy");
                 setShowLegalDialog(true);
               }}
-              className="mt-3 text-sm text-NerfTurf-lightpurple hover:underline"
+              className="mt-3 text-sm text-nerfturf-magenta hover:underline"
             >
               View full Privacy Policy
             </button>
@@ -1926,7 +1926,7 @@ export default function PublicBooking() {
           <Card className="bg-white/5 backdrop-blur-xl border-white/10 rounded-2xl">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-white flex items-center gap-2">
-                <Clock className="h-5 w-5 text-NerfTurf-lightpurple" />
+                <Clock className="h-5 w-5 text-nerfturf-magenta" />
                 Today's Bookings
               </CardTitle>
               <span className="text-xs text-gray-300 rounded-full border border-white/10 px-2 py-0.5">
@@ -1946,7 +1946,7 @@ export default function PublicBooking() {
                   >
                     <summary className="list-none cursor-pointer select-none px-3 sm:px-4 py-3 sm:py-3.5 flex items-center justify-between">
                       <div className="flex items-center gap-2 text-gray-200">
-                        <Clock className="h-4 w-4 text-NerfTurf-lightpurple" />
+                        <Clock className="h-4 w-4 text-nerfturf-magenta" />
                         <span className="font-medium">{timeLabel}</span>
                       </div>
                       <span className="text-xs text-gray-300 rounded-full border border-white/10 px-2 py-0.5">
@@ -1993,7 +1993,7 @@ export default function PublicBooking() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-4 md:mb-0">
               <img
-                src="https://iili.io/KgkdS1f.png"
+                src="/nerfturf-logo.png"
                 alt="NerfTurf Logo"
                 className="h-8 mr-3"
               />

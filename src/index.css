@@ -15,16 +15,16 @@
     --popover: 225 20% 13%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 142 76% 36%;  /* emerald-600 for NerfTurf */
+    --primary: 280 65% 50%;  /* purple for NerfTurf */
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 142 71% 45%;  /* emerald-500 */
+    --secondary: 320 100% 50%;  /* magenta */
     --secondary-foreground: 0 0% 98%;
 
     --muted: 225 20% 20%;
     --muted-foreground: 225 10% 70%;
 
-    --accent: 142 76% 36%;  /* emerald accent */
+    --accent: 180 100% 50%;  /* cyan accent */
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84.2% 60.2%;
@@ -32,18 +32,18 @@
 
     --border: 225 20% 25%;
     --input: 225 20% 25%;
-    --ring: 142 76% 36%;  /* emerald ring */
+    --ring: 280 65% 50%;  /* purple ring */
 
     --radius: 0.75rem;
 
     --sidebar-background: 225 20% 13%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 142 76% 36%;  /* emerald */
+    --sidebar-primary: 280 65% 50%;  /* purple */
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 225 20% 18%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 225 20% 25%;
-    --sidebar-ring: 142 76% 36%;  /* emerald */
+    --sidebar-ring: 280 65% 50%;  /* purple */
   }
 
   * {
@@ -87,26 +87,26 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(16, 185, 129, 0.5);  /* emerald */
+  background: rgba(110, 89, 165, 0.5);  /* purple */
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(16, 185, 129, 0.7);  /* emerald hover */
+  background: rgba(110, 89, 165, 0.7);  /* purple hover */
 }
 
-/* Better outlines for focus - NerfTurf green */
+/* Better outlines for focus - NerfTurf purple */
 :focus-visible {
-  outline: 2px solid #10b981;  /* emerald-500 */
+  outline: 2px solid #6E59A5;  /* purple */
   outline-offset: 2px;
 }
 
-/* Gradient text for headings - NerfTurf green gradient */
+/* Gradient text for headings - NerfTurf purple/magenta gradient */
 .gradient-text {
   @apply bg-gradient-to-r from-emerald-500 via-green-400 to-emerald-600 bg-clip-text text-transparent;
 }
 
-/* Cards hover effects - NerfTurf green glow */
+/* Cards hover effects - NerfTurf purple glow */
 .card-hover {
   @apply transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/20 hover:translate-y-[-4px];
 }
@@ -377,13 +377,13 @@
   }
 }
 
-/* Custom animations for action buttons - NerfTurf green glow */
+/* Custom animations for action buttons - NerfTurf purple glow */
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 5px rgba(16, 185, 129, 0.3);  /* emerald */
+    box-shadow: 0 0 5px rgba(110, 89, 165, 0.3);  /* purple */
   }
   50% {
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.8);  /* emerald */
+    box-shadow: 0 0 20px rgba(110, 89, 165, 0.8);  /* purple */
   }
 }
 
@@ -402,7 +402,7 @@
   display: none !important;        /* Chrome, Safari, Opera */
 }
 
-/* --- Product Filter Tag Custom Styling - NerfTurf Green Theme --- */
+/* --- Product Filter Tag Custom Styling - NerfTurf Purple Theme --- */
 .nerfturf-filter-tag {
   background: transparent;
   border: none;
@@ -431,14 +431,14 @@
 }
 
 .nerfturf-filter-tag:hover:not([data-state="active"]) {
-  background: rgba(16, 185, 129, 0.08);  /* emerald hover */
-  color: #10b981;  /* emerald-500 */
+  background: rgba(110, 89, 165, 0.08);  /* purple hover */
+  color: #6E59A5;  /* purple */
 }
 
 .nerfturf-filter-tag[data-state="active"] {
-  background: #10b981;  /* emerald-500 */
+  background: #6E59A5;  /* purple */
   color: #fff;
-  box-shadow: 0 2px 10px 0 rgba(16, 185, 129, 0.15);  /* emerald shadow */
+  box-shadow: 0 2px 10px 0 rgba(110, 89, 165, 0.15);  /* purple shadow */
 }
 
 .nerfturf-filter-tag[data-state="active"]::after {
@@ -450,13 +450,13 @@
   bottom: 6px;
   height: 3px;
   border-radius: 2px;
-  background: linear-gradient(to right, #10b981 60%, #059669 100%);  /* emerald gradient */
+  background: linear-gradient(to right, #6E59A5 60%, #9b87f5 100%);  /* purple gradient */
   opacity: 0.9;
 }
 
 .nerfturf-filter-tag:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.7);  /* emerald focus */
+  box-shadow: 0 0 0 2px rgba(110, 89, 165, 0.7);  /* purple focus */
 }
 
 @media (max-width: 600px) {

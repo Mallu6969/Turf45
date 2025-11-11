@@ -76,6 +76,17 @@ export default {
           dark: '#1A1F2C',
           darker: '#161b27',
           light: '#F1F0FB',
+        },
+        nerfturf: {
+          purple: '#6E59A5',
+          lightpurple: '#9b87f5',
+          magenta: '#FF1493',
+          pink: '#FF00FF',
+          cyan: '#00CED1',
+          blue: '#00FFFF',
+          dark: '#000000',
+          darker: '#0a0a0a',
+          light: '#F1F0FB',
         }
       },
       borderRadius: {

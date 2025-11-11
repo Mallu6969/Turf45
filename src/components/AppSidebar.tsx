@@ -72,7 +72,7 @@ const AppSidebar: React.FC = () => {
                 <div className="h-full flex flex-col">
                   <div className="p-4 flex items-center gap-3">
                     <img
-                      src="https://iili.io/KgkdS1f.png"
+                      src="/nerfturf-logo.png"
                       alt="NerfTurf Logo"
                       className="h-12 w-12 object-contain animate-bounce filter drop-shadow-[0_0_15px_rgba(34,197,94,0.8)] animate-neon-pulse"
                     />

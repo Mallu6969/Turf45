@@ -74,7 +74,7 @@ const Index: React.FC = () => {
           <div className="relative">
             <div className="absolute -inset-3 bg-gradient-to-r from-emerald-500/30 to-green-500/30 rounded-full opacity-80 blur-2xl animate-pulse-glow"></div>
             <img
-              src="https://iili.io/KgkdS1f.png"
+              src="/nerfturf-logo.png"
               alt="NerfTurf Logo" 
               className="h-36 md:h-44 relative z-10 drop-shadow-[0_0_20px_rgba(34,197,94,0.6)]"
             />

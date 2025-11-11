@@ -31,7 +31,7 @@ const Logo: React.FC<LogoProps> = ({ size = 'md', className }) => {
         {/* Green glow effect */}
         <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-green-500/20 rounded-full opacity-60 blur-md group-hover:opacity-90 transition-opacity duration-300"></div>
         <img
-          src="https://iili.io/KgkdS1f.png"
+          src="/nerfturf-logo.png"
           alt="NerfTurf - Premier Snooker & 8-Ball"
           height={height}
           width={width}
