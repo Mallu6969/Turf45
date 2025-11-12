@@ -54,6 +54,8 @@ export const handleSupabaseError = (error: any, operation: string): string => {
 
 // Helper functions for data conversion
 export const convertFromSupabaseProduct = (item: any): any => {
+  // Only include fields that are part of the Product type
+  // Explicitly exclude database-only fields like created_at, updated_at
   const product = {
     id: item.id,
     name: item.name,
@@ -70,6 +72,9 @@ export const convertFromSupabaseProduct = (item: any): any => {
     sellingPrice: item.selling_price || undefined,
     profit: item.profit || undefined
   };
+  
+  // Ensure we never include database timestamp fields
+  // These should never be part of the Product object
   
   console.log('Converted product from DB:', product);
   return product;

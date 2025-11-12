@@ -186,6 +186,17 @@ const ProductsPage: React.FC = () => {
       console.log('Submitting product data:', productData);
       
       if (isEditMode && selectedProduct) {
+        // Validate selectedProduct has a valid ID
+        if (!selectedProduct.id || selectedProduct.id === 'new') {
+          toast({
+            title: 'Error',
+            description: 'Invalid product. Please refresh and try again.',
+            variant: 'destructive',
+          });
+          setIsSubmitting(false);
+          return;
+        }
+
         // Log stock changes
         if (selectedProduct.stock !== Number(stock)) {
           const stockLog = createStockLog(
@@ -199,7 +210,19 @@ const ProductsPage: React.FC = () => {
           saveStockLog(stockLog);
         }
 
-        await updateProduct({ ...productData, id: selectedProduct.id });
+        // Create a clean product object without any extra fields
+        const cleanProductData: Product = {
+          ...productData,
+          id: selectedProduct.id,
+        };
+        
+        // Remove any fields that shouldn't be in the Product type
+        delete (cleanProductData as any).updated_at;
+        delete (cleanProductData as any).updatedAt;
+        delete (cleanProductData as any).created_at;
+        delete (cleanProductData as any).createdAt;
+
+        await updateProduct(cleanProductData);
         toast({
           title: 'Product Updated',
           description: 'The product has been updated successfully.',
