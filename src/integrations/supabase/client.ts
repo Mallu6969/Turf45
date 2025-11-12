@@ -76,22 +76,46 @@ export const convertFromSupabaseProduct = (item: any): any => {
 };
 
 export const convertToSupabaseProduct = (product: any): any => {
-  const supabaseProduct = {
+  // Only include fields that exist in the database schema and are defined
+  const supabaseProduct: any = {
     id: product.id,
     name: product.name,
     price: product.price,
     category: product.category,
     stock: product.stock,
-    image: product.image,
-    original_price: product.originalPrice,
-    offer_price: product.offerPrice,
-    student_price: product.studentPrice,
-    duration: product.duration,
-    membership_hours: product.membershipHours,
-    buying_price: product.buyingPrice,
-    selling_price: product.sellingPrice,
-    profit: product.profit
   };
+  
+  // Only add optional fields if they are defined (not undefined or null)
+  if (product.image !== undefined && product.image !== null) {
+    supabaseProduct.image = product.image;
+  }
+  if (product.originalPrice !== undefined && product.originalPrice !== null) {
+    supabaseProduct.original_price = product.originalPrice;
+  }
+  if (product.offerPrice !== undefined && product.offerPrice !== null) {
+    supabaseProduct.offer_price = product.offerPrice;
+  }
+  if (product.studentPrice !== undefined && product.studentPrice !== null) {
+    supabaseProduct.student_price = product.studentPrice;
+  }
+  if (product.duration !== undefined && product.duration !== null) {
+    supabaseProduct.duration = product.duration;
+  }
+  if (product.membershipHours !== undefined && product.membershipHours !== null) {
+    supabaseProduct.membership_hours = product.membershipHours;
+  }
+  if (product.buyingPrice !== undefined && product.buyingPrice !== null) {
+    supabaseProduct.buying_price = product.buyingPrice;
+  }
+  if (product.sellingPrice !== undefined && product.sellingPrice !== null) {
+    supabaseProduct.selling_price = product.sellingPrice;
+  }
+  if (product.profit !== undefined && product.profit !== null) {
+    supabaseProduct.profit = product.profit;
+  }
+  
+  // Explicitly exclude any fields that don't exist in the schema (like updated_at)
+  // The products table only has created_at, not updated_at
   
   console.log('Converting product to Supabase format:', supabaseProduct);
   return supabaseProduct;

@@ -89,6 +89,16 @@ export const useProducts = () => {
   
   const updateProduct = (product: Product) => {
     try {
+      // Validate product ID - must not be "new" or empty
+      if (!product.id || product.id === 'new') {
+        toast({
+          title: 'Error',
+          description: 'Invalid product ID. Cannot update product without a valid ID.',
+          variant: 'destructive'
+        });
+        throw new Error('Invalid product ID');
+      }
+      
       if (isProductDuplicate(product.name, product.id)) {
         toast({
           title: 'Error',
@@ -105,12 +115,18 @@ export const useProducts = () => {
         // Note: profit will be calculated by the database trigger
       };
       
-      setProducts(prev => prev.map(p => p.id === updatedProduct.id ? updatedProduct : p));
+      // Remove any fields that shouldn't be sent to the database
+      const cleanProduct = { ...updatedProduct };
+      // Remove updated_at if it exists (products table doesn't have this field)
+      delete (cleanProduct as any).updated_at;
+      delete (cleanProduct as any).updatedAt;
+      
+      setProducts(prev => prev.map(p => p.id === cleanProduct.id ? cleanProduct : p));
       
       supabase
         .from('products')
-        .update(convertToSupabaseProduct(updatedProduct))
-        .eq('id', updatedProduct.id)
+        .update(convertToSupabaseProduct(cleanProduct))
+        .eq('id', cleanProduct.id)
         .then(({ error }) => {
           if (error) {
             console.error('Error updating product in DB:', error);
@@ -120,26 +136,17 @@ export const useProducts = () => {
               description: `Product updated locally but failed to sync with database: ${error.message}`,
               variant: 'destructive'
             });
-            return supabase
-              .from('products')
-              .insert(convertToSupabaseProduct(updatedProduct));
+            // Don't try to insert if update fails - that would create duplicates
           } else {
-            console.log('Product updated in DB:', updatedProduct.name);
-          }
-        })
-        .then(result => {
-          if (result?.error) {
-            console.error('Error inserting product after update failure:', result.error);
-            setError(`Failed to insert product after update failure: ${result.error.message}`);
+            console.log('Product updated in DB:', cleanProduct.name);
+            toast({
+              title: 'Success',
+              description: 'Product updated successfully',
+            });
           }
         });
       
-      toast({
-        title: 'Success',
-        description: 'Product updated successfully',
-      });
-      
-      return updatedProduct;
+      return cleanProduct;
     } catch (error) {
       console.error('Error updating product:', error);
       
