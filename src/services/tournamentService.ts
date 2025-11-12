@@ -370,7 +370,8 @@ export const deleteTournament = async (id: string): Promise<{ success: boolean; 
     console.log('Tournament delete operation completed');
     
     // Verify the tournament was actually deleted by trying to fetch it
-    const { data: verifyData, error: verifyError } = await tournamentsTable
+    const { data: verifyData, error: verifyError } = await supabase
+      .from('tournaments')
       .select('id')
       .eq('id', id)
       .maybeSingle();
