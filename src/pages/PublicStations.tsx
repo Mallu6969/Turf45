@@ -185,7 +185,7 @@ const PublicStations = () => {
           {/* Stats summary - Reordered: Pool Table first, then PS5, VR hidden */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-4 max-w-6xl mx-auto mb-10">
             <div className="bg-gradient-to-br from-green-900/30 to-green-900/5 backdrop-blur-md p-4 rounded-xl border border-green-800/20 animate-scale-in" style={{animationDelay: '100ms'}}>
-              <div className="text-sm text-gray-400">Pool Table</div>
+              <div className="text-sm text-gray-400">Pool Tables</div>
               <div className="text-2xl font-bold text-white mt-1">{ballStations.length}</div>
               <div className="text-xs text-nerfturf-lightpurple mt-1">{ballStations.filter(s => !s.isOccupied).length} available</div>
             </div>
@@ -226,7 +226,7 @@ const PublicStations = () => {
             <div className="w-10 h-10 rounded-xl bg-green-900/30 flex items-center justify-center mr-3 animate-pulse-soft">
               <Timer className="h-5 w-5 text-green-500" />
             </div>
-            <h2 className="text-2xl font-bold text-white">Pool Table</h2>
+            <h2 className="text-2xl font-bold text-white">Pool Tables</h2>
           </div>
           
           <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
