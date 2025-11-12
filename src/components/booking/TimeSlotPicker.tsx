@@ -12,7 +12,8 @@ interface TimeSlot {
 interface TimeSlotPickerProps {
   slots: TimeSlot[];
   selectedSlot: TimeSlot | null;
-  onSlotSelect: (slot: TimeSlot) => void;
+  selectedSlotRange?: TimeSlot[];
+  onSlotSelect: (slot: TimeSlot, range?: TimeSlot[]) => void;
   loading?: boolean;
 }
 
@@ -31,9 +32,69 @@ const formatTime = (timeString: string) => {
 export const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({
   slots,
   selectedSlot,
+  selectedSlotRange = [],
   onSlotSelect,
   loading = false,
 }) => {
+  const [startSlot, setStartSlot] = React.useState<TimeSlot | null>(null);
+
+  // Helper to check if a slot is in the selected range
+  const isInRange = (slot: TimeSlot) => {
+    if (selectedSlotRange.length === 0) return false;
+    return selectedSlotRange.some(s => s.start_time === slot.start_time);
+  };
+
+  // Helper to get consecutive available slots from start to end
+  const getConsecutiveSlots = (start: TimeSlot): TimeSlot[] => {
+    const result: TimeSlot[] = [start];
+    let current = start;
+    
+    while (true) {
+      // Find the next slot that starts where current ends
+      const next = slots.find(s => 
+        s.start_time === current.end_time && 
+        s.is_available
+      );
+      
+      if (!next) break;
+      result.push(next);
+      current = next;
+    }
+    
+    return result;
+  };
+
+  const handleSlotClick = (slot: TimeSlot) => {
+    if (!slot.is_available) return;
+
+    if (!startSlot) {
+      // First click - set as start
+      setStartSlot(slot);
+      onSlotSelect(slot, [slot]);
+    } else {
+      // Second click - check if it's a valid end slot
+      const range = getConsecutiveSlots(startSlot);
+      const endIndex = range.findIndex(s => s.start_time === slot.start_time);
+      
+      if (endIndex >= 0) {
+        // Valid range - select all slots from start to end
+        const selectedRange = range.slice(0, endIndex + 1);
+        onSlotSelect(startSlot, selectedRange);
+      } else {
+        // Invalid - reset and set new start
+        setStartSlot(slot);
+        onSlotSelect(slot, [slot]);
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    // Reset start slot when selectedSlot changes externally
+    if (!selectedSlot) {
+      setStartSlot(null);
+    }
+  }, [selectedSlot]);
+
   if (loading) {
     return (
       <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -64,25 +125,48 @@ export const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({
           <div className="w-3 h-3 bg-muted border rounded-sm" />
           <span>Booked</span>
         </div>
+        {selectedSlotRange.length > 1 && (
+          <div className="ml-auto text-xs text-primary font-medium">
+            {selectedSlotRange.length} slots selected ({formatTime(selectedSlotRange[0].start_time)} - {formatTime(selectedSlotRange[selectedSlotRange.length - 1].end_time)})
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
         {slots.map((slot, index) => {
           const isSelected = selectedSlot?.start_time === slot.start_time;
+          const inRange = isInRange(slot);
+          const isStart = startSlot?.start_time === slot.start_time;
 
           return (
             <Button
               key={index}
-              variant={isSelected ? "default" : slot.is_available ? "outline" : "ghost"}
+              variant={
+                inRange 
+                  ? "default" 
+                  : isSelected 
+                    ? "default" 
+                    : slot.is_available 
+                      ? "outline" 
+                      : "ghost"
+              }
               disabled={!slot.is_available}
-              onClick={() => slot.is_available && onSlotSelect(slot)}
+              onClick={() => handleSlotClick(slot)}
               className={`h-12 flex flex-col items-center justify-center text-xs relative ${
                 !slot.is_available ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              aria-pressed={isSelected}
+              } ${inRange ? "ring-2 ring-primary" : ""}`}
+              aria-pressed={isSelected || inRange}
             >
               <div className="font-medium">{formatTime(slot.start_time)}</div>
               <div className="text-xs opacity-70">{formatTime(slot.end_time)}</div>
+
+              {inRange && !isStart && (
+                <div className="absolute -top-1 -right-1">
+                  <Badge className="text-xs px-1 py-0 text-[10px] leading-3 bg-primary">
+                    +
+                  </Badge>
+                </div>
+              )}
 
               {!slot.is_available && (
                 <div className="absolute -top-1 -right-1">

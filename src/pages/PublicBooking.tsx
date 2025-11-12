@@ -121,14 +121,11 @@ const validatePhoneNumber = (phone: string): { valid: boolean; error?: string } 
 };
 
 const getSlotDuration = (stationType: StationType) => {
-  return stationType === 'vr' ? 15 : 60;
+  return 30; // All slots are now 30 minutes
 };
 
 const getBookingDuration = (stationIds: string[], stations: Station[]) => {
-  const hasVR = stationIds.some(id => 
-    stations.find(s => s.id === id && s.type === 'vr')
-  );
-  return hasVR ? 15 : 60;
+  return 30; // All bookings are now 30 minutes per slot
 };
 
 /* =========================
@@ -356,8 +353,65 @@ export default function PublicBooking() {
     else {
       setAvailableSlots([]);
       setSelectedSlot(null);
+      setSelectedSlotRange([]);
     }
   }, [selectedStations, selectedDate]);
+
+  // Auto-search customer when phone number reaches 10 digits
+  useEffect(() => {
+    const normalized = normalizePhoneNumber(customerNumber);
+    if (normalized.length === 10 && !hasSearched && !searchingCustomer) {
+      const timer = setTimeout(async () => {
+        if (!customerNumber.trim()) {
+          return;
+        }
+
+        const normalizedPhone = normalizePhoneNumber(customerNumber);
+        
+        const validation = validatePhoneNumber(normalizedPhone);
+        if (!validation.valid) {
+          return;
+        }
+
+        setSearchingCustomer(true);
+        try {
+          const { data, error } = await supabase
+            .from("customers")
+            .select("id, name, phone, email, custom_id")
+            .eq("phone", normalizedPhone)
+            .maybeSingle();
+            
+          if (error && (error as any).code !== "PGRST116") throw error;
+
+          if (data) {
+            setIsReturningCustomer(true);
+            setCustomerInfo({
+              id: data.id,
+              name: data.name,
+              phone: normalizedPhone,
+              email: data.email || "",
+            });
+            toast.success(`Welcome back, ${data.name}! 🎮`);
+          } else {
+            setIsReturningCustomer(false);
+            setCustomerInfo({ 
+              name: "", 
+              phone: normalizedPhone,
+              email: "" 
+            });
+            toast.info("New customer! Please fill in your details below.");
+          }
+          setHasSearched(true);
+        } catch (e) {
+          console.error(e);
+          // Silently fail for auto-search
+        } finally {
+          setSearchingCustomer(false);
+        }
+      }, 500); // Small delay to avoid immediate search on typing
+      return () => clearTimeout(timer);
+    }
+  }, [customerNumber, hasSearched, searchingCustomer]);
 
   async function fetchStations() {
     try {
@@ -383,22 +437,7 @@ export default function PublicBooking() {
       const dateStr = format(selectedDate, "yyyy-MM-dd");
       const isToday = dateStr === format(new Date(), "yyyy-MM-dd");
       
-      const hasVR = selectedStations.some(id => 
-        stations.find(s => s.id === id && s.type === 'vr')
-      );
-      const hasNonVR = selectedStations.some(id => 
-        stations.find(s => s.id === id && s.type !== 'vr')
-      );
-      
-      if (hasVR && hasNonVR) {
-        toast.error("VR sessions cannot be booked with other station types due to different time intervals (VR: 15 min, Others: 60 min)");
-        setSelectedStations(selectedStations.filter(id => 
-          stations.find(s => s.id === id && s.type === 'vr')
-        ));
-        return;
-      }
-      
-      const slotDuration = hasVR ? 15 : 60;
+      const slotDuration = 30; // All slots are 30 minutes
       
       if (selectedStations.length === 1) {
         const { data, error } = await supabase.rpc("get_available_slots", {
@@ -565,34 +604,23 @@ export default function PublicBooking() {
     const station = stations.find(s => s.id === id);
     if (!station) return;
     
-    if (!selectedStations.includes(id)) {
-      const hasVR = selectedStations.some(stationId => 
-        stations.find(s => s.id === stationId && s.type === 'vr')
-      );
-      const hasNonVR = selectedStations.some(stationId => 
-        stations.find(s => s.id === stationId && s.type !== 'vr')
-      );
-      
-      if ((station.type === 'vr' && hasNonVR) || (station.type !== 'vr' && hasVR)) {
-        toast.error("Cannot mix VR stations with other types due to different time intervals");
-        return;
-      }
+    // Don't allow VR stations to be selected
+    if (station.type === 'vr') {
+      return;
     }
     
     setSelectedStations((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
     setSelectedSlot(null);
+    setSelectedSlotRange([]);
   };
 
   async function filterStationsForSlot(slot: TimeSlot) {
     if (selectedStations.length === 0) return selectedStations;
     const dateStr = format(selectedDate, "yyyy-MM-dd");
     
-    const hasVR = selectedStations.some(id => 
-      stations.find(s => s.id === id && s.type === 'vr')
-    );
-    const slotDuration = hasVR ? 15 : 60;
+    const slotDuration = 30; // All slots are 30 minutes
     
     const checks = await Promise.all(
       selectedStations.map(async (stationId) => {
@@ -625,22 +653,35 @@ export default function PublicBooking() {
     return availableIds;
   }
 
-  async function handleSlotSelect(slot: TimeSlot) {
+  async function handleSlotSelect(slot: TimeSlot, range?: TimeSlot[]) {
     if (slot.status === 'elapsed') {
       toast.error("Cannot select a time slot that has already passed.");
       return;
     }
     
     if (selectedStations.length > 0) {
-      const filtered = await filterStationsForSlot(slot);
-      if (filtered.length === 0) {
-        toast.error("That time isn't available for the selected stations.");
+      // Check availability for all slots in range
+      const slotsToCheck = range && range.length > 1 ? range : [slot];
+      let allAvailable = true;
+      
+      for (const checkSlot of slotsToCheck) {
+        const filtered = await filterStationsForSlot(checkSlot);
+        if (filtered.length === 0) {
+          allAvailable = false;
+          break;
+        }
+      }
+      
+      if (!allAvailable) {
+        toast.error("Some time slots aren't available for the selected stations.");
         setSelectedSlot(null);
+        setSelectedSlotRange([]);
         return;
       }
-      if (filtered.length !== selectedStations.length) setSelectedStations(filtered);
     }
+    
     setSelectedSlot(slot);
+    setSelectedSlotRange(range || [slot]);
   }
 
   const allowedCoupons = [
@@ -790,12 +831,14 @@ export default function PublicBooking() {
 
   const calculateOriginalPrice = () => {
     if (selectedStations.length === 0 || !selectedSlot) return 0;
-    return stations
+    const numberOfSlots = selectedSlotRange.length > 0 ? selectedSlotRange.length : 1;
+    const stationPrice = stations
       .filter((s) => selectedStations.includes(s.id))
       .reduce((sum, s) => {
-        const sessionRate = s.type === 'vr' ? s.hourly_rate : s.hourly_rate;
-        return sum + sessionRate;
+        // Price per 30-minute slot (half of hourly rate)
+        return sum + (s.hourly_rate / 2);
       }, 0);
+    return stationPrice * numberOfSlots;
   };
 
   const calculateDiscount = () => {
@@ -970,20 +1013,28 @@ export default function PublicBooking() {
       }
 
       const couponCodes = Object.values(appliedCoupons).join(",");
-      const bookingDuration = getBookingDuration(selectedStations, stations);
-      const rows = selectedStations.map((stationId) => ({
-        station_id: stationId,
-        customer_id: customerId!,
-        booking_date: format(selectedDate, "yyyy-MM-dd"),
-        start_time: selectedSlot!.start_time,
-        end_time: selectedSlot!.end_time,
-        duration: bookingDuration,
-        status: "confirmed",
-        original_price: originalPrice,
-        discount_percentage: discount > 0 ? (discount / originalPrice) * 100 : null,
-        final_price: finalPrice,
-        coupon_code: couponCodes || null,
-      }));
+      const bookingDuration = 30; // 30 minutes per slot
+      const slotsToBook = selectedSlotRange.length > 0 ? selectedSlotRange : [selectedSlot!];
+      
+      // Create a booking row for each slot
+      const rows: any[] = [];
+      slotsToBook.forEach((slot) => {
+        selectedStations.forEach((stationId) => {
+          rows.push({
+            station_id: stationId,
+            customer_id: customerId!,
+            booking_date: format(selectedDate, "yyyy-MM-dd"),
+            start_time: slot.start_time,
+            end_time: slot.end_time,
+            duration: bookingDuration,
+            status: "confirmed",
+            original_price: originalPrice / slotsToBook.length / selectedStations.length,
+            discount_percentage: discount > 0 ? (discount / originalPrice) * 100 : null,
+            final_price: finalPrice / slotsToBook.length / selectedStations.length,
+            coupon_code: couponCodes || null,
+          });
+        });
+      });
 
       const { data: inserted, error: bookingError } = await supabase
         .from("bookings")
@@ -996,21 +1047,19 @@ export default function PublicBooking() {
         selectedStations.includes(s.id)
       );
       
-      const hasVR = selectedStations.some(id => 
-        stations.find(s => s.id === id && s.type === 'vr')
-      );
-      const sessionDuration = hasVR ? "15 minutes" : "60 minutes";
+      const slotsToBook = selectedSlotRange.length > 0 ? selectedSlotRange : [selectedSlot!];
+      const sessionDuration = `${slotsToBook.length * 30} minutes (${slotsToBook.length} slots)`;
       
       setBookingConfirmationData({
         bookingId: inserted[0].id.slice(0, 8).toUpperCase(),
         customerName: customerInfo.name,
         stationNames: stationObjects.map((s) => s.name),
         date: format(selectedDate, "yyyy-MM-dd"),
-        startTime: new Date(`2000-01-01T${selectedSlot!.start_time}`).toLocaleTimeString(
+        startTime: new Date(`2000-01-01T${slotsToBook[0].start_time}`).toLocaleTimeString(
           "en-US",
           { hour: "numeric", minute: "2-digit", hour12: true }
         ),
-        endTime: new Date(`2000-01-01T${selectedSlot!.end_time}`).toLocaleTimeString(
+        endTime: new Date(`2000-01-01T${slotsToBook[slotsToBook.length - 1].end_time}`).toLocaleTimeString(
           "en-US",
           { hour: "numeric", minute: "2-digit", hour12: true }
         ),
@@ -1025,6 +1074,7 @@ export default function PublicBooking() {
 
       setSelectedStations([]);
       setSelectedSlot(null);
+      setSelectedSlotRange([]);
       setCustomerNumber("");
       setCustomerInfo({ name: "", phone: "", email: "" });
       setIsReturningCustomer(false);
@@ -1061,8 +1111,8 @@ export default function PublicBooking() {
       const pendingBooking = {
         selectedStations,
         selectedDateISO: format(selectedDate, "yyyy-MM-dd"),
-        start_time: selectedSlot!.start_time,
-        end_time: selectedSlot!.end_time,
+        start_time: selectedSlotRange.length > 0 ? selectedSlotRange[0].start_time : selectedSlot!.start_time,
+        end_time: selectedSlotRange.length > 0 ? selectedSlotRange[selectedSlotRange.length - 1].end_time : selectedSlot!.end_time,
         duration: bookingDuration,
         customer: customerInfo,
         pricing: {
@@ -1485,7 +1535,7 @@ export default function PublicBooking() {
               <CardContent className="relative pt-3">
                 <div
                   className={cn(
-                    "grid grid-cols-4 gap-2 sm:gap-3 mb-4",
+                    "grid grid-cols-3 gap-2 sm:gap-3 mb-4",
                     !isStationSelectionAvailable() && "pointer-events-none"
                   )}
                 >
@@ -1526,20 +1576,7 @@ export default function PublicBooking() {
                         : "bg-transparent text-nerfturf-lightpurple"
                     )}
                   >
-                    8-Ball
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setStationType("vr")}
-                    className={cn(
-                      "h-9 rounded-full border-white/15 text-[12px]",
-                      stationType === "vr"
-                        ? "bg-blue-400/15 text-blue-300"
-                        : "bg-transparent text-blue-300"
-                    )}
-                  >
-                    VR
+                    Tables
                   </Button>
                 </div>
 
@@ -1555,8 +1592,8 @@ export default function PublicBooking() {
                     <StationSelector
                       stations={
                         stationType === "all"
-                          ? stations
-                          : stations.filter((s) => s.type === stationType)
+                          ? stations.filter((s) => s.type !== 'vr')
+                          : stations.filter((s) => s.type === stationType && s.type !== 'vr')
                       }
                       selectedStations={selectedStations}
                       onStationToggle={handleStationToggle}
@@ -1621,12 +1658,13 @@ export default function PublicBooking() {
                           Available Time Slots
                         </Label>
                         <div className="mt-2">
-                          <TimeSlotPicker
-                            slots={availableSlots}
-                            selectedSlot={selectedSlot}
-                            onSlotSelect={handleSlotSelect}
-                            loading={slotsLoading}
-                          />
+                        <TimeSlotPicker
+                          slots={availableSlots}
+                          selectedSlot={selectedSlot}
+                          selectedSlotRange={selectedSlotRange}
+                          onSlotSelect={handleSlotSelect}
+                          loading={slotsLoading}
+                        />
                         </div>
                       </div>
                     )}
@@ -1689,16 +1727,17 @@ export default function PublicBooking() {
                       Session Duration & Time
                     </Label>
                     <p className="mt-1 text-sm text-gray-200">
-                      {selectedStations.some(id => stations.find(s => s.id === id && s.type === 'vr')) 
-                        ? '15 minutes' : '60 minutes'}
+                      {selectedSlotRange.length > 1 
+                        ? `${selectedSlotRange.length} slots (${selectedSlotRange.length * 30} minutes)`
+                        : '30 minutes'}
                     </p>
                     <p className="text-sm text-gray-200">
-                      {new Date(`2000-01-01T${selectedSlot.start_time}`).toLocaleTimeString(
+                      {new Date(`2000-01-01T${selectedSlotRange[0]?.start_time || selectedSlot.start_time}`).toLocaleTimeString(
                         "en-US",
                         { hour: "numeric", minute: "2-digit", hour12: true }
                       )}{" "}
                       —{" "}
-                      {new Date(`2000-01-01T${selectedSlot.end_time}`).toLocaleTimeString(
+                      {new Date(`2000-01-01T${selectedSlotRange[selectedSlotRange.length - 1]?.end_time || selectedSlot.end_time}`).toLocaleTimeString(
                         "en-US",
                         { hour: "numeric", minute: "2-digit", hour12: true }
                       )}
