@@ -74,19 +74,71 @@ const PublicTournaments = () => {
 
   const fetchTournaments = useCallback(async () => {
     try {
-      const { data, error } = await supabase
+      // Try to fetch from view first, fallback to tournaments table if view doesn't exist
+      let data, error;
+      
+      // First try the view
+      const viewResult = await supabase
         .from('tournament_public_view')
         .select('*')
         .order('date', { ascending: true });
 
-      if (error) {
-        console.error('Error fetching tournaments:', error);
+      // If view doesn't exist (404 or similar), fallback to tournaments table
+      if (viewResult.error && (viewResult.error.code === 'PGRST301' || viewResult.error.message?.includes('does not exist') || viewResult.error.message?.includes('404'))) {
+        console.warn('tournament_public_view not found, falling back to tournaments table');
+        
+        // Fetch from tournaments table directly
+        const tournamentsResult = await supabase
+          .from('tournaments')
+          .select('*')
+          .in('status', ['upcoming', 'in-progress', 'completed'])
+          .order('date', { ascending: true });
+
+        if (tournamentsResult.error) {
+          console.error('Error fetching tournaments:', tournamentsResult.error);
+          toast({
+            title: "Error",
+            description: "Failed to load tournaments. Please try again.",
+            variant: "destructive"
+          });
+          return;
+        }
+
+        // Get registration counts separately
+        const tournamentIds = (tournamentsResult.data || []).map(t => t.id);
+        let registrationCounts: Record<string, number> = {};
+        
+        if (tournamentIds.length > 0) {
+          const { data: registrations } = await supabase
+            .from('tournament_public_registrations')
+            .select('tournament_id')
+            .in('tournament_id', tournamentIds)
+            .eq('status', 'registered');
+          
+          // Count registrations per tournament
+          (registrations || []).forEach(reg => {
+            registrationCounts[reg.tournament_id] = (registrationCounts[reg.tournament_id] || 0) + 1;
+          });
+        }
+
+        // Transform tournaments data
+        data = (tournamentsResult.data || []).map(item => ({
+          ...item,
+          total_registrations: registrationCounts[item.id] || 0,
+          max_players: item.max_players || (item.game_type === 'Pool' ? 8 : 16)
+        }));
+        error = null;
+      } else if (viewResult.error) {
+        console.error('Error fetching tournaments:', viewResult.error);
         toast({
           title: "Error",
           description: "Failed to load tournaments. Please try again.",
           variant: "destructive"
         });
         return;
+      } else {
+        data = viewResult.data;
+        error = null;
       }
 
       // Transform the data to match our Tournament interface
@@ -109,10 +161,15 @@ const PublicTournaments = () => {
         max_players: Number(item.max_players) || 16
       }));
 
-      console.log('Fetched tournaments with runner_up:', transformedData.map(t => ({ name: t.name, runner_up: t.runner_up })));
+      console.log('Fetched tournaments:', transformedData.length, 'tournaments');
       setTournaments(transformedData);
     } catch (error) {
       console.error('Unexpected error:', error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred while loading tournaments.",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
