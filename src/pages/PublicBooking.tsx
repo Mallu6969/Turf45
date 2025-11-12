@@ -140,6 +140,7 @@ export default function PublicBooking() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
+  const [selectedSlotRange, setSelectedSlotRange] = useState<TimeSlot[]>([]);
 
   useEffect(() => {
     if (!subscriptionLoading && !hasBookingAccess) {
