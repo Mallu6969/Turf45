@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Tournament, GameType, PoolGameVariant, PS5GameTitle, TournamentFormat } from '@/types/tournament.types';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -108,9 +108,9 @@ const TournamentDialog: React.FC<TournamentDialogProps> = ({
               <DialogTitle className="text-2xl font-bold text-white">
                 {tournament ? 'Edit Tournament' : 'Create New Tournament'}
               </DialogTitle>
-              <p className="text-gray-400 text-sm mt-1">
+              <DialogDescription className="text-gray-400 text-sm mt-1">
                 {tournament ? 'Modify tournament settings and configuration' : 'Set up a new competitive tournament'}
-              </p>
+              </DialogDescription>
             </div>
           </div>
         </DialogHeader>

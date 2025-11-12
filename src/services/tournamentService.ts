@@ -155,12 +155,28 @@ export const saveTournament = async (tournament: Tournament): Promise<{ data: To
       // Clean up any undefined or malformed values before sending to Supabase
       Object.keys(updateData).forEach(key => {
         const value = updateData[key];
-        if (value && typeof value === 'object' && value._type === 'undefined') {
+        if (value === undefined) {
+          delete updateData[key];
+        } else if (value && typeof value === 'object' && value._type === 'undefined') {
           updateData[key] = null;
         }
       });
       
+      // Ensure max_players is a valid integer
+      if (updateData.max_players !== undefined && updateData.max_players !== null) {
+        updateData.max_players = parseInt(updateData.max_players, 10);
+        if (isNaN(updateData.max_players) || updateData.max_players < 2) {
+          updateData.max_players = 16;
+        }
+      }
+      
+      // Ensure tournament_format is valid
+      if (updateData.tournament_format && !['knockout', 'league'].includes(updateData.tournament_format)) {
+        updateData.tournament_format = 'knockout';
+      }
+      
       console.log('Update data with max_players:', updateData.max_players);
+      console.log('Update data with tournament_format:', updateData.tournament_format);
       
       const { data, error } = await tournamentsTable
         .update(updateData)
@@ -170,6 +186,12 @@ export const saveTournament = async (tournament: Tournament): Promise<{ data: To
         
       if (error) {
         console.error('Error updating tournament:', error);
+        console.error('Error details:', {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint
+        });
         return { data: null, error: formatTournamentError(error) };
       }
       
@@ -180,15 +202,49 @@ export const saveTournament = async (tournament: Tournament): Promise<{ data: To
       console.log('Creating new tournament with max_players:', supabaseTournament.max_players);
       
       // Clean up any undefined or malformed values before sending to Supabase
-      const insertData = { ...supabaseTournament, created_at: new Date().toISOString() };
+      const insertData: any = { ...supabaseTournament, created_at: new Date().toISOString() };
+      
+      // Remove undefined values and convert them to null
       Object.keys(insertData).forEach(key => {
         const value = insertData[key];
-        if (value && typeof value === 'object' && value._type === 'undefined') {
+        if (value === undefined) {
+          delete insertData[key];
+        } else if (value && typeof value === 'object' && value._type === 'undefined') {
           insertData[key] = null;
         }
       });
       
+      // Ensure required fields are present
+      if (!insertData.name || !insertData.game_type || !insertData.date || !insertData.status) {
+        const missingFields = [];
+        if (!insertData.name) missingFields.push('name');
+        if (!insertData.game_type) missingFields.push('game_type');
+        if (!insertData.date) missingFields.push('date');
+        if (!insertData.status) missingFields.push('status');
+        return { 
+          data: null, 
+          error: `Missing required fields: ${missingFields.join(', ')}` 
+        };
+      }
+      
+      // Ensure max_players is a valid integer
+      if (insertData.max_players !== undefined && insertData.max_players !== null) {
+        insertData.max_players = parseInt(insertData.max_players, 10);
+        if (isNaN(insertData.max_players) || insertData.max_players < 2) {
+          insertData.max_players = 16;
+        }
+      } else {
+        insertData.max_players = 16;
+      }
+      
+      // Ensure tournament_format is valid
+      if (!insertData.tournament_format || !['knockout', 'league'].includes(insertData.tournament_format)) {
+        insertData.tournament_format = 'knockout';
+      }
+      
       console.log('Insert data with max_players:', insertData.max_players);
+      console.log('Insert data with tournament_format:', insertData.tournament_format);
+      console.log('Full insert data:', JSON.stringify(insertData, null, 2));
       
       const { data, error } = await tournamentsTable
         .insert(insertData)
@@ -197,6 +253,12 @@ export const saveTournament = async (tournament: Tournament): Promise<{ data: To
         
       if (error) {
         console.error('Error creating tournament:', error);
+        console.error('Error details:', {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint
+        });
         return { data: null, error: formatTournamentError(error) };
       }
       
