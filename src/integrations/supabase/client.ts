@@ -80,15 +80,20 @@ export const convertFromSupabaseProduct = (item: any): any => {
   return product;
 };
 
-export const convertToSupabaseProduct = (product: any): any => {
+export const convertToSupabaseProduct = (product: any, includeId: boolean = false): any => {
   // Only include fields that exist in the database schema and are defined
-  const supabaseProduct: any = {
-    id: product.id,
-    name: product.name,
-    price: product.price,
-    category: product.category,
-    stock: product.stock,
-  };
+  const supabaseProduct: any = {};
+  
+  // Only include ID if explicitly requested (for inserts, not updates)
+  if (includeId && product.id) {
+    supabaseProduct.id = product.id;
+  }
+  
+  // Required fields
+  if (product.name !== undefined) supabaseProduct.name = product.name;
+  if (product.price !== undefined) supabaseProduct.price = product.price;
+  if (product.category !== undefined) supabaseProduct.category = product.category;
+  if (product.stock !== undefined) supabaseProduct.stock = product.stock;
   
   // Only add optional fields if they are defined (not undefined or null)
   if (product.image !== undefined && product.image !== null) {
@@ -119,8 +124,9 @@ export const convertToSupabaseProduct = (product: any): any => {
     supabaseProduct.profit = product.profit;
   }
   
-  // Explicitly exclude any fields that don't exist in the schema (like updated_at)
+  // Explicitly exclude any fields that don't exist in the schema
   // The products table only has created_at, not updated_at
+  // Never include: updated_at, updatedAt, created_at (for updates), createdAt
   
   console.log('Converting product to Supabase format:', supabaseProduct);
   return supabaseProduct;

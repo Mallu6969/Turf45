@@ -48,9 +48,17 @@ export const useProducts = () => {
       
       setProducts(prev => [...prev, newProduct]);
       
+      // Convert to Supabase format WITH the ID (for inserts)
+      const insertData = convertToSupabaseProduct(newProduct, true);
+      
+      // Ensure we never send updated_at or created_at in insert payload
+      delete insertData.updated_at;
+      delete insertData.updatedAt;
+      // created_at will be set automatically by the database
+      
       supabase
         .from('products')
-        .insert(convertToSupabaseProduct(newProduct))
+        .insert(insertData)
         .then(({ error }) => {
           if (error) {
             console.error('Error adding product to DB:', error);
@@ -123,9 +131,19 @@ export const useProducts = () => {
       
       setProducts(prev => prev.map(p => p.id === cleanProduct.id ? cleanProduct : p));
       
+      // Convert to Supabase format WITHOUT the ID (for updates, ID is in the .eq() clause)
+      const updateData = convertToSupabaseProduct(cleanProduct, false);
+      
+      // Ensure we never send id, updated_at, or created_at in update payload
+      delete updateData.id;
+      delete updateData.updated_at;
+      delete updateData.updatedAt;
+      delete updateData.created_at;
+      delete updateData.createdAt;
+      
       supabase
         .from('products')
-        .update(convertToSupabaseProduct(cleanProduct))
+        .update(updateData)
         .eq('id', cleanProduct.id)
         .then(({ error }) => {
           if (error) {
