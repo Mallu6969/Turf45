@@ -1,5 +1,5 @@
-// Using Node.js runtime
-// Note: Using direct HTTP calls instead of Razorpay SDK to avoid connection keep-alive issues
+// Using Edge runtime - works with direct HTTP calls (no SDK needed)
+export const config = { runtime: "edge" };
 
 function j(res: unknown, status = 200) {
   return new Response(JSON.stringify(res), {
@@ -8,9 +8,11 @@ function j(res: unknown, status = 200) {
   });
 }
 
-// Node.js env getter
+// Edge-safe env getter
 function getEnv(name: string): string | undefined {
-  return typeof process !== "undefined" ? (process.env as any)?.[name] : undefined;
+  const fromDeno = (globalThis as any)?.Deno?.env?.get?.(name);
+  const fromProcess = typeof process !== "undefined" ? (process.env as any)?.[name] : undefined;
+  return fromDeno ?? fromProcess;
 }
 
 function need(name: string) {
@@ -58,7 +60,7 @@ async function fetchPaymentStatus(paymentId: string, signal?: AbortSignal) {
   return payment;
 }
 
-export default async function handler(req: any) {
+export default async function handler(req: Request) {
   const startTime = Date.now();
   
   if (req.method !== "POST") {

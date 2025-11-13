@@ -1,5 +1,5 @@
-// Using Node.js runtime
-// Note: Using direct HTTP calls instead of Razorpay SDK to avoid connection keep-alive issues
+// Using Edge runtime - works with direct HTTP calls (no SDK needed)
+export const config = { runtime: "edge" };
 
 function j(res: unknown, status = 200) {
   return new Response(JSON.stringify(res), {
@@ -8,9 +8,11 @@ function j(res: unknown, status = 200) {
   });
 }
 
-// Node.js env getter
+// Edge-safe env getter
 function getEnv(name: string): string | undefined {
-  return typeof process !== "undefined" ? (process.env as any)?.[name] : undefined;
+  const fromDeno = (globalThis as any)?.Deno?.env?.get?.(name);
+  const fromProcess = typeof process !== "undefined" ? (process.env as any)?.[name] : undefined;
+  return fromDeno ?? fromProcess;
 }
 
 function need(name: string) {
@@ -69,16 +71,25 @@ async function createRazorpayOrder(amount: number, receipt: string, notes?: Reco
   // Use direct HTTP call instead of SDK to avoid connection keep-alive issues
   const auth = Buffer.from(`${keyId}:${keySecret}`).toString('base64');
   
+  const controller = new AbortController();
+  if (signal) {
+    signal.addEventListener('abort', () => controller.abort());
+  }
+  
   const response = await fetch('https://api.razorpay.com/v1/orders', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Basic ${auth}`,
-      'Connection': 'close', // Explicitly close connection
     },
     body: JSON.stringify(orderOptions),
-    signal: signal,
+    signal: controller.signal,
   });
+
+  // Check if already aborted
+  if (signal?.aborted || controller.signal.aborted) {
+    throw new Error("Request aborted");
+  }
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -88,14 +99,14 @@ async function createRazorpayOrder(amount: number, receipt: string, notes?: Reco
   const order = await response.json();
   
   // Check again after API call
-  if (signal?.aborted) {
+  if (signal?.aborted || controller.signal.aborted) {
     throw new Error("Request aborted");
   }
   
   return order;
 }
 
-export default async function handler(req: any) {
+export default async function handler(req: Request) {
   const startTime = Date.now();
   
   if (req.method !== "POST") {
@@ -103,8 +114,8 @@ export default async function handler(req: any) {
   }
 
   try {
-    // In Vercel Node.js runtime, body is already parsed and available as req.body
-    const payload = req.body || {};
+    // In Edge runtime, parse body from request
+    const payload = await req.json().catch(() => ({}));
     const { amount, receipt, notes } = payload;
 
     console.log("💳 Creating Razorpay order:", { amount, receipt });
@@ -119,17 +130,35 @@ export default async function handler(req: any) {
 
     // Add timeout wrapper for Razorpay API call (8 seconds max to avoid Vercel timeout)
     const abortController = new AbortController();
-    const timeoutId = setTimeout(() => {
-      abortController.abort();
-    }, 8000);
+    let timeoutId: NodeJS.Timeout | null = null;
+    
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      timeoutId = setTimeout(() => {
+        abortController.abort();
+        reject(new Error("Request timeout: Razorpay API took too long"));
+      }, 8000);
+    });
 
     let order: any;
     try {
-      order = await createRazorpayOrder(amount, receipt, notes, abortController.signal);
-      clearTimeout(timeoutId);
+      // Race between the API call and timeout
+      order = await Promise.race([
+        createRazorpayOrder(amount, receipt, notes, abortController.signal),
+        timeoutPromise,
+      ]);
+      
+      // Clear timeout if we got here
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
     } catch (err: any) {
-      clearTimeout(timeoutId);
-      if (abortController.signal.aborted || err?.message?.includes("aborted")) {
+      // Clear timeout on error
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+      if (abortController.signal.aborted || err?.message?.includes("aborted") || err?.message?.includes("timeout")) {
         throw new Error("Request timeout: Razorpay API took too long");
       }
       throw err;
@@ -147,7 +176,7 @@ export default async function handler(req: any) {
       receipt: order.receipt,
     };
 
-    // Return response immediately using the same format as other working endpoints
+    // Return response immediately - ensure no async operations after this
     return j(responseData, 200);
   } catch (err: any) {
     const duration = Date.now() - startTime;
