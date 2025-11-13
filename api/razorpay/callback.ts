@@ -51,7 +51,7 @@ export default async function handler(req: Request) {
     });
 
     // Frontend base URL
-    const base = "https://admin.cuephoria.in";
+    const base = "https://app.nerfturf.in";
 
     // Determine if payment was successful
     // Razorpay typically returns success when payment_id is present and status is not failed/cancelled
@@ -112,7 +112,7 @@ export default async function handler(req: Request) {
   } catch (error) {
     console.error("❌ Razorpay callback error:", error);
 
-    const fallbackUrl = "https://admin.cuephoria.in/public/payment/failed";
+    const fallbackUrl = "https://app.nerfturf.in/public/payment/failed";
     const fallbackHtml = `<!DOCTYPE html><html><head>
     <meta charset="utf-8">
     <title>Payment Error</title>
