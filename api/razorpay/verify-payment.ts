@@ -68,8 +68,8 @@ export default async function handler(req: Request) {
   }
 
   try {
-    // In Vercel Node.js runtime, body is already parsed and available as req.body
-    const payload = req.body || {};
+    // In Edge runtime, parse body from request
+    const payload = await req.json().catch(() => ({}));
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = payload;
 
     console.log("🔍 Verifying Razorpay payment:", { razorpay_payment_id, razorpay_order_id });
