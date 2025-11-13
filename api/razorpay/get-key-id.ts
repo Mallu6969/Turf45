@@ -3,7 +3,12 @@ export const config = { runtime: "edge" };
 function j(res: unknown, status = 200) {
   return new Response(JSON.stringify(res), {
     status,
-    headers: { "content-type": "application/json; charset=utf-8" },
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, OPTIONS",
+      "Access-Control-Allow-Headers": "content-type",
+    },
   });
 }
 
@@ -14,25 +19,43 @@ function getEnv(name: string): string | undefined {
   return fromDeno ?? fromProcess;
 }
 
-function need(name: string) {
+function need(name: string): string {
   const v = getEnv(name);
   if (!v) throw new Error(`Missing env: ${name}`);
   return v;
 }
 
-export default async function handler() {
-  try {
-    const mode = getEnv("RAZORPAY_MODE") || "test";
-    const isLive = mode === "live";
+// Get Razorpay Key ID (public key, safe to expose)
+function getRazorpayKeyId() {
+  const mode = getEnv("RAZORPAY_MODE") || "test";
+  const isLive = mode === "live";
 
-    const keyId = isLive
-      ? (getEnv("RAZORPAY_KEY_ID_LIVE") || getEnv("RAZORPAY_KEY_ID") || need("RAZORPAY_KEY_ID_LIVE"))
-      : (getEnv("RAZORPAY_KEY_ID_TEST") || getEnv("RAZORPAY_KEY_ID") || need("RAZORPAY_KEY_ID_TEST"));
-
-    return j({ ok: true, keyId, mode });
-  } catch (err: any) {
-    console.error("❌ Get Key ID error:", err);
-    return j({ ok: false, error: String(err?.message || err) }, 500);
-  }
+  return isLive
+    ? (getEnv("RAZORPAY_KEY_ID_LIVE") || getEnv("RAZORPAY_KEY_ID") || need("RAZORPAY_KEY_ID_LIVE"))
+    : (getEnv("RAZORPAY_KEY_ID_TEST") || getEnv("RAZORPAY_KEY_ID") || need("RAZORPAY_KEY_ID_TEST"));
 }
 
+export default async function handler(req: Request) {
+  // Handle CORS preflight
+  if (req.method === "OPTIONS") {
+    return j({}, 200);
+  }
+
+  if (req.method !== "GET") {
+    return j({ ok: false, error: "Method not allowed" }, 405);
+  }
+
+  try {
+    const keyId = getRazorpayKeyId();
+    return j({
+      ok: true,
+      keyId,
+    });
+  } catch (err: any) {
+    console.error("💥 Get key ID error:", err);
+    return j({
+      ok: false,
+      error: String(err?.message || err)
+    }, 500);
+  }
+}

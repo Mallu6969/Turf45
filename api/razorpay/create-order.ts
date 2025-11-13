@@ -1,42 +1,55 @@
-// Using Edge runtime - works with direct HTTP calls (no SDK needed)
-export const config = { runtime: "edge" };
+// Using Node.js runtime to use Razorpay SDK
+// export const config = { runtime: "edge" };
+// Increase timeout to 30 seconds to handle Razorpay API calls
+export const config = {
+  maxDuration: 30, // 30 seconds (default is 10s, max is 60s for Pro plan)
+};
 
-function j(res: unknown, status = 200) {
-  return new Response(JSON.stringify(res), {
-    status,
-    headers: { "content-type": "application/json; charset=utf-8" },
-  });
+// Vercel Node.js runtime types
+type VercelRequest = {
+  method?: string;
+  body?: any;
+  query?: Record<string, string>;
+  headers?: Record<string, string | string[] | undefined>;
+};
+
+type VercelResponse = {
+  setHeader: (name: string, value: string) => void;
+  status: (code: number) => VercelResponse;
+  json: (data: any) => void;
+  end: () => void;
+};
+
+function setCorsHeaders(res: VercelResponse) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'content-type');
 }
 
-// Edge-safe env getter
+function j(res: VercelResponse, data: unknown, status = 200) {
+  setCorsHeaders(res);
+  res.status(status).json(data);
+}
+
+// Environment variable getter (Node.js runtime)
 function getEnv(name: string): string | undefined {
-  const fromDeno = (globalThis as any)?.Deno?.env?.get?.(name);
-  const fromProcess = typeof process !== "undefined" ? (process.env as any)?.[name] : undefined;
-  return fromDeno ?? fromProcess;
-}
-
-// Base64 encoding for Edge runtime (btoa works for ASCII, but we'll use a safer approach)
-function base64Encode(str: string): string {
-  // In Edge runtime, we can use TextEncoder + manual base64 or btoa
-  // btoa works for ASCII strings (which key_id and key_secret should be)
-  try {
-    return btoa(str);
-  } catch (e) {
-    // Fallback: use TextEncoder if btoa fails
-    const encoder = new TextEncoder();
-    const bytes = encoder.encode(str);
-    const binary = String.fromCharCode(...bytes);
-    return btoa(binary);
+  if (typeof process !== "undefined" && process.env) {
+    return (process.env as any)[name];
   }
+  // Fallback for Edge runtime
+  const fromDeno = (globalThis as any)?.Deno?.env?.get?.(name);
+  return fromDeno;
 }
 
-function need(name: string) {
+function need(name: string): string {
   const v = getEnv(name);
   if (!v) throw new Error(`Missing env: ${name}`);
   return v;
 }
 
+// Get Razorpay credentials (supports both test and live)
 function getRazorpayCredentials() {
+  // Check if we're in live mode (you can set RAZORPAY_MODE=live or use live keys)
   const mode = getEnv("RAZORPAY_MODE") || "test";
   const isLive = mode === "live";
 
@@ -48,37 +61,58 @@ function getRazorpayCredentials() {
     ? (getEnv("RAZORPAY_KEY_SECRET_LIVE") || getEnv("RAZORPAY_KEY_SECRET") || need("RAZORPAY_KEY_SECRET_LIVE"))
     : (getEnv("RAZORPAY_KEY_SECRET_TEST") || getEnv("RAZORPAY_KEY_SECRET") || need("RAZORPAY_KEY_SECRET_TEST"));
 
-  return { keyId, keySecret, mode };
+  // Validate key format
+  if (isLive && !keyId.startsWith("rzp_live_")) {
+    console.warn("⚠️ Live mode but key doesn't start with 'rzp_live_'");
+  } else if (!isLive && !keyId.startsWith("rzp_test_")) {
+    console.warn("⚠️ Test mode but key doesn't start with 'rzp_test_'");
+  }
+
+  return { keyId, keySecret, isLive };
 }
 
-async function createRazorpayOrder(amount: number, receipt: string, notes?: Record<string, string>, signal?: AbortSignal) {
-  const { keyId, keySecret } = getRazorpayCredentials();
+// Create Razorpay order using Razorpay SDK (Node.js runtime)
+async function createRazorpayOrder(amount: number, receipt: string, notes?: Record<string, string>) {
+  // Import Razorpay SDK
+  const Razorpay = (await import('razorpay')).default;
 
+  let keyId: string;
+  let keySecret: string;
+
+  try {
+    const credentials = getRazorpayCredentials();
+    keyId = credentials.keyId;
+    keySecret = credentials.keySecret;
+  } catch (err: any) {
+    console.error("❌ Failed to get Razorpay credentials:", err);
+    throw new Error(`Configuration error: ${err?.message || "Missing Razorpay credentials"}`);
+  }
+
+  // Validate amount and ensure it's an integer
   const amountInPaise = Math.round(Number(amount) * 100);
   if (amountInPaise < 100) {
     throw new Error("Amount must be at least ₹1.00 (100 paise)");
   }
-
-  // Check if already aborted before making API call
-  if (signal?.aborted) {
-    throw new Error("Request aborted");
+  if (!Number.isInteger(amountInPaise)) {
+    throw new Error("Amount must be a valid number");
   }
 
-  // Validate receipt is not empty
-  const receiptId = receipt.substring(0, 40).trim();
-  if (!receiptId) {
-    throw new Error("Receipt ID cannot be empty");
-  }
+  // Initialize Razorpay client
+  const razorpay = new Razorpay({
+    key_id: keyId,
+    key_secret: keySecret,
+  });
 
-  // Razorpay API expects specific format - only include required fields first
+  // Build order options
   const orderOptions: any = {
-    amount: amountInPaise, // Amount in paise (smallest currency unit) - REQUIRED
-    currency: "INR", // REQUIRED
-    receipt: receiptId, // REQUIRED, max 40 chars
+    amount: amountInPaise, // Amount in paise
+    currency: "INR",
+    receipt: receipt.substring(0, 40).trim(), // Razorpay has 40 char limit
   };
 
-  // Add notes only if provided and valid (optional field)
+  // Only include notes if it has content and is a valid object
   if (notes && typeof notes === 'object' && Object.keys(notes).length > 0) {
+    // Validate notes - each value must be string and max 256 chars
     const validNotes: Record<string, string> = {};
     for (const [key, value] of Object.entries(notes)) {
       if (key && value && typeof value === 'string' && value.length <= 256) {
@@ -90,149 +124,91 @@ async function createRazorpayOrder(amount: number, receipt: string, notes?: Reco
     }
   }
 
-  // Use direct HTTP call instead of SDK to avoid connection keep-alive issues
-  // Edge runtime doesn't have Buffer, use base64 encoding function
-  const credentials = `${keyId}:${keySecret}`;
-  const auth = base64Encode(credentials);
-  
-  const controller = new AbortController();
-  if (signal) {
-    signal.addEventListener('abort', () => controller.abort());
-  }
-  
-  // Razorpay API requires specific headers and format
-  const requestBody = JSON.stringify(orderOptions);
-  
-  console.log('📤 Razorpay API request:', {
-    url: 'https://api.razorpay.com/v1/orders',
-    method: 'POST',
-    bodyLength: requestBody.length,
-    hasAuth: !!auth,
-  });
-  
-  const response = await fetch('https://api.razorpay.com/v1/orders', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': `Basic ${auth}`,
-    },
-    body: requestBody,
-    signal: controller.signal,
+  console.log("📤 Creating Razorpay order with SDK:", {
+    amount: orderOptions.amount,
+    receipt: orderOptions.receipt,
+    currency: orderOptions.currency,
+    hasNotes: !!orderOptions.notes
   });
 
-  // Check if already aborted
-  if (signal?.aborted || controller.signal.aborted) {
-    throw new Error("Request aborted");
-  }
+  try {
+    // Create order using Razorpay SDK
+    const order = await razorpay.orders.create(orderOptions);
 
-  if (!response.ok) {
-    let errorText = '';
-    try {
-      errorText = await response.text();
-    } catch (e) {
-      errorText = `HTTP ${response.status}`;
-    }
-    console.error(`Razorpay API error ${response.status}:`, errorText);
-    throw new Error(`Razorpay API error: ${response.status} - ${errorText}`);
-  }
+    console.log("✅ Razorpay order created:", order.id);
+    return order;
+  } catch (err: any) {
+    console.error("❌ Razorpay SDK error:", {
+      error: err,
+      message: err?.message,
+      description: err?.error?.description,
+      code: err?.error?.code,
+      field: err?.error?.field
+    });
 
-  const order = await response.json();
-  
-  // Check again after API call
-  if (signal?.aborted || controller.signal.aborted) {
-    throw new Error("Request aborted");
+    const errorMsg = err?.error?.description ||
+      err?.error?.message ||
+      err?.message ||
+      "Failed to create Razorpay order";
+    throw new Error(errorMsg);
   }
-  
-  return order;
 }
 
-export default async function handler(req: Request) {
-  const startTime = Date.now();
-  
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Handle CORS preflight
+  if (req.method === "OPTIONS") {
+    setCorsHeaders(res);
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
-    return j({ ok: false, error: "Method not allowed" }, 405);
+    return j(res, { ok: false, error: "Method not allowed" }, 405);
   }
 
   try {
-    // In Edge runtime, parse body from request
-    const payload = await req.json().catch(() => ({}));
-    const { amount, receipt, notes } = payload;
+    // In Vercel Node.js runtime, body is already parsed and available as req.body
+    const payload = req.body || {};
 
-    console.log("💳 Creating Razorpay order:", { amount, receipt });
+    const {
+      amount,
+      receipt,
+      notes,
+    } = payload;
+
+    console.log("💳 Razorpay order request:", { amount, receipt });
 
     if (!amount || Number(amount) <= 0) {
-      return j({ ok: false, error: "Amount must be > 0" }, 400);
+      return j(res, { ok: false, error: "Amount must be > 0" }, 400);
     }
 
-    if (!receipt || typeof receipt !== 'string') {
-      return j({ ok: false, error: "Receipt ID is required" }, 400);
+    if (!receipt) {
+      return j(res, { ok: false, error: "Receipt ID is required" }, 400);
     }
 
-    // Add timeout wrapper for Razorpay API call (8 seconds max to avoid Vercel timeout)
-    const abortController = new AbortController();
-    let timeoutId: NodeJS.Timeout | null = null;
-    
-    const timeoutPromise = new Promise<never>((_, reject) => {
-      timeoutId = setTimeout(() => {
-        abortController.abort();
-        reject(new Error("Request timeout: Razorpay API took too long"));
-      }, 8000);
-    });
+    const order = await createRazorpayOrder(Number(amount), receipt, notes);
 
-    let order: any;
-    try {
-      // Race between the API call and timeout
-      order = await Promise.race([
-        createRazorpayOrder(amount, receipt, notes, abortController.signal),
-        timeoutPromise,
-      ]);
-      
-      // Clear timeout if we got here
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-        timeoutId = null;
-      }
-    } catch (err: any) {
-      // Clear timeout on error
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-        timeoutId = null;
-      }
-      if (abortController.signal.aborted || err?.message?.includes("aborted") || err?.message?.includes("timeout")) {
-        throw new Error("Request timeout: Razorpay API took too long");
-      }
-      throw err;
-    }
-
-    const duration = Date.now() - startTime;
-    console.log(`✅ Razorpay order created: ${order.id} (${duration}ms)`);
-
-    // Prepare response data
-    const responseData = {
+    return j(res, {
       ok: true,
       orderId: order.id,
       amount: order.amount,
       currency: order.currency,
       receipt: order.receipt,
-    };
-
-    // Return response immediately - ensure no async operations after this
-    return j(responseData, 200);
+      status: order.status,
+    });
   } catch (err: any) {
-    const duration = Date.now() - startTime;
-    console.error(`💥 Create order error (${duration}ms):`, err);
-    
-    // Check if it's a timeout error
-    if (err?.message?.includes("timeout") || duration > 9000) {
-      return j({ 
-        ok: false, 
-        error: "Payment gateway timeout. Please try again.",
-        timeout: true 
-      }, 504);
-    }
-    
-    return j({ ok: false, error: String(err?.message || err) }, 500);
+    console.error("💥 Razorpay order error:", {
+      message: err?.message,
+      stack: err?.stack,
+      error: err
+    });
+
+    // Return detailed error for debugging
+    const errorMessage = err?.message || String(err);
+    return j(res, {
+      ok: false,
+      error: errorMessage,
+      // Include error type for debugging (remove in production if needed)
+      type: err?.name || "UnknownError"
+    }, 500);
   }
 }
-

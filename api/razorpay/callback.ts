@@ -1,63 +1,142 @@
 export const config = { runtime: "edge" };
 
-function j(res: unknown, status = 200) {
-  return new Response(JSON.stringify(res), {
-    status,
-    headers: { "content-type": "application/json; charset=utf-8" },
-  });
-}
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+};
 
 export default async function handler(req: Request) {
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
   try {
     const url = new URL(req.url);
-    
-    // Extract payment details from query params
+
+    // Razorpay returns payment details in query params or POST body
     const razorpayPaymentId = url.searchParams.get("razorpay_payment_id");
     const razorpayOrderId = url.searchParams.get("razorpay_order_id");
     const razorpaySignature = url.searchParams.get("razorpay_signature");
+    const paymentStatus = url.searchParams.get("payment_status") || url.searchParams.get("status");
 
-    // Also check POST body if available
+    // Also check POST body if it's a POST request
     let postData: any = {};
     if (req.method === "POST") {
       try {
-        postData = await req.json().catch(() => ({}));
-      } catch {}
+        postData = await req.json();
+      } catch {
+        // Not JSON, try form data
+        try {
+          const formData = await req.formData();
+          postData = Object.fromEntries(formData.entries());
+        } catch {
+          // Ignore
+        }
+      }
     }
 
-    const paymentId = razorpayPaymentId || postData.razorpay_payment_id;
-    const orderId = razorpayOrderId || postData.razorpay_order_id;
-    const signature = razorpaySignature || postData.razorpay_signature;
+    const finalPaymentId = razorpayPaymentId || postData.razorpay_payment_id;
+    const finalOrderId = razorpayOrderId || postData.razorpay_order_id;
+    const finalSignature = razorpaySignature || postData.razorpay_signature;
+    const finalStatus = paymentStatus || postData.payment_status || postData.status;
 
-    console.log("🔄 Razorpay callback:", { paymentId, orderId, method: req.method });
+    console.log("🔄 Razorpay callback received:", {
+      method: req.method,
+      paymentId: finalPaymentId,
+      orderId: finalOrderId,
+      status: finalStatus,
+      hasSignature: !!finalSignature,
+    });
 
-    // Get base URL from environment or use default
-    const baseUrl = typeof process !== "undefined" 
-      ? (process.env as any)?.NEXT_PUBLIC_SITE_URL || (process.env as any)?.VITE_SITE_URL || "https://admin.cuephoria.in"
-      : "https://admin.cuephoria.in";
+    // Frontend base URL
+    const base = "https://admin.cuephoria.in";
 
-    if (paymentId && orderId) {
-      // Redirect to success page
-      return Response.redirect(
-        `${baseUrl}/public/payment/success?payment_id=${encodeURIComponent(paymentId)}&order_id=${encodeURIComponent(orderId)}&signature=${encodeURIComponent(signature || "")}`,
-        302
-      );
-    }
+    // Determine if payment was successful
+    // Razorpay typically returns success when payment_id is present and status is not failed/cancelled
+    const isSuccess = Boolean(finalPaymentId && finalOrderId && finalSignature) &&
+      finalStatus !== "failed" &&
+      finalStatus !== "cancelled" &&
+      finalStatus !== "error";
 
-    // If no payment details, redirect to failure
-    return Response.redirect(
-      `${baseUrl}/public/payment/failed?error=${encodeURIComponent("Payment details missing")}`,
-      302
-    );
-  } catch (err: any) {
-    console.error("💥 Callback error:", err);
-    const baseUrl = typeof process !== "undefined" 
-      ? (process.env as any)?.NEXT_PUBLIC_SITE_URL || (process.env as any)?.VITE_SITE_URL || "https://admin.cuephoria.in"
-      : "https://admin.cuephoria.in";
-    
-    return Response.redirect(
-      `${baseUrl}/public/payment/failed?error=${encodeURIComponent(String(err?.message || err))}`,
-      302
-    );
+    // Extract error message if available
+    const errorParam = url.searchParams.get("error") || postData.error ||
+      (finalStatus === "failed" ? "Payment was declined" :
+        finalStatus === "cancelled" ? "Payment was cancelled" :
+          finalStatus === "error" ? "Payment error occurred" : "");
+
+    const redirectUrl = isSuccess
+      ? `${base}/public/payment/success?payment_id=${encodeURIComponent(finalPaymentId || '')}&order_id=${encodeURIComponent(finalOrderId || '')}&signature=${encodeURIComponent(finalSignature || '')}`
+      : `${base}/public/payment/failed?order_id=${encodeURIComponent(finalOrderId || 'unknown')}${errorParam ? `&error=${encodeURIComponent(errorParam)}` : ''}`;
+
+    console.log("🚀 Redirecting to:", redirectUrl, { isSuccess, paymentId: finalPaymentId });
+
+    // Create redirect response with fallback
+    const redirectHtml = `<!DOCTYPE html><html><head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <meta http-equiv="refresh" content="0;url=${redirectUrl}">
+    <script>
+        // Immediate redirect
+        window.location.href = "${redirectUrl}";
+        
+        // Fallback redirect after 1 second
+        setTimeout(function() {
+            window.location.href = "${redirectUrl}";
+        }, 1000);
+        
+        // Final fallback after 3 seconds
+        setTimeout(function() {
+            window.location.href = "${redirectUrl}";
+        }, 3000);
+    </script>
+</head><body>
+    <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+        <h2>Processing payment...</h2>
+        <p>If you are not automatically redirected, <a href="${redirectUrl}">click here</a></p>
+        <p><small>Payment ID: ${finalPaymentId || 'Processing...'}</small></p>
+    </div>
+</body></html>`;
+
+    return new Response(redirectHtml, {
+      status: 200,
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      }
+    });
+  } catch (error) {
+    console.error("❌ Razorpay callback error:", error);
+
+    const fallbackUrl = "https://admin.cuephoria.in/public/payment/failed";
+    const fallbackHtml = `<!DOCTYPE html><html><head>
+    <meta charset="utf-8">
+    <title>Payment Error</title>
+    <meta http-equiv="refresh" content="3;url=${fallbackUrl}">
+    <script>
+        setTimeout(function() {
+            window.location.href = "${fallbackUrl}";
+        }, 3000);
+    </script>
+</head><body>
+    <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+        <h2>Payment Processing Error</h2>
+        <p>There was an issue processing your payment. You will be redirected shortly.</p>
+        <p>If you are not automatically redirected, <a href="${fallbackUrl}">click here</a></p>
+    </div>
+</body></html>`;
+
+    return new Response(fallbackHtml, {
+      status: 200,
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+      }
+    });
   }
 }
-
