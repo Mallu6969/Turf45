@@ -161,7 +161,7 @@ export default function PublicBooking() {
   const [appliedCoupons, setAppliedCoupons] = useState<Record<string, string>>({});
   const [couponCode, setCouponCode] = useState("");
 
-  const [paymentMethod, setPaymentMethod] = useState<"venue" | "razorpay">("venue");
+  const [paymentMethod, setPaymentMethod] = useState<"venue" | "razorpay">("razorpay");
   const [loading, setLoading] = useState(false);
 
   const [slotsLoading, setSlotsLoading] = useState(false);
@@ -177,22 +177,20 @@ export default function PublicBooking() {
   
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Load Razorpay script when payment method is set to razorpay
+  // Load Razorpay script on mount (since razorpay is the default payment method)
   useEffect(() => {
-    if (paymentMethod === "razorpay") {
-      if (!(window as any).Razorpay) {
-        const script = document.createElement("script");
-        script.src = "https://checkout.razorpay.com/v1/checkout.js";
-        script.async = true;
-        script.onload = () => console.log("✅ Razorpay script loaded");
-        script.onerror = () => {
-          console.error("❌ Failed to load Razorpay script");
-          toast.error("Failed to load payment gateway. Please refresh the page.");
-        };
-        document.body.appendChild(script);
-      }
+    if (!(window as any).Razorpay) {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      script.onload = () => console.log("✅ Razorpay script loaded");
+      script.onerror = () => {
+        console.error("❌ Failed to load Razorpay script");
+        toast.error("Failed to load payment gateway. Please refresh the page.");
+      };
+      document.body.appendChild(script);
     }
-  }, [paymentMethod]);
+  }, []); // Load once on mount
 
   useEffect(() => {
     fetchStations();
@@ -1752,36 +1750,54 @@ export default function PublicBooking() {
                   <Label className="text-xs font-semibold text-gray-400 uppercase">
                     Payment Method
                   </Label>
-                  <div className="mt-2 grid grid-cols-2 gap-2">
-                    <button
-                      onClick={() => setPaymentMethod("venue")}
-                      className={cn(
-                        "rounded-lg px-3 py-2 text-sm border",
-                        paymentMethod === "venue"
-                          ? "bg-white/10 border-white/20 text-white"
-                          : "bg-black/20 border-white/10 text-gray-300"
-                      )}
-                    >
-                      Pay at Venue
-                    </button>
-                    <button
-                      onClick={() => setPaymentMethod("razorpay")}
-                      className={cn(
-                        "rounded-lg px-3 py-2 text-sm border inline-flex items-center justify-center gap-2",
-                        paymentMethod === "razorpay"
-                          ? "bg-white/10 border-white/20 text-white"
-                          : "bg-black/20 border-white/10 text-gray-300"
-                      )}
-                    >
-                      <CreditCard className="h-4 w-4" />
-                      Pay Online
-                    </button>
+                  <div className="mt-2">
+                    {/* Pay at Venue option - hidden but code preserved for future use */}
+                    {/* <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => setPaymentMethod("venue")}
+                        className={cn(
+                          "rounded-lg px-3 py-2 text-sm border",
+                          paymentMethod === "venue"
+                            ? "bg-white/10 border-white/20 text-white"
+                            : "bg-black/20 border-white/10 text-gray-300"
+                        )}
+                      >
+                        Pay at Venue
+                      </button>
+                    </div> */}
+                    
+                    {/* Razorpay Payment Option */}
+                    <div className="rounded-lg border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <CreditCard className="h-5 w-5 text-blue-400" />
+                          <span className="text-sm font-semibold text-white">Pay Online</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="text-xs font-bold text-blue-400">Razorpay</span>
+                          <div className="h-4 w-4 rounded bg-blue-500 flex items-center justify-center">
+                            <span className="text-[8px] text-white font-bold">✓</span>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-[11px] text-gray-300 leading-relaxed">
+                        Secure payment powered by <span className="font-semibold text-blue-400">Razorpay</span>. 
+                        Accepts all major credit/debit cards, UPI, netbanking, and digital wallets.
+                      </p>
+                      <div className="mt-2 flex items-center gap-2 text-[10px] text-gray-400">
+                        <div className="flex items-center gap-1">
+                          <div className="h-3 w-3 rounded-full bg-green-500/20 border border-green-500/50 flex items-center justify-center">
+                            <span className="text-[6px] text-green-400">🔒</span>
+                          </div>
+                          <span>SSL Secured</span>
+                        </div>
+                        <span>•</span>
+                        <span>PCI DSS Compliant</span>
+                        <span>•</span>
+                        <span>Instant Confirmation</span>
+                      </div>
+                    </div>
                   </div>
-                  {paymentMethod === "razorpay" && (
-                    <p className="mt-2 text-[11px] text-gray-400">
-                      Secure online payment via Razorpay. All major cards, UPI, and wallets accepted.
-                    </p>
-                  )}
                 </div>
 
                 {originalPrice > 0 && (
@@ -1842,19 +1858,13 @@ export default function PublicBooking() {
                   size="lg"
                 >
                   {loading
-                    ? paymentMethod === "razorpay"
-                      ? "Starting Payment..."
-                      : "Creating Booking..."
-                    : paymentMethod === "razorpay"
-                    ? "Confirm & Pay Online"
-                    : "Confirm Booking"}
+                    ? "Starting Payment..."
+                    : "Confirm & Pay Online"}
                 </Button>
 
                 <p className="text-xs text-gray-400 text-center">
                   All prices are shown in <span className="font-semibold">INR (₹)</span>.{" "}
-                  {paymentMethod === "razorpay"
-                    ? "You will complete payment securely via Razorpay."
-                    : "Payment will be collected at the venue."}
+                  You will complete payment securely via <span className="font-semibold text-blue-400">Razorpay</span>.
                 </p>
               </CardContent>
             </Card>
