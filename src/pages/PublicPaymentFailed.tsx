@@ -72,7 +72,7 @@ export default function PublicPaymentFailed() {
                 <p className="text-sm text-blue-400 font-medium mb-1">What you can do:</p>
                 <ul className="text-xs text-gray-400 space-y-1 list-disc list-inside">
                   <li>Try the payment again</li>
-                  <li>Choose "Pay at Venue" option</li>
+                  <li>Check your payment method (card, UPI, or wallet)</li>
                   <li>Contact support if issue persists</li>
                 </ul>
               </div>
