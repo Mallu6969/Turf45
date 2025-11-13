@@ -1,5 +1,13 @@
 {
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  ],
+  "functions": {
+    "api/razorpay/create-order.ts": {
+      "maxDuration": 10
+    },
+    "api/razorpay/verify-payment.ts": {
+      "maxDuration": 10
+    }
+  }
 }

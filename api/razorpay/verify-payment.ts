@@ -1,6 +1,9 @@
 // Using Node.js runtime to use Razorpay SDK
 // export const config = { runtime: "edge" }; // COMMENTED OUT
 
+// Import Razorpay at module level for better performance (avoids dynamic import on each request)
+import Razorpay from 'razorpay';
+
 function j(res: unknown, status = 200) {
   return new Response(JSON.stringify(res), {
     status,
@@ -35,8 +38,6 @@ function getRazorpayCredentials() {
 }
 
 async function fetchPaymentStatus(paymentId: string) {
-  const Razorpay = (await import('razorpay')).default;
-  
   const { keyId, keySecret } = getRazorpayCredentials();
 
   const razorpay = new Razorpay({
@@ -49,6 +50,8 @@ async function fetchPaymentStatus(paymentId: string) {
 }
 
 export default async function handler(req: any) {
+  const startTime = Date.now();
+  
   if (req.method !== "POST") {
     return j({ ok: false, error: "Method not allowed" }, 405);
   }
@@ -64,7 +67,13 @@ export default async function handler(req: any) {
       return j({ ok: false, error: "Payment ID is required" }, 400);
     }
 
-    const payment = await fetchPaymentStatus(razorpay_payment_id);
+    // Add timeout wrapper for Razorpay API call (8 seconds max to avoid Vercel timeout)
+    const paymentPromise = fetchPaymentStatus(razorpay_payment_id);
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("Request timeout: Razorpay API took too long")), 8000)
+    );
+
+    const payment = await Promise.race([paymentPromise, timeoutPromise]) as any;
 
     // Check if payment is successful
     const isSuccess = payment.status === "captured" || payment.status === "authorized";

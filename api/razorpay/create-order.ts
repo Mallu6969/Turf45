@@ -1,6 +1,9 @@
 // Using Node.js runtime to use Razorpay SDK
 // export const config = { runtime: "edge" }; // COMMENTED OUT
 
+// Import Razorpay at module level for better performance (avoids dynamic import on each request)
+import Razorpay from 'razorpay';
+
 function j(res: unknown, status = 200) {
   return new Response(JSON.stringify(res), {
     status,
@@ -34,9 +37,7 @@ function getRazorpayCredentials() {
   return { keyId, keySecret, mode };
 }
 
-async function createRazorpayOrder(amount: number, receipt: string, notes?: Record<string, string>) {
-  const Razorpay = (await import('razorpay')).default;
-  
+async function createRazorpayOrder(amount: number, receipt: string, notes?: Record<string, string>, signal?: AbortSignal) {
   const { keyId, keySecret } = getRazorpayCredentials();
 
   const amountInPaise = Math.round(Number(amount) * 100);
@@ -47,6 +48,10 @@ async function createRazorpayOrder(amount: number, receipt: string, notes?: Reco
   const razorpay = new Razorpay({
     key_id: keyId,
     key_secret: keySecret,
+    // Ensure connections are closed after request
+    headers: {
+      'Connection': 'close',
+    },
   });
 
   const orderOptions: any = {
@@ -68,11 +73,24 @@ async function createRazorpayOrder(amount: number, receipt: string, notes?: Reco
     }
   }
 
+  // Check if already aborted
+  if (signal?.aborted) {
+    throw new Error("Request aborted");
+  }
+
   const order = await razorpay.orders.create(orderOptions);
+  
+  // Check again after API call
+  if (signal?.aborted) {
+    throw new Error("Request aborted");
+  }
+  
   return order;
 }
 
 export default async function handler(req: any) {
+  const startTime = Date.now();
+  
   if (req.method !== "POST") {
     return j({ ok: false, error: "Method not allowed" }, 405);
   }
@@ -92,19 +110,57 @@ export default async function handler(req: any) {
       return j({ ok: false, error: "Receipt ID is required" }, 400);
     }
 
-    const order = await createRazorpayOrder(amount, receipt, notes);
+    // Add timeout wrapper for Razorpay API call (8 seconds max to avoid Vercel timeout)
+    const abortController = new AbortController();
+    const timeoutId = setTimeout(() => {
+      abortController.abort();
+    }, 8000);
 
-    console.log("✅ Razorpay order created:", order.id);
+    let order: any;
+    try {
+      order = await createRazorpayOrder(amount, receipt, notes, abortController.signal);
+      clearTimeout(timeoutId);
+    } catch (err: any) {
+      clearTimeout(timeoutId);
+      if (abortController.signal.aborted || err?.message?.includes("aborted")) {
+        throw new Error("Request timeout: Razorpay API took too long");
+      }
+      throw err;
+    }
 
-    return j({
+    const duration = Date.now() - startTime;
+    console.log(`✅ Razorpay order created: ${order.id} (${duration}ms)`);
+
+    // Prepare response data
+    const responseData = {
       ok: true,
       orderId: order.id,
       amount: order.amount,
       currency: order.currency,
       receipt: order.receipt,
+    };
+
+    // Return response immediately - don't do anything after this
+    return new Response(JSON.stringify(responseData), {
+      status: 200,
+      headers: { 
+        "content-type": "application/json; charset=utf-8",
+        "cache-control": "no-cache",
+      },
     });
   } catch (err: any) {
-    console.error("💥 Create order error:", err);
+    const duration = Date.now() - startTime;
+    console.error(`💥 Create order error (${duration}ms):`, err);
+    
+    // Check if it's a timeout error
+    if (err?.message?.includes("timeout") || duration > 9000) {
+      return j({ 
+        ok: false, 
+        error: "Payment gateway timeout. Please try again.",
+        timeout: true 
+      }, 504);
+    }
+    
     return j({ ok: false, error: String(err?.message || err) }, 500);
   }
 }
