@@ -54,7 +54,44 @@ export default async function handler(req: Request) {
   }
 
   try {
-    const payload = await req.json().catch(() => ({} as any));
+    // Handle request body parsing for Vercel Node.js runtime
+    let payload: any = {};
+    try {
+      // Try different methods to get request body
+      if (typeof (req as any).json === 'function') {
+        payload = await (req as any).json();
+      } else if (typeof (req as any).body === 'object' && (req as any).body !== null) {
+        payload = (req as any).body;
+      } else if (typeof (req as any).body === 'string') {
+        payload = JSON.parse((req as any).body);
+      } else if (typeof (req as any).text === 'function') {
+        const bodyText = await (req as any).text();
+        if (bodyText) {
+          payload = JSON.parse(bodyText);
+        }
+      } else {
+        // For Vercel Node.js runtime, body might be in a different format
+        // Try to read from stream
+        const chunks: Uint8Array[] = [];
+        const reader = (req as any).body?.getReader?.();
+        if (reader) {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+          }
+          const bodyText = new TextDecoder().decode(Buffer.concat(chunks));
+          if (bodyText) {
+            payload = JSON.parse(bodyText);
+          }
+        }
+      }
+    } catch (parseError: any) {
+      console.error("Body parse error:", parseError);
+      // If all parsing fails, return error
+      return j({ ok: false, error: "Invalid request body", details: parseError?.message }, 400);
+    }
+    
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = payload || {};
 
     console.log("🔍 Verifying Razorpay payment:", { razorpay_payment_id, razorpay_order_id });
