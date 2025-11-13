@@ -122,7 +122,7 @@ export default function PublicPaymentSuccess() {
             coupon_code: pb.pricing.coupons || null,
             payment_mode: "razorpay",
             payment_txn_id: paymentId,
-            notes: `Razorpay Order: ${orderId}`,
+            notes: `Razorpay Order ID: ${orderId}`,
           });
         });
       });

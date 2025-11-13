@@ -100,6 +100,7 @@ export default async function handler(req: Request) {
       coupon_code: couponCodes || null,
       payment_mode: payment_mode,
       payment_txn_id: orderId || null,
+      notes: null,
     }));
 
     console.log("💾 Inserting booking records:", rows.length, "records");

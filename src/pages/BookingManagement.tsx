@@ -47,6 +47,8 @@ interface Booking {
   booking_group_id?: string | null;
   status_updated_at?: string | null;
   status_updated_by?: string | null;
+  payment_mode?: string | null;
+  payment_txn_id?: string | null;
   station: {
     name: string;
     type: string;
@@ -90,6 +92,7 @@ interface Filters {
   priceRange: string;
   duration: string;
   customerType: string;
+  paymentStatus: string;
 }
 
 interface CouponAnalytics {
@@ -208,7 +211,8 @@ export default function BookingManagement() {
     coupon: 'all',
     priceRange: 'all',
     duration: 'all',
-    customerType: 'all'
+    customerType: 'all',
+    paymentStatus: 'all'
   });
 
   const [couponOptions, setCouponOptions] = useState<string[]>([]);
@@ -312,6 +316,8 @@ export default function BookingManagement() {
         booking_group_id,
         status_updated_at,
         status_updated_by,
+        payment_mode,
+        payment_txn_id,
         station_id,
         customer_id,
         created_at,
@@ -367,6 +373,8 @@ export default function BookingManagement() {
         booking_group_id: b.booking_group_id ?? null,
         status_updated_at: b.status_updated_at ?? null,
         status_updated_by: b.status_updated_by ?? null,
+        payment_mode: b.payment_mode ?? null,
+        payment_txn_id: b.payment_txn_id ?? null,
         created_at: b.created_at,
         booking_views: b.booking_views || [],
         station: { name: station?.name || 'Unknown', type: station?.type || 'unknown' },
@@ -474,6 +482,18 @@ export default function BookingManagement() {
         
         if (filters.customerType === 'new') return isNewCustomer;
         if (filters.customerType === 'returning') return !isNewCustomer;
+        return true;
+      });
+    }
+
+    if (filters.paymentStatus !== 'all') {
+      filtered = filtered.filter(b => {
+        if (filters.paymentStatus === 'paid') {
+          return !!b.payment_mode && !!b.payment_txn_id;
+        }
+        if (filters.paymentStatus === 'unpaid') {
+          return !b.payment_mode || !b.payment_txn_id;
+        }
         return true;
       });
     }
@@ -706,7 +726,22 @@ export default function BookingManagement() {
                                 </div>
                               </div>
                               <div className="flex items-center justify-between">
-                                <BookingStatusBadge status={booking.status} />
+                                <div className="flex items-center gap-1">
+                                  <BookingStatusBadge status={booking.status} />
+                                  {booking.payment_mode && (
+                                    <Badge 
+                                      variant={booking.payment_mode === 'razorpay' ? 'default' : 'secondary'} 
+                                      className="text-xs h-5"
+                                    >
+                                      {booking.payment_mode === 'razorpay' ? '💳 Paid' : booking.payment_mode}
+                                    </Badge>
+                                  )}
+                                  {!booking.payment_mode && booking.final_price && booking.final_price > 0 && (
+                                    <Badge variant="outline" className="text-xs h-5 text-orange-600">
+                                      ⚠️ Unpaid
+                                    </Badge>
+                                  )}
+                                </div>
                                 {booking.coupon_code && (
                                   <Gift className="h-3 w-3 text-purple-600" />
                                 )}
@@ -753,7 +788,22 @@ export default function BookingManagement() {
                               </div>
                               
                               <div className="flex items-center justify-between">
-                                <BookingStatusBadge status={booking.status} />
+                                <div className="flex items-center gap-1">
+                                  <BookingStatusBadge status={booking.status} />
+                                  {booking.payment_mode && (
+                                    <Badge 
+                                      variant={booking.payment_mode === 'razorpay' ? 'default' : 'secondary'} 
+                                      className="text-xs"
+                                    >
+                                      {booking.payment_mode === 'razorpay' ? '💳 Paid' : booking.payment_mode}
+                                    </Badge>
+                                  )}
+                                  {!booking.payment_mode && booking.final_price && booking.final_price > 0 && (
+                                    <Badge variant="outline" className="text-xs text-orange-600">
+                                      ⚠️ Unpaid
+                                    </Badge>
+                                  )}
+                                </div>
                                 {booking.coupon_code && (
                                   <Badge variant="secondary" className="text-xs flex items-center gap-1">
                                     <Gift className="h-2 w-2" />
@@ -761,6 +811,13 @@ export default function BookingManagement() {
                                   </Badge>
                                 )}
                               </div>
+                              
+                              {booking.payment_txn_id && (
+                                <div className="text-xs text-muted-foreground">
+                                  <span className="font-medium">Payment ID: </span>
+                                  <span className="font-mono">{booking.payment_txn_id.substring(0, 20)}...</span>
+                                </div>
+                              )}
                               
                               {booking.notes && (
                                 <div className="p-2 bg-muted/50 rounded text-xs">
@@ -1116,7 +1173,7 @@ export default function BookingManagement() {
 
   const exportBookings = () => {
     const csvContent = [
-      ['Date', 'Booking ID', 'View Access Code', 'Start', 'End', 'Duration', 'Station', 'Station Type', 'Customer', 'Phone', 'Email', 'Status', 'Original Price', 'Final Price', 'Discount%', 'Discount Amount', 'Coupon', 'Notes'].join(','),
+      ['Date', 'Booking ID', 'View Access Code', 'Start', 'End', 'Duration', 'Station', 'Station Type', 'Customer', 'Phone', 'Email', 'Status', 'Original Price', 'Final Price', 'Discount%', 'Discount Amount', 'Coupon', 'Payment Mode', 'Payment Txn ID', 'Notes'].join(','),
       ...bookings.map(b => {
         const discountAmount = (b.discount_percentage && b.final_price) 
           ? (b.final_price * b.discount_percentage) / (100 - b.discount_percentage)
@@ -1141,6 +1198,8 @@ export default function BookingManagement() {
           b.discount_percentage ?? 0,
           Math.round(discountAmount),
           b.coupon_code || '',
+          b.payment_mode || 'Unpaid',
+          b.payment_txn_id || '',
           (b.notes || '').replace(/,/g, ' ')
         ].join(',');
       })
@@ -1168,7 +1227,8 @@ export default function BookingManagement() {
       coupon: 'all',
       priceRange: 'all',
       duration: 'all',
-      customerType: 'all'
+      customerType: 'all',
+      paymentStatus: 'all'
     });
   };
 
@@ -1405,6 +1465,20 @@ export default function BookingManagement() {
                       <SelectItem value="all">All Customers</SelectItem>
                       <SelectItem value="new">🆕 New Customers</SelectItem>
                       <SelectItem value="returning">🔄 Returning</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-foreground">Payment Status</Label>
+                  <Select value={filters.paymentStatus} onValueChange={(value) => setFilters(prev => ({ ...prev, paymentStatus: value }))}>
+                    <SelectTrigger className="h-11 border-2 border-border focus:border-blue-400 transition-colors">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Payments</SelectItem>
+                      <SelectItem value="paid">💳 Paid</SelectItem>
+                      <SelectItem value="unpaid">⚠️ Unpaid</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -2323,7 +2397,27 @@ export default function BookingManagement() {
                                                     
                                                     <div>
                                                       <div className="text-sm text-muted-foreground">Status</div>
-                                                      <BookingStatusBadge status={booking.status} />
+                                                      <div className="flex items-center gap-1">
+                                                        <BookingStatusBadge status={booking.status} />
+                                                        {booking.payment_mode && (
+                                                          <Badge 
+                                                            variant={booking.payment_mode === 'razorpay' ? 'default' : 'secondary'} 
+                                                            className="text-xs"
+                                                          >
+                                                            {booking.payment_mode === 'razorpay' ? '💳 Paid' : booking.payment_mode}
+                                                          </Badge>
+                                                        )}
+                                                        {!booking.payment_mode && booking.final_price && booking.final_price > 0 && (
+                                                          <Badge variant="outline" className="text-xs text-orange-600">
+                                                            ⚠️ Unpaid
+                                                          </Badge>
+                                                        )}
+                                                      </div>
+                                                      {booking.payment_txn_id && (
+                                                        <div className="text-xs text-muted-foreground mt-1 font-mono">
+                                                          Txn: {booking.payment_txn_id.substring(0, 15)}...
+                                                        </div>
+                                                      )}
                                                     </div>
                                                     
                                                     <div>
