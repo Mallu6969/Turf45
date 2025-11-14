@@ -14,6 +14,19 @@ type PendingBooking = {
   pricing: { original: number; discount: number; final: number; coupons: string };
 };
 
+// Phone number normalization (removes all non-digit characters)
+const normalizePhoneNumber = (phone: string): string => {
+  return phone.replace(/\D/g, '');
+};
+
+// Generate unique Customer ID
+const generateCustomerID = (phone: string): string => {
+  const normalized = normalizePhoneNumber(phone);
+  const timestamp = Date.now().toString(36).slice(-4).toUpperCase();
+  const phoneHash = normalized.slice(-4);
+  return `CUE${phoneHash}${timestamp}`;
+};
+
 export default function PublicPaymentSuccess() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -75,23 +88,30 @@ export default function PublicPaymentSuccess() {
       // 3) Ensure customer exists (by phone); create if needed
       let customerId = pb.customer.id;
       if (!customerId) {
-        // Check if exists by phone
-        const { data } = await supabase
+        // Normalize phone number (same as venue booking flow)
+        const normalizedPhone = normalizePhoneNumber(pb.customer.phone);
+        
+        // Check if exists by normalized phone
+        const { data: existingCustomer } = await supabase
           .from("customers")
-          .select("id")
-          .eq("phone", pb.customer.phone)
+          .select("id, name, custom_id")
+          .eq("phone", normalizedPhone)
           .maybeSingle();
 
-        if (data?.id) {
-          customerId = data.id;
+        if (existingCustomer) {
+          customerId = existingCustomer.id;
         } else {
-          // Create new customer
+          // Generate customer ID (same as venue booking flow)
+          const customerID = generateCustomerID(normalizedPhone);
+          
+          // Create new customer with normalized phone and custom_id
           const { data: created, error: cErr } = await supabase
             .from("customers")
             .insert({
               name: pb.customer.name,
-              phone: pb.customer.phone,
+              phone: normalizedPhone,
               email: pb.customer.email || null,
+              custom_id: customerID,
               is_member: false,
               loyalty_points: 0,
               total_spent: 0,
@@ -101,6 +121,12 @@ export default function PublicPaymentSuccess() {
             .single();
 
           if (cErr) {
+            // Handle duplicate phone number error
+            if (cErr.code === '23505') {
+              setStatus("failed");
+              setMsg("This phone number is already registered. Please contact support.");
+              return;
+            }
             setStatus("failed");
             setMsg("Could not create customer. Please contact support or rebook.");
             return;
