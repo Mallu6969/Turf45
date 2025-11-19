@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useExpenses } from '@/context/ExpenseContext';
 import { format, isWithinInterval } from 'date-fns';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { CurrencyDisplay } from '@/components/ui/currency';
 import ExpenseDialog from './ExpenseDialog';
-import { PlusCircle, Pencil, Trash2, XCircle } from 'lucide-react';
+import ExpensePhotoViewer from './ExpensePhotoViewer';
+import { PlusCircle, Pencil, Trash2, XCircle, Image as ImageIcon } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -45,6 +46,7 @@ const FilteredExpenseList: React.FC<FilteredExpenseListProps> = ({
   onCategorySelect
 }) => {
   const { expenses, deleteExpense } = useExpenses();
+  const [viewingPhoto, setViewingPhoto] = useState<{ url: string; name: string } | null>(null);
 
   // Filter by date range
   const inRange = (d: Date) => isWithinInterval(d, { start: startDate, end: endDate });
@@ -66,6 +68,10 @@ const FilteredExpenseList: React.FC<FilteredExpenseListProps> = ({
 
   const handleDeleteExpense = async (id: string) => {
     try { await deleteExpense(id); } catch (error) { console.error('Error deleting expense:', error); }
+  };
+
+  const handleViewPhoto = (photoUrl: string, expenseName: string) => {
+    setViewingPhoto({ url: photoUrl, name: expenseName });
   };
 
   return (
@@ -198,6 +204,17 @@ const FilteredExpenseList: React.FC<FilteredExpenseListProps> = ({
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
+                            {expense.photoUrl && (
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-8 w-8 text-blue-400 hover:text-blue-300 hover:bg-blue-900/20"
+                                onClick={() => handleViewPhoto(expense.photoUrl!, expense.name)}
+                                title="View photo"
+                              >
+                                <ImageIcon className="h-4 w-4" />
+                              </Button>
+                            )}
                             <ExpenseDialog expense={expense}>
                               <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white hover:bg-gray-600">
                                 <Pencil className="h-4 w-4" />
@@ -238,6 +255,14 @@ const FilteredExpenseList: React.FC<FilteredExpenseListProps> = ({
           )}
         </CardContent>
       </Card>
+      {viewingPhoto && (
+        <ExpensePhotoViewer
+          photoUrl={viewingPhoto.url}
+          expenseName={viewingPhoto.name}
+          open={!!viewingPhoto}
+          onOpenChange={(open) => !open && setViewingPhoto(null)}
+        />
+      )}
     </div>
   );
 };

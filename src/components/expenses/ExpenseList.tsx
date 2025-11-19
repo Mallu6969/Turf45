@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useExpenses } from '@/context/ExpenseContext';
 import { format } from 'date-fns';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { CurrencyDisplay } from '@/components/ui/currency';
 import ExpenseDialog from './ExpenseDialog';
-import { PlusCircle, Pencil, Trash2 } from 'lucide-react';
+import ExpensePhotoViewer from './ExpensePhotoViewer';
+import { PlusCircle, Pencil, Trash2, Image as ImageIcon } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -32,6 +33,7 @@ const getCategoryColor = (category: string) => {
 
 const ExpenseList: React.FC<{ selectedCategory?: string | null }> = ({ selectedCategory = null }) => {
   const { expenses, deleteExpense } = useExpenses();
+  const [viewingPhoto, setViewingPhoto] = useState<{ url: string; name: string } | null>(null);
 
   const visibleExpenses = expenses.filter(e =>
     !selectedCategory || normalizeCategory(e.category) === selectedCategory
@@ -39,6 +41,10 @@ const ExpenseList: React.FC<{ selectedCategory?: string | null }> = ({ selectedC
 
   const handleDeleteExpense = async (id: string) => {
     try { await deleteExpense(id); } catch (error) { console.error('Error deleting expense:', error); }
+  };
+
+  const handleViewPhoto = (photoUrl: string, expenseName: string) => {
+    setViewingPhoto({ url: photoUrl, name: expenseName });
   };
 
   return (
@@ -96,6 +102,17 @@ const ExpenseList: React.FC<{ selectedCategory?: string | null }> = ({ selectedC
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
+                          {expense.photoUrl && (
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className="h-8 w-8 text-blue-500 hover:text-blue-600 hover:bg-blue-50"
+                              onClick={() => handleViewPhoto(expense.photoUrl!, expense.name)}
+                              title="View photo"
+                            >
+                              <ImageIcon className="h-4 w-4" />
+                            </Button>
+                          )}
                           <ExpenseDialog expense={expense}>
                             <Button variant="ghost" size="icon" className="h-8 w-8">
                               <Pencil className="h-4 w-4" />
@@ -136,6 +153,14 @@ const ExpenseList: React.FC<{ selectedCategory?: string | null }> = ({ selectedC
           </div>
         )}
       </CardContent>
+      {viewingPhoto && (
+        <ExpensePhotoViewer
+          photoUrl={viewingPhoto.url}
+          expenseName={viewingPhoto.name}
+          open={!!viewingPhoto}
+          onOpenChange={(open) => !open && setViewingPhoto(null)}
+        />
+      )}
     </Card>
   );
 };
