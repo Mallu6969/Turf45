@@ -24,6 +24,7 @@ export interface Expense {
   date: string; // ISO
   isRecurring: boolean;
   notes?: string;
+  photoUrl?: string;
 }
 
 export interface BusinessSummary {
@@ -44,4 +45,5 @@ export interface ExpenseFormData {
   date: Date;
   isRecurring: boolean;
   notes?: string;
+  photoUrl?: string;
 }

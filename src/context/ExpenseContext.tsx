@@ -8,8 +8,8 @@ import { supabase, handleSupabaseError } from '@/integrations/supabase/client';
 interface ExpenseContextType {
   expenses: Expense[];
   businessSummary: BusinessSummary;
-  addExpense: (expense: Omit<ExpenseFormData, 'date'> & { date: string }) => Promise<boolean>;
-  updateExpense: (expense: Expense) => Promise<boolean>;
+  addExpense: (expense: Omit<ExpenseFormData, 'date'> & { date: string }, photoFile?: File) => Promise<boolean>;
+  updateExpense: (expense: Expense, photoFile?: File) => Promise<boolean>;
   deleteExpense: (id: string) => Promise<boolean>;
   refreshExpenses: () => Promise<void>;
   loading: boolean;
@@ -64,7 +64,8 @@ export const ExpenseProvider: React.FC<{ children: React.ReactNode }> = ({ child
               frequency: expense.frequency,
               date: expense.date,
               is_recurring: expense.isRecurring,
-              notes: expense.notes || null
+              notes: expense.notes || null,
+              photo_url: expense.photoUrl || null
             }, { onConflict: 'id' }) as any);
           });
         } else {
@@ -79,7 +80,8 @@ export const ExpenseProvider: React.FC<{ children: React.ReactNode }> = ({ child
           frequency: item.frequency as Expense['frequency'],
           date: item.date,
           isRecurring: item.is_recurring,
-          notes: item.notes || undefined
+          notes: item.notes || undefined,
+          photoUrl: item.photo_url || undefined
         }));
         setExpenses(formatted);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(formatted));
@@ -138,9 +140,52 @@ export const ExpenseProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
-  const addExpense = async (formData: Omit<ExpenseFormData, 'date'> & { date: string }): Promise<boolean> => {
+  const uploadExpensePhoto = async (file: File, expenseId: string): Promise<string | null> => {
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${expenseId}-${Date.now()}.${fileExt}`;
+      const filePath = `expense-receipts/${fileName}`;
+
+      // Upload image to Supabase Storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('expense-receipts')
+        .upload(filePath, file);
+
+      if (uploadError) {
+        console.error('Error uploading expense photo:', uploadError);
+        toast({ 
+          title: 'Upload failed', 
+          description: 'Failed to upload photo. The expense will be saved without photo.', 
+          variant: 'destructive' 
+        });
+        return null;
+      }
+
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from('expense-receipts')
+        .getPublicUrl(filePath);
+
+      return urlData.publicUrl;
+    } catch (error) {
+      console.error('Unexpected error uploading photo:', error);
+      return null;
+    }
+  };
+
+  const addExpense = async (formData: Omit<ExpenseFormData, 'date'> & { date: string }, photoFile?: File): Promise<boolean> => {
     try {
       const id = generateId();
+      
+      // Upload photo if provided
+      let photoUrl: string | undefined = undefined;
+      if (photoFile) {
+        const uploadedUrl = await uploadExpensePhoto(photoFile, id);
+        if (uploadedUrl) {
+          photoUrl = uploadedUrl;
+        }
+      }
+
       const newExpense: Expense = {
         id,
         name: formData.name,
@@ -149,7 +194,8 @@ export const ExpenseProvider: React.FC<{ children: React.ReactNode }> = ({ child
         frequency: formData.frequency,
         date: formData.date,
         isRecurring: formData.isRecurring,
-        notes: formData.notes
+        notes: formData.notes,
+        photoUrl
       };
 
       const { error: supabaseError } = await (supabase
@@ -162,12 +208,20 @@ export const ExpenseProvider: React.FC<{ children: React.ReactNode }> = ({ child
           frequency: newExpense.frequency,
           date: newExpense.date,
           is_recurring: newExpense.isRecurring,
-          notes: newExpense.notes || null
+          notes: newExpense.notes || null,
+          photo_url: newExpense.photoUrl || null
         }) as any);
 
       if (supabaseError) {
         const msg = handleSupabaseError(supabaseError, 'adding expense');
         toast({ title: 'Error', description: msg, variant: 'destructive' });
+        // Clean up uploaded photo if database insert fails
+        if (photoUrl) {
+          const urlParts = photoUrl.split('/');
+          const fileName = urlParts[urlParts.length - 1];
+          const filePath = `expense-receipts/${fileName}`;
+          await supabase.storage.from('expense-receipts').remove([filePath]);
+        }
         return false;
       }
 
@@ -182,19 +236,44 @@ export const ExpenseProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
-  const updateExpense = async (expense: Expense): Promise<boolean> => {
+  const updateExpense = async (expense: Expense, photoFile?: File): Promise<boolean> => {
     try {
+      let photoUrl = expense.photoUrl;
+
+      // Upload new photo if provided
+      if (photoFile) {
+        // Delete old photo if it exists
+        if (expense.photoUrl) {
+          try {
+            const urlParts = expense.photoUrl.split('/');
+            const fileName = urlParts[urlParts.length - 1];
+            const filePath = `expense-receipts/${fileName}`;
+            await supabase.storage.from('expense-receipts').remove([filePath]);
+          } catch (error) {
+            console.error('Error deleting old photo:', error);
+          }
+        }
+
+        const uploadedUrl = await uploadExpensePhoto(photoFile, expense.id);
+        if (uploadedUrl) {
+          photoUrl = uploadedUrl;
+        }
+      }
+
+      const updatedExpense = { ...expense, photoUrl };
+
       const { error: supabaseError } = await (supabase
         .from('expenses' as any)
         .update({
-          name: expense.name,
-          amount: expense.amount,
-          category: expense.category,
-          frequency: expense.frequency,
-          date: expense.date,
-          is_recurring: expense.isRecurring,
-          notes: expense.notes || null
-        }).eq('id', expense.id) as any);
+          name: updatedExpense.name,
+          amount: updatedExpense.amount,
+          category: updatedExpense.category,
+          frequency: updatedExpense.frequency,
+          date: updatedExpense.date,
+          is_recurring: updatedExpense.isRecurring,
+          notes: updatedExpense.notes || null,
+          photo_url: updatedExpense.photoUrl || null
+        }).eq('id', updatedExpense.id) as any);
 
       if (supabaseError) {
         const msg = handleSupabaseError(supabaseError, 'updating expense');
@@ -202,7 +281,7 @@ export const ExpenseProvider: React.FC<{ children: React.ReactNode }> = ({ child
         return false;
       }
 
-      const updated = expenses.map(item => item.id === expense.id ? expense : item);
+      const updated = expenses.map(item => item.id === updatedExpense.id ? updatedExpense : item);
       setExpenses(updated);
       saveExpensesToStorage(updated);
       toast({ title: 'Success', description: 'Expense updated successfully' });

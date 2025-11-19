@@ -14,7 +14,7 @@ const ExpenseDialog: React.FC<ExpenseDialogProps> = ({ expense, children }) => {
   const { addExpense, updateExpense } = useExpenses();
   const { toast } = useToast();
 
-  const handleSubmit = async (formData: ExpenseFormData) => {
+  const handleSubmit = async (formData: ExpenseFormData, photoFile?: File) => {
     try {
       let success = false;
       if (expense) {
@@ -26,8 +26,9 @@ const ExpenseDialog: React.FC<ExpenseDialogProps> = ({ expense, children }) => {
           frequency: formData.frequency,
           isRecurring: formData.isRecurring,
           notes: formData.notes,
-          date: formData.date.toISOString()
-        });
+          date: formData.date.toISOString(),
+          photoUrl: formData.photoUrl
+        }, photoFile);
       } else {
         success = await addExpense({
           name: formData.name,
@@ -36,8 +37,9 @@ const ExpenseDialog: React.FC<ExpenseDialogProps> = ({ expense, children }) => {
           frequency: formData.frequency,
           isRecurring: formData.isRecurring,
           notes: formData.notes,
-          date: formData.date.toISOString()
-        });
+          date: formData.date.toISOString(),
+          photoUrl: formData.photoUrl
+        }, photoFile);
       }
       if (success) {
         setOpen(false);

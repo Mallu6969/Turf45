@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,7 +12,7 @@ import { Switch } from '@/components/ui/switch';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, Upload, X, ImageIcon } from 'lucide-react';
 
 const expenseSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
@@ -25,16 +25,21 @@ const expenseSchema = z.object({
   date: z.date({ required_error: 'Please select a date', invalid_type_error: "That's not a date!" }),
   isRecurring: z.boolean(),
   notes: z.string().optional(),
+  photoUrl: z.string().optional(),
 });
 
 interface ExpenseFormProps {
-  onSubmit: (data: ExpenseFormData) => void;
+  onSubmit: (data: ExpenseFormData, photoFile?: File) => void;
   initialData?: Partial<ExpenseFormData>;
   onCancel?: () => void;
 }
 
 const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit, initialData, onCancel }) => {
   const today = new Date();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.photoUrl || null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const form = useForm<ExpenseFormData>({
     resolver: zodResolver(expenseSchema),
     defaultValues: {
@@ -45,12 +50,64 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit, initialData, onCanc
       date: initialData?.date || today,
       isRecurring: initialData?.isRecurring || false,
       notes: initialData?.notes || '',
+      photoUrl: initialData?.photoUrl || '',
     },
   });
 
   const isRecurring = form.watch('isRecurring');
 
-  const handleFormSubmit = (data: ExpenseFormData) => onSubmit(data);
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        form.setError('photoUrl', { message: 'Please select an image file' });
+        return;
+      }
+      
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        form.setError('photoUrl', { message: 'Image size must be less than 5MB' });
+        return;
+      }
+
+      // Clean up previous blob URL if it exists
+      if (previewUrl && previewUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(previewUrl);
+      }
+
+      setSelectedFile(file);
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+      form.clearErrors('photoUrl');
+    }
+  };
+
+  const handleRemovePhoto = () => {
+    // Clean up blob URL if it exists
+    if (previewUrl && previewUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    form.setValue('photoUrl', '');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  // Cleanup blob URLs on unmount
+  useEffect(() => {
+    return () => {
+      if (previewUrl && previewUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
+  const handleFormSubmit = (data: ExpenseFormData) => {
+    onSubmit(data, selectedFile || undefined);
+  };
 
   return (
     <Form {...form}>
@@ -146,6 +203,59 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit, initialData, onCanc
           <FormItem>
             <FormLabel>Notes</FormLabel>
             <FormControl><Textarea placeholder="Add any additional notes about this expense" className="resize-none" {...field} /></FormControl>
+            <FormMessage />
+          </FormItem>
+        )} />
+
+        <FormField control={form.control} name="photoUrl" render={({ field }) => (
+          <FormItem>
+            <FormLabel>Photo/Receipt (Optional)</FormLabel>
+            <FormDescription>Upload a photo or receipt for this expense</FormDescription>
+            <FormControl>
+              <div className="space-y-2">
+                {previewUrl ? (
+                  <div className="relative">
+                    <img 
+                      src={previewUrl} 
+                      alt="Expense preview" 
+                      className="w-full h-48 object-cover rounded-md border"
+                    />
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      className="absolute top-2 right-2"
+                      onClick={handleRemovePhoto}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="border-2 border-dashed rounded-md p-6 text-center">
+                    <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
+                    <div className="mt-4">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="mb-2"
+                      >
+                        <Upload className="mr-2 h-4 w-4" />
+                        Choose Photo
+                      </Button>
+                      <p className="text-xs text-gray-500">PNG, JPG up to 5MB</p>
+                    </div>
+                  </div>
+                )}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
+              </div>
+            </FormControl>
             <FormMessage />
           </FormItem>
         )} />
