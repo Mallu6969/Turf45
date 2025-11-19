@@ -15,57 +15,67 @@ VALUES (
 )
 ON CONFLICT (id) DO NOTHING;
 
--- Create storage policies for expense-receipts bucket
+-- Remove any existing RLS policies for expense-receipts bucket
 DO $$
 BEGIN
-  -- Allow authenticated users to upload files
+  -- Drop existing policies if they exist
+  DROP POLICY IF EXISTS "Allow authenticated users to upload expense receipts" ON storage.objects;
+  DROP POLICY IF EXISTS "Allow authenticated users to update expense receipts" ON storage.objects;
+  DROP POLICY IF EXISTS "Allow authenticated users to delete expense receipts" ON storage.objects;
+  DROP POLICY IF EXISTS "Allow public read access to expense receipts" ON storage.objects;
+END $$;
+
+-- Create permissive storage policies for expense-receipts bucket (effectively no RLS)
+DO $$
+BEGIN
+  -- Allow everyone (anon and authenticated) to upload files
   IF NOT EXISTS (
     SELECT 1 FROM pg_policies 
     WHERE schemaname = 'storage' 
     AND tablename = 'objects' 
-    AND policyname = 'Allow authenticated users to upload expense receipts'
+    AND policyname = 'Allow all to upload expense receipts'
   ) THEN
-    CREATE POLICY "Allow authenticated users to upload expense receipts"
+    CREATE POLICY "Allow all to upload expense receipts"
     ON storage.objects FOR INSERT
-    TO authenticated
+    TO public
     WITH CHECK (bucket_id = 'expense-receipts');
   END IF;
 
-  -- Allow authenticated users to update their own files
+  -- Allow everyone to update files
   IF NOT EXISTS (
     SELECT 1 FROM pg_policies 
     WHERE schemaname = 'storage' 
     AND tablename = 'objects' 
-    AND policyname = 'Allow authenticated users to update expense receipts'
+    AND policyname = 'Allow all to update expense receipts'
   ) THEN
-    CREATE POLICY "Allow authenticated users to update expense receipts"
+    CREATE POLICY "Allow all to update expense receipts"
     ON storage.objects FOR UPDATE
-    TO authenticated
+    TO public
     USING (bucket_id = 'expense-receipts')
     WITH CHECK (bucket_id = 'expense-receipts');
   END IF;
 
-  -- Allow authenticated users to delete files
+  -- Allow everyone to delete files
   IF NOT EXISTS (
     SELECT 1 FROM pg_policies 
     WHERE schemaname = 'storage' 
     AND tablename = 'objects' 
-    AND policyname = 'Allow authenticated users to delete expense receipts'
+    AND policyname = 'Allow all to delete expense receipts'
   ) THEN
-    CREATE POLICY "Allow authenticated users to delete expense receipts"
+    CREATE POLICY "Allow all to delete expense receipts"
     ON storage.objects FOR DELETE
-    TO authenticated
+    TO public
     USING (bucket_id = 'expense-receipts');
   END IF;
 
-  -- Allow public read access (since bucket is public)
+  -- Allow public read access
   IF NOT EXISTS (
     SELECT 1 FROM pg_policies 
     WHERE schemaname = 'storage' 
     AND tablename = 'objects' 
-    AND policyname = 'Allow public read access to expense receipts'
+    AND policyname = 'Allow all to read expense receipts'
   ) THEN
-    CREATE POLICY "Allow public read access to expense receipts"
+    CREATE POLICY "Allow all to read expense receipts"
     ON storage.objects FOR SELECT
     TO public
     USING (bucket_id = 'expense-receipts');
