@@ -163,6 +163,9 @@ export default function PublicBooking() {
 
   const [paymentMethod, setPaymentMethod] = useState<"venue" | "razorpay">("razorpay");
   const [loading, setLoading] = useState(false);
+  const [showPinDialog, setShowPinDialog] = useState(false);
+  const [payAtVenueEnabled, setPayAtVenueEnabled] = useState(false);
+  const [pinInput, setPinInput] = useState("");
 
   const [slotsLoading, setSlotsLoading] = useState(false);
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
@@ -1296,7 +1299,9 @@ export default function PublicBooking() {
               <img
                 src="https://iili.io/KpfrAog.jpg"
                 alt="NerfTurf Logo"
-                className="h-24 drop-shadow-[0_0_25px_rgba(168,85,247,0.15)]"
+                className="h-24 drop-shadow-[0_0_25px_rgba(168,85,247,0.15)] cursor-pointer transition-transform hover:scale-105"
+                onClick={() => setShowPinDialog(true)}
+                title="Click for secret feature"
               />
             </div>
 
@@ -1751,52 +1756,64 @@ export default function PublicBooking() {
                     Payment Method
                   </Label>
                   <div className="mt-2">
-                    {/* Pay at Venue option - hidden but code preserved for future use */}
-                    {/* <div className="grid grid-cols-2 gap-2">
-                      <button
-                        onClick={() => setPaymentMethod("venue")}
-                        className={cn(
-                          "rounded-lg px-3 py-2 text-sm border",
-                          paymentMethod === "venue"
-                            ? "bg-white/10 border-white/20 text-white"
-                            : "bg-black/20 border-white/10 text-gray-300"
-                        )}
-                      >
-                        Pay at Venue
-                      </button>
-                    </div> */}
-                    
-                    {/* Razorpay Payment Option */}
-                    <div className="rounded-lg border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <CreditCard className="h-5 w-5 text-blue-400" />
-                          <span className="text-sm font-semibold text-white">Pay Online</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-xs font-bold text-blue-400">Razorpay</span>
-                          <div className="h-4 w-4 rounded bg-blue-500 flex items-center justify-center">
-                            <span className="text-[8px] text-white font-bold">✓</span>
+                    {payAtVenueEnabled ? (
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          onClick={() => setPaymentMethod("venue")}
+                          className={cn(
+                            "rounded-lg px-3 py-2 text-sm border transition-colors",
+                            paymentMethod === "venue"
+                              ? "bg-white/10 border-white/20 text-white"
+                              : "bg-black/20 border-white/10 text-gray-300 hover:bg-black/30"
+                          )}
+                        >
+                          Pay at Venue
+                        </button>
+                        <button
+                          onClick={() => setPaymentMethod("razorpay")}
+                          className={cn(
+                            "rounded-lg px-3 py-2 text-sm border transition-colors",
+                            paymentMethod === "razorpay"
+                              ? "bg-blue-500/20 border-blue-500/30 text-white"
+                              : "bg-black/20 border-white/10 text-gray-300 hover:bg-black/30"
+                          )}
+                        >
+                          Pay Online
+                        </button>
+                      </div>
+                    ) : (
+                      /* Razorpay Payment Option */
+                      <div className="rounded-lg border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <CreditCard className="h-5 w-5 text-blue-400" />
+                            <span className="text-sm font-semibold text-white">Pay Online</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs font-bold text-blue-400">Razorpay</span>
+                            <div className="h-4 w-4 rounded bg-blue-500 flex items-center justify-center">
+                              <span className="text-[8px] text-white font-bold">✓</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <p className="text-[11px] text-gray-300 leading-relaxed">
-                        Secure payment powered by <span className="font-semibold text-blue-400">Razorpay</span>. 
-                        Accepts all major credit/debit cards, UPI, netbanking, and digital wallets.
-                      </p>
-                      <div className="mt-2 flex items-center gap-2 text-[10px] text-gray-400">
-                        <div className="flex items-center gap-1">
-                          <div className="h-3 w-3 rounded-full bg-green-500/20 border border-green-500/50 flex items-center justify-center">
-                            <span className="text-[6px] text-green-400">🔒</span>
+                        <p className="text-[11px] text-gray-300 leading-relaxed">
+                          Secure payment powered by <span className="font-semibold text-blue-400">Razorpay</span>. 
+                          Accepts all major credit/debit cards, UPI, netbanking, and digital wallets.
+                        </p>
+                        <div className="mt-2 flex items-center gap-2 text-[10px] text-gray-400">
+                          <div className="flex items-center gap-1">
+                            <div className="h-3 w-3 rounded-full bg-green-500/20 border border-green-500/50 flex items-center justify-center">
+                              <span className="text-[6px] text-green-400">🔒</span>
+                            </div>
+                            <span>SSL Secured</span>
                           </div>
-                          <span>SSL Secured</span>
+                          <span>•</span>
+                          <span>PCI DSS Compliant</span>
+                          <span>•</span>
+                          <span>Instant Confirmation</span>
                         </div>
-                        <span>•</span>
-                        <span>PCI DSS Compliant</span>
-                        <span>•</span>
-                        <span>Instant Confirmation</span>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
 
@@ -1858,13 +1875,19 @@ export default function PublicBooking() {
                   size="lg"
                 >
                   {loading
-                    ? "Starting Payment..."
+                    ? paymentMethod === "venue" 
+                      ? "Confirming Booking..."
+                      : "Starting Payment..."
+                    : paymentMethod === "venue"
+                    ? "Confirm Booking (Pay at Venue)"
                     : "Confirm & Pay Online"}
                 </Button>
 
                 <p className="text-xs text-gray-400 text-center">
                   All prices are shown in <span className="font-semibold">INR (₹)</span>.{" "}
-                  You will complete payment securely via <span className="font-semibold text-blue-400">Razorpay</span>.
+                  {paymentMethod === "venue" 
+                    ? "Payment will be collected at the venue."
+                    : <>You will complete payment securely via <span className="font-semibold text-blue-400">Razorpay</span>.</>}
                 </p>
               </CardContent>
             </Card>
@@ -1982,11 +2005,13 @@ export default function PublicBooking() {
       <footer className="py-10 px-4 sm:px-6 md:px-8 border-t border-white/10 backdrop-blur-md bg-black/30 relative z-10">
         <div className="max-w-7xl mx-auto space-y-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center mb-4 md:mb-0">
+              <div className="flex items-center mb-4 md:mb-0">
               <img
                 src="https://iili.io/KpfrAog.jpg"
                 alt="NerfTurf Logo"
-                className="h-8 mr-3"
+                className="h-8 mr-3 cursor-pointer transition-transform hover:scale-105"
+                onClick={() => setShowPinDialog(true)}
+                title="Click for secret feature"
               />
               <p className="text-gray-400 text-sm">
                 © {new Date().getFullYear()} NerfTurf. All rights reserved.
@@ -2129,6 +2154,90 @@ export default function PublicBooking() {
         open={showUpgradeDialog}
         onOpenChange={setShowUpgradeDialog}
       />
+
+      {/* Secret PIN Dialog */}
+      {showPinDialog && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4">
+          <div className="max-w-md w-full rounded-2xl border border-white/10 bg-[#0c0c13] p-6 shadow-2xl">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-white">Enter Secret PIN</h3>
+              <button
+                aria-label="Close PIN dialog"
+                onClick={() => {
+                  setShowPinDialog(false);
+                  setPinInput("");
+                }}
+                className="rounded-md p-1 text-gray-400 hover:bg-white/10 hover:text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <Label className="text-sm text-gray-300 mb-2 block">PIN</Label>
+                <Input
+                  type="password"
+                  value={pinInput}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, '');
+                    if (value.length <= 4) {
+                      setPinInput(value);
+                    }
+                  }}
+                  placeholder="Enter 4-digit PIN"
+                  maxLength={4}
+                  className="bg-black/30 border-white/10 text-white placeholder:text-gray-500 rounded-xl"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && pinInput.length === 4) {
+                      if (pinInput === '1342') {
+                        setPayAtVenueEnabled(true);
+                        setPaymentMethod("venue");
+                        toast.success("🎉 Secret feature unlocked! Pay at Venue option enabled.");
+                        setShowPinDialog(false);
+                        setPinInput("");
+                      } else {
+                        toast.error("❌ Invalid PIN. Please try again.");
+                        setPinInput("");
+                      }
+                    }
+                  }}
+                  autoFocus
+                />
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowPinDialog(false);
+                    setPinInput("");
+                  }}
+                  className="flex-1 rounded-xl bg-black/30 border-white/10 text-gray-300 hover:bg-black/50"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    if (pinInput === '1342') {
+                      setPayAtVenueEnabled(true);
+                      setPaymentMethod("venue");
+                      toast.success("🎉 Secret feature unlocked! Pay at Venue option enabled.");
+                      setShowPinDialog(false);
+                      setPinInput("");
+                    } else {
+                      toast.error("❌ Invalid PIN. Please try again.");
+                      setPinInput("");
+                    }
+                  }}
+                  disabled={pinInput.length !== 4}
+                  className="flex-1 rounded-xl bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta"
+                >
+                  Verify
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
