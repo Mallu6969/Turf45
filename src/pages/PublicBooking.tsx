@@ -987,7 +987,9 @@ export default function PublicBooking() {
   const initiateRazorpay = async () => {
     // 1. Validate inputs
     const slotsToBook = selectedSlotRange.length > 0 ? selectedSlotRange : (selectedSlot ? [selectedSlot] : []);
-    const totalPrice = finalPrice * slotsToBook.length;
+    // finalPrice already includes all slots (calculateOriginalPrice multiplies by numberOfSlots)
+    // So we don't need to multiply again
+    const totalPrice = finalPrice;
 
     if (totalPrice <= 0) {
       toast.error("Amount must be greater than 0 for online payment.");
@@ -1013,8 +1015,9 @@ export default function PublicBooking() {
         duration: bookingDuration,
         customer: customerInfo,
         pricing: {
-          original: originalPrice * slotsToBook.length,
-          discount: discount * slotsToBook.length,
+          // originalPrice and discount already include all slots, no need to multiply again
+          original: originalPrice,
+          discount: discount,
           final: totalPrice,
           coupons: Object.values(appliedCoupons).join(","),
         },
