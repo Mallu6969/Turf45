@@ -580,6 +580,7 @@ export default function PublicBooking() {
   }
 
   const allowedCoupons = [
+    "TES1342",
     "NerfTurf25",
     "NerfTurf50",
     "HH99",
@@ -619,6 +620,12 @@ export default function PublicBooking() {
       (id) => stations.find((s) => s.id === id && s.type === "vr")
     );
     const happyHourActive = isHappyHour(selectedDate, selectedSlot);
+
+    if (code === "TES1342") {
+      setAppliedCoupons({ all: "TES1342" });
+      toast.success("🧪 TES1342 applied: Test coupon - Price set to ₹1 for payment testing!");
+      return;
+    }
 
     if (code === "NerfTurf50") {
       if (!validateStudentID()) return;
@@ -745,6 +752,11 @@ export default function PublicBooking() {
     if (appliedCoupons["all"]) {
       if (appliedCoupons["all"] === "AXEIST")
         return { total: original, breakdown: { all: original } };
+      if (appliedCoupons["all"] === "TES1342") {
+        // Test coupon: Set price to ₹1 (discount = original - 1)
+        const disc = Math.max(original - 1, 0);
+        return { total: disc, breakdown: { all: disc } };
+      }
       if (appliedCoupons["all"] === "NerfTurf25") {
         const disc = original * 0.25;
         return { total: disc, breakdown: { all: disc } };
@@ -1703,8 +1715,8 @@ export default function PublicBooking() {
                   </div>
                 )}
 
-                {/* Coupon Code Section - Hidden for now */}
-                <div className="hidden">
+                {/* Coupon Code Section */}
+                <div>
                   <Label className="text-xs font-semibold text-gray-400 uppercase">
                     Coupon Code
                   </Label>

@@ -137,6 +137,7 @@ export default function PublicPaymentSuccess() {
 
       // 4) Create bookings (one per station per slot)
       const rows: any[] = [];
+      const totalBookings = pb.selectedStations.length * pb.slots.length;
       pb.selectedStations.forEach((station_id) => {
         pb.slots.forEach((slot) => {
           rows.push({
@@ -147,9 +148,9 @@ export default function PublicPaymentSuccess() {
             end_time: slot.end_time,
             duration: pb.duration,
             status: "confirmed",
-            original_price: pb.pricing.original / pb.slots.length,
+            original_price: pb.pricing.original / totalBookings,
             discount_percentage: pb.pricing.discount > 0 ? (pb.pricing.discount / pb.pricing.original) * 100 : null,
-            final_price: pb.pricing.final / pb.slots.length,
+            final_price: pb.pricing.final / totalBookings,
             coupon_code: pb.pricing.coupons || null,
             payment_mode: "razorpay",
             payment_txn_id: paymentId,
