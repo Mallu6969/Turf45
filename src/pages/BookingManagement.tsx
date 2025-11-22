@@ -187,6 +187,55 @@ const getDateRangeFromPreset = (preset: string) => {
   }
 };
 
+// Helper function to calculate revenue by grouping bookings with the same payment_txn_id
+// This ensures that when a customer pays once for multiple slots, we only count the payment once
+const calculateRevenue = (bookings: Booking[]) => {
+  // Group bookings by payment_txn_id
+  const paymentGroups = new Map<string, Booking[]>();
+  const ungroupedBookings: Booking[] = [];
+
+  bookings.forEach(b => {
+    if (b.payment_txn_id) {
+      const txnId = b.payment_txn_id;
+      if (!paymentGroups.has(txnId)) {
+        paymentGroups.set(txnId, []);
+      }
+      paymentGroups.get(txnId)!.push(b);
+    } else {
+      ungroupedBookings.push(b);
+    }
+  });
+
+  // For each payment group, calculate the actual payment amount
+  let revenue = 0;
+  paymentGroups.forEach((groupBookings) => {
+    if (groupBookings.length === 1) {
+      // Single booking - use its final_price
+      revenue += groupBookings[0].final_price || 0;
+    } else {
+      // Multiple bookings with same payment_txn_id - only count the payment once
+      // Check if all bookings have the same final_price
+      const firstPrice = groupBookings[0].final_price || 0;
+      const allSame = groupBookings.every(b => (b.final_price || 0) === firstPrice);
+      
+      if (allSame) {
+        // All bookings have the same price - they likely weren't divided correctly
+        // Use one booking's price as the total payment amount
+        revenue += firstPrice;
+      } else {
+        // Prices are different - they were divided correctly, so sum them to get total payment
+        const sum = groupBookings.reduce((s, b) => s + (b.final_price || 0), 0);
+        revenue += sum;
+      }
+    }
+  });
+
+  // Add ungrouped bookings (those without payment_txn_id)
+  revenue += ungroupedBookings.reduce((sum, b) => sum + (b.final_price || 0), 0);
+
+  return revenue;
+};
+
 export default function BookingManagement() {
   const { hasBookingAccess, isLoading: subscriptionLoading } = useSubscription();
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
@@ -570,7 +619,7 @@ export default function BookingManagement() {
     const totalBookings = calendarBookings.length;
     const completedBookings = calendarBookings.filter(b => b.status === 'completed').length;
     const couponBookings = calendarBookings.filter(b => b.coupon_code).length;
-    const totalRevenue = calendarBookings.reduce((sum, b) => sum + (b.final_price || 0), 0);
+    const totalRevenue = calculateRevenue(calendarBookings);
 
     return (
       <Card className="bg-background border-border shadow-lg">
@@ -968,8 +1017,8 @@ export default function BookingManagement() {
     const returningCustomers = totalCustomers - newCustomersCount;
     const retentionRate = totalCustomers ? (returningCustomers / totalCustomers) * 100 : 0;
 
-    const currentRevenue = currentPeriodData.reduce((sum, b) => sum + (b.final_price || 0), 0);
-    const previousRevenue = previousPeriodData.reduce((sum, b) => sum + (b.final_price || 0), 0);
+    const currentRevenue = calculateRevenue(currentPeriodData);
+    const previousRevenue = calculateRevenue(previousPeriodData);
     const revenueTrend = previousRevenue ? ((currentRevenue - previousRevenue) / previousRevenue) * 100 : 0;
 
     const currentBookingCount = currentPeriodData.length;
