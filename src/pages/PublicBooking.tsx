@@ -921,7 +921,6 @@ export default function PublicBooking() {
 
       const couponCodes = Object.values(appliedCoupons).join(",");
       const bookingDuration = 30; // 30 minutes per slot
-      const slotsToBook = selectedSlotRange.length > 0 ? selectedSlotRange : [selectedSlot!];
       
       // Create a booking row for each slot
       const rows: any[] = [];
