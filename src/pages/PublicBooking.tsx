@@ -33,6 +33,13 @@ import {
   CreditCard,
   Headset,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { format, parse, getDay } from "date-fns";
 
@@ -171,6 +178,7 @@ export default function PublicBooking() {
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
   const [bookingConfirmationData, setBookingConfirmationData] = useState<any>(null);
   const [showLegalDialog, setShowLegalDialog] = useState(false);
+  const [showPaymentWarning, setShowPaymentWarning] = useState(false);
   const [legalDialogType, setLegalDialogType] = useState<
     "terms" | "privacy" | "contact"
   >("terms");
@@ -1113,9 +1121,25 @@ export default function PublicBooking() {
         },
       };
 
+      // Show warning dialog before opening payment gateway
+      setShowPaymentWarning(true);
+      
+      // Auto-dismiss warning after 4 seconds (gives user time to read it)
+      const warningTimer = setTimeout(() => {
+        setShowPaymentWarning(false);
+      }, 4000);
+
       const rzp = new (window as any).Razorpay(options);
 
+      // Close warning when payment gateway opens (if ready event fires)
+      rzp.on("ready", function() {
+        clearTimeout(warningTimer);
+        setShowPaymentWarning(false);
+      });
+
       rzp.on("payment.failed", function (response: any) {
+        clearTimeout(warningTimer);
+        setShowPaymentWarning(false);
         const error = response.error?.description || response.error?.reason || "Payment failed";
         toast.error(`Payment failed: ${error}`);
         setLoading(false);
@@ -1123,8 +1147,14 @@ export default function PublicBooking() {
       });
 
       rzp.open();
+      
+      // Close warning after payment gateway is opened (fallback)
+      setTimeout(() => {
+        setShowPaymentWarning(false);
+      }, 3500);
     } catch (e: any) {
       console.error("Razorpay payment error:", e);
+      setShowPaymentWarning(false);
       toast.error(`Unable to start payment: ${e?.message || e}`);
       setLoading(false);
     }
@@ -1150,6 +1180,11 @@ export default function PublicBooking() {
     if (!customerInfo.name.trim()) {
       toast.error("Please enter your name");
       return;
+    }
+
+    // Show warning immediately when user clicks confirm
+    if (paymentMethod === "razorpay") {
+      setShowPaymentWarning(true);
     }
 
     if (paymentMethod === "venue") {
@@ -1319,6 +1354,39 @@ export default function PublicBooking() {
   };
 
   return (
+    <>
+      {/* Payment Warning Dialog - Non-dismissible */}
+      <Dialog open={showPaymentWarning} onOpenChange={() => {}}>
+        <DialogContent className="bg-gradient-to-br from-red-950/95 to-orange-950/95 border-2 border-red-500/50 shadow-2xl max-w-md z-[9999]" onPointerDownOutside={(e) => e.preventDefault()} onEscapeKeyDown={(e) => e.preventDefault()}>
+          <DialogHeader>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-red-500/20 rounded-full">
+                <AlertTriangle className="h-6 w-6 text-red-400 animate-pulse" />
+              </div>
+              <DialogTitle className="text-2xl font-bold text-red-100">
+                ⚠️ IMPORTANT WARNING
+              </DialogTitle>
+            </div>
+            <DialogDescription className="text-orange-100 text-base font-semibold leading-relaxed space-y-3 pt-2">
+              <p className="text-lg font-bold text-white">
+                DO NOT CLOSE OR REFRESH THIS PAGE!
+              </p>
+              <p className="text-orange-200">
+                Your booking is being processed. Please wait until you see the booking confirmation page.
+              </p>
+              <p className="text-yellow-200 font-medium">
+                Closing or refreshing now may result in payment failure or incomplete booking.
+              </p>
+              <div className="bg-black/30 rounded-lg p-3 mt-4 border border-yellow-500/30">
+                <p className="text-sm text-yellow-100">
+                  💡 <strong>Tip:</strong> Keep this page open until you see "Booking Confirmed" message.
+                </p>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#1a1a1a] via-[#1a0f1a] to-[#1a1a1a]">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-nerfturf-purple/20 blur-3xl" />
@@ -2275,5 +2343,6 @@ export default function PublicBooking() {
         </div>
       )}
     </div>
+    </>
   );
 }

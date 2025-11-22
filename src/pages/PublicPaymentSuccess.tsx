@@ -2,8 +2,15 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import BookingConfirmationDialog from "@/components/BookingConfirmationDialog";
-import { CheckCircle2, Loader2, XCircle, Sparkles } from "lucide-react";
+import { CheckCircle2, Loader2, XCircle, Sparkles, AlertTriangle } from "lucide-react";
 import { format } from "date-fns";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 type PendingBooking = {
   selectedStations: string[];
@@ -37,6 +44,7 @@ export default function PublicPaymentSuccess() {
   const [msg, setMsg] = useState("Verifying your payment…");
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
   const [bookingConfirmationData, setBookingConfirmationData] = useState<any>(null);
+  const [showPaymentWarning, setShowPaymentWarning] = useState(true);
 
   useEffect(() => {
     const run = async () => {
@@ -84,6 +92,7 @@ export default function PublicPaymentSuccess() {
 
       setStatus("creating");
       setMsg("Payment successful! Creating your booking…");
+      setShowPaymentWarning(true);
 
       // 3) Ensure customer exists (by phone); create if needed
       let customerId = pb.customer.id;
@@ -210,6 +219,7 @@ export default function PublicPaymentSuccess() {
       setBookingConfirmationData(confirmationData);
       setStatus("done");
       setMsg("Booking confirmed successfully!");
+      setShowPaymentWarning(false);
       
       // Show confirmation dialog after a brief delay
       setTimeout(() => {
@@ -246,6 +256,38 @@ export default function PublicPaymentSuccess() {
 
   return (
     <>
+      {/* Payment Warning Dialog - Non-dismissible */}
+      <Dialog open={showPaymentWarning && (status === "checking" || status === "creating")} onOpenChange={() => {}}>
+        <DialogContent className="bg-gradient-to-br from-red-950/95 to-orange-950/95 border-2 border-red-500/50 shadow-2xl max-w-md" onPointerDownOutside={(e) => e.preventDefault()} onEscapeKeyDown={(e) => e.preventDefault()}>
+          <DialogHeader>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-red-500/20 rounded-full">
+                <AlertTriangle className="h-6 w-6 text-red-400 animate-pulse" />
+              </div>
+              <DialogTitle className="text-2xl font-bold text-red-100">
+                ⚠️ IMPORTANT WARNING
+              </DialogTitle>
+            </div>
+            <DialogDescription className="text-orange-100 text-base font-semibold leading-relaxed space-y-3 pt-2">
+              <p className="text-lg font-bold text-white">
+                DO NOT CLOSE OR REFRESH THIS PAGE!
+              </p>
+              <p className="text-orange-200">
+                Your booking is being processed. Please wait until you see the booking confirmation page.
+              </p>
+              <p className="text-yellow-200 font-medium">
+                Closing or refreshing now may result in payment failure or incomplete booking.
+              </p>
+              <div className="bg-black/30 rounded-lg p-3 mt-4 border border-yellow-500/30">
+                <p className="text-sm text-yellow-100">
+                  💡 <strong>Tip:</strong> Keep this page open until you see "Booking Confirmed" message.
+                </p>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0a0a0f] p-6 relative overflow-hidden">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
