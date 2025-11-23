@@ -144,59 +144,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const checkExistingUser = async () => {
       try {
+        // Only check for existing stored session - no auto-login
         const storedAdmin = localStorage.getItem('cuephoriaAdmin');
         if (storedAdmin) {
           setUser(JSON.parse(storedAdmin));
-          setIsLoading(false);
-          return;
-        }
-
-        // Get the first admin user (prefer is_admin = true, otherwise get first user)
-        const { data, error } = await supabase
-          .from('admin_users')
-          .select('id, username, is_admin')
-          .eq('is_admin', true)
-          .limit(1)
-          .maybeSingle();
-        
-        if (error || !data) {
-          // If no admin found with is_admin = true, try to get any user (for backward compatibility)
-          const { data: fallbackData, error: fallbackError } = await supabase
-            .from('admin_users')
-            .select('id, username, is_admin')
-            .limit(1)
-            .maybeSingle();
-          
-          if (fallbackError) {
-            console.error('Error fetching admin user:', fallbackError);
-            setIsLoading(false);
-            return;
-          }
-          
-          if (fallbackData) {
-            const adminUser = {
-              id: fallbackData.id,
-              username: fallbackData.username,
-              isAdmin: fallbackData.is_admin
-            };
-            setUser(adminUser);
-            localStorage.setItem('cuephoriaAdmin', JSON.stringify(adminUser));
-          }
-          setIsLoading(false);
-          return;
-        }
-
-        if (data) {
-          const adminUser = {
-            id: data.id,
-            username: data.username,
-            isAdmin: data.is_admin
-          };
-          setUser(adminUser);
-          localStorage.setItem('cuephoriaAdmin', JSON.stringify(adminUser));
         }
       } catch (error) {
         console.error('Error checking existing user:', error);
+        // Clear invalid stored data
+        localStorage.removeItem('cuephoriaAdmin');
       } finally {
         setIsLoading(false);
       }

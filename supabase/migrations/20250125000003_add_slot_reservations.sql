@@ -4,14 +4,24 @@
 -- Reservation logic has been temporarily removed - can be re-implemented later
 
 -- Drop all existing versions of get_available_slots to avoid function overloading conflicts
-DROP FUNCTION IF EXISTS public.get_available_slots(date, uuid, integer);
-DROP FUNCTION IF EXISTS public.get_available_slots(date, uuid, integer, text);
+DO $$
+BEGIN
+  -- Drop function with 3 parameters
+  DROP FUNCTION IF EXISTS public.get_available_slots(date, uuid, integer);
+  
+  -- Drop function with 4 parameters (if it exists)
+  DROP FUNCTION IF EXISTS public.get_available_slots(date, uuid, integer, text);
+END $$;
 
 -- Create the correct version without p_customer_phone parameter
-CREATE OR REPLACE FUNCTION public.get_available_slots(p_date date, p_station_id uuid, p_slot_duration integer DEFAULT 60)
- RETURNS TABLE(start_time time without time zone, end_time time without time zone, is_available boolean)
- LANGUAGE plpgsql
-AS $function$
+CREATE OR REPLACE FUNCTION public.get_available_slots(
+  p_date date, 
+  p_station_id uuid, 
+  p_slot_duration integer DEFAULT 60
+)
+RETURNS TABLE(start_time time without time zone, end_time time without time zone, is_available boolean)
+LANGUAGE plpgsql
+AS $$
 DECLARE
   opening_time TIME := '11:00:00';  -- 11 AM opening time
   curr_time TIME;
@@ -104,4 +114,4 @@ BEGIN
     END IF;
   END LOOP;
 END;
-$function$;
+$$;
