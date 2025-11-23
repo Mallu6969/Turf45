@@ -249,11 +249,50 @@ export default function PublicBooking() {
           fetchTodaysBookings();
         }
       )
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "slot_reservations" },
+        (payload) => {
+          // Check if the reserved slot is one we're currently viewing
+          if (selectedStations.length > 0 && selectedDate) {
+            const reservedStationId = payload.new.station_id;
+            const reservedDate = payload.new.booking_date;
+            const reservedStartTime = payload.new.start_time;
+            const reservedEndTime = payload.new.end_time;
+            const dateStr = format(selectedDate, "yyyy-MM-dd");
+            
+            // Only notify if it's for a station we're viewing and the same date
+            if (selectedStations.includes(reservedStationId) && reservedDate === dateStr) {
+              // Check if this slot is in our current selection
+              const isCurrentlySelected = selectedSlotRange.some(slot => 
+                slot.start_time === reservedStartTime && slot.end_time === reservedEndTime
+              ) || (selectedSlot && 
+                selectedSlot.start_time === reservedStartTime && 
+                selectedSlot.end_time === reservedEndTime
+              );
+              
+              // Only notify if it's NOT our own reservation (check by phone if available)
+              const normalizedPhone = customerNumber ? normalizePhoneNumber(customerNumber) : null;
+              const isOurReservation = payload.new.customer_phone === normalizedPhone;
+              
+              if (!isOurReservation && !isCurrentlySelected) {
+                const stationName = stations.find(s => s.id === reservedStationId)?.name || "a station";
+                toast.info(
+                  `⚠️ ${stationName}: Slot ${reservedStartTime} - ${reservedEndTime} is being booked by another person`,
+                  { duration: 4000 }
+                );
+                // Refresh slots to show updated availability
+                fetchAvailableSlots();
+              }
+            }
+          }
+        }
+      )
       .subscribe();
     return () => {
       supabase.removeChannel(ch);
     };
-  }, [selectedStations, selectedDate]);
+  }, [selectedStations, selectedDate, selectedSlot, selectedSlotRange, customerNumber, stations]);
 
   useEffect(() => {
     if (selectedStations.length > 0 && selectedDate) fetchAvailableSlots();
@@ -618,29 +657,39 @@ export default function PublicBooking() {
     return availableIds;
   }
 
+  // Helper function to release reservations
+  const releaseReservations = async (slotsToRelease: TimeSlot[], stationsToRelease: string[]) => {
+    if (slotsToRelease.length === 0 || stationsToRelease.length === 0) return;
+    
+    const dateStr = format(selectedDate, "yyyy-MM-dd");
+    const releasePromises: Promise<any>[] = [];
+    
+    for (const releaseSlot of slotsToRelease) {
+      for (const stationId of stationsToRelease) {
+        releasePromises.push(
+          supabase.rpc("release_slot_reservation", {
+            p_station_id: stationId,
+            p_booking_date: dateStr,
+            p_start_time: releaseSlot.start_time,
+            p_end_time: releaseSlot.end_time,
+          }).catch((e) => {
+            // Silently fail - reservation might have expired already
+            console.log("Failed to release reservation:", e);
+          })
+        );
+      }
+    }
+    
+    await Promise.all(releasePromises);
+  };
+
   async function handleSlotSelect(slot: TimeSlot | null, range?: TimeSlot[]) {
     // Handle deselection - release any existing reservations
     if (!slot) {
       // Release reservations for previously selected slots
       if (selectedSlot && selectedStations.length > 0) {
         const slotsToRelease = selectedSlotRange.length > 0 ? selectedSlotRange : [selectedSlot];
-        const dateStr = format(selectedDate, "yyyy-MM-dd");
-        
-        for (const releaseSlot of slotsToRelease) {
-          for (const stationId of selectedStations) {
-            try {
-              await supabase.rpc("release_slot_reservation", {
-                p_station_id: stationId,
-                p_booking_date: dateStr,
-                p_start_time: releaseSlot.start_time,
-                p_end_time: releaseSlot.end_time,
-              });
-            } catch (e) {
-              // Silently fail - reservation might have expired already
-              console.log("Failed to release reservation:", e);
-            }
-          }
-        }
+        await releaseReservations(slotsToRelease, selectedStations);
       }
       
       setSelectedSlot(null);
@@ -654,6 +703,20 @@ export default function PublicBooking() {
     }
     
     if (selectedStations.length > 0) {
+      // FIRST: Release old reservations if switching to different slots
+      if (selectedSlot && selectedSlotRange.length > 0) {
+        const slotsToCheck = range && range.length > 1 ? range : [slot];
+        const oldSlots = selectedSlotRange.filter(
+          oldSlot => !slotsToCheck.some(newSlot => 
+            newSlot.start_time === oldSlot.start_time && newSlot.end_time === oldSlot.end_time
+          )
+        );
+        
+        if (oldSlots.length > 0) {
+          await releaseReservations(oldSlots, selectedStations);
+        }
+      }
+      
       // Check availability for all slots in range
       const slotsToCheck = range && range.length > 1 ? range : [slot];
       let allAvailable = true;
@@ -676,7 +739,9 @@ export default function PublicBooking() {
       // Reserve all slots in the range for all selected stations
       const dateStr = format(selectedDate, "yyyy-MM-dd");
       const normalizedPhone = customerNumber ? normalizePhoneNumber(customerNumber) : null;
+      const reservationResults: { success: boolean; slot: TimeSlot; stationId: string }[] = [];
       
+      // Try to reserve all slots
       for (const reserveSlot of slotsToCheck) {
         for (const stationId of selectedStations) {
           try {
@@ -691,9 +756,32 @@ export default function PublicBooking() {
             
             if (error) throw error;
             
+            reservationResults.push({
+              success: data === true,
+              slot: reserveSlot,
+              stationId: stationId
+            });
+            
             // If reservation failed (slot already reserved), show error
             if (data === false) {
-              toast.error("This slot was just booked by someone else. Please select another slot.");
+              const stationName = stations.find(s => s.id === stationId)?.name || "station";
+              const slotTime = `${reserveSlot.start_time} - ${reserveSlot.end_time}`;
+              toast.error(
+                `⏰ This slot (${slotTime}) for ${stationName} is currently being booked by another person. Please select a different slot.`,
+                { duration: 5000 }
+              );
+              
+              // Release any reservations we just made
+              const successfulReservations = reservationResults
+                .filter(r => r.success)
+                .map(r => ({ slot: r.slot, stationId: r.stationId }));
+              
+              if (successfulReservations.length > 0) {
+                const slotsToRelease = [...new Set(successfulReservations.map(r => r.slot))];
+                const stationsToRelease = [...new Set(successfulReservations.map(r => r.stationId))];
+                await releaseReservations(slotsToRelease, stationsToRelease);
+              }
+              
               setSelectedSlot(null);
               setSelectedSlotRange([]);
               // Refresh available slots
@@ -702,6 +790,18 @@ export default function PublicBooking() {
             }
           } catch (e) {
             console.error("Failed to reserve slot:", e);
+            
+            // Release any successful reservations we made before the error
+            const successfulReservations = reservationResults
+              .filter(r => r.success)
+              .map(r => ({ slot: r.slot, stationId: r.stationId }));
+            
+            if (successfulReservations.length > 0) {
+              const slotsToRelease = [...new Set(successfulReservations.map(r => r.slot))];
+              const stationsToRelease = [...new Set(successfulReservations.map(r => r.stationId))];
+              await releaseReservations(slotsToRelease, stationsToRelease);
+            }
+            
             toast.error("Failed to reserve slot. Please try again.");
             setSelectedSlot(null);
             setSelectedSlotRange([]);
@@ -710,30 +810,8 @@ export default function PublicBooking() {
         }
       }
       
-      // Release old reservations if switching slots
-      if (selectedSlot && selectedSlotRange.length > 0) {
-        const oldSlots = selectedSlotRange.filter(
-          oldSlot => !slotsToCheck.some(newSlot => 
-            newSlot.start_time === oldSlot.start_time && newSlot.end_time === oldSlot.end_time
-          )
-        );
-        
-        for (const oldSlot of oldSlots) {
-          for (const stationId of selectedStations) {
-            try {
-              await supabase.rpc("release_slot_reservation", {
-                p_station_id: stationId,
-                p_booking_date: dateStr,
-                p_start_time: oldSlot.start_time,
-                p_end_time: oldSlot.end_time,
-              });
-            } catch (e) {
-              // Silently fail
-              console.log("Failed to release old reservation:", e);
-            }
-          }
-        }
-      }
+      // All reservations successful
+      toast.success(`✅ Slot reserved! You have 5 minutes to complete your booking.`, { duration: 3000 });
     }
     
     setSelectedSlot(slot);
