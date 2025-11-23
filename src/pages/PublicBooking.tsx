@@ -316,7 +316,18 @@ export default function PublicBooking() {
         .select("id, name, type, hourly_rate")
         .order("name");
       if (error) throw error;
-      setStations((data || []).map(station => ({
+      // Sort stations: 8ball (Tables) first, then PS5, then VR
+      const sortedStations = (data || []).sort((a, b) => {
+        const typeOrder: Record<string, number> = { '8ball': 0, 'ps5': 1, 'vr': 2 };
+        const aOrder = typeOrder[a.type] ?? 99;
+        const bOrder = typeOrder[b.type] ?? 99;
+        if (aOrder !== bOrder) {
+          return aOrder - bOrder;
+        }
+        // If same type, sort by name
+        return a.name.localeCompare(b.name);
+      });
+      setStations(sortedStations.map(station => ({
         ...station,
         type: station.type as StationType
       })));
