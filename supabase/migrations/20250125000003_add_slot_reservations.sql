@@ -1,6 +1,8 @@
--- Revert get_available_slots to use the slot blocking fix from 20250125000002
--- This migration just ensures the function matches the fix (only block current slot when session is running)
--- Reservation logic has been temporarily removed
+-- Revert: Remove slot reservation implementation
+-- This migration ensures get_available_slots uses the slot blocking fix from 20250125000002
+-- (only block current slot when session is running, not all slots)
+-- Reservation logic has been temporarily removed - can be re-implemented later
+
 CREATE OR REPLACE FUNCTION public.get_available_slots(p_date date, p_station_id uuid, p_slot_duration integer DEFAULT 60)
  RETURNS TABLE(start_time time without time zone, end_time time without time zone, is_available boolean)
  LANGUAGE plpgsql
@@ -10,7 +12,6 @@ DECLARE
   curr_time TIME;
   slot_end_time TIME;
 BEGIN
-  
   -- Generate time slots from opening to midnight
   curr_time := opening_time;
   
@@ -36,7 +37,6 @@ BEGIN
             (b.start_time >= curr_time AND b.end_time <= slot_end_time)
           )
       );
-      
       
       -- Check if there's an active session that overlaps with this slot for today
       -- Only block the CURRENT slot (where the session is happening right now)
@@ -72,7 +72,6 @@ BEGIN
         )
     );
     
-    
     -- Check if there's an active session that overlaps with this slot for today
     -- Only block the CURRENT slot (where the session is happening right now)
     -- Past and future slots should remain available
@@ -101,4 +100,3 @@ BEGIN
   END LOOP;
 END;
 $function$;
-
