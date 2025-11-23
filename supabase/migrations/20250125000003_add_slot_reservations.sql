@@ -121,15 +121,17 @@ BEGIN
 END;
 $$;
 
--- Update get_available_slots to exclude reserved slots
-CREATE OR REPLACE FUNCTION public.get_available_slots(p_date date, p_station_id uuid, p_slot_duration integer DEFAULT 60)
- RETURNS TABLE(start_time time without time zone, end_time time without time zone, is_available boolean)
+-- Update get_available_slots to return reservation status
+CREATE OR REPLACE FUNCTION public.get_available_slots(p_date date, p_station_id uuid, p_slot_duration integer DEFAULT 60, p_customer_phone TEXT DEFAULT NULL)
+ RETURNS TABLE(start_time time without time zone, end_time time without time zone, is_available boolean, is_reserved boolean, reserved_by_me boolean)
  LANGUAGE plpgsql
 AS $function$
 DECLARE
   opening_time TIME := '11:00:00';  -- 11 AM opening time
   curr_time TIME;
   slot_end_time TIME;
+  v_is_reserved BOOLEAN;
+  v_reserved_by_me BOOLEAN;
 BEGIN
   -- Clean up expired reservations first
   PERFORM public.cleanup_expired_reservations();
@@ -161,8 +163,10 @@ BEGIN
       );
       
       -- Check if slot is reserved
+      v_is_reserved := FALSE;
+      v_reserved_by_me := FALSE;
       IF is_available THEN
-        is_available := NOT EXISTS (
+        SELECT EXISTS (
           SELECT 1
           FROM public.slot_reservations sr
           WHERE sr.station_id = p_station_id
@@ -170,7 +174,26 @@ BEGIN
             AND sr.start_time = curr_time
             AND sr.end_time = slot_end_time
             AND sr.expires_at > NOW()
-        );
+        ) INTO v_is_reserved;
+        
+        -- Check if reserved by current user
+        IF v_is_reserved AND p_customer_phone IS NOT NULL THEN
+          SELECT EXISTS (
+            SELECT 1
+            FROM public.slot_reservations sr
+            WHERE sr.station_id = p_station_id
+              AND sr.booking_date = p_date
+              AND sr.start_time = curr_time
+              AND sr.end_time = slot_end_time
+              AND sr.expires_at > NOW()
+              AND sr.customer_phone = p_customer_phone
+          ) INTO v_reserved_by_me;
+        END IF;
+        
+        -- Only mark as unavailable if reserved by someone else
+        IF v_is_reserved AND NOT v_reserved_by_me THEN
+          is_available := FALSE;
+        END IF;
       END IF;
       
       -- Check if there's an active session that overlaps with this slot for today
@@ -188,7 +211,7 @@ BEGIN
         );
       END IF;
       
-      RETURN QUERY SELECT curr_time, slot_end_time, is_available;
+      RETURN QUERY SELECT curr_time, slot_end_time, is_available, v_is_reserved, v_reserved_by_me;
       EXIT; -- This was the last slot
     END IF;
     
@@ -208,8 +231,10 @@ BEGIN
     );
     
     -- Check if slot is reserved
+    v_is_reserved := FALSE;
+    v_reserved_by_me := FALSE;
     IF is_available THEN
-      is_available := NOT EXISTS (
+      SELECT EXISTS (
         SELECT 1
         FROM public.slot_reservations sr
         WHERE sr.station_id = p_station_id
@@ -217,7 +242,26 @@ BEGIN
           AND sr.start_time = curr_time
           AND sr.end_time = slot_end_time
           AND sr.expires_at > NOW()
-      );
+      ) INTO v_is_reserved;
+      
+      -- Check if reserved by current user
+      IF v_is_reserved AND p_customer_phone IS NOT NULL THEN
+        SELECT EXISTS (
+          SELECT 1
+          FROM public.slot_reservations sr
+          WHERE sr.station_id = p_station_id
+            AND sr.booking_date = p_date
+            AND sr.start_time = curr_time
+            AND sr.end_time = slot_end_time
+            AND sr.expires_at > NOW()
+            AND sr.customer_phone = p_customer_phone
+        ) INTO v_reserved_by_me;
+      END IF;
+      
+      -- Only mark as unavailable if reserved by someone else
+      IF v_is_reserved AND NOT v_reserved_by_me THEN
+        is_available := FALSE;
+      END IF;
     END IF;
     
     -- Check if there's an active session that overlaps with this slot for today
@@ -235,7 +279,7 @@ BEGIN
       );
     END IF;
     
-    RETURN QUERY SELECT curr_time, slot_end_time, is_available;
+    RETURN QUERY SELECT curr_time, slot_end_time, is_available, v_is_reserved, v_reserved_by_me;
     
     -- Move to next slot
     curr_time := slot_end_time;

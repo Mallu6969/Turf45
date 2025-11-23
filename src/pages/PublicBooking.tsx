@@ -57,7 +57,9 @@ interface TimeSlot {
   start_time: string;
   end_time: string;
   is_available: boolean;
-  status?: 'available' | 'booked' | 'elapsed';
+  is_reserved?: boolean;
+  reserved_by_me?: boolean;
+  status?: 'available' | 'booked' | 'elapsed' | 'reserved';
 }
 interface CustomerInfo {
   id?: string;
@@ -444,14 +446,19 @@ export default function PublicBooking() {
       const slotDuration = 30; // All slots are 30 minutes
       
       if (selectedStations.length === 1) {
+        const normalizedPhone = customerNumber ? normalizePhoneNumber(customerNumber) : null;
         const { data, error } = await supabase.rpc("get_available_slots", {
           p_date: dateStr,
           p_station_id: selectedStations[0],
           p_slot_duration: slotDuration,
+          p_customer_phone: normalizedPhone,
         });
         if (error) throw error;
         
-        let slotsToSet = data || [];
+        let slotsToSet = (data || []).map((slot: any) => ({
+          ...slot,
+          is_available: slot.is_available || slot.reserved_by_me === true, // Available if actually available OR reserved by me
+        }));
         
         if (isToday) {
           const now = new Date();
@@ -477,12 +484,14 @@ export default function PublicBooking() {
         
         setAvailableSlots(slotsToSet);
       } else {
+        const normalizedPhone = customerNumber ? normalizePhoneNumber(customerNumber) : null;
         const results = await Promise.all(
           selectedStations.map((id) =>
             supabase.rpc("get_available_slots", {
               p_date: dateStr,
               p_station_id: id,
               p_slot_duration: slotDuration,
+              p_customer_phone: normalizedPhone,
             })
           )
         );
@@ -503,10 +512,34 @@ export default function PublicBooking() {
             union.set(k, union.get(k) || Boolean(s.is_available));
           });
         });
-        let merged = base.map((s) => ({
-          ...s,
-          is_available: union.get(key(s)) ?? false,
-        }));
+        let merged = base.map((s) => {
+          const slotKey = key(s);
+          const isAvailable = union.get(slotKey) ?? false;
+          // Check if any station has this slot reserved by me
+          const reservedByMe = results.some(r => {
+            const slot = (r.data || []).find((sl: any) => 
+              sl.start_time === s.start_time && 
+              sl.end_time === s.end_time && 
+              sl.reserved_by_me === true
+            );
+            return Boolean(slot);
+          });
+          const isReserved = results.some(r => {
+            const slot = (r.data || []).find((sl: any) => 
+              sl.start_time === s.start_time && 
+              sl.end_time === s.end_time && 
+              sl.is_reserved === true
+            );
+            return Boolean(slot);
+          });
+          
+          return {
+            ...s,
+            is_available: isAvailable || reservedByMe, // Available if actually available OR reserved by me
+            is_reserved: isReserved,
+            reserved_by_me: reservedByMe,
+          };
+        });
         
         if (isToday) {
           const now = new Date();
@@ -623,6 +656,7 @@ export default function PublicBooking() {
   async function filterStationsForSlot(slot: TimeSlot) {
     if (selectedStations.length === 0) return selectedStations;
     const dateStr = format(selectedDate, "yyyy-MM-dd");
+    const normalizedPhone = customerNumber ? normalizePhoneNumber(customerNumber) : null;
     
     const slotDuration = 30; // All slots are 30 minutes
     
@@ -632,13 +666,15 @@ export default function PublicBooking() {
           p_date: dateStr,
           p_station_id: stationId,
           p_slot_duration: slotDuration,
+          p_customer_phone: normalizedPhone,
         });
         if (error) return { stationId, available: false };
         const match = (data || []).find(
           (s: any) =>
             s.start_time === slot.start_time &&
             s.end_time === slot.end_time &&
-            s.is_available
+            // Available if: actually available OR reserved by me
+            (s.is_available || (s.reserved_by_me === true))
         );
         return { stationId, available: Boolean(match) };
       })
