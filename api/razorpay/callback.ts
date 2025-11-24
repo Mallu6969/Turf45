@@ -1,10 +1,237 @@
-export const config = { runtime: "edge" };
+// Using Node.js runtime to use Razorpay SDK and Supabase client
+export const config = {
+  maxDuration: 30, // 30 seconds
+};
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
 };
+
+// Helper functions (similar to webhook.ts)
+function getEnv(name: string): string | undefined {
+  if (typeof process !== "undefined" && process.env) {
+    return (process.env as any)[name];
+  }
+  return undefined;
+}
+
+async function createSupabaseClient() {
+  const { createClient } = await import('@supabase/supabase-js');
+  const supabaseUrl = getEnv("VITE_SUPABASE_URL") || getEnv("SUPABASE_URL");
+  const supabaseKey = getEnv("VITE_SUPABASE_PUBLISHABLE_KEY") || getEnv("SUPABASE_ANON_KEY");
+  
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error("Missing Supabase environment variables");
+  }
+  
+  return createClient(supabaseUrl, supabaseKey);
+}
+
+function getRazorpayCredentials() {
+  const mode = getEnv("RAZORPAY_MODE") || "test";
+  const isLive = mode === "live";
+  
+  return {
+    keyId: isLive
+      ? (getEnv("RAZORPAY_KEY_ID_LIVE") || getEnv("RAZORPAY_KEY_ID"))
+      : (getEnv("RAZORPAY_KEY_ID_TEST") || getEnv("RAZORPAY_KEY_ID")),
+    keySecret: isLive
+      ? (getEnv("RAZORPAY_KEY_SECRET_LIVE") || getEnv("RAZORPAY_KEY_SECRET"))
+      : (getEnv("RAZORPAY_KEY_SECRET_TEST") || getEnv("RAZORPAY_KEY_SECRET")),
+  };
+}
+
+async function fetchRazorpayOrder(orderId: string) {
+  const Razorpay = (await import('razorpay')).default;
+  const credentials = getRazorpayCredentials();
+  
+  if (!credentials.keyId || !credentials.keySecret) {
+    throw new Error("Missing Razorpay credentials");
+  }
+  
+  const razorpay = new Razorpay({
+    key_id: credentials.keyId,
+    key_secret: credentials.keySecret,
+  });
+  
+  try {
+    const order = await razorpay.orders.fetch(orderId);
+    return order;
+  } catch (err: any) {
+    console.error("❌ Failed to fetch Razorpay order:", err);
+    throw err;
+  }
+}
+
+function extractBookingData(orderNotes: any): any | null {
+  if (!orderNotes) return null;
+  
+  try {
+    if (orderNotes.booking_data) {
+      const base64Data = typeof orderNotes.booking_data === 'string' 
+        ? orderNotes.booking_data 
+        : Buffer.from(orderNotes.booking_data).toString('base64');
+      const decoded = Buffer.from(base64Data, 'base64').toString('utf-8');
+      return JSON.parse(decoded);
+    }
+    
+    if (orderNotes.booking_data_chunks) {
+      const chunks = parseInt(orderNotes.booking_data_chunks);
+      let bookingDataBase64 = '';
+      for (let i = 0; i < chunks; i++) {
+        bookingDataBase64 += orderNotes[`booking_data_${i}`] || '';
+      }
+      if (bookingDataBase64) {
+        const decoded = Buffer.from(bookingDataBase64, 'base64').toString('utf-8');
+        return JSON.parse(decoded);
+      }
+    }
+  } catch (err) {
+    console.error("❌ Failed to extract booking data from notes:", err);
+  }
+  
+  return null;
+}
+
+function normalizePhoneNumber(phone: string): string {
+  return phone.replace(/\D/g, '');
+}
+
+function generateCustomerID(phone: string): string {
+  const normalized = normalizePhoneNumber(phone);
+  const timestamp = Date.now().toString(36).slice(-4).toUpperCase();
+  const phoneHash = normalized.slice(-4);
+  return `CUE${phoneHash}${timestamp}`;
+}
+
+// Create booking in callback (backup to webhook)
+async function createBookingInCallback(paymentId: string, orderId: string) {
+  try {
+    const supabase = await createSupabaseClient();
+    
+    console.log("📦 Creating booking in callback:", { paymentId, orderId });
+    
+    // Check if booking already exists (idempotency - webhook might have created it)
+    const { data: existingBooking } = await supabase
+      .from("bookings")
+      .select("id")
+      .eq("payment_txn_id", paymentId)
+      .maybeSingle();
+    
+    if (existingBooking) {
+      console.log("✅ Booking already exists (created by webhook):", existingBooking.id);
+      return { success: true, alreadyExists: true };
+    }
+    
+    // Fetch order to get booking data
+    const razorpayOrder = await fetchRazorpayOrder(orderId);
+    const bookingData = extractBookingData(razorpayOrder.notes);
+    
+    if (!bookingData) {
+      console.warn("⚠️ No booking data found in order notes");
+      return { success: false, error: "No booking data found" };
+    }
+    
+    // Create customer if needed
+    const normalizedPhone = normalizePhoneNumber(bookingData.customer.phone);
+    let customerId = bookingData.customer.id;
+    
+    if (!customerId) {
+      const { data: existingCustomer } = await supabase
+        .from("customers")
+        .select("id, name, custom_id")
+        .eq("phone", normalizedPhone)
+        .maybeSingle();
+      
+      if (existingCustomer) {
+        customerId = existingCustomer.id;
+        console.log("✅ Found existing customer:", customerId);
+      } else {
+        const customerID = generateCustomerID(normalizedPhone);
+        const { data: created, error: cErr } = await supabase
+          .from("customers")
+          .insert({
+            name: bookingData.customer.name,
+            phone: normalizedPhone,
+            email: bookingData.customer.email || null,
+            custom_id: customerID,
+            is_member: false,
+            loyalty_points: 0,
+            total_spent: 0,
+            total_play_time: 0,
+          })
+          .select("id")
+          .single();
+        
+        if (cErr) {
+          if (cErr.code === '23505') {
+            // Race condition - fetch again
+            const { data: retryCustomer } = await supabase
+              .from("customers")
+              .select("id")
+              .eq("phone", normalizedPhone)
+              .maybeSingle();
+            if (retryCustomer) {
+              customerId = retryCustomer.id;
+            } else {
+              throw new Error("Customer creation failed: duplicate phone number");
+            }
+          } else {
+            throw cErr;
+          }
+        } else {
+          customerId = created!.id;
+          console.log("✅ Created new customer:", customerId);
+        }
+      }
+    }
+    
+    // Create bookings
+    const rows: any[] = [];
+    const totalBookings = bookingData.selectedStations.length * bookingData.slots.length;
+    
+    bookingData.selectedStations.forEach((station_id: string) => {
+      bookingData.slots.forEach((slot: any) => {
+        rows.push({
+          station_id,
+          customer_id: customerId!,
+          booking_date: bookingData.selectedDateISO,
+          start_time: slot.start_time,
+          end_time: slot.end_time,
+          duration: bookingData.duration,
+          status: "confirmed",
+          original_price: bookingData.pricing.original / totalBookings,
+          discount_percentage: bookingData.pricing.discount > 0 
+            ? (bookingData.pricing.discount / bookingData.pricing.original) * 100 
+            : null,
+          final_price: bookingData.pricing.final / totalBookings,
+          coupon_code: bookingData.pricing.coupons || null,
+          payment_mode: "razorpay",
+          payment_txn_id: paymentId,
+          notes: `Razorpay Order ID: ${orderId}`,
+        });
+      });
+    });
+    
+    const { error: bErr, data: insertedBookings } = await supabase
+      .from("bookings")
+      .insert(rows)
+      .select("id, station_id");
+    
+    if (bErr) {
+      console.error("❌ Booking creation failed:", bErr);
+      throw bErr;
+    }
+    
+    console.log("✅ Booking created successfully in callback:", insertedBookings?.length, "records");
+    return { success: true, bookingId: insertedBookings?.[0]?.id, alreadyExists: false };
+  } catch (err: any) {
+    console.error("❌ Failed to create booking in callback:", err);
+    return { success: false, error: err.message };
+  }
+}
 
 export default async function handler(req: Request) {
   // Handle CORS preflight requests
@@ -59,6 +286,17 @@ export default async function handler(req: Request) {
       finalStatus !== "failed" &&
       finalStatus !== "cancelled" &&
       finalStatus !== "error";
+
+    // CREATE BOOKING HERE if payment is successful (before redirect)
+    // This is a backup to webhook - ensures booking is created even if webhook hasn't fired yet
+    if (isSuccess && finalPaymentId && finalOrderId) {
+      console.log("🔄 Attempting to create booking in callback (backup to webhook)...");
+      // Create booking in background (don't await - let redirect happen immediately)
+      createBookingInCallback(finalPaymentId, finalOrderId).catch(err => {
+        console.error("❌ Background booking creation failed in callback:", err);
+        // Continue anyway - success page will create it as final fallback
+      });
+    }
 
     // Extract error message if available
     const errorParam = url.searchParams.get("error") || postData.error ||
