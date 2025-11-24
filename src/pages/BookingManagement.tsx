@@ -2532,13 +2532,14 @@ export default function BookingManagement() {
                               const key = `${date}::${customerName}`;
                               const couponBookings = bookingsForCustomer.filter(b => b.coupon_code);
                               
+                              const isCustomerExpanded = expandedCustomers.has(key);
                               return (
-                                  <Collapsible key={key}>
+                                  <Collapsible key={key} open={isCustomerExpanded}>
                                     <CollapsibleTrigger 
                                       onClick={() => toggleCustomerExpansion(key)}
                                       className="flex items-center gap-2 w-full p-2 text-left bg-background rounded border hover:bg-muted/50 transition-colors"
                                     >
-                                      {expandedCustomers.has(key) ? (
+                                      {isCustomerExpanded ? (
                                         <ChevronDown className="h-3 w-3" />
                                       ) : (
                                         <ChevronRight className="h-3 w-3" />
@@ -2559,8 +2560,7 @@ export default function BookingManagement() {
                                     </CollapsibleTrigger>
                                     
                                     <CollapsibleContent>
-                                      {expandedCustomers.has(key) && (
-                                        <div className="ml-6 mt-2 space-y-2">
+                                      <div className="ml-6 mt-2 space-y-2">
                                           {bookingsForCustomer
                                             .sort((a, b) => a.start_time.localeCompare(b.start_time))
                                             .map(booking => (
@@ -2696,7 +2696,6 @@ export default function BookingManagement() {
                                               </div>
                                             ))}
                                         </div>
-                                      )}
                                     </CollapsibleContent>
                                   </Collapsible>
                                 );
