@@ -1219,10 +1219,13 @@ export default function PublicBooking() {
   }
 
   function maskPhone(p?: string) {
-    if (!p) return "";
-    const s = p.replace(/\D/g, "");
-    if (s.length <= 4) return s;
-    return `${s.slice(0, 3)}${"X".repeat(Math.max(0, s.length - 5))}${s.slice(-2)}`;
+    if (!p) return "******";
+    return "******";
+  }
+
+  function maskName(name?: string) {
+    if (!name || name === "—") return "******";
+    return "******";
   }
 
   async function fetchTodaysBookings() {
@@ -1264,7 +1267,7 @@ export default function PublicBooking() {
           station_id: b.station_id,
           customer_id: b.customer_id,
           stationName: st?.name || "—",
-          customerName: cu?.name || "—",
+          customerName: maskName(cu?.name),
           customerPhone: maskPhone(cu?.phone),
         };
       });
