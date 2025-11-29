@@ -1125,37 +1125,24 @@ export default function PublicBooking() {
         description: `Booking for ${slotsToBook.length} slot(s)`,
         order_id: orderData.orderId,
         handler: async function (response: any) {
-          // Try to reconcile payment immediately when payment succeeds
-          // This provides immediate feedback, but automatic cron will also handle it
-          try {
-            console.log("✅ Payment successful, attempting immediate reconciliation...");
-            const reconcileRes = await fetch("/api/razorpay/reconcile-payment", {
-              method: "POST",
-              headers: { "content-type": "application/json" },
-              body: JSON.stringify({
-                order_id: response.razorpay_order_id,
-                payment_id: response.razorpay_payment_id,
-              }),
-            });
-
-            const reconcileData = await reconcileRes.json();
-            
-            if (reconcileRes.ok && reconcileData?.success) {
-              console.log("✅ Payment reconciled and booking created:", reconcileData.bookingId);
-              // Clear pending booking from localStorage
-              localStorage.removeItem("pendingBooking");
-            } else {
-              console.log("ℹ️ Immediate reconciliation not successful, will be handled by automatic cron within 1 minute");
-              // Don't block redirect - automatic cron will reconcile within 1 minute
-            }
-          } catch (err) {
-            console.error("❌ Error reconciling payment:", err);
-            console.log("ℹ️ Payment will be automatically reconciled by cron job within 1 minute");
-            // Don't block redirect - automatic cron will reconcile within 1 minute
-          }
-
-          // Redirect to success page
+          // Redirect immediately - don't wait for reconciliation
+          // Success page will handle reconciliation and booking lookup
+          console.log("✅ Payment successful, redirecting to success page...");
+          
+          // Redirect immediately (non-blocking)
           window.location.href = `/public/payment/success?payment_id=${encodeURIComponent(response.razorpay_payment_id)}&order_id=${encodeURIComponent(response.razorpay_order_id)}&signature=${encodeURIComponent(response.razorpay_signature)}`;
+          
+          // Try reconciliation in background (non-blocking, don't wait)
+          fetch("/api/razorpay/reconcile-payment", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+              order_id: response.razorpay_order_id,
+              payment_id: response.razorpay_payment_id,
+            }),
+          }).catch(() => {
+            // Ignore errors - success page will handle it
+          });
         },
         prefill: {
           name: customerInfo.name,
