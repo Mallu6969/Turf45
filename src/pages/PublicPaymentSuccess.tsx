@@ -57,6 +57,7 @@ export default function PublicPaymentSuccess() {
       // 1) RECONCILE PAYMENT - Check Razorpay API and create booking if payment succeeded
       // This is the core solution: verify payment status directly from Razorpay API
       // Works even if customer doesn't return to browser (can be called from anywhere)
+      // Note: Automatic reconciliation runs every minute via cron, but we also try here for immediate feedback
       try {
         console.log("🔍 Reconciling payment with Razorpay API...");
         const reconcileRes = await fetch("/api/razorpay/reconcile-payment", {
@@ -79,11 +80,14 @@ export default function PublicPaymentSuccess() {
           // Continue to fetch booking details below
         } else {
           console.warn("⚠️ Reconciliation failed or payment not successful:", reconcileData?.error);
+          console.log("ℹ️ Payment will be automatically reconciled by cron job within 1 minute");
           // Payment might not be successful yet, or already processed
+          // Automatic reconciliation will handle it if payment succeeds
           // Continue to check if booking exists
         }
       } catch (err) {
         console.error("❌ Error reconciling payment:", err);
+        console.log("ℹ️ Payment will be automatically reconciled by cron job within 1 minute");
         // Continue to check if booking exists
       }
 

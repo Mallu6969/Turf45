@@ -287,14 +287,20 @@ export default function BookingManagement() {
 
   useEffect(() => {
     fetchBookings();
-    if (activeTab === 'reconciliation') {
-      fetchPendingPayments();
-    }
-  }, [activeTab]);
+  }, []);
 
   useEffect(() => {
-    fetchBookings();
-  }, []);
+    if (activeTab === 'reconciliation') {
+      fetchPendingPayments();
+      
+      // Auto-refresh every 30 seconds when on reconciliation tab
+      const interval = setInterval(() => {
+        fetchPendingPayments();
+      }, 30000); // 30 seconds
+      
+      return () => clearInterval(interval);
+    }
+  }, [activeTab]);
 
   useEffect(() => {
     const channel = supabase

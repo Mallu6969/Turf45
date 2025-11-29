@@ -8,6 +8,18 @@
     },
     "api/razorpay/verify-payment.ts": {
       "maxDuration": 30
+    },
+    "api/razorpay/reconcile-payment.ts": {
+      "maxDuration": 30
+    },
+    "api/razorpay/reconcile-pending-cron.ts": {
+      "maxDuration": 60
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/razorpay/reconcile-pending-cron",
+      "schedule": "* * * * *"
+    }
+  ]
 }

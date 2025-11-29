@@ -9,20 +9,21 @@ Multiple layers ensure booking is created regardless of customer behavior:
 ## Layer 1: Razorpay Handler Callback (Client-Side)
 **When**: Payment succeeds and customer returns to browser
 **Location**: `src/pages/PublicBooking.tsx` - Razorpay handler function
-**Action**: Immediately calls `/api/razorpay/create-booking-from-payment` to create booking
+**Action**: Immediately calls `/api/razorpay/reconcile-payment` to reconcile and create booking
 **Reliability**: ⚠️ Only works if customer returns to browser
 
 ```javascript
 handler: async function (response: any) {
-  // Creates booking immediately when payment succeeds
-  await fetch("/api/razorpay/create-booking-from-payment", {
+  // Tries to reconcile payment immediately when payment succeeds
+  await fetch("/api/razorpay/reconcile-payment", {
     method: "POST",
     body: JSON.stringify({
-      payment_id: response.razorpay_payment_id,
       order_id: response.razorpay_order_id,
+      payment_id: response.razorpay_payment_id,
     }),
   });
   // Then redirects to success page
+  // Note: Automatic cron will also reconcile within 1 minute if this fails
 }
 ```
 
@@ -47,23 +48,24 @@ handler: async function (response: any) {
 ## Layer 4: Success Page (Client-Side)
 **When**: Customer lands on success page
 **Location**: `src/pages/PublicPaymentSuccess.tsx`
-**Action**: Immediately tries to create booking if it doesn't exist
+**Action**: Immediately tries to reconcile payment if it doesn't exist
 **Reliability**: ⚠️ Only works if customer returns to browser
 
 ```typescript
 // Immediately on page load:
-await fetch("/api/razorpay/create-booking-from-payment", {
+await fetch("/api/razorpay/reconcile-payment", {
   method: "POST",
-  body: JSON.stringify({ payment_id, order_id }),
+  body: JSON.stringify({ order_id, payment_id }),
 });
+// Note: Automatic cron will also reconcile within 1 minute if this fails
 ```
 
-## New API Endpoint: `/api/razorpay/create-booking-from-payment`
+## API Endpoint: `/api/razorpay/reconcile-payment`
 **Purpose**: Verify payment and create booking synchronously
-**Location**: `api/razorpay/create-booking-from-payment.ts`
+**Location**: `api/razorpay/reconcile-payment.ts`
 **Features**:
 - Verifies payment status with Razorpay API
-- Extracts booking data from order notes
+- Extracts booking data from pending_payments table
 - Creates customer if needed
 - Creates booking records
 - Idempotent (won't create duplicates)

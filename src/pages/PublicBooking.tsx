@@ -1125,32 +1125,33 @@ export default function PublicBooking() {
         description: `Booking for ${slotsToBook.length} slot(s)`,
         order_id: orderData.orderId,
         handler: async function (response: any) {
-          // CRITICAL: Create booking immediately when payment succeeds
-          // This ensures booking is created even if customer closes browser
+          // Try to reconcile payment immediately when payment succeeds
+          // This provides immediate feedback, but automatic cron will also handle it
           try {
-            console.log("✅ Payment successful, creating booking immediately...");
-            const createBookingRes = await fetch("/api/razorpay/create-booking-from-payment", {
+            console.log("✅ Payment successful, attempting immediate reconciliation...");
+            const reconcileRes = await fetch("/api/razorpay/reconcile-payment", {
               method: "POST",
               headers: { "content-type": "application/json" },
               body: JSON.stringify({
-                payment_id: response.razorpay_payment_id,
                 order_id: response.razorpay_order_id,
+                payment_id: response.razorpay_payment_id,
               }),
             });
 
-            const createBookingData = await createBookingRes.json();
+            const reconcileData = await reconcileRes.json();
             
-            if (createBookingRes.ok && createBookingData?.success) {
-              console.log("✅ Booking created successfully:", createBookingData.bookingId);
+            if (reconcileRes.ok && reconcileData?.success) {
+              console.log("✅ Payment reconciled and booking created:", reconcileData.bookingId);
               // Clear pending booking from localStorage
               localStorage.removeItem("pendingBooking");
             } else {
-              console.error("❌ Failed to create booking:", createBookingData?.error);
-              // Don't block redirect - success page will try to create as fallback
+              console.log("ℹ️ Immediate reconciliation not successful, will be handled by automatic cron within 1 minute");
+              // Don't block redirect - automatic cron will reconcile within 1 minute
             }
           } catch (err) {
-            console.error("❌ Error creating booking:", err);
-            // Don't block redirect - success page will try to create as fallback
+            console.error("❌ Error reconciling payment:", err);
+            console.log("ℹ️ Payment will be automatically reconciled by cron job within 1 minute");
+            // Don't block redirect - automatic cron will reconcile within 1 minute
           }
 
           // Redirect to success page
