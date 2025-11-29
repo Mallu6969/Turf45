@@ -276,6 +276,10 @@ export default function BookingManagement() {
   const [pendingPayments, setPendingPayments] = useState<any[]>([]);
   const [reconcilingPayments, setReconcilingPayments] = useState<Set<string>>(new Set());
   const [loadingPayments, setLoadingPayments] = useState(false);
+  const [reconSearchQuery, setReconSearchQuery] = useState('');
+  const [reconStatusFilter, setReconStatusFilter] = useState<string>('all');
+  const [reconDateFilter, setReconDateFilter] = useState<string>('all');
+  const [deletingPayments, setDeletingPayments] = useState<Set<string>>(new Set());
 
   // NEW: Calendar view state
   const [calendarView, setCalendarView] = useState(false);
@@ -1591,6 +1595,78 @@ export default function BookingManagement() {
     toast.success(`Reconciliation complete: ${successful} successful, ${failed} failed`);
   };
 
+  const deletePayment = async (paymentId: string) => {
+    if (!confirm('Are you sure you want to delete this payment record? This action cannot be undone.')) {
+      return;
+    }
+
+    setDeletingPayments(prev => new Set(prev).add(paymentId));
+    try {
+      const { error } = await supabase
+        .from('pending_payments')
+        .delete()
+        .eq('id', paymentId);
+
+      if (error) throw error;
+      
+      toast.success('Payment record deleted successfully');
+      await fetchPendingPayments();
+    } catch (err: any) {
+      console.error('Error deleting payment:', err);
+      toast.error('Failed to delete payment record');
+    } finally {
+      setDeletingPayments(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(paymentId);
+        return newSet;
+      });
+    }
+  };
+
+  // Filtered payments based on search and filters
+  const filteredPayments = useMemo(() => {
+    let filtered = [...pendingPayments];
+
+    // Search filter
+    if (reconSearchQuery.trim()) {
+      const query = reconSearchQuery.toLowerCase();
+      filtered = filtered.filter(payment => 
+        payment.razorpay_order_id?.toLowerCase().includes(query) ||
+        payment.razorpay_payment_id?.toLowerCase().includes(query) ||
+        payment.customer_name?.toLowerCase().includes(query) ||
+        payment.customer_phone?.includes(query) ||
+        payment.customer_email?.toLowerCase().includes(query)
+      );
+    }
+
+    // Status filter
+    if (reconStatusFilter !== 'all') {
+      filtered = filtered.filter(payment => payment.status === reconStatusFilter);
+    }
+
+    // Date filter
+    if (reconDateFilter !== 'all') {
+      const now = new Date();
+      filtered = filtered.filter(payment => {
+        const paymentDate = new Date(payment.created_at);
+        switch (reconDateFilter) {
+          case 'today':
+            return isToday(paymentDate);
+          case 'yesterday':
+            return isYesterday(paymentDate);
+          case 'last7days':
+            return paymentDate >= subDays(now, 7);
+          case 'last30days':
+            return paymentDate >= subDays(now, 30);
+          default:
+            return true;
+        }
+      });
+    }
+
+    return filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  }, [pendingPayments, reconSearchQuery, reconStatusFilter, reconDateFilter]);
+
   const resetFilters = () => {
     const defaultDateRange = getDateRangeFromPreset('last7days')!;
     setFilters({
@@ -2619,11 +2695,11 @@ export default function BookingManagement() {
             </TabsContent>
 
             <TabsContent value="reconciliation" className="space-y-6">
-              <Card className="bg-background border-border">
-                <CardHeader className="bg-muted/20 rounded-t-lg border-b border-border">
+              <Card className="bg-white border border-gray-200 shadow-sm">
+                <CardHeader className="bg-gray-50 rounded-t-lg border-b border-gray-200">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center gap-2 text-lg text-foreground">
-                      <RefreshCw className="h-5 w-5 text-blue-500" />
+                    <CardTitle className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+                      <RefreshCw className="h-5 w-5 text-blue-600" />
                       Payment Reconciliation
                     </CardTitle>
                     <div className="flex gap-2">
@@ -2632,6 +2708,7 @@ export default function BookingManagement() {
                         size="sm"
                         onClick={fetchPendingPayments}
                         disabled={loadingPayments}
+                        className="border-gray-300 text-gray-700 hover:bg-gray-50"
                       >
                         <RefreshCw className={`h-4 w-4 mr-2 ${loadingPayments ? 'animate-spin' : ''}`} />
                         Refresh
@@ -2641,6 +2718,7 @@ export default function BookingManagement() {
                         size="sm"
                         onClick={reconcileAllPending}
                         disabled={loadingPayments || pendingPayments.filter(p => p.status === 'pending').length === 0}
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
                       >
                         <CheckCircle2 className="h-4 w-4 mr-2" />
                         Reconcile All Pending
@@ -2648,15 +2726,15 @@ export default function BookingManagement() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="p-6">
+                <CardContent className="p-6 bg-white">
                   <div className="space-y-4">
                     {/* Stats */}
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                      <Card>
+                      <Card className="bg-white border border-gray-200 shadow-sm">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-sm text-muted-foreground">Pending</p>
+                              <p className="text-sm text-gray-600 font-medium">Pending</p>
                               <p className="text-2xl font-bold text-yellow-600">
                                 {pendingPayments.filter(p => p.status === 'pending').length}
                               </p>
@@ -2665,11 +2743,11 @@ export default function BookingManagement() {
                           </div>
                         </CardContent>
                       </Card>
-                      <Card>
+                      <Card className="bg-white border border-gray-200 shadow-sm">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-sm text-muted-foreground">Success</p>
+                              <p className="text-sm text-gray-600 font-medium">Success</p>
                               <p className="text-2xl font-bold text-green-600">
                                 {pendingPayments.filter(p => p.status === 'success').length}
                               </p>
@@ -2678,11 +2756,11 @@ export default function BookingManagement() {
                           </div>
                         </CardContent>
                       </Card>
-                      <Card>
+                      <Card className="bg-white border border-gray-200 shadow-sm">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-sm text-muted-foreground">Failed</p>
+                              <p className="text-sm text-gray-600 font-medium">Failed</p>
                               <p className="text-2xl font-bold text-red-600">
                                 {pendingPayments.filter(p => p.status === 'failed').length}
                               </p>
@@ -2691,76 +2769,140 @@ export default function BookingManagement() {
                           </div>
                         </CardContent>
                       </Card>
-                      <Card>
+                      <Card className="bg-white border border-gray-200 shadow-sm">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-sm text-muted-foreground">Total</p>
-                              <p className="text-2xl font-bold">
+                              <p className="text-sm text-gray-600 font-medium">Total</p>
+                              <p className="text-2xl font-bold text-gray-900">
                                 {pendingPayments.length}
                               </p>
+                              {filteredPayments.length !== pendingPayments.length && (
+                                <p className="text-xs text-gray-500 mt-1">
+                                  Showing {filteredPayments.length}
+                                </p>
+                              )}
                             </div>
-                            <Activity className="h-8 w-8 text-muted-foreground" />
+                            <Activity className="h-8 w-8 text-gray-600" />
                           </div>
                         </CardContent>
                       </Card>
                     </div>
 
-                    {/* Pending Payments List */}
+                    {/* Search and Filters */}
+                    <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {/* Search Bar */}
+                        <div className="relative">
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                          <Input
+                            placeholder="Search by Order ID, Payment ID, Customer, Phone..."
+                            value={reconSearchQuery}
+                            onChange={(e) => setReconSearchQuery(e.target.value)}
+                            className="pl-10 border-gray-300 bg-white text-gray-900 placeholder-gray-500"
+                          />
+                        </div>
+
+                        {/* Status Filter */}
+                        <Select value={reconStatusFilter} onValueChange={setReconStatusFilter}>
+                          <SelectTrigger className="border-gray-300 bg-white text-gray-900">
+                            <SelectValue placeholder="Filter by status" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white border-gray-200">
+                            <SelectItem value="all" className="text-gray-900">All Statuses</SelectItem>
+                            <SelectItem value="pending" className="text-gray-900">Pending</SelectItem>
+                            <SelectItem value="success" className="text-gray-900">Success</SelectItem>
+                            <SelectItem value="failed" className="text-gray-900">Failed</SelectItem>
+                          </SelectContent>
+                        </Select>
+
+                        {/* Date Filter */}
+                        <Select value={reconDateFilter} onValueChange={setReconDateFilter}>
+                          <SelectTrigger className="border-gray-300 bg-white text-gray-900">
+                            <SelectValue placeholder="Filter by date" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white border-gray-200">
+                            <SelectItem value="all" className="text-gray-900">All Dates</SelectItem>
+                            <SelectItem value="today" className="text-gray-900">Today</SelectItem>
+                            <SelectItem value="yesterday" className="text-gray-900">Yesterday</SelectItem>
+                            <SelectItem value="last7days" className="text-gray-900">Last 7 Days</SelectItem>
+                            <SelectItem value="last30days" className="text-gray-900">Last 30 Days</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Clear Filters */}
+                      {(reconSearchQuery || reconStatusFilter !== 'all' || reconDateFilter !== 'all') && (
+                        <div className="flex justify-end">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setReconSearchQuery('');
+                              setReconStatusFilter('all');
+                              setReconDateFilter('all');
+                            }}
+                            className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                          >
+                            <Filter className="h-4 w-4 mr-2" />
+                            Clear Filters
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Payments List */}
                     {loadingPayments ? (
                       <div className="flex items-center justify-center py-12">
-                        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                        <Loader2 className="h-8 w-8 animate-spin text-gray-600" />
                       </div>
-                    ) : pendingPayments.length === 0 ? (
-                      <div className="text-center py-12 text-muted-foreground">
-                        <CheckCircle2 className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                        <p>No pending payments found</p>
+                    ) : filteredPayments.length === 0 ? (
+                      <div className="text-center py-12 bg-gray-50 rounded-lg border border-gray-200">
+                        <CheckCircle2 className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+                        <p className="text-gray-600 font-medium">No payments found</p>
+                        {(reconSearchQuery || reconStatusFilter !== 'all' || reconDateFilter !== 'all') && (
+                          <p className="text-sm text-gray-500 mt-2">Try adjusting your filters</p>
+                        )}
                       </div>
                     ) : (
                       <div className="space-y-3">
-                        {pendingPayments.map((payment) => {
+                        {filteredPayments.map((payment) => {
                           const bookingData = payment.booking_data;
                           const isReconciling = reconcilingPayments.has(payment.razorpay_order_id);
+                          const isDeleting = deletingPayments.has(payment.id);
                           const isExpired = new Date(payment.expires_at) < new Date();
                           
                           return (
                             <Card
                               key={payment.id}
-                              className={`border-2 ${
+                              className={`border-2 bg-white ${
                                 payment.status === 'pending'
-                                  ? 'border-yellow-500/50 bg-yellow-50/50 dark:bg-yellow-950/20'
+                                  ? 'border-yellow-400 bg-yellow-50'
                                   : payment.status === 'success'
-                                  ? 'border-green-500/50 bg-green-50/50 dark:bg-green-950/20'
-                                  : 'border-red-500/50 bg-red-50/50 dark:bg-red-950/20'
+                                  ? 'border-green-400 bg-green-50'
+                                  : 'border-red-400 bg-red-50'
                               }`}
                             >
                               <CardContent className="p-4">
                                 <div className="flex items-start justify-between gap-4">
                                   <div className="flex-1 space-y-2">
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center gap-3 flex-wrap">
                                       <Badge
-                                        variant={
-                                          payment.status === 'pending'
-                                            ? 'default'
-                                            : payment.status === 'success'
-                                            ? 'default'
-                                            : 'destructive'
-                                        }
                                         className={
                                           payment.status === 'pending'
-                                            ? 'bg-yellow-500'
+                                            ? 'bg-yellow-500 text-white font-semibold'
                                             : payment.status === 'success'
-                                            ? 'bg-green-500'
-                                            : 'bg-red-500'
+                                            ? 'bg-green-500 text-white font-semibold'
+                                            : 'bg-red-500 text-white font-semibold'
                                         }
                                       >
-                                        {payment.status === 'pending' && isExpired ? 'Expired' : payment.status}
+                                        {payment.status === 'pending' && isExpired ? 'Expired' : payment.status.toUpperCase()}
                                       </Badge>
-                                      <span className="text-sm font-mono text-muted-foreground">
+                                      <span className="text-sm font-mono text-gray-700 bg-gray-100 px-2 py-1 rounded">
                                         Order: {payment.razorpay_order_id.substring(0, 20)}...
                                       </span>
                                       {payment.razorpay_payment_id && (
-                                        <span className="text-sm font-mono text-muted-foreground">
+                                        <span className="text-sm font-mono text-gray-700 bg-gray-100 px-2 py-1 rounded">
                                           Payment: {payment.razorpay_payment_id.substring(0, 20)}...
                                         </span>
                                       )}
@@ -2768,30 +2910,30 @@ export default function BookingManagement() {
 
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                                       <div>
-                                        <p className="text-muted-foreground">Customer</p>
-                                        <p className="font-medium">{payment.customer_name}</p>
-                                        <p className="text-xs text-muted-foreground">{payment.customer_phone}</p>
+                                        <p className="text-gray-600 font-medium">Customer</p>
+                                        <p className="font-semibold text-gray-900">{payment.customer_name}</p>
+                                        <p className="text-xs text-gray-600">{payment.customer_phone}</p>
                                       </div>
                                       <div>
-                                        <p className="text-muted-foreground">Amount</p>
-                                        <p className="font-medium">₹{payment.amount}</p>
+                                        <p className="text-gray-600 font-medium">Amount</p>
+                                        <p className="font-semibold text-gray-900">₹{payment.amount}</p>
                                       </div>
                                       <div>
-                                        <p className="text-muted-foreground">Created</p>
-                                        <p className="font-medium">
+                                        <p className="text-gray-600 font-medium">Created</p>
+                                        <p className="font-semibold text-gray-900">
                                           {format(new Date(payment.created_at), 'MMM d, h:mm a')}
                                         </p>
                                         {isExpired && payment.status === 'pending' && (
-                                          <p className="text-xs text-red-600">Expired</p>
+                                          <p className="text-xs text-red-600 font-medium">Expired</p>
                                         )}
                                       </div>
                                       {bookingData && (
                                         <div>
-                                          <p className="text-muted-foreground">Booking</p>
-                                          <p className="font-medium">
+                                          <p className="text-gray-600 font-medium">Booking</p>
+                                          <p className="font-semibold text-gray-900">
                                             {bookingData.selectedStations?.length || 0} station(s)
                                           </p>
-                                          <p className="text-xs text-muted-foreground">
+                                          <p className="text-xs text-gray-600">
                                             {bookingData.slots?.length || 0} slot(s)
                                           </p>
                                         </div>
@@ -2805,7 +2947,7 @@ export default function BookingManagement() {
                                         size="sm"
                                         onClick={() => reconcilePayment(payment.razorpay_order_id, payment.razorpay_payment_id)}
                                         disabled={isReconciling}
-                                        className="min-w-[120px]"
+                                        className="min-w-[120px] bg-blue-600 hover:bg-blue-700 text-white"
                                       >
                                         {isReconciling ? (
                                           <>
@@ -2821,10 +2963,30 @@ export default function BookingManagement() {
                                       </Button>
                                     )}
                                     {payment.status === 'success' && payment.verified_at && (
-                                      <div className="text-xs text-muted-foreground text-right">
-                                        Verified: {format(new Date(payment.verified_at), 'MMM d, h:mm a')}
+                                      <div className="text-xs text-gray-600 text-right">
+                                        <p className="font-medium">Verified:</p>
+                                        <p>{format(new Date(payment.verified_at), 'MMM d, h:mm a')}</p>
                                       </div>
                                     )}
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => deletePayment(payment.id)}
+                                      disabled={isDeleting}
+                                      className="min-w-[120px] border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400"
+                                    >
+                                      {isDeleting ? (
+                                        <>
+                                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                          Deleting...
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Trash2 className="h-4 w-4 mr-2" />
+                                          Delete
+                                        </>
+                                      )}
+                                    </Button>
                                   </div>
                                 </div>
                               </CardContent>
