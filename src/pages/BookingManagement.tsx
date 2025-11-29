@@ -2695,11 +2695,11 @@ export default function BookingManagement() {
             </TabsContent>
 
             <TabsContent value="reconciliation" className="space-y-6">
-              <Card className="bg-white border border-gray-200 shadow-sm">
-                <CardHeader className="bg-gray-50 rounded-t-lg border-b border-gray-200">
+              <Card className="bg-background border-border shadow-sm">
+                <CardHeader className="bg-muted/20 rounded-t-lg border-b border-border">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center gap-2 text-lg font-semibold text-gray-900">
-                      <RefreshCw className="h-5 w-5 text-blue-600" />
+                    <CardTitle className="flex items-center gap-2 text-lg text-foreground">
+                      <RefreshCw className="h-5 w-5 text-blue-500" />
                       Payment Reconciliation
                     </CardTitle>
                     <div className="flex gap-2">
@@ -2708,7 +2708,6 @@ export default function BookingManagement() {
                         size="sm"
                         onClick={fetchPendingPayments}
                         disabled={loadingPayments}
-                        className="border-gray-300 text-gray-700 hover:bg-gray-50"
                       >
                         <RefreshCw className={`h-4 w-4 mr-2 ${loadingPayments ? 'animate-spin' : ''}`} />
                         Refresh
@@ -2718,7 +2717,6 @@ export default function BookingManagement() {
                         size="sm"
                         onClick={reconcileAllPending}
                         disabled={loadingPayments || pendingPayments.filter(p => p.status === 'pending').length === 0}
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
                       >
                         <CheckCircle2 className="h-4 w-4 mr-2" />
                         Reconcile All Pending
@@ -2726,107 +2724,107 @@ export default function BookingManagement() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="p-6 bg-white">
+                <CardContent className="p-6">
                   <div className="space-y-4">
                     {/* Stats */}
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                      <Card className="bg-white border border-gray-200 shadow-sm">
+                      <Card className="bg-background border-border">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-sm text-gray-600 font-medium">Pending</p>
-                              <p className="text-2xl font-bold text-yellow-600">
+                              <p className="text-sm text-muted-foreground">Pending</p>
+                              <p className="text-2xl font-bold text-yellow-500">
                                 {pendingPayments.filter(p => p.status === 'pending').length}
                               </p>
                             </div>
-                            <AlertCircle className="h-8 w-8 text-yellow-600" />
+                            <AlertCircle className="h-8 w-8 text-yellow-500" />
                           </div>
                         </CardContent>
                       </Card>
-                      <Card className="bg-white border border-gray-200 shadow-sm">
+                      <Card className="bg-background border-border">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-sm text-gray-600 font-medium">Success</p>
-                              <p className="text-2xl font-bold text-green-600">
+                              <p className="text-sm text-muted-foreground">Success</p>
+                              <p className="text-2xl font-bold text-green-500">
                                 {pendingPayments.filter(p => p.status === 'success').length}
                               </p>
                             </div>
-                            <CheckCircle2 className="h-8 w-8 text-green-600" />
+                            <CheckCircle2 className="h-8 w-8 text-green-500" />
                           </div>
                         </CardContent>
                       </Card>
-                      <Card className="bg-white border border-gray-200 shadow-sm">
+                      <Card className="bg-background border-border">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-sm text-gray-600 font-medium">Failed</p>
-                              <p className="text-2xl font-bold text-red-600">
+                              <p className="text-sm text-muted-foreground">Failed</p>
+                              <p className="text-2xl font-bold text-red-500">
                                 {pendingPayments.filter(p => p.status === 'failed').length}
                               </p>
                             </div>
-                            <XCircle className="h-8 w-8 text-red-600" />
+                            <XCircle className="h-8 w-8 text-red-500" />
                           </div>
                         </CardContent>
                       </Card>
-                      <Card className="bg-white border border-gray-200 shadow-sm">
+                      <Card className="bg-background border-border">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-sm text-gray-600 font-medium">Total</p>
-                              <p className="text-2xl font-bold text-gray-900">
+                              <p className="text-sm text-muted-foreground">Total</p>
+                              <p className="text-2xl font-bold text-foreground">
                                 {pendingPayments.length}
                               </p>
                               {filteredPayments.length !== pendingPayments.length && (
-                                <p className="text-xs text-gray-500 mt-1">
+                                <p className="text-xs text-muted-foreground mt-1">
                                   Showing {filteredPayments.length}
                                 </p>
                               )}
                             </div>
-                            <Activity className="h-8 w-8 text-gray-600" />
+                            <Activity className="h-8 w-8 text-muted-foreground" />
                           </div>
                         </CardContent>
                       </Card>
                     </div>
 
                     {/* Search and Filters */}
-                    <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="space-y-4 p-4 bg-muted/20 rounded-lg border border-border">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {/* Search Bar */}
                         <div className="relative">
-                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <Input
                             placeholder="Search by Order ID, Payment ID, Customer, Phone..."
                             value={reconSearchQuery}
                             onChange={(e) => setReconSearchQuery(e.target.value)}
-                            className="pl-10 border-gray-300 bg-white text-gray-900 placeholder-gray-500"
+                            className="pl-10 border-border bg-background text-foreground placeholder:text-muted-foreground"
                           />
                         </div>
 
                         {/* Status Filter */}
                         <Select value={reconStatusFilter} onValueChange={setReconStatusFilter}>
-                          <SelectTrigger className="border-gray-300 bg-white text-gray-900">
+                          <SelectTrigger className="border-border bg-background text-foreground">
                             <SelectValue placeholder="Filter by status" />
                           </SelectTrigger>
-                          <SelectContent className="bg-white border-gray-200">
-                            <SelectItem value="all" className="text-gray-900">All Statuses</SelectItem>
-                            <SelectItem value="pending" className="text-gray-900">Pending</SelectItem>
-                            <SelectItem value="success" className="text-gray-900">Success</SelectItem>
-                            <SelectItem value="failed" className="text-gray-900">Failed</SelectItem>
+                          <SelectContent>
+                            <SelectItem value="all">All Statuses</SelectItem>
+                            <SelectItem value="pending">Pending</SelectItem>
+                            <SelectItem value="success">Success</SelectItem>
+                            <SelectItem value="failed">Failed</SelectItem>
                           </SelectContent>
                         </Select>
 
                         {/* Date Filter */}
                         <Select value={reconDateFilter} onValueChange={setReconDateFilter}>
-                          <SelectTrigger className="border-gray-300 bg-white text-gray-900">
+                          <SelectTrigger className="border-border bg-background text-foreground">
                             <SelectValue placeholder="Filter by date" />
                           </SelectTrigger>
-                          <SelectContent className="bg-white border-gray-200">
-                            <SelectItem value="all" className="text-gray-900">All Dates</SelectItem>
-                            <SelectItem value="today" className="text-gray-900">Today</SelectItem>
-                            <SelectItem value="yesterday" className="text-gray-900">Yesterday</SelectItem>
-                            <SelectItem value="last7days" className="text-gray-900">Last 7 Days</SelectItem>
-                            <SelectItem value="last30days" className="text-gray-900">Last 30 Days</SelectItem>
+                          <SelectContent>
+                            <SelectItem value="all">All Dates</SelectItem>
+                            <SelectItem value="today">Today</SelectItem>
+                            <SelectItem value="yesterday">Yesterday</SelectItem>
+                            <SelectItem value="last7days">Last 7 Days</SelectItem>
+                            <SelectItem value="last30days">Last 30 Days</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -2842,7 +2840,6 @@ export default function BookingManagement() {
                               setReconStatusFilter('all');
                               setReconDateFilter('all');
                             }}
-                            className="border-gray-300 text-gray-700 hover:bg-gray-50"
                           >
                             <Filter className="h-4 w-4 mr-2" />
                             Clear Filters
@@ -2854,14 +2851,14 @@ export default function BookingManagement() {
                     {/* Payments List */}
                     {loadingPayments ? (
                       <div className="flex items-center justify-center py-12">
-                        <Loader2 className="h-8 w-8 animate-spin text-gray-600" />
+                        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
                       </div>
                     ) : filteredPayments.length === 0 ? (
-                      <div className="text-center py-12 bg-gray-50 rounded-lg border border-gray-200">
-                        <CheckCircle2 className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-                        <p className="text-gray-600 font-medium">No payments found</p>
+                      <div className="text-center py-12 bg-muted/20 rounded-lg border border-border">
+                        <CheckCircle2 className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+                        <p className="text-foreground font-medium">No payments found</p>
                         {(reconSearchQuery || reconStatusFilter !== 'all' || reconDateFilter !== 'all') && (
-                          <p className="text-sm text-gray-500 mt-2">Try adjusting your filters</p>
+                          <p className="text-sm text-muted-foreground mt-2">Try adjusting your filters</p>
                         )}
                       </div>
                     ) : (
@@ -2875,12 +2872,12 @@ export default function BookingManagement() {
                           return (
                             <Card
                               key={payment.id}
-                              className={`border-2 bg-white ${
+                              className={`border-2 ${
                                 payment.status === 'pending'
-                                  ? 'border-yellow-400 bg-yellow-50'
+                                  ? 'border-yellow-500/50 bg-yellow-500/10'
                                   : payment.status === 'success'
-                                  ? 'border-green-400 bg-green-50'
-                                  : 'border-red-400 bg-red-50'
+                                  ? 'border-green-500/50 bg-green-500/10'
+                                  : 'border-red-500/50 bg-red-500/10'
                               }`}
                             >
                               <CardContent className="p-4">
@@ -2898,11 +2895,11 @@ export default function BookingManagement() {
                                       >
                                         {payment.status === 'pending' && isExpired ? 'Expired' : payment.status.toUpperCase()}
                                       </Badge>
-                                      <span className="text-sm font-mono text-gray-700 bg-gray-100 px-2 py-1 rounded">
+                                      <span className="text-sm font-mono text-foreground bg-muted/50 px-2 py-1 rounded">
                                         Order: {payment.razorpay_order_id.substring(0, 20)}...
                                       </span>
                                       {payment.razorpay_payment_id && (
-                                        <span className="text-sm font-mono text-gray-700 bg-gray-100 px-2 py-1 rounded">
+                                        <span className="text-sm font-mono text-foreground bg-muted/50 px-2 py-1 rounded">
                                           Payment: {payment.razorpay_payment_id.substring(0, 20)}...
                                         </span>
                                       )}
@@ -2910,30 +2907,30 @@ export default function BookingManagement() {
 
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                                       <div>
-                                        <p className="text-gray-600 font-medium">Customer</p>
-                                        <p className="font-semibold text-gray-900">{payment.customer_name}</p>
-                                        <p className="text-xs text-gray-600">{payment.customer_phone}</p>
+                                        <p className="text-muted-foreground font-medium">Customer</p>
+                                        <p className="font-semibold text-foreground">{payment.customer_name}</p>
+                                        <p className="text-xs text-muted-foreground">{payment.customer_phone}</p>
                                       </div>
                                       <div>
-                                        <p className="text-gray-600 font-medium">Amount</p>
-                                        <p className="font-semibold text-gray-900">₹{payment.amount}</p>
+                                        <p className="text-muted-foreground font-medium">Amount</p>
+                                        <p className="font-semibold text-foreground">₹{payment.amount}</p>
                                       </div>
                                       <div>
-                                        <p className="text-gray-600 font-medium">Created</p>
-                                        <p className="font-semibold text-gray-900">
+                                        <p className="text-muted-foreground font-medium">Created</p>
+                                        <p className="font-semibold text-foreground">
                                           {format(new Date(payment.created_at), 'MMM d, h:mm a')}
                                         </p>
                                         {isExpired && payment.status === 'pending' && (
-                                          <p className="text-xs text-red-600 font-medium">Expired</p>
+                                          <p className="text-xs text-red-500 font-medium">Expired</p>
                                         )}
                                       </div>
                                       {bookingData && (
                                         <div>
-                                          <p className="text-gray-600 font-medium">Booking</p>
-                                          <p className="font-semibold text-gray-900">
+                                          <p className="text-muted-foreground font-medium">Booking</p>
+                                          <p className="font-semibold text-foreground">
                                             {bookingData.selectedStations?.length || 0} station(s)
                                           </p>
-                                          <p className="text-xs text-gray-600">
+                                          <p className="text-xs text-muted-foreground">
                                             {bookingData.slots?.length || 0} slot(s)
                                           </p>
                                         </div>
@@ -2947,7 +2944,7 @@ export default function BookingManagement() {
                                         size="sm"
                                         onClick={() => reconcilePayment(payment.razorpay_order_id, payment.razorpay_payment_id)}
                                         disabled={isReconciling}
-                                        className="min-w-[120px] bg-blue-600 hover:bg-blue-700 text-white"
+                                        className="min-w-[120px]"
                                       >
                                         {isReconciling ? (
                                           <>
@@ -2963,7 +2960,7 @@ export default function BookingManagement() {
                                       </Button>
                                     )}
                                     {payment.status === 'success' && payment.verified_at && (
-                                      <div className="text-xs text-gray-600 text-right">
+                                      <div className="text-xs text-muted-foreground text-right">
                                         <p className="font-medium">Verified:</p>
                                         <p>{format(new Date(payment.verified_at), 'MMM d, h:mm a')}</p>
                                       </div>
@@ -2973,7 +2970,7 @@ export default function BookingManagement() {
                                       variant="outline"
                                       onClick={() => deletePayment(payment.id)}
                                       disabled={isDeleting}
-                                      className="min-w-[120px] border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400"
+                                      className="min-w-[120px] border-red-500/50 text-red-500 hover:bg-red-500/10 hover:border-red-500"
                                     >
                                       {isDeleting ? (
                                         <>
