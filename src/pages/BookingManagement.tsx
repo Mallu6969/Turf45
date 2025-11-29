@@ -293,9 +293,42 @@ export default function BookingManagement() {
     if (activeTab === 'reconciliation') {
       fetchPendingPayments();
       
-      // Auto-refresh every 30 seconds when on reconciliation tab
-      const interval = setInterval(() => {
-        fetchPendingPayments();
+      // Auto-reconcile pending payments every 30 seconds when on reconciliation tab
+      // This works on Hobby plan since it's client-side, not server-side cron
+      const interval = setInterval(async () => {
+        // Refresh the list first
+        const { data: freshPayments } = await supabase
+          .from('pending_payments')
+          .select('*')
+          .eq('status', 'pending')
+          .order('created_at', { ascending: true })
+          .limit(20); // Process max 20 at a time
+        
+        if (freshPayments && freshPayments.length > 0) {
+          console.log(`🔄 Auto-reconciling ${freshPayments.length} pending payments...`);
+          
+          // Reconcile all pending payments in background
+          for (const payment of freshPayments) {
+            try {
+              await fetch('/api/razorpay/reconcile-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  order_id: payment.razorpay_order_id,
+                  payment_id: payment.razorpay_payment_id,
+                }),
+              });
+              // Small delay to avoid rate limiting
+              await new Promise(resolve => setTimeout(resolve, 300));
+            } catch (err) {
+              console.error('Auto-reconciliation error:', err);
+            }
+          }
+          
+          // Refresh after reconciliation
+          await fetchPendingPayments();
+          await fetchBookings();
+        }
       }, 30000); // 30 seconds
       
       return () => clearInterval(interval);
@@ -1523,12 +1556,39 @@ export default function BookingManagement() {
     }
 
     toast.info(`Reconciling ${pending.length} pending payments...`);
+    let successful = 0;
+    let failed = 0;
+    
     for (const payment of pending) {
-      await reconcilePayment(payment.razorpay_order_id, payment.razorpay_payment_id);
+      try {
+        const response = await fetch('/api/razorpay/reconcile-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            order_id: payment.razorpay_order_id,
+            payment_id: payment.razorpay_payment_id,
+          }),
+        });
+
+        const data = await response.json();
+        if (response.ok && data.success) {
+          successful++;
+        } else {
+          failed++;
+        }
+      } catch (err) {
+        failed++;
+      }
+      
       // Small delay to avoid rate limiting
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 300));
     }
-    toast.success('Finished reconciling all pending payments');
+    
+    // Refresh pending payments after reconciliation
+    await fetchPendingPayments();
+    await fetchBookings();
+    
+    toast.success(`Reconciliation complete: ${successful} successful, ${failed} failed`);
   };
 
   const resetFilters = () => {
