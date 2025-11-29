@@ -15,21 +15,45 @@ function j(res: VercelResponse, data: unknown, status = 200) {
   res.status(status).json(data);
 }
 
-// Helper functions
+// Helper functions - Get environment variable from multiple sources
 function getEnv(name: string): string | undefined {
+  // Try process.env first (Node.js runtime)
   if (typeof process !== "undefined" && process.env) {
-    return (process.env as any)[name];
+    const value = (process.env as any)[name];
+    if (value) return value;
   }
+  
+  // Try Deno.env (Edge runtime fallback)
+  const fromDeno = (globalThis as any)?.Deno?.env?.get?.(name);
+  if (fromDeno) return fromDeno;
+  
   return undefined;
 }
 
 async function createSupabaseClient() {
   const { createClient } = await import('@supabase/supabase-js');
-  const supabaseUrl = getEnv("VITE_SUPABASE_URL") || getEnv("SUPABASE_URL");
-  const supabaseKey = getEnv("VITE_SUPABASE_PUBLISHABLE_KEY") || getEnv("SUPABASE_ANON_KEY");
+  
+  // Try multiple environment variable names (Vercel might have them with or without VITE_ prefix)
+  const supabaseUrl = getEnv("VITE_SUPABASE_URL") || 
+                      getEnv("SUPABASE_URL") || 
+                      getEnv("NEXT_PUBLIC_SUPABASE_URL");
+  
+  const supabaseKey = getEnv("VITE_SUPABASE_PUBLISHABLE_KEY") || 
+                      getEnv("SUPABASE_ANON_KEY") || 
+                      getEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY");
   
   if (!supabaseUrl || !supabaseKey) {
-    throw new Error("Missing Supabase environment variables");
+    // Log which variables are missing for debugging
+    const missing = [];
+    if (!supabaseUrl) {
+      missing.push("VITE_SUPABASE_URL or SUPABASE_URL or NEXT_PUBLIC_SUPABASE_URL");
+    }
+    if (!supabaseKey) {
+      missing.push("VITE_SUPABASE_PUBLISHABLE_KEY or SUPABASE_ANON_KEY or NEXT_PUBLIC_SUPABASE_ANON_KEY");
+    }
+    console.error("❌ Missing Supabase environment variables:", missing.join(", "));
+    console.error("Available env vars:", Object.keys(process.env || {}).filter(k => k.includes("SUPABASE")).join(", "));
+    throw new Error(`Missing Supabase environment variables: ${missing.join(", ")}`);
   }
   
   return createClient(supabaseUrl, supabaseKey);
