@@ -1,5 +1,5 @@
 // Background reconciliation utility
-// Runs automatically when app is open to reconcile pending payments
+// Runs automatically when app is open to reconcile pending payments and cleanup duplicate bookings
 // Works on Vercel Hobby plan (client-side, not server-side cron)
 
 let reconciliationInterval: NodeJS.Timeout | null = null;
@@ -11,7 +11,7 @@ export function startBackgroundReconciliation() {
     return;
   }
 
-  console.log("🔄 Starting background reconciliation...");
+  console.log("🔄 Starting background reconciliation and duplicate cleanup...");
   
   reconciliationInterval = setInterval(async () => {
     // Prevent concurrent runs
@@ -22,19 +22,31 @@ export function startBackgroundReconciliation() {
     try {
       isRunning = true;
       
-      // Call the reconciliation endpoint to process all pending payments
-      const response = await fetch('/api/razorpay/reconcile-pending-cron', {
+      // 1. Call the reconciliation endpoint to process all pending payments
+      const reconciliationResponse = await fetch('/api/razorpay/reconcile-pending-cron', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       });
 
-      const data = await response.json();
+      const reconciliationData = await reconciliationResponse.json();
       
-      if (response.ok && data.processed > 0) {
-        console.log(`✅ Background reconciliation: ${data.successful} successful, ${data.failed} failed`);
+      if (reconciliationResponse.ok && reconciliationData.processed > 0) {
+        console.log(`✅ Background reconciliation: ${reconciliationData.successful} successful, ${reconciliationData.failed} failed`);
+      }
+      
+      // 2. Call the duplicate cleanup endpoint to remove duplicate bookings
+      const cleanupResponse = await fetch('/api/bookings/cleanup-duplicates-cron', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const cleanupData = await cleanupResponse.json();
+      
+      if (cleanupResponse.ok && cleanupData.duplicatesDeleted > 0) {
+        console.log(`✅ Duplicate cleanup: Deleted ${cleanupData.duplicatesDeleted} duplicate booking(s) from ${cleanupData.duplicateGroups} group(s)`);
       }
     } catch (err) {
-      console.error('❌ Background reconciliation error:', err);
+      console.error('❌ Background reconciliation/cleanup error:', err);
     } finally {
       isRunning = false;
     }

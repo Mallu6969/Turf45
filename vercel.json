@@ -14,6 +14,9 @@
     },
     "api/razorpay/reconcile-pending-cron.ts": {
       "maxDuration": 60
+    },
+    "api/bookings/cleanup-duplicates-cron.ts": {
+      "maxDuration": 60
     }
   }
 }
