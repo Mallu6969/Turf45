@@ -190,6 +190,47 @@ async function createBookingInCallback(paymentId: string, orderId: string) {
     
     // Create bookings
     const rows: any[] = [];
+    // Validate booking slots for conflicts BEFORE creating
+    for (const station_id of bookingData.selectedStations) {
+      for (const slot of bookingData.slots) {
+        const { data: hasOverlap, error: overlapError } = await (supabase as any).rpc('check_booking_overlap', {
+          p_station_id: station_id,
+          p_booking_date: bookingData.selectedDateISO,
+          p_start_time: slot.start_time,
+          p_end_time: slot.end_time,
+          p_exclude_booking_id: null,
+        });
+
+        if (overlapError) {
+          console.error("Error checking booking overlap:", overlapError);
+          // Continue - database trigger will catch it
+        } else if (hasOverlap === true) {
+          // Check if it's the same payment
+          const { data: existingBooking } = await supabase
+            .from("bookings")
+            .select("id, payment_txn_id")
+            .eq("station_id", station_id)
+            .eq("booking_date", bookingData.selectedDateISO)
+            .eq("start_time", slot.start_time)
+            .eq("end_time", slot.end_time)
+            .eq("payment_txn_id", paymentId)
+            .in("status", ["confirmed", "in-progress"])
+            .limit(1)
+            .maybeSingle();
+
+          if (existingBooking) {
+            // Same payment, booking already exists
+            console.log("✅ Booking already exists for this payment in callback");
+            return { success: true, bookingId: existingBooking.id, alreadyExists: true };
+          } else {
+            // Real conflict
+            console.error("❌ Booking conflict in callback: Another booking exists");
+            return { success: false, error: "Booking conflict: Time slot is already booked" };
+          }
+        }
+      }
+    }
+
     const totalBookings = bookingData.selectedStations.length * bookingData.slots.length;
     
     bookingData.selectedStations.forEach((station_id: string) => {
@@ -221,6 +262,11 @@ async function createBookingInCallback(paymentId: string, orderId: string) {
       .select("id, station_id");
     
     if (bErr) {
+      // Check if error is due to booking conflict
+      if (bErr.code === '23505' || bErr.message?.includes('Booking conflict')) {
+        console.error("❌ Booking conflict detected by database trigger");
+        return { success: false, error: "Booking conflict: Time slot is already booked" };
+      }
       console.error("❌ Booking creation failed:", bErr);
       throw bErr;
     }

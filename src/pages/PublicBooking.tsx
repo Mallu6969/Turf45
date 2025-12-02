@@ -962,6 +962,29 @@ export default function PublicBooking() {
       const couponCodes = Object.values(appliedCoupons).join(",");
       const bookingDuration = 30; // 30 minutes per slot
       
+      // Validate booking slots for conflicts BEFORE creating
+      for (const slot of slotsToBook) {
+        for (const stationId of selectedStations) {
+          const { data: hasOverlap, error: overlapError } = await (supabase as any).rpc('check_booking_overlap', {
+            p_station_id: stationId,
+            p_booking_date: format(selectedDate, "yyyy-MM-dd"),
+            p_start_time: slot.start_time,
+            p_end_time: slot.end_time,
+            p_exclude_booking_id: null,
+          });
+
+          if (overlapError) {
+            console.error("Error checking booking overlap:", overlapError);
+            // Continue - database trigger will catch it
+          } else if (hasOverlap === true) {
+            // Get station name for error message
+            const station = stations.find(s => s.id === stationId);
+            const stationName = station?.name || "this station";
+            throw new Error(`This time slot (${slot.start_time} - ${slot.end_time}) is already booked for ${stationName}. Please select a different time.`);
+          }
+        }
+      }
+      
       // Create a booking row for each slot
       const rows: any[] = [];
       slotsToBook.forEach((slot) => {
@@ -987,7 +1010,13 @@ export default function PublicBooking() {
         .insert(rows)
         .select("id");
         
-      if (bookingError) throw bookingError;
+      if (bookingError) {
+        // Check if error is due to booking conflict
+        if (bookingError.code === '23505' || bookingError.message?.includes('Booking conflict')) {
+          throw new Error("This time slot is already booked. Please select a different time.");
+        }
+        throw bookingError;
+      }
 
       const stationObjects = stations.filter((s) =>
         selectedStations.includes(s.id)

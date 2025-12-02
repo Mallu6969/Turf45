@@ -84,6 +84,29 @@ export default async function handler(req: Request) {
       }
     }
 
+    // Validate booking slots for conflicts BEFORE creating
+    for (const stationId of selectedStations) {
+      const { data: hasOverlap, error: overlapError } = await (supabase as any).rpc('check_booking_overlap', {
+        p_station_id: stationId,
+        p_booking_date: selectedDate,
+        p_start_time: selectedSlot.start_time,
+        p_end_time: selectedSlot.end_time,
+        p_exclude_booking_id: null,
+      });
+
+      if (overlapError) {
+        console.error("Error checking booking overlap:", overlapError);
+        // Continue - database trigger will catch it
+      } else if (hasOverlap === true) {
+        console.error("❌ Booking conflict detected for station:", stationId);
+        return j({ 
+          ok: false, 
+          error: "Booking conflict", 
+          details: `This time slot (${selectedSlot.start_time} - ${selectedSlot.end_time}) is already booked. Please select a different time.` 
+        }, 409); // 409 Conflict
+      }
+    }
+
     // Create booking records
     const couponCodes = appliedCoupons ? Object.values(appliedCoupons).join(",") : "";
     const rows = selectedStations.map((stationId: string) => ({
@@ -112,6 +135,14 @@ export default async function handler(req: Request) {
 
     if (bookingError) {
       console.error("❌ Booking creation failed:", bookingError);
+      // Check if error is due to booking conflict
+      if (bookingError.code === '23505' || bookingError.message?.includes('Booking conflict')) {
+        return j({ 
+          ok: false, 
+          error: "Booking conflict", 
+          details: "This time slot is already booked. Please select a different time." 
+        }, 409); // 409 Conflict
+      }
       return j({ ok: false, error: "Failed to create booking", details: bookingError.message }, 500);
     }
 

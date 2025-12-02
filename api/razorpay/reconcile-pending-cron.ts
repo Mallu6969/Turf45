@@ -211,7 +211,59 @@ async function createBookingFromPayment(pendingPayment: any) {
     return { success: true, bookingId: existingBooking.id, alreadyExists: true };
   }
   
-  // 3. Create bookings
+  // 3. Validate booking slots for conflicts BEFORE creating
+  for (const station_id of bookingData.selectedStations) {
+    for (const slot of bookingData.slots) {
+      const { data: hasOverlap, error: overlapError } = await (supabase as any).rpc('check_booking_overlap', {
+        p_station_id: station_id,
+        p_booking_date: bookingData.selectedDateISO,
+        p_start_time: slot.start_time,
+        p_end_time: slot.end_time,
+        p_exclude_booking_id: null,
+      });
+
+      if (overlapError) {
+        console.error("Error checking booking overlap:", overlapError);
+        // Continue - database trigger will catch it
+      } else if (hasOverlap === true) {
+        // Check if it's the same payment
+        const { data: existingBooking } = await supabase
+          .from("bookings")
+          .select("id, payment_txn_id")
+          .eq("station_id", station_id)
+          .eq("booking_date", bookingData.selectedDateISO)
+          .eq("start_time", slot.start_time)
+          .eq("end_time", slot.end_time)
+          .eq("payment_txn_id", pendingPayment.razorpay_payment_id)
+          .in("status", ["confirmed", "in-progress"])
+          .limit(1)
+          .maybeSingle();
+
+        if (existingBooking) {
+          // Same payment, booking already exists
+          console.log("✅ Booking already exists for this payment in cron");
+          await supabase
+            .from("pending_payments")
+            .update({
+              status: "success",
+              verified_at: new Date().toISOString(),
+            })
+            .eq("id", pendingPayment.id);
+          return { success: true, bookingId: existingBooking.id, alreadyExists: true };
+        } else {
+          // Real conflict
+          console.error("❌ Booking conflict in cron: Another booking exists");
+          await supabase
+            .from("pending_payments")
+            .update({ status: "failed" })
+            .eq("id", pendingPayment.id);
+          return { success: false, error: "Booking conflict: Time slot is already booked" };
+        }
+      }
+    }
+  }
+
+  // 4. Create bookings
   const rows: any[] = [];
   const totalBookings = bookingData.selectedStations.length * bookingData.slots.length;
   
@@ -244,6 +296,15 @@ async function createBookingFromPayment(pendingPayment: any) {
     .select("id, station_id");
   
   if (bErr) {
+    // Check if error is due to booking conflict
+    if (bErr.code === '23505' || bErr.message?.includes('Booking conflict')) {
+      console.error("❌ Booking conflict detected by database trigger in cron");
+      await supabase
+        .from("pending_payments")
+        .update({ status: "failed" })
+        .eq("id", pendingPayment.id);
+      return { success: false, error: "Booking conflict: Time slot is already booked" };
+    }
     console.error("❌ Booking creation failed:", bErr);
     throw bErr;
   }

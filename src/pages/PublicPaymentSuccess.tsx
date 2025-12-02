@@ -371,6 +371,50 @@ export default function PublicPaymentSuccess() {
         }
       }
       
+      // Validate booking slots for conflicts BEFORE creating
+      for (const station_id of pb.selectedStations) {
+        for (const slot of pb.slots) {
+          const { data: hasOverlap, error: overlapError } = await (supabase as any).rpc('check_booking_overlap', {
+            p_station_id: station_id,
+            p_booking_date: pb.selectedDateISO,
+            p_start_time: slot.start_time,
+            p_end_time: slot.end_time,
+            p_exclude_booking_id: null,
+          });
+
+          if (overlapError) {
+            console.error("Error checking booking overlap:", overlapError);
+            // Continue - database trigger will catch it
+          } else if (hasOverlap === true) {
+            // Check if it's the same payment
+            const { data: existingBooking } = await supabase
+              .from("bookings")
+              .select("id, payment_txn_id")
+              .eq("station_id", station_id)
+              .eq("booking_date", pb.selectedDateISO)
+              .eq("start_time", slot.start_time)
+              .eq("end_time", slot.end_time)
+              .eq("payment_txn_id", paymentId)
+              .in("status", ["confirmed", "in-progress"])
+              .limit(1)
+              .maybeSingle();
+
+            if (existingBooking) {
+              // Same payment, booking already exists
+              console.log("✅ Booking already exists for this payment");
+              // Reload to show existing booking
+              window.location.reload();
+              return;
+            } else {
+              // Real conflict - show error
+              setStatus("failed");
+              setMsg(`This time slot is already booked. Please contact support.`);
+              return;
+            }
+          }
+        }
+      }
+
       const rows: any[] = [];
       const totalBookings = pb.selectedStations.length * pb.slots.length;
       pb.selectedStations.forEach((station_id) => {
@@ -400,8 +444,8 @@ export default function PublicPaymentSuccess() {
         .select("id, station_id");
 
       if (bErr) {
-        // Check if error is due to duplicate (race condition)
-        if (bErr.code === '23505' || bErr.message?.includes('duplicate') || bErr.message?.includes('unique')) {
+        // Check if error is due to duplicate/overlap (database trigger caught it)
+        if (bErr.code === '23505' || bErr.message?.includes('duplicate') || bErr.message?.includes('unique') || bErr.message?.includes('Booking conflict')) {
           console.log("⚠️ Duplicate booking detected in fallback, fetching existing booking...");
           // Fetch existing booking and show confirmation
           const { data: existingBookings } = await supabase
