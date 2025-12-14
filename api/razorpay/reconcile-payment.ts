@@ -432,7 +432,7 @@ async function reconcilePayment(orderId: string, paymentId?: string) {
     if (existingBookingCheck) {
       console.log("✅ Booking already exists (early check), skipping reconciliation:", existingBookingCheck.id);
       
-      // Update pending payment status if it exists
+      // Update pending payment status if it exists (skip if expired)
       await supabase
         .from("pending_payments")
         .update({
@@ -446,18 +446,32 @@ async function reconcilePayment(orderId: string, paymentId?: string) {
     }
   }
 
-  // 1. Find pending or failed payment
+  // 1. Find pending, failed, or expired payment
   const { data: pendingPayment, error: findError } = await supabase
     .from("pending_payments")
     .select("*")
     .eq("razorpay_order_id", orderId)
-    .in("status", ["pending", "failed"])
+    .in("status", ["pending", "failed", "expired"])
     .maybeSingle();
   
   if (findError || !pendingPayment) {
-    console.log("ℹ️ No pending or failed payment found for order:", orderId);
+    console.log("ℹ️ No pending, failed, or expired payment found for order:", orderId);
     // Don't update failure_reason here since payment record doesn't exist
-    return { success: false, error: "No pending or failed payment found" };
+    return { success: false, error: "No pending, failed, or expired payment found" };
+  }
+
+  // Check if payment has expired - mark as expired if so
+  if (pendingPayment.status === "pending" && new Date(pendingPayment.expires_at) < new Date()) {
+    console.log("⏰ Payment has expired, marking as expired");
+    await supabase
+      .from("pending_payments")
+      .update({
+        status: "expired",
+        failure_reason: "Payment expired - payment window has passed",
+      })
+      .eq("id", pendingPayment.id);
+    
+    return { success: false, error: "Payment has expired" };
   }
   
   // 2. If payment ID provided, verify it directly

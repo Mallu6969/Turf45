@@ -306,6 +306,17 @@ export default function BookingManagement() {
       // Auto-reconcile pending payments every 30 seconds when on reconciliation tab
       // This works on Hobby plan since it's client-side, not server-side cron
       const interval = setInterval(async () => {
+        // First, check and mark expired payments
+        const now = new Date().toISOString();
+        await supabase
+          .from('pending_payments')
+          .update({
+            status: 'expired',
+            failure_reason: 'Payment expired - payment window has passed',
+          })
+          .eq('status', 'pending')
+          .lt('expires_at', now);
+        
         // Refresh the list first
         const { data: freshPayments } = await supabase
           .from('pending_payments')
@@ -1678,6 +1689,9 @@ export default function BookingManagement() {
     if (reconStatusFilter !== 'all') {
       filtered = filtered.filter(payment => payment.status === reconStatusFilter);
     }
+    
+    // Also check for expired pending payments (mark them visually if needed)
+    // Note: Expired payments should now be in 'expired' status, not 'pending'
 
     // Date filter
     if (reconDateFilter !== 'all') {
@@ -2873,7 +2887,7 @@ export default function BookingManagement() {
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     {/* Stats */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
                       <Card className="bg-background border-border">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
@@ -2910,6 +2924,19 @@ export default function BookingManagement() {
                               </p>
                             </div>
                             <XCircle className="h-8 w-8 text-red-500" />
+                          </div>
+                        </CardContent>
+                      </Card>
+                      <Card className="bg-background border-border">
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm text-muted-foreground">Expired</p>
+                              <p className="text-2xl font-bold text-orange-500">
+                                {pendingPayments.filter(p => p.status === 'expired').length}
+                              </p>
+                            </div>
+                            <Clock className="h-8 w-8 text-orange-500" />
                           </div>
                         </CardContent>
                       </Card>
@@ -2957,6 +2984,7 @@ export default function BookingManagement() {
                             <SelectItem value="pending">Pending</SelectItem>
                             <SelectItem value="success">Success</SelectItem>
                             <SelectItem value="failed">Failed</SelectItem>
+                            <SelectItem value="expired">Expired</SelectItem>
                           </SelectContent>
                         </Select>
 
@@ -3043,6 +3071,8 @@ export default function BookingManagement() {
                                   ? 'border-yellow-500/50 bg-yellow-500/10'
                                   : payment.status === 'success'
                                   ? 'border-green-500/50 bg-green-500/10'
+                                  : payment.status === 'expired'
+                                  ? 'border-orange-500/50 bg-orange-500/10'
                                   : 'border-red-500/50 bg-red-500/10'
                               }`}
                             >
@@ -3056,10 +3086,12 @@ export default function BookingManagement() {
                                             ? 'bg-yellow-500 text-white font-semibold'
                                             : payment.status === 'success'
                                             ? 'bg-green-500 text-white font-semibold'
+                                            : payment.status === 'expired'
+                                            ? 'bg-orange-500 text-white font-semibold'
                                             : 'bg-red-500 text-white font-semibold'
                                         }
                                       >
-                                        {payment.status === 'pending' && isExpired ? 'Expired' : payment.status.toUpperCase()}
+                                        {payment.status.toUpperCase()}
                                       </Badge>
                                       <span className="text-sm font-mono text-foreground bg-muted/50 px-2 py-1 rounded">
                                         Order: {payment.razorpay_order_id.substring(0, 20)}...
@@ -3096,9 +3128,6 @@ export default function BookingManagement() {
                                         <p className="font-semibold text-foreground">
                                           {format(new Date(payment.created_at), 'MMM d, h:mm a')}
                                         </p>
-                                        {isExpired && payment.status === 'pending' && (
-                                          <p className="text-xs text-red-500 font-medium">Expired</p>
-                                        )}
                                       </div>
                                       <div>
                                         <p className="text-muted-foreground font-medium">Status</p>
@@ -3161,11 +3190,25 @@ export default function BookingManagement() {
                                       </div>
                                     ) : null}
                                     
-                                    {/* Failure Reason */}
-                                    {payment.status === 'failed' && payment.failure_reason && (
-                                      <div className="mt-3 pt-3 border-t border-red-500/30">
-                                        <p className="text-muted-foreground font-medium mb-1 text-red-600 dark:text-red-400">Failure Reason</p>
-                                        <p className="text-sm text-red-600 dark:text-red-400 bg-red-500/10 p-2 rounded border border-red-500/20">
+                                    {/* Failure/Expiry Reason */}
+                                    {(payment.status === 'failed' || payment.status === 'expired') && payment.failure_reason && (
+                                      <div className={`mt-3 pt-3 border-t ${
+                                        payment.status === 'expired' 
+                                          ? 'border-orange-500/30' 
+                                          : 'border-red-500/30'
+                                      }`}>
+                                        <p className={`text-muted-foreground font-medium mb-1 ${
+                                          payment.status === 'expired'
+                                            ? 'text-orange-600 dark:text-orange-400'
+                                            : 'text-red-600 dark:text-red-400'
+                                        }`}>
+                                          {payment.status === 'expired' ? 'Expiry Reason' : 'Failure Reason'}
+                                        </p>
+                                        <p className={`text-sm p-2 rounded border ${
+                                          payment.status === 'expired'
+                                            ? 'text-orange-600 dark:text-orange-400 bg-orange-500/10 border-orange-500/20'
+                                            : 'text-red-600 dark:text-red-400 bg-red-500/10 border-red-500/20'
+                                        }`}>
                                           {payment.failure_reason}
                                         </p>
                                       </div>
@@ -3192,6 +3235,11 @@ export default function BookingManagement() {
                                           </>
                                         )}
                                       </Button>
+                                    )}
+                                    {payment.status === 'expired' && (
+                                      <div className="text-xs text-orange-600 dark:text-orange-400 text-center p-2 bg-orange-500/10 rounded border border-orange-500/20">
+                                        Payment expired - cannot reconcile
+                                      </div>
                                     )}
                                     {payment.status === 'success' && payment.verified_at && (
                                       <div className="text-xs text-muted-foreground text-right">

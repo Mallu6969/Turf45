@@ -30,16 +30,15 @@ WHERE timeslots IS NULL
   AND booking_data->>'slots' IS NOT NULL
   AND jsonb_typeof(booking_data->'slots') = 'array';
 
--- Also populate failure_reason for failed payments that have error info in notes or can be inferred
--- This helps show why old failed payments failed
+-- Mark expired payments as expired (not failed) and populate failure_reason
 UPDATE public.pending_payments
-SET failure_reason = COALESCE(
-  notes,
-  CASE 
-    WHEN status = 'failed' AND expires_at < NOW() THEN 'Payment expired'
-    WHEN status = 'failed' THEN 'Payment failed (reason not recorded)'
-    ELSE NULL
-  END
-)
+SET status = 'expired',
+    failure_reason = COALESCE(notes, 'Payment expired - payment window has passed')
+WHERE status = 'pending'
+  AND expires_at < NOW();
+
+-- Also populate failure_reason for failed payments that have error info in notes
+UPDATE public.pending_payments
+SET failure_reason = COALESCE(notes, 'Payment failed (reason not recorded)')
 WHERE status = 'failed'
   AND failure_reason IS NULL;

@@ -601,6 +601,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.log("⏰ Automatic reconciliation started (client-side call)");
     const supabase = await createSupabaseClient();
     
+    // First, mark expired pending payments as expired
+    const now = new Date().toISOString();
+    await supabase
+      .from("pending_payments")
+      .update({
+        status: "expired",
+        failure_reason: "Payment expired - payment window has passed",
+      })
+      .eq("status", "pending")
+      .lt("expires_at", now);
+    
     // Fetch all pending payments (not expired, created in last 24 hours)
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     
