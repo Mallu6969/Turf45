@@ -1906,10 +1906,17 @@ export default function PublicBooking() {
                         { hour: "numeric", minute: "2-digit", hour12: true }
                       )}{" "}
                       —{" "}
-                      {new Date(`2000-01-01T${selectedSlotRange[selectedSlotRange.length - 1]?.end_time || selectedSlot.end_time}`).toLocaleTimeString(
-                        "en-US",
-                        { hour: "numeric", minute: "2-digit", hour12: true }
-                      )}
+                      {(() => {
+                        const endTime = selectedSlotRange[selectedSlotRange.length - 1]?.end_time || selectedSlot.end_time;
+                        // Display 23:59:59 as "12:00 AM" for user clarity
+                        if (endTime === '23:59:59' || endTime === '23:59:59.000') {
+                          return '12:00 AM';
+                        }
+                        return new Date(`2000-01-01T${endTime}`).toLocaleTimeString(
+                          "en-US",
+                          { hour: "numeric", minute: "2-digit", hour12: true }
+                        );
+                      })()}
                     </p>
                   </div>
                 )}
