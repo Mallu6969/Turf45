@@ -2,6 +2,7 @@
 -- This ensures no two bookings can exist for the same station at overlapping times
 
 -- 1. Create function to check for overlapping bookings
+-- FIXED: Properly handles midnight (00:00:00) as end of day
 CREATE OR REPLACE FUNCTION public.check_booking_overlap(
   p_station_id UUID,
   p_booking_date DATE,
@@ -16,6 +17,7 @@ DECLARE
   has_overlap BOOLEAN;
 BEGIN
   -- Check if there's an overlapping booking
+  -- Special handling: when end_time is 00:00:00, treat it as end of day (midnight)
   SELECT EXISTS (
     SELECT 1
     FROM public.bookings b
@@ -25,13 +27,28 @@ BEGIN
       AND (p_exclude_booking_id IS NULL OR b.id != p_exclude_booking_id)
       AND (
         -- Case 1: New booking starts during existing booking
-        (b.start_time <= p_start_time AND b.end_time > p_start_time) OR
+        -- If existing ends at midnight (00:00:00), it extends to end of day
+        (b.start_time <= p_start_time AND (
+          (b.end_time > p_start_time AND b.end_time != '00:00:00'::TIME) OR
+          (b.end_time = '00:00:00'::TIME)
+        )) OR
         -- Case 2: New booking ends during existing booking
-        (b.start_time < p_end_time AND b.end_time >= p_end_time) OR
+        (b.start_time < p_end_time AND (
+          (b.end_time >= p_end_time AND b.end_time != '00:00:00'::TIME) OR
+          (b.end_time = '00:00:00'::TIME AND p_end_time = '00:00:00'::TIME) OR
+          (b.end_time = '00:00:00'::TIME AND p_end_time != '00:00:00'::TIME)
+        )) OR
         -- Case 3: New booking is contained within existing booking
-        (b.start_time >= p_start_time AND b.end_time <= p_end_time) OR
+        (b.start_time >= p_start_time AND (
+          (b.end_time <= p_end_time AND b.end_time != '00:00:00'::TIME) OR
+          (b.end_time = '00:00:00'::TIME AND p_end_time = '00:00:00'::TIME) OR
+          (b.end_time = '00:00:00'::TIME AND p_end_time != '00:00:00'::TIME)
+        )) OR
         -- Case 4: Existing booking is contained within new booking
-        (b.start_time <= p_start_time AND b.end_time >= p_end_time)
+        (b.start_time <= p_start_time AND (
+          (b.end_time >= p_end_time AND b.end_time != '00:00:00'::TIME) OR
+          (b.end_time = '00:00:00'::TIME)
+        ))
       )
   ) INTO has_overlap;
   

@@ -98,11 +98,40 @@ export default async function handler(req: Request) {
         console.error("Error checking booking overlap:", overlapError);
         // Continue - database trigger will catch it
       } else if (hasOverlap === true) {
-        console.error("❌ Booking conflict detected for station:", stationId);
+        // Find the conflicting booking to provide better error message
+        const { data: conflictingBooking } = await supabase
+          .from("bookings")
+          .select(`
+            id,
+            booking_date,
+            start_time,
+            end_time,
+            status,
+            payment_txn_id,
+            created_at,
+            stations!inner(name)
+          `)
+          .eq("station_id", stationId)
+          .eq("booking_date", selectedDate)
+          .in("status", ["confirmed", "in-progress"])
+          .or(
+            `and(start_time.lte.${selectedSlot.start_time},end_time.gt.${selectedSlot.start_time}),` +
+            `and(start_time.lt.${selectedSlot.end_time},end_time.gte.${selectedSlot.end_time}),` +
+            `and(start_time.gte.${selectedSlot.start_time},end_time.lte.${selectedSlot.end_time}),` +
+            `and(start_time.lte.${selectedSlot.start_time},end_time.gte.${selectedSlot.end_time})`
+          )
+          .limit(1)
+          .maybeSingle();
+
+        const conflictDetails = conflictingBooking 
+          ? `Conflicting booking: ID ${conflictingBooking.id}, Date: ${conflictingBooking.booking_date}, Time: ${conflictingBooking.start_time}-${conflictingBooking.end_time}, Status: ${conflictingBooking.status}, Station: ${(conflictingBooking.stations as any)?.name || 'Unknown'}`
+          : 'Unable to retrieve conflicting booking details';
+
+        console.error("❌ Booking conflict detected for station:", stationId, conflictDetails);
         return j({ 
           ok: false, 
           error: "Booking conflict", 
-          details: `This time slot (${selectedSlot.start_time} - ${selectedSlot.end_time}) is already booked. Please select a different time.` 
+          details: `This time slot (${selectedSlot.start_time} - ${selectedSlot.end_time}) is already booked. Please select a different time. ${conflictDetails}` 
         }, 409); // 409 Conflict
       }
     }

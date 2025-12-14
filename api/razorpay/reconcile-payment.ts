@@ -250,14 +250,43 @@ async function createBookingFromPayment(pendingPayment: any) {
           
           return { success: true, bookingId: existingBooking.id, alreadyExists: true };
         } else {
-          console.error("❌ Booking conflict: Another booking exists for this time slot");
+          // Find the conflicting booking to provide better error message
+          const { data: conflictingBooking } = await supabase
+            .from("bookings")
+            .select(`
+              id,
+              booking_date,
+              start_time,
+              end_time,
+              status,
+              payment_txn_id,
+              created_at,
+              stations!inner(name)
+            `)
+            .eq("station_id", station_id)
+            .eq("booking_date", bookingData.selectedDateISO)
+            .in("status", ["confirmed", "in-progress"])
+            .or(
+              `and(start_time.lte.${slot.start_time},end_time.gt.${slot.start_time}),` +
+              `and(start_time.lt.${slot.end_time},end_time.gte.${slot.end_time}),` +
+              `and(start_time.gte.${slot.start_time},end_time.lte.${slot.end_time}),` +
+              `and(start_time.lte.${slot.start_time},end_time.gte.${slot.end_time})`
+            )
+            .limit(1)
+            .maybeSingle();
+
+          const conflictDetails = conflictingBooking 
+            ? `Conflicting booking ID: ${conflictingBooking.id}, Date: ${conflictingBooking.booking_date}, Time: ${conflictingBooking.start_time}-${conflictingBooking.end_time}, Status: ${conflictingBooking.status}, Station: ${(conflictingBooking.stations as any)?.name || 'Unknown'}`
+            : 'Unable to retrieve conflicting booking details';
+
+          console.error("❌ Booking conflict: Another booking exists for this time slot", conflictDetails);
           await supabase
             .from("pending_payments")
             .update({ status: "failed" })
             .eq("id", pendingPayment.id);
           return { 
             success: false, 
-            error: `Booking conflict: Time slot ${slot.start_time}-${slot.end_time} for station ${station_id} is already booked` 
+            error: `Booking conflict: Time slot ${slot.start_time}-${slot.end_time} for station ${station_id} is already booked. ${conflictDetails}` 
           };
         }
       }
