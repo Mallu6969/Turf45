@@ -977,10 +977,66 @@ export default function PublicBooking() {
             console.error("Error checking booking overlap:", overlapError);
             // Continue - database trigger will catch it
           } else if (hasOverlap === true) {
+            // Get detailed conflict information for debugging
+            const { data: conflictingBookings } = await supabase
+              .from("bookings")
+              .select(`
+                id,
+                booking_date,
+                start_time,
+                end_time,
+                status,
+                payment_txn_id,
+                created_at,
+                stations!inner(name)
+              `)
+              .eq("station_id", stationId)
+              .eq("booking_date", format(selectedDate, "yyyy-MM-dd"))
+              .in("status", ["confirmed", "in-progress"])
+              .order("created_at", { ascending: false })
+              .limit(10);
+            
+            // Standard overlap check (no midnight handling needed - slots end at 23:59:59)
+            const slotStart = slot.start_time;
+            const slotEnd = slot.end_time;
+            
+            const actualConflicts = conflictingBookings?.filter(b => {
+              const bStart = b.start_time;
+              const bEnd = b.end_time;
+              
+              return (
+                (bStart <= slotStart && bEnd > slotStart) ||
+                (bStart < slotEnd && bEnd >= slotEnd) ||
+                (bStart >= slotStart && bEnd <= slotEnd) ||
+                (bStart <= slotStart && bEnd >= slotEnd)
+              );
+            }) || [];
+
+            console.error("🔍 Conflict details:", {
+              slot: `${slot.start_time}-${slot.end_time}`,
+              station_id: stationId,
+              conflicting_bookings: actualConflicts.map(b => ({
+                id: b.id,
+                time: `${b.start_time}-${b.end_time}`,
+                status: b.status,
+                created_at: b.created_at
+              }))
+            });
+
             // Get station name for error message
             const station = stations.find(s => s.id === stationId);
             const stationName = station?.name || "this station";
-            throw new Error(`This time slot (${slot.start_time} - ${slot.end_time}) is already booked for ${stationName}. Please select a different time.`);
+            
+            if (actualConflicts.length > 0) {
+              const conflictDetails = actualConflicts.map(b => 
+                `Booking ${b.id.slice(0, 8)}: ${b.start_time}-${b.end_time} (${b.status})`
+              ).join(", ");
+              throw new Error(`This time slot (${slot.start_time} - ${slot.end_time}) is already booked for ${stationName}. Conflicting: ${conflictDetails}`);
+            } else {
+              // Database says conflict but we can't find the booking - likely a bug
+              console.warn("⚠️ Database reports conflict but no conflicting bookings found - possible bug in check_booking_overlap function");
+              throw new Error(`This time slot (${slot.start_time} - ${slot.end_time}) appears to be booked for ${stationName}, but we cannot find the conflicting booking. Please contact support.`);
+            }
           }
         }
       }

@@ -35,8 +35,7 @@ export async function checkBookingConflicts(
 
   // Check each slot for conflicts
   for (const slot of slots) {
-    // Use the database function which properly handles midnight (00:00:00)
-    // The direct query approach doesn't handle midnight correctly in Supabase PostgREST
+    // Use the database function for overlap checking
     const { data: hasOverlap, error: overlapError } = await (supabase as any).rpc('check_booking_overlap', {
       p_station_id: slot.station_id,
       p_booking_date: slot.booking_date,
@@ -53,7 +52,6 @@ export async function checkBookingConflicts(
 
     if (hasOverlap === true) {
       // If overlap detected, get the conflicting booking details
-      // Fetch all active bookings and filter in JavaScript to handle midnight properly
       const { data: allActiveBookings, error } = await supabase
         .from('bookings')
         .select(`
@@ -73,16 +71,15 @@ export async function checkBookingConflicts(
         return { hasConflict: true, conflicts: [] };
       }
 
-      // Filter in JavaScript to properly handle midnight (00:00:00)
-      // When end_time is 00:00:00, treat it as 24:00:00 (end of day) for comparison
+      // Standard overlap check (no midnight handling needed - slots end at 23:59:59)
       const slotStart = slot.start_time;
-      const slotEnd = slot.end_time === '00:00:00' ? '24:00:00' : slot.end_time;
+      const slotEnd = slot.end_time;
 
       const overlappingBookings = allActiveBookings?.filter(booking => {
         const bStart = booking.start_time;
-        const bEnd = booking.end_time === '00:00:00' ? '24:00:00' : booking.end_time;
+        const bEnd = booking.end_time;
         
-        // Standard overlap check (now that midnight is normalized to 24:00:00)
+        // Standard overlap check
         return (
           (bStart <= slotStart && bEnd > slotStart) ||  // Case 1: Existing starts during new
           (bStart < slotEnd && bEnd >= slotEnd) ||     // Case 2: Existing ends during new

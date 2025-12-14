@@ -99,7 +99,6 @@ export default async function handler(req: Request) {
         // Continue - database trigger will catch it
       } else if (hasOverlap === true) {
         // Find the conflicting booking to provide better error message
-        // Fetch all active bookings and filter in JavaScript to handle midnight properly
         const { data: allActiveBookings } = await supabase
           .from("bookings")
           .select(`
@@ -117,16 +116,15 @@ export default async function handler(req: Request) {
           .in("status", ["confirmed", "in-progress"])
           .order("created_at", { ascending: false });
         
-        // Filter in JavaScript to properly handle midnight (00:00:00)
-        // When end_time is 00:00:00, treat it as 24:00:00 (end of day) for comparison
+        // Standard overlap check (no midnight handling needed - slots end at 23:59:59)
         const slotStart = selectedSlot.start_time;
-        const slotEnd = selectedSlot.end_time === '00:00:00' ? '24:00:00' : selectedSlot.end_time;
+        const slotEnd = selectedSlot.end_time;
         
         const conflictingBooking = allActiveBookings?.find(b => {
           const bStart = b.start_time;
-          const bEnd = b.end_time === '00:00:00' ? '24:00:00' : b.end_time;
+          const bEnd = b.end_time;
           
-          // Standard overlap check (now that midnight is normalized to 24:00:00)
+          // Standard overlap check
           return (
             (bStart <= slotStart && bEnd > slotStart) ||  // Case 1: Existing starts during new
             (bStart < slotEnd && bEnd >= slotEnd) ||     // Case 2: Existing ends during new
