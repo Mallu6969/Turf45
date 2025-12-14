@@ -2956,18 +2956,66 @@ export default function BookingManagement() {
                                           <p className="text-xs text-red-500 font-medium">Expired</p>
                                         )}
                                       </div>
-                                      {bookingData && (
-                                        <div>
-                                          <p className="text-muted-foreground font-medium">Booking</p>
-                                          <p className="font-semibold text-foreground">
-                                            {bookingData.selectedStations?.length || 0} station(s)
-                                          </p>
+                                      <div>
+                                        <p className="text-muted-foreground font-medium">Status</p>
+                                        <p className="font-semibold text-foreground capitalize">
+                                          {payment.status}
+                                        </p>
+                                        {payment.verified_at && (
                                           <p className="text-xs text-muted-foreground">
-                                            {bookingData.slots?.length || 0} slot(s)
+                                            Verified: {format(new Date(payment.verified_at), 'MMM d, h:mm a')}
                                           </p>
-                                        </div>
-                                      )}
+                                        )}
+                                      </div>
                                     </div>
+                                    
+                                    {/* Station and Timeslot Details */}
+                                    {(payment.station_names || payment.timeslots) && (
+                                      <div className="mt-3 pt-3 border-t border-border/50">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                          {payment.station_names && payment.station_names.length > 0 && (
+                                            <div>
+                                              <p className="text-muted-foreground font-medium mb-1">Stations</p>
+                                              <div className="flex flex-wrap gap-1">
+                                                {payment.station_names.map((name: string, idx: number) => (
+                                                  <span
+                                                    key={idx}
+                                                    className="inline-block px-2 py-1 bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded text-xs font-medium"
+                                                  >
+                                                    {name}
+                                                  </span>
+                                                ))}
+                                              </div>
+                                            </div>
+                                          )}
+                                          {payment.timeslots && Array.isArray(payment.timeslots) && payment.timeslots.length > 0 && (
+                                            <div>
+                                              <p className="text-muted-foreground font-medium mb-1">Time Slots</p>
+                                              <div className="flex flex-wrap gap-1">
+                                                {payment.timeslots.map((slot: any, idx: number) => (
+                                                  <span
+                                                    key={idx}
+                                                    className="inline-block px-2 py-1 bg-green-500/20 text-green-600 dark:text-green-400 rounded text-xs font-medium"
+                                                  >
+                                                    {slot.start_time} - {slot.end_time}
+                                                  </span>
+                                                ))}
+                                              </div>
+                                            </div>
+                                          )}
+                                        </div>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Failure Reason */}
+                                    {payment.status === 'failed' && payment.failure_reason && (
+                                      <div className="mt-3 pt-3 border-t border-red-500/30">
+                                        <p className="text-muted-foreground font-medium mb-1 text-red-600 dark:text-red-400">Failure Reason</p>
+                                        <p className="text-sm text-red-600 dark:text-red-400 bg-red-500/10 p-2 rounded border border-red-500/20">
+                                          {payment.failure_reason}
+                                        </p>
+                                      </div>
+                                    )}
                                   </div>
 
                                   <div className="flex flex-col gap-2">

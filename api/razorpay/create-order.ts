@@ -230,6 +230,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         if (supabaseUrl && supabaseKey) {
           const supabase = createClient(supabaseUrl, supabaseKey);
           
+          // Fetch station names for display
+          let stationNames: string[] = [];
+          if (bookingData.selectedStations && Array.isArray(bookingData.selectedStations)) {
+            try {
+              const { data: stationsData } = await supabase
+                .from("stations")
+                .select("id, name")
+                .in("id", bookingData.selectedStations);
+              
+              if (stationsData) {
+                stationNames = stationsData.map(s => s.name).sort();
+              }
+            } catch (err) {
+              console.error("⚠️ Failed to fetch station names:", err);
+              // Continue without station names
+            }
+          }
+          
+          // Format timeslots for display
+          const timeslots = bookingData.slots ? bookingData.slots.map((slot: any) => ({
+            start_time: slot.start_time,
+            end_time: slot.end_time,
+          })) : [];
+          
           const { error: pendingError } = await supabase
             .from("pending_payments")
             .insert({
@@ -241,6 +265,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               customer_name: bookingData.customer?.name || notes?.customer_name || "",
               customer_phone: bookingData.customer?.phone || notes?.customer_phone || "",
               customer_email: bookingData.customer?.email || notes?.customer_email || null,
+              station_names: stationNames.length > 0 ? stationNames : null,
+              timeslots: timeslots.length > 0 ? timeslots : null,
               expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString(), // 30 minutes
             });
           

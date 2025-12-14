@@ -279,14 +279,18 @@ async function createBookingFromPayment(pendingPayment: any) {
             ? `Conflicting booking ID: ${conflictingBooking.id}, Date: ${conflictingBooking.booking_date}, Time: ${conflictingBooking.start_time}-${conflictingBooking.end_time}, Status: ${conflictingBooking.status}, Station: ${(conflictingBooking.stations as any)?.name || 'Unknown'}`
             : 'Unable to retrieve conflicting booking details';
 
+          const errorMessage = `Booking conflict: Time slot ${slot.start_time}-${slot.end_time} for station ${station_id} is already booked. ${conflictDetails}`;
           console.error("❌ Booking conflict: Another booking exists for this time slot", conflictDetails);
           await supabase
             .from("pending_payments")
-            .update({ status: "failed" })
+            .update({ 
+              status: "failed",
+              failure_reason: errorMessage
+            })
             .eq("id", pendingPayment.id);
           return { 
             success: false, 
-            error: `Booking conflict: Time slot ${slot.start_time}-${slot.end_time} for station ${station_id} is already booked. ${conflictDetails}` 
+            error: errorMessage
           };
         }
       }
@@ -375,14 +379,18 @@ async function createBookingFromPayment(pendingPayment: any) {
         return { success: true, bookingId: existing.id, alreadyExists: true };
       } else {
         // It's a real conflict with another booking
+        const errorMessage = bErr.message || "Booking conflict: Time slot is already booked";
         console.error("❌ Booking conflict: Another booking exists for this time slot");
         await supabase
           .from("pending_payments")
-          .update({ status: "failed" })
+          .update({ 
+            status: "failed",
+            failure_reason: errorMessage
+          })
           .eq("id", pendingPayment.id);
         return { 
           success: false, 
-          error: bErr.message || "Booking conflict: Time slot is already booked" 
+          error: errorMessage
         };
       }
     }
@@ -448,6 +456,7 @@ async function reconcilePayment(orderId: string, paymentId?: string) {
   
   if (findError || !pendingPayment) {
     console.log("ℹ️ No pending or failed payment found for order:", orderId);
+    // Don't update failure_reason here since payment record doesn't exist
     return { success: false, error: "No pending or failed payment found" };
   }
   
@@ -495,16 +504,28 @@ async function reconcilePayment(orderId: string, paymentId?: string) {
           razorpay_payment_id: paymentId,
         });
       } else {
+        const errorMessage = `Payment status: ${payment.status}`;
         console.log("❌ Payment not successful:", payment.status);
         await supabase
           .from("pending_payments")
-          .update({ status: "failed" })
+          .update({ 
+            status: "failed",
+            failure_reason: errorMessage
+          })
           .eq("id", pendingPayment.id);
-        return { success: false, error: `Payment status: ${payment.status}` };
+        return { success: false, error: errorMessage };
       }
     } catch (err: any) {
       console.error("❌ Error verifying payment:", err);
-      return { success: false, error: err.message };
+      const errorMessage = err.message || "Error verifying payment with Razorpay";
+      await supabase
+        .from("pending_payments")
+        .update({ 
+          status: "failed",
+          failure_reason: errorMessage
+        })
+        .eq("id", pendingPayment.id);
+      return { success: false, error: errorMessage };
     }
   }
   
@@ -597,10 +618,26 @@ async function reconcilePayment(orderId: string, paymentId?: string) {
       }
     }
     
-    return { success: false, error: "No successful payment found" };
+    const errorMessage = "No successful payment found";
+    await supabase
+      .from("pending_payments")
+      .update({ 
+        status: "failed",
+        failure_reason: errorMessage
+      })
+      .eq("id", pendingPayment.id);
+    return { success: false, error: errorMessage };
   } catch (err: any) {
     console.error("❌ Error fetching order:", err);
-    return { success: false, error: err.message };
+    const errorMessage = err.message || "Error fetching order from Razorpay";
+    await supabase
+      .from("pending_payments")
+      .update({ 
+        status: "failed",
+        failure_reason: errorMessage
+      })
+      .eq("id", pendingPayment.id);
+    return { success: false, error: errorMessage };
   }
 }
 

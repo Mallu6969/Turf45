@@ -252,12 +252,16 @@ async function createBookingFromPayment(pendingPayment: any) {
           return { success: true, bookingId: existingBooking.id, alreadyExists: true };
         } else {
           // Real conflict
+          const errorMessage = "Booking conflict: Time slot is already booked";
           console.error("❌ Booking conflict in cron: Another booking exists");
           await supabase
             .from("pending_payments")
-            .update({ status: "failed" })
+            .update({ 
+              status: "failed",
+              failure_reason: errorMessage
+            })
             .eq("id", pendingPayment.id);
-          return { success: false, error: "Booking conflict: Time slot is already booked" };
+          return { success: false, error: errorMessage };
         }
       }
     }
@@ -298,14 +302,27 @@ async function createBookingFromPayment(pendingPayment: any) {
   if (bErr) {
     // Check if error is due to booking conflict
     if (bErr.code === '23505' || bErr.message?.includes('Booking conflict')) {
+      const errorMessage = "Booking conflict: Time slot is already booked";
       console.error("❌ Booking conflict detected by database trigger in cron");
       await supabase
         .from("pending_payments")
-        .update({ status: "failed" })
+        .update({ 
+          status: "failed",
+          failure_reason: errorMessage
+        })
         .eq("id", pendingPayment.id);
-      return { success: false, error: "Booking conflict: Time slot is already booked" };
+      return { success: false, error: errorMessage };
     }
+    // For other booking creation errors, update failure_reason
+    const errorMessage = bErr.message || "Booking creation failed";
     console.error("❌ Booking creation failed:", bErr);
+    await supabase
+      .from("pending_payments")
+      .update({ 
+        status: "failed",
+        failure_reason: errorMessage
+      })
+      .eq("id", pendingPayment.id);
     throw bErr;
   }
   
@@ -404,13 +421,17 @@ async function reconcileSinglePayment(pendingPayment: any) {
           razorpay_payment_id: pendingPayment.razorpay_payment_id,
         });
       } else {
+        const errorMessage = `Payment status: ${payment.status}`;
         console.log("❌ Payment not successful:", payment.status);
         const supabase = await createSupabaseClient();
         await supabase
           .from("pending_payments")
-          .update({ status: "failed" })
+          .update({ 
+            status: "failed",
+            failure_reason: errorMessage
+          })
           .eq("id", pendingPayment.id);
-        return { success: false, error: `Payment status: ${payment.status}` };
+        return { success: false, error: errorMessage };
       }
     }
 
@@ -501,10 +522,32 @@ async function reconcileSinglePayment(pendingPayment: any) {
       }
     }
     
-    return { success: false, error: "No successful payment found" };
+    const errorMessage = "No successful payment found";
+    const supabase = await createSupabaseClient();
+    await supabase
+      .from("pending_payments")
+      .update({ 
+        status: "failed",
+        failure_reason: errorMessage
+      })
+      .eq("id", pendingPayment.id);
+    return { success: false, error: errorMessage };
   } catch (err: any) {
     console.error("❌ Error reconciling payment:", err);
-    return { success: false, error: err.message };
+    const errorMessage = err.message || "Error reconciling payment";
+    try {
+      const supabase = await createSupabaseClient();
+      await supabase
+        .from("pending_payments")
+        .update({ 
+          status: "failed",
+          failure_reason: errorMessage
+        })
+        .eq("id", pendingPayment.id);
+    } catch (updateErr) {
+      console.error("❌ Failed to update failure reason:", updateErr);
+    }
+    return { success: false, error: errorMessage };
   }
 }
 
