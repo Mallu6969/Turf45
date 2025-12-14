@@ -252,19 +252,24 @@ export default function BookingManagement() {
       setShowUpgradeDialog(true);
     }
   }, [hasBookingAccess, subscriptionLoading]);
-  const [filters, setFilters] = useState<Filters>({
-    datePreset: 'last7days',
-    dateFrom: format(subDays(new Date(), 6), 'yyyy-MM-dd'),
-    dateTo: format(new Date(), 'yyyy-MM-dd'),
-    status: 'all',
-    stationType: 'all',
-    search: '',
-    accessCode: '',
-    coupon: 'all',
-    priceRange: 'all',
-    duration: 'all',
-    customerType: 'all',
-    paymentStatus: 'all'
+  const [filters, setFilters] = useState<Filters>(() => {
+    const now = new Date();
+    const monthStart = startOfMonth(now);
+    const monthEnd = endOfMonth(now);
+    return {
+      datePreset: 'thismonth',
+      dateFrom: format(monthStart, 'yyyy-MM-dd'),
+      dateTo: format(monthEnd, 'yyyy-MM-dd'),
+      status: 'all',
+      stationType: 'all',
+      search: '',
+      accessCode: '',
+      coupon: 'all',
+      priceRange: 'all',
+      duration: 'all',
+      customerType: 'all',
+      paymentStatus: 'all'
+    };
   });
 
   const [couponOptions, setCouponOptions] = useState<string[]>([]);
@@ -1732,9 +1737,9 @@ export default function BookingManagement() {
   }, [reconSearchQuery, reconStatusFilter, reconDateFilter]);
 
   const resetFilters = () => {
-    const defaultDateRange = getDateRangeFromPreset('last7days')!;
+    const defaultDateRange = getDateRangeFromPreset('thismonth')!;
     setFilters({
-      datePreset: 'last7days',
+      datePreset: 'thismonth',
       dateFrom: defaultDateRange.from,
       dateTo: defaultDateRange.to,
       status: 'all',
