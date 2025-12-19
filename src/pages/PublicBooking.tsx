@@ -1553,7 +1553,7 @@ export default function PublicBooking() {
           <div className="flex flex-col items-center mb-8">
             <div className="mb-6">
               <img
-                src="https://iili.io/flpVPUP.jpg"
+                src="/turf45-logo.svg"
                 alt="TURF 45 Logo"
                 className="h-24 drop-shadow-[0_0_25px_rgba(168,85,247,0.15)] cursor-pointer transition-transform hover:scale-105"
                 onClick={() => setShowPinDialog(true)}
@@ -2272,7 +2272,7 @@ export default function PublicBooking() {
           <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="flex items-center mb-4 md:mb-0">
               <img
-                src="https://iili.io/flpVPUP.jpg"
+                src="/turf45-logo.svg"
                 alt="TURF 45 Logo"
                 className="h-8 mr-3 cursor-pointer transition-transform hover:scale-105"
                 onClick={() => setShowPinDialog(true)}

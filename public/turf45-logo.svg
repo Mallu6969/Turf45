@@ -1,0 +1,42 @@
+<svg width="550" height="180" viewBox="0 0 550 180" xmlns="http://www.w3.org/2000/svg">
+  <!-- Top Tagline: FIFA APPROVED FOOTBALL AND CRICKET TURF -->
+  <text x="275" y="28" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" text-anchor="middle" fill="#E0E0E0" letter-spacing="1.2">
+    FIFA APPROVED FOOTBALL AND CRICKET TURF
+  </text>
+  
+  <!-- Main "TURF" text in bright lime green (#76D72A) -->
+  <text x="50" y="115" font-family="Arial, Helvetica, sans-serif" font-size="85" font-weight="900" fill="#76D72A" letter-spacing="3">
+    TURF
+  </text>
+  
+  <!-- Yellow Star -->
+  <polygon points="360,70 368,92 392,92 374,106 382,128 360,116 338,128 346,106 328,92 352,92" fill="#FFD700"/>
+  
+  <!-- "45" as outline (white stroke, transparent fill) -->
+  <text x="410" y="115" font-family="Arial, Helvetica, sans-serif" font-size="85" font-weight="900" fill="none" stroke="#E0E0E0" stroke-width="4" text-anchor="start">
+    45
+  </text>
+  
+  <!-- Bottom Tagline: ESTD: 2021 with soccer ball for 0 -->
+  <text x="275" y="165" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" text-anchor="middle" fill="#E0E0E0" letter-spacing="1.2">
+    ESTD: 2
+  </text>
+  
+  <!-- Soccer ball replacing the 0 in 2021 -->
+  <g transform="translate(320, 160)">
+    <!-- Outer circle -->
+    <circle r="7.5" fill="none" stroke="#E0E0E0" stroke-width="1.8"/>
+    <!-- Central pentagon -->
+    <path d="M 0 -6 L 5.2 2 L 3.2 6.5 L -3.2 6.5 L -5.2 2 Z" fill="#E0E0E0" opacity="0.95"/>
+    <!-- Pattern lines from center -->
+    <line x1="0" y1="-6" x2="-3.5" y2="-1" stroke="#E0E0E0" stroke-width="1.2" opacity="0.7"/>
+    <line x1="0" y1="-6" x2="3.5" y2="-1" stroke="#E0E0E0" stroke-width="1.2" opacity="0.7"/>
+    <line x1="0" y1="-6" x2="-4.5" y2="4" stroke="#E0E0E0" stroke-width="1.2" opacity="0.7"/>
+    <line x1="0" y1="-6" x2="4.5" y2="4" stroke="#E0E0E0" stroke-width="1.2" opacity="0.7"/>
+  </g>
+  
+  <!-- Continue with "21" -->
+  <text x="338" y="165" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" text-anchor="start" fill="#E0E0E0" letter-spacing="1.2">
+    21
+  </text>
+</svg>

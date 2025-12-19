@@ -31,7 +31,7 @@ const Logo: React.FC<LogoProps> = ({ size = 'md', className }) => {
         {/* Green glow effect */}
         <div className="absolute -inset-1 bg-gradient-to-r from-turf45-green/20 to-turf45-lightgreen/20 rounded-full opacity-60 blur-md group-hover:opacity-90 transition-opacity duration-300"></div>
         <img
-          src="https://iili.io/flpVPUP.jpg"
+          src="/turf45-logo.svg"
           alt="TURF 45 - FIFA Approved Football, Cricket & Pickleball Turf"
           height={height}
           width={width}

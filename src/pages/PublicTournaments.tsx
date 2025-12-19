@@ -860,7 +860,7 @@ const PublicTournaments = () => {
           <div className="w-32 h-32 mb-8 flex items-center justify-center relative">
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta opacity-20 animate-ping"></div>
               <img 
-                src="https://iili.io/flpVPUP.jpg" 
+                src="/turf45-logo.svg" 
                 alt="TURF 45 Logo" 
                 className="animate-float z-10 relative"
               />
@@ -913,7 +913,7 @@ const PublicTournaments = () => {
             <div className="mb-8 animate-float relative">
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta opacity-30 blur-xl animate-pulse"></div>
               <img 
-                src="https://iili.io/flpVPUP.jpg" 
+                src="/turf45-logo.svg" 
                 alt="TURF 45 Logo" 
                 className="h-32 relative z-10 shadow-2xl shadow-nerfturf-purple/40"
               />
@@ -1147,7 +1147,7 @@ const PublicTournaments = () => {
             {/* Logo and description */}
             <div className="text-center md:text-left">
               <img 
-                src="https://iili.io/flpVPUP.jpg"
+                src="/turf45-logo.svg"
                 alt="TURF 45 Logo" 
                 className="h-12 mb-4 mx-auto md:mx-0" 
               />
