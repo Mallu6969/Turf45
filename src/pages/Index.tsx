@@ -1,15 +1,44 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import Logo from '@/components/Logo';
 import { Button } from '@/components/ui/button';
-import { Monitor, Trophy, Users, Star, ShieldCheck, Sparkles, Calendar, LogIn, Gamepad2, Timer, Headset, Radio, CheckCircle2, XCircle } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Mail, Phone, Clock, MapPin } from 'lucide-react';
+import { 
+  Calendar, 
+  ArrowRight, 
+  Star, 
+  CheckCircle2, 
+  ChevronRight,
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  MessageCircle,
+  Instagram,
+  Facebook,
+  Twitter,
+  Play,
+  Trophy,
+  Users,
+  Sparkles,
+  Shield,
+  Award,
+  Heart,
+  Search,
+  Menu,
+  X,
+  ChevronLeft,
+  ChevronDown
+} from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Badge } from '@/components/ui/badge';
 import { useIsMobile } from '@/hooks/use-mobile';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface Station {
   id: string;
@@ -23,7 +52,7 @@ const Index: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const isMobile = useIsMobile();
-  const [openDialog, setOpenDialog] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [liveStations, setLiveStations] = useState<Station[]>([]);
   const [stationsLoading, setStationsLoading] = useState(true);
 
@@ -52,11 +81,8 @@ const Index: React.FC = () => {
     };
 
     fetchLiveStations();
-    
-    // Refresh every 30 seconds
     const interval = setInterval(fetchLiveStations, 30000);
     
-    // Real-time subscription
     const channel = supabase
       .channel('stations-live')
       .on('postgres_changes', 
@@ -71,619 +97,688 @@ const Index: React.FC = () => {
     };
   }, []);
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1a1a1a] via-[#1a0f1a] to-[#1a1a1a] flex flex-col relative overflow-hidden">
-      {/* Elegant animated background */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* Luxury grid pattern */}
-        <div 
-          className="absolute inset-0 opacity-5"
-          style={{ 
-            backgroundImage: 'linear-gradient(to right, rgb(16, 185, 129) 1px, transparent 1px), linear-gradient(to bottom, rgb(16, 185, 129) 1px, transparent 1px)',
-            backgroundSize: '60px 60px' 
-          }}>
-        </div>
-        
-        {/* Elegant gradients */}
-        <div className="absolute top-0 left-1/4 w-[700px] h-[700px] rounded-full bg-gradient-to-br from-turf45-green/10 to-transparent blur-[120px] animate-float opacity-30"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-turf45-lightgreen/10 to-transparent blur-[100px] animate-float opacity-30" style={{animationDelay: '3s'}}></div>
-        
-        {/* Subtle light streaks */}
-        <div className="absolute top-[25%] w-full h-px bg-gradient-to-r from-transparent via-turf45-green/15 to-transparent"></div>
-        <div className="absolute top-[65%] w-full h-px bg-gradient-to-r from-transparent via-turf45-lightgreen/15 to-transparent"></div>
-        
-        {/* Elegant floating particles */}
-        <div className="absolute w-2 h-2 bg-turf45-green/20 rounded-full top-1/4 left-1/4 animate-float"></div>
-        <div className="absolute w-2 h-2 bg-turf45-lightgreen/20 rounded-full top-3/4 right-1/4 animate-float" style={{animationDelay: '1.5s'}}></div>
-        <div className="absolute w-2 h-2 bg-turf45-green/20 rounded-full top-1/2 left-3/4 animate-float" style={{animationDelay: '2.5s'}}></div>
-        <div className="absolute w-1.5 h-1.5 bg-turf45-lightgreen/20 rounded-full top-1/3 right-1/3 animate-float" style={{animationDelay: '3.5s'}}></div>
-      </div>
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setMobileMenuOpen(false);
+    }
+  };
 
-      {/* Header */}
-      <header className="h-20 md:h-24 flex items-center px-4 md:px-8 border-b border-turf45-green/30 relative z-10 backdrop-blur-md bg-black/40">
-        <Logo />
-        <div className="ml-auto flex items-center gap-2 md:gap-3">
-          <Button
-            variant="outline"
-            size={isMobile ? "icon" : "default"}
-            className="text-turf45-green border-turf45-green/50 hover:bg-turf45-green/30 hover:border-turf45-green/70 transition-all duration-300"
-            onClick={() => navigate('/login')}
-            title="Management Login"
-          >
-            <LogIn className="h-4 w-4 md:mr-2" />
-            {!isMobile && <span>Management Login</span>}
-          </Button>
-          <Button
-            variant="default"
-            size={isMobile ? "sm" : "default"}
-            className="bg-gradient-to-r from-turf45-green to-turf45-lightgreen text-white hover:from-turf45-green hover:to-turf45-lightgreen shadow-lg shadow-turf45-green/50 transition-all duration-300 text-sm md:text-base"
-            onClick={() => window.open('/public/booking', '_blank')}
-          >
-            <Calendar className="h-4 w-4 md:mr-2" />
-            <span className="hidden sm:inline">Book a Court</span>
-            <span className="sm:hidden">Book</span>
-          </Button>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-white via-green-50/30 to-white">
+      {/* Navigation Bar */}
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-green-100 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <div className="absolute -inset-2 bg-gradient-to-r from-green-500/20 to-green-400/20 rounded-full blur-lg"></div>
+                <div className="relative bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-2">
+                  <Trophy className="h-6 w-6 text-white" />
+                </div>
+              </div>
+              <div>
+                <h1 className="text-xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">
+                  Turf45
+                </h1>
+                <p className="text-xs text-gray-500">Premium Sports Facility</p>
+              </div>
+            </div>
+
+            {/* Desktop Navigation */}
+            {!isMobile && (
+              <nav className="hidden md:flex items-center gap-8">
+                <button onClick={() => scrollToSection('about')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                  About Us
+                </button>
+                <button onClick={() => scrollToSection('facilities')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                  Facilities
+                </button>
+                <button onClick={() => scrollToSection('how-it-works')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                  How It Works
+                </button>
+                <button onClick={() => scrollToSection('reviews')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                  Reviews
+                </button>
+                <button onClick={() => navigate('/support')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                  Support
+                </button>
+              </nav>
+            )}
+
+            {/* Search & Actions */}
+            <div className="flex items-center gap-4">
+              {!isMobile && (
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search here..."
+                    className="pl-10 pr-4 py-2 rounded-full border border-gray-200 bg-white/50 backdrop-blur-sm text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 w-48"
+                  />
+                </div>
+              )}
+              
+              <Button
+                onClick={() => navigate('/public/booking')}
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-6 shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-105"
+              >
+                Book Now
+              </Button>
+
+              {isMobile && (
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                </button>
+              )}
+            </div>
+          </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && isMobile && (
+          <div className="md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-xl">
+            <div className="px-4 py-4 space-y-3">
+              <button onClick={() => scrollToSection('about')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+                About Us
+              </button>
+              <button onClick={() => scrollToSection('facilities')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+                Facilities
+              </button>
+              <button onClick={() => scrollToSection('how-it-works')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+                How It Works
+              </button>
+              <button onClick={() => scrollToSection('reviews')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+                Reviews
+              </button>
+              <button onClick={() => navigate('/support')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+                Support
+              </button>
+            </div>
+          </div>
+        )}
       </header>
 
-      {/* Hero section */}
-      <section className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12 md:py-16 relative z-10">
-        <div className="mb-6 sm:mb-8 md:mb-10 animate-float-shadow">
-          <div className="relative">
-            <div className="absolute -inset-3 bg-gradient-to-r from-turf45-green/30 to-turf45-lightgreen/30 rounded-full opacity-80 blur-2xl animate-pulse-glow"></div>
-            <img
-              src="https://iili.io/flpVPUP.jpg"
-              alt="TURF 45 Logo" 
-              className="h-28 sm:h-32 md:h-36 lg:h-44 relative z-10 drop-shadow-[0_0_20px_rgba(16, 185, 129, 0.6)]"
-            />
-          </div>
+      {/* Hero Section */}
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-green-900/40 via-green-800/30 to-black/50 z-10"></div>
+          <img
+            src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=80"
+            alt="Football Court"
+            className="w-full h-full object-cover"
+          />
         </div>
-        
-        <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-center text-white font-heading leading-tight mb-4 md:mb-6 tracking-tight px-2">
-          Welcome to{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-turf45-green via-turf45-lightgreen to-turf45-green animate-text-gradient">
-            TURF 45
-          </span>
-        </h1>
-        
-        <p className="text-lg sm:text-xl md:text-2xl text-center text-turf45-green/80 max-w-3xl mb-3 md:mb-4 font-light px-4">
-          FIFA Approved Football, Cricket & Pickleball Turf
-        </p>
-        
-        <p className="text-base sm:text-lg text-center text-gray-300 max-w-2xl mb-6 md:mb-8 px-4">
-          Experience premium quality green turfs for football, cricket, and pickleball. Book your court today and enjoy world-class facilities.
-        </p>
-        
-        {/* Primary Booking CTA - Prominent */}
-        <div className="mb-12 md:mb-16 flex flex-col items-center px-4">
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-turf45-green via-turf45-lightgreen to-turf45-green text-white hover:from-turf45-green hover:via-turf45-lightgreen hover:to-turf45-green shadow-2xl shadow-turf45-green/50 transition-all duration-300 text-base sm:text-lg md:text-xl px-8 sm:px-12 py-5 sm:py-6 rounded-full group relative overflow-hidden animate-pulse-soft"
-            onClick={() => window.open('/public/booking', '_blank')}
-          >
-            <div className="absolute inset-0 w-full bg-gradient-to-r from-turf45-green/0 via-white/20 to-turf45-green/0 animate-shimmer pointer-events-none"></div>
-            <Calendar className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 group-hover:scale-110 transition-transform" />
-            <span className="font-bold">Reserve a Court</span>
-          </Button>
-          <p className="text-xs sm:text-sm text-gray-400 mt-3 md:mt-4 text-center max-w-md px-2">
-            Click above to book your football, cricket, or pickleball court
+
+        {/* Floating Badge */}
+        <div className="absolute top-8 left-8 z-20">
+          <Badge className="bg-white/90 backdrop-blur-md text-green-600 px-4 py-2 rounded-full border border-green-200 shadow-lg">
+            All-in-one Sports Facilities Center
+          </Badge>
+        </div>
+
+        {/* Social Media Icons */}
+        <div className="absolute right-8 top-1/2 transform -translate-y-1/2 z-20 hidden lg:flex flex-col gap-4">
+          <a href="https://instagram.com/turf45" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/90 backdrop-blur-md rounded-full hover:bg-white transition-all hover:scale-110 shadow-lg">
+            <Instagram className="h-5 w-5 text-green-600" />
+          </a>
+          <a href="https://twitter.com/turf45" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/90 backdrop-blur-md rounded-full hover:bg-white transition-all hover:scale-110 shadow-lg">
+            <Twitter className="h-5 w-5 text-green-600" />
+          </a>
+          <a href="https://facebook.com/turf45" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/90 backdrop-blur-md rounded-full hover:bg-white transition-all hover:scale-110 shadow-lg">
+            <Facebook className="h-5 w-5 text-green-600" />
+          </a>
+        </div>
+
+        {/* Hero Content */}
+        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+            Refresh, Relax, and Rediscover<br />
+            <span className="bg-gradient-to-r from-green-300 to-green-100 bg-clip-text text-transparent">
+              Life's Simple Pleasures
+            </span>
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+            Rediscover the beauty in life's simplest pleasures, and let every moment here remind you of the joy of true relaxation.
           </p>
-        </div>
-        
-        {/* Secondary Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-20 justify-center">
-          <Button
-            size="lg"
-            variant="outline"
-            className="text-turf45-green border-turf45-green/60 hover:bg-turf45-green/30 hover:border-turf45-lightgreen/80 group relative overflow-hidden transition-all duration-300 text-lg px-8"
-            onClick={() => navigate('/public/stations')}
-          >
-            <div className="absolute inset-0 w-full bg-gradient-to-r from-turf45-green/0 via-turf45-green/20 to-turf45-green/0 animate-shimmer pointer-events-none"></div>
-            <Monitor className="mr-2 h-5 w-5 animate-pulse-soft" />
-            <span>View Court Availability</span>
-          </Button>
+          
+          {/* Primary CTA */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button
+              onClick={() => navigate('/public/booking')}
+              size="lg"
+              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-2xl shadow-green-500/50 transition-all duration-300 hover:scale-105 group"
+            >
+              Book a Slot
+              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+            <Button
+              onClick={() => navigate('/public/booking')}
+              variant="outline"
+              size="lg"
+              className="bg-white/10 backdrop-blur-md border-2 border-white/30 text-white rounded-full px-8 py-6 text-lg font-semibold hover:bg-white/20 transition-all duration-300"
+            >
+              See Today's Availability
+            </Button>
+          </div>
         </div>
 
-        {/* Live Court Status Section */}
-        <div className="w-full max-w-6xl mx-auto mb-12 md:mb-20 px-4">
-          <div className="bg-gradient-to-br from-black/70 via-turf45-green/20 to-black/70 border border-turf45-green/50 rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden backdrop-blur-md">
-            <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-            <div className="absolute top-0 right-0 h-96 w-96 bg-turf45-green/10 blur-3xl rounded-full"></div>
-            <div className="absolute bottom-0 left-0 h-96 w-96 bg-turf45-lightgreen/10 blur-3xl rounded-full"></div>
-            
-            <div className="relative z-10">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 md:mb-8">
-                <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                  <div className="p-2 sm:p-3 rounded-xl bg-gradient-to-br from-turf45-green/30 to-turf45-lightgreen/30 border border-turf45-green/40 shrink-0">
-                    <Radio className="h-5 w-5 sm:h-6 sm:w-6 text-turf45-green animate-pulse" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1">Live Court Status</h2>
-                    <p className="text-gray-400 text-xs sm:text-sm flex items-center gap-2">
-                      <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse shrink-0"></span>
-                      <span className="truncate">Real-time updates every 30 seconds</span>
-                    </p>
-                  </div>
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+          <ChevronDown className="h-8 w-8 text-white/80" />
+        </div>
+      </section>
+
+      {/* Welcome Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Outdoor Area Card */}
+            <Card className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent z-10"></div>
+              <img
+                src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80"
+                alt="Football Court"
+                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <CardContent className="p-6 relative z-10">
+                <Badge className="mb-3 bg-green-500/10 text-green-700 border-green-300">Outdoor area</Badge>
+                <p className="text-gray-700 font-medium">Versatile space for a wide range of activities.</p>
+                <ArrowRight className="mt-4 h-5 w-5 text-green-600 group-hover:translate-x-2 transition-transform" />
+              </CardContent>
+            </Card>
+
+            {/* Sports Center Card */}
+            <Card className="relative overflow-hidden bg-gradient-to-br from-green-50 to-white border-2 border-green-200 group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <CardContent className="p-8 h-full flex flex-col justify-between">
+                <div>
+                  <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Sports center</Badge>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    Welcome to Turf45, where we inspire athletes and fitness enthusiasts to reach new heights.
+                  </h3>
                 </div>
                 <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-turf45-green border-turf45-green/50 hover:bg-turf45-green/30 shrink-0 whitespace-nowrap text-xs sm:text-sm"
-                  onClick={() => navigate('/public/stations')}
+                  onClick={() => navigate('/public/booking')}
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full w-fit group-hover:scale-105 transition-transform"
                 >
-                  View All Courts
+                  Get in touch
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
+              </CardContent>
+            </Card>
+
+            {/* Indoor Court Card */}
+            <Card className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent z-10"></div>
+              <img
+                src="https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80"
+                alt="Indoor Court"
+                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <CardContent className="p-6 relative z-10">
+                <Badge className="mb-3 bg-green-500/10 text-green-700 border-green-300">Indoor</Badge>
+                <h4 className="font-bold text-gray-900 mb-2">Pickleball Court</h4>
+                <p className="text-gray-700 text-sm mb-4">Explore the ideal space to play, train, and reach new heights. Where passion meets.</p>
+                <div className="flex gap-2">
+                  <button className="p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors">
+                    <ChevronLeft className="h-4 w-4 text-gray-700" />
+                  </button>
+                  <button className="p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors">
+                    <ChevronRight className="h-4 w-4 text-gray-700" />
+                  </button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Discover Excellence Section */}
+      <section id="facilities" className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row gap-12 items-start">
+            {/* Left Content */}
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-2">
+                  <Trophy className="h-6 w-6 text-white" />
+                </div>
+                <h2 className="text-3xl font-bold text-gray-900">Turf45</h2>
+              </div>
+              
+              <div className="flex gap-2 mb-6">
+                <Button variant="outline" className="rounded-full">Competition</Button>
+                <Button className="bg-green-600 hover:bg-green-700 text-white rounded-full">Training</Button>
+                <Button variant="outline" className="rounded-full">Friendly match</Button>
               </div>
 
-              {stationsLoading ? (
-                <div className="flex items-center justify-center py-12">
-                  <div className="animate-spin-slow h-8 w-8 rounded-full border-4 border-turf45-green border-t-transparent"></div>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {liveStations.map((station) => {
-                    const isFootball = station.type === 'ps5' || station.name.toLowerCase().includes('football');
-                    const isCricket = station.type === '8ball' || station.name.toLowerCase().includes('cricket');
-                    const isPickleball = station.type === 'vr' || station.name.toLowerCase().includes('pickleball');
-                    
-                    return (
-                      <div
-                        key={station.id}
-                        className={`group relative overflow-hidden rounded-xl border-2 transition-all duration-300 ${
-                          station.is_occupied
-                            ? 'bg-gradient-to-br from-red-500/10 via-red-500/5 to-red-500/10 border-red-500/40'
-                            : 'bg-gradient-to-br from-turf45-green/10 via-turf45-green/5 to-turf45-green/10 border-turf45-green/40'
-                        } hover:scale-[1.02] hover:shadow-xl`}
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                        
-                        <div className="p-5 relative z-10">
-                          <div className="flex items-start justify-between mb-4">
-                            <div className="flex items-center gap-3">
-                              <div className={`p-2.5 rounded-lg ${
-                                isFootball ? 'bg-turf45-green/20 border border-turf45-green/30' :
-                                isCricket ? 'bg-turf45-lightgreen/20 border border-turf45-lightgreen/30' :
-                                'bg-turf45-green/20 border border-turf45-green/30'
-                              }`}>
-                                {isFootball ? (
-                                  <Gamepad2 className="h-5 w-5 text-turf45-green" />
-                                ) : isCricket ? (
-                                  <Timer className="h-5 w-5 text-turf45-lightgreen" />
-                                ) : (
-                                  <Headset className="h-5 w-5 text-turf45-green" />
-                                )}
-                              </div>
-                              <div>
-                                <h3 className="text-lg font-bold text-white">{station.name}</h3>
-                                <p className="text-xs text-gray-400 capitalize">{isFootball ? 'Football Court' : isCricket ? 'Cricket Court' : 'Pickleball Court'}</p>
-                              </div>
-                            </div>
-                            <Badge className={
-                              station.is_occupied
-                                ? 'bg-red-500/20 text-red-300 border-red-500/30'
-                                : 'bg-green-500/20 text-green-300 border-green-500/30 animate-pulse-soft'
-                            }>
-                              {station.is_occupied ? (
-                                <XCircle className="h-3 w-3 mr-1" />
-                              ) : (
-                                <CheckCircle2 className="h-3 w-3 mr-1" />
-                              )}
-                              {station.is_occupied ? 'Occupied' : 'Available'}
-                            </Badge>
-                          </div>
-                          
-                          <div className="flex items-center justify-between pt-3 border-t border-white/10">
-                            <span className="text-gray-400 text-sm">Rate:</span>
-                            <span className="text-white font-bold text-lg">
-                              ₹{station.hourly_rate}/hr
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-
-              {liveStations.length === 0 && !stationsLoading && (
-                <div className="text-center py-12">
-                  <p className="text-gray-400">No courts available at the moment</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-        
-        {/* Features - Enhanced */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mx-auto mb-20">
-          <div className="bg-gradient-to-br from-black/70 via-turf45-green/30 to-black/70 p-8 rounded-2xl border-2 border-turf45-green/40 hover:border-turf45-green/60 transition-all duration-500 hover:shadow-2xl hover:shadow-turf45-green/40 hover:-translate-y-2 group backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-turf45-green/0 via-white/5 to-turf45-green/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-            <div className="relative z-10">
-              <div className="flex items-center mb-5">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-turf45-green/30 to-turf45-lightgreen/30 flex items-center justify-center text-turf45-green group-hover:scale-110 transition-transform duration-300 border-2 border-turf45-green/40 shadow-lg shadow-turf45-green/20">
-                  <Trophy size={28} />
-                </div>
-                <h3 className="ml-4 text-2xl font-bold text-white">FIFA Approved</h3>
-              </div>
-              <p className="text-gray-300 leading-relaxed mb-4">Experience world-class FIFA approved football turfs, meticulously maintained to professional standards.</p>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>FIFA Approved Football Courts</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>Professional Cricket Turfs</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>Premium Pickleball Courts</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="bg-gradient-to-br from-black/70 via-turf45-lightgreen/30 to-black/70 p-8 rounded-2xl border-2 border-turf45-lightgreen/40 hover:border-turf45-lightgreen/60 transition-all duration-500 hover:shadow-2xl hover:shadow-turf45-lightgreen/40 hover:-translate-y-2 group backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-turf45-lightgreen/0 via-white/5 to-turf45-lightgreen/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-            <div className="relative z-10">
-              <div className="flex items-center mb-5">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-turf45-lightgreen/30 to-turf45-green/30 flex items-center justify-center text-turf45-lightgreen group-hover:scale-110 transition-transform duration-300 border-2 border-turf45-lightgreen/40 shadow-lg shadow-turf45-lightgreen/20">
-                  <Sparkles size={28} />
-                </div>
-                <h3 className="ml-4 text-2xl font-bold text-white">Premium Quality</h3>
-              </div>
-              <p className="text-gray-300 leading-relaxed mb-4">Immerse yourself in our premium green turfs, designed for serious athletes and sports enthusiasts.</p>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>Well-Maintained Green Turfs</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>Professional Lighting</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>Clean & Safe Environment</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="bg-gradient-to-br from-black/70 via-turf45-green/30 to-black/70 p-8 rounded-2xl border-2 border-turf45-green/40 hover:border-turf45-green/60 transition-all duration-500 hover:shadow-2xl hover:shadow-turf45-green/40 hover:-translate-y-2 group backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-turf45-green/0 via-white/5 to-turf45-green/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-            <div className="relative z-10">
-              <div className="flex items-center mb-5">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-turf45-green/30 to-turf45-lightgreen/30 flex items-center justify-center text-turf45-green group-hover:scale-110 transition-transform duration-300 border-2 border-turf45-green/40 shadow-lg shadow-turf45-green/20">
-                  <Users size={28} />
-                </div>
-                <h3 className="ml-4 text-2xl font-bold text-white">Active Community</h3>
-              </div>
-              <p className="text-gray-300 leading-relaxed mb-4">Join our active community of sports enthusiasts, participate in tournaments, and improve your game.</p>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>Regular Tournaments & Events</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>Skill Development Sessions</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>Networking Opportunities</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        
-        {/* Stats */}
-        <div className="w-full max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
-          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-turf45-green/30 backdrop-blur-md rounded-xl border border-turf45-green/40 hover:border-turf45-green/60 transition-all duration-300 hover:shadow-lg hover:shadow-turf45-green/30">
-            <Trophy className="h-8 w-8 text-turf45-green mx-auto mb-3" />
-            <div className="text-3xl font-bold text-white">FIFA</div>
-            <div className="text-sm text-gray-300 mt-1">Approved</div>
-          </div>
-          
-          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-turf45-lightgreen/30 backdrop-blur-md rounded-xl border border-turf45-lightgreen/40 hover:border-turf45-lightgreen/60 transition-all duration-300 hover:shadow-lg hover:shadow-turf45-lightgreen/30">
-            <Star className="h-8 w-8 text-turf45-lightgreen mx-auto mb-3" />
-            <div className="text-3xl font-bold text-white">3</div>
-            <div className="text-sm text-gray-300 mt-1">Sports Types</div>
-          </div>
-          
-          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-turf45-green/30 backdrop-blur-md rounded-xl border border-turf45-green/40 hover:border-turf45-green/60 transition-all duration-300 hover:shadow-lg hover:shadow-turf45-green/30">
-            <Users className="h-8 w-8 text-turf45-green mx-auto mb-3" />
-            <div className="text-3xl font-bold text-white">Premium</div>
-            <div className="text-sm text-gray-300 mt-1">Turf Quality</div>
-          </div>
-          
-          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-turf45-lightgreen/30 backdrop-blur-md rounded-xl border border-turf45-lightgreen/40 hover:border-turf45-lightgreen/60 transition-all duration-300 hover:shadow-lg hover:shadow-turf45-lightgreen/30">
-            <Sparkles className="h-8 w-8 text-turf45-lightgreen mx-auto mb-3" />
-            <div className="text-3xl font-bold text-white">24/7</div>
-            <div className="text-sm text-gray-300 mt-1">Booking</div>
-          </div>
-        </div>
-        
-        {/* CTA Section */}
-        <div className="w-full max-w-5xl mx-auto bg-gradient-to-br from-black/70 via-turf45-green/40 to-black/70 border border-turf45-green/50 rounded-3xl p-12 relative overflow-hidden backdrop-blur-md">
-          <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-          <div className="absolute top-0 right-0 h-80 w-80 bg-turf45-green/10 blur-3xl rounded-full"></div>
-          <div className="absolute bottom-0 left-0 h-80 w-80 bg-turf45-lightgreen/10 blur-3xl rounded-full"></div>
-          
-          <div className="relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-6 tracking-tight">Ready to Experience TURF 45?</h2>
-            <p className="text-center text-gray-300 mb-10 max-w-2xl mx-auto text-lg leading-relaxed">
-              Step into our FIFA approved turf facility. Reserve your court and experience premium quality green turfs for football, cricket, and pickleball.
-            </p>
-            <div className="flex flex-col items-center gap-6">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-turf45-green via-turf45-lightgreen to-turf45-green text-white hover:from-turf45-green hover:via-turf45-lightgreen hover:to-turf45-green shadow-2xl shadow-turf45-green/50 group transition-all duration-300 text-xl px-12 py-6 rounded-full relative overflow-hidden animate-pulse-soft"
-                onClick={() => window.open('/public/booking', '_blank')}
-              >
-                <div className="absolute inset-0 w-full bg-gradient-to-r from-turf45-green/0 via-white/20 to-turf45-green/0 animate-shimmer pointer-events-none"></div>
-                <Calendar className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
-                <span className="font-bold">Book a Court Now</span>
-              </Button>
-              <p className="text-sm text-gray-400 text-center max-w-md">
-                Reserve your preferred court in just a few clicks
+              <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Discover Excellence in Courts, Fields, and Beyond
+              </h3>
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                We provide premium courts for both individual and group training. Our advanced sports facilities boast diverse courts and fields for every athlete.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 mt-4 justify-center">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="text-turf45-green border-turf45-green/60 hover:bg-turf45-green/30 hover:border-turf45-lightgreen/80 transition-all duration-300 text-base px-6"
-                  onClick={() => navigate('/public/stations')}
-                >
-                  <Monitor className="mr-2 h-4 w-4" />
-                  View All Courts
-                </Button>
+
+              <Button
+                onClick={() => navigate('/public/booking')}
+                size="lg"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-lg shadow-green-500/30"
+              >
+                Book a Court
+              </Button>
+
+              {/* Refer Friends */}
+              <div className="mt-8 p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-green-200 shadow-lg">
+                <h4 className="font-semibold text-gray-900 mb-4">Refer a friend</h4>
+                <div className="flex items-center gap-4">
+                  <Button variant="outline" className="rounded-full">Share link</Button>
+                  <div className="flex -space-x-2">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div key={i} className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-green-600 border-2 border-white"></div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Image */}
+            <div className="flex-1">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80"
+                  alt="Sports Facility"
+                  className="w-full h-[600px] object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-10 border-t border-turf45-green/30 relative z-10 mt-auto backdrop-blur-sm bg-black/30">
-        <div className="max-w-6xl mx-auto px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-10">
-            <div className="flex items-center mb-6 md:mb-0">
-              <Logo size="sm" />
-              <span className="ml-3 text-gray-400">© {new Date().getFullYear()} TURF 45. All rights reserved.</span>
-            </div>
-            
-            <div className="flex space-x-6">
-              <Dialog open={openDialog === 'terms'} onOpenChange={(open) => setOpenDialog(open ? 'terms' : null)}>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="text-gray-400 hover:text-turf45-green transition-colors"
-                  onClick={() => setOpenDialog('terms')}
-                >
-                  Terms
-                </Button>
-                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-[#1a1a1a] to-[#0a1a0a] border-turf45-green/40 text-white">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-white">Terms and Conditions</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-6 text-gray-300 mt-4">
-                    <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-turf45-green">1. Acceptance of Terms</h2>
-                      <p>
-                        By accessing and using TURF 45's services, you agree to be bound by these Terms and Conditions. 
-                        If you do not agree to these terms, please do not use our services.
-                      </p>
-                    </section>
-                    
-                    <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-turf45-green">2. Court Reservations</h2>
-                      <p>
-                        TURF 45 provides FIFA approved football, cricket, and pickleball turf facilities on a reservation or walk-in basis, subject to availability.
-                        Members receive preferential rates and booking privileges.
-                      </p>
-                      <p>
-                        All sessions are charged according to our current rate card. Extensions are subject to availability and additional charges.
-                      </p>
-                    </section>
-                    
-                    <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-turf45-green">3. Facility Conduct</h2>
-                      <p>
-                        Members and guests must maintain appropriate conduct within our premises. TURF 45 reserves the right to refuse service 
-                        to anyone engaging in disruptive, abusive, or inappropriate behavior.
-                      </p>
-                      <p>
-                        Players are responsible for any damage caused to equipment, courts, or fixtures through improper use.
-                        Damages will be charged at repair or replacement cost.
-                      </p>
-                    </section>
-                    
-                    <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-turf45-green">4. Cancellations and Refunds</h2>
-                      <p>
-                        Reservations may be cancelled or rescheduled at least 2 hours prior without penalty.
-                        Late cancellations or no-shows may incur a 50% booking fee.
-                      </p>
-                      <p>
-                        Refunds for technical issues will be assessed case-by-case by management.
-                      </p>
-                    </section>
-                    
-                    <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-turf45-green">5. Modifications</h2>
-                      <p>
-                        TURF 45 reserves the right to modify these terms at any time. Changes take effect immediately 
-                        upon posting. Continued use constitutes acceptance of modified terms.
-                      </p>
-                    </section>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
-              <Dialog open={openDialog === 'privacy'} onOpenChange={(open) => setOpenDialog(open ? 'privacy' : null)}>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="text-gray-400 hover:text-turf45-green transition-colors"
-                  onClick={() => setOpenDialog('privacy')}
-                >
-                  Privacy
-                </Button>
-                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-[#1a1a1a] to-[#0a1a0a] border-turf45-green/40 text-white">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-white">Privacy Policy</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-6 text-gray-300 mt-4">
-                    <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-turf45-green">1. Information Collection</h2>
-                      <p>
-                        TURF 45 collects personal information including name, contact details, 
-                        and payment information when you register or reserve courts.
-                      </p>
-                      <p>
-                        We collect usage data such as playing preferences, session duration, and purchase history 
-                        to improve services and customize your experience.
-                      </p>
-                    </section>
-                    
-                    <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-turf45-green">2. Information Usage</h2>
-                      <p>We use collected information to:</p>
-                      <ul className="list-disc pl-6 space-y-2">
-                        <li>Process reservations and payments</li>
-                        <li>Personalize your facility experience</li>
-                        <li>Communicate services and promotions</li>
-                        <li>Improve our facilities</li>
-                        <li>Maintain security and prevent fraud</li>
-                      </ul>
-                    </section>
-                    
-                    <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-turf45-green">3. Information Sharing</h2>
-                      <p>We do not sell or rent personal information. We may share with:</p>
-                      <ul className="list-disc pl-6 space-y-2">
-                        <li>Service providers assisting operations</li>
-                        <li>Legal authorities when required</li>
-                        <li>Partners with your consent</li>
-                      </ul>
-                    </section>
-                    
-                    <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-turf45-green">4. Your Rights</h2>
-                      <p>You have the right to:</p>
-                      <ul className="list-disc pl-6 space-y-2">
-                        <li>Access your information</li>
-                        <li>Request corrections</li>
-                        <li>Request deletion</li>
-                        <li>Opt-out of marketing</li>
-                        <li>Lodge complaints with authorities</li>
-                      </ul>
-                    </section>
-                    
-                    <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-turf45-green">5. Policy Changes</h2>
-                      <p>
-                        TURF 45 may update this policy anytime. Changes are posted on our website. 
-                        Continued use after modifications constitutes acceptance.
-                      </p>
-                    </section>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-gray-400 hover:text-turf45-green transition-colors"
-                  >
-                    Contact
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-80 bg-gradient-to-br from-[#1a1a1a] to-[#0a1a0a] border-turf45-green/40 text-white p-5 backdrop-blur-md">
-                  <h3 className="font-semibold text-lg mb-4 text-turf45-green">Contact Us</h3>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-start">
-                      <Phone className="h-5 w-5 text-turf45-green mr-3 mt-0.5" />
-                      <div>
-                        <p className="text-sm font-medium text-white">Phone</p>
-                        <a href="tel:+919345187098" className="text-gray-300 text-sm hover:text-turf45-green transition-colors">
-                          +91 93451 87098
-                        </a>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start">
-                      <Mail className="h-5 w-5 text-turf45-lightgreen mr-3 mt-0.5" />
-                      <div>
-                        <p className="text-sm font-medium text-white">Email</p>
-                        <a href="mailto:contact@turf45.in" className="text-gray-300 text-sm hover:text-turf45-lightgreen transition-colors">
-                          contact@turf45.in
-                        </a>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start">
-                      <Clock className="h-5 w-5 text-turf45-green mr-3 mt-0.5" />
-                      <div>
-                        <p className="text-sm font-medium text-white">Hours</p>
-                        <span className="text-gray-300 text-sm">Open Daily</span>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start">
-                      <MapPin className="h-5 w-5 text-turf45-lightgreen mr-3 mt-0.5" />
-                      <div>
-                        <p className="text-sm font-medium text-white">Location</p>
-                        <span className="text-gray-300 text-sm leading-relaxed">
-                          TURF 45 Facility<br />
-                          Chennai, Tamil Nadu
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </div>
+      {/* Sport Selector Cards */}
+      <section className="py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Choose Your Sport
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Select from our premium facilities and book your preferred court
+            </p>
           </div>
-          
-          <div className="text-xs text-center text-gray-500">
-            <p className="mb-2 text-gray-400">TURF 45 - FIFA Approved Turf Facility</p>
-            <div className="flex flex-col md:flex-row justify-center items-center gap-6 text-gray-400">
-              <div className="flex items-center gap-2">
-                <Phone className="h-3 w-3 text-turf45-green" />
-                <a href="tel:+919345187098" className="hover:text-turf45-green transition-colors">+91 93451 87098</a>
-              </div>
-              <div className="flex items-center gap-2">
-                <Mail className="h-3 w-3 text-turf45-green" />
-                <a href="mailto:contact@turf45.in" className="hover:text-turf45-green transition-colors">contact@turf45.in</a>
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="h-3 w-3 text-turf45-green" />
-                <span>Chennai, Tamil Nadu</span>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Football Card */}
+            <Card 
+              onClick={() => navigate('/public/booking?sport=football')}
+              className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 border-transparent hover:border-green-500"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent z-10"></div>
+              <img
+                src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80"
+                alt="Football Court"
+                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <CardContent className="p-6 relative z-10">
+                <Badge className="mb-3 bg-green-500/10 text-green-700 border-green-300">Playground</Badge>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Football</h3>
+                <p className="text-gray-600 mb-4">State-of-the-Art FIFA Approved Football Courts for All Athletes.</p>
+                <Button 
+                  variant="ghost" 
+                  className="text-green-600 hover:text-green-700 hover:bg-green-50 p-0 group"
+                >
+                  Book Now
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Cricket Card */}
+            <Card 
+              onClick={() => navigate('/public/booking?sport=cricket')}
+              className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 border-transparent hover:border-green-500"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent z-10"></div>
+              <img
+                src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80"
+                alt="Cricket Court"
+                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <CardContent className="p-6 relative z-10">
+                <Badge className="mb-3 bg-green-500/10 text-green-700 border-green-300">Playground</Badge>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Cricket</h3>
+                <p className="text-gray-600 mb-4">Top-Tier Cricket Facilities for Professional Training.</p>
+                <Button 
+                  variant="ghost" 
+                  className="text-green-600 hover:text-green-700 hover:bg-green-50 p-0 group"
+                >
+                  Book Now
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Pickleball Card */}
+            <Card 
+              onClick={() => navigate('/public/booking?sport=pickleball')}
+              className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 border-transparent hover:border-green-500"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent z-10"></div>
+              <img
+                src="https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80"
+                alt="Pickleball Court"
+                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <CardContent className="p-6 relative z-10">
+                <Badge className="mb-3 bg-green-500/10 text-green-700 border-green-300">Tennis court</Badge>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Pickleball</h3>
+                <p className="text-gray-600 mb-4">State-of-the-Art Courts and Fields for All Athletes.</p>
+                <Button 
+                  variant="ghost" 
+                  className="text-green-600 hover:text-green-700 hover:bg-green-50 p-0 group"
+                >
+                  Book Now
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          <p className="text-center text-gray-600 mt-8">
+            Reserve a court for individual practice, team sessions, or personalized coaching to elevate your performance.
+          </p>
+        </div>
+      </section>
+
+      {/* Available Today Preview */}
+      <section className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Available Today
+            </h2>
+            <p className="text-lg text-gray-600">
+              Quick preview of today's available slots
+            </p>
+          </div>
+
+          {stationsLoading ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600"></div>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-6">
+              {liveStations.slice(0, 3).map((station) => (
+                <Card key={station.id} className="overflow-hidden hover:shadow-xl transition-shadow">
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="font-bold text-lg text-gray-900">{station.name}</h3>
+                        <p className="text-sm text-gray-600">
+                          {station.type === 'ps5' ? 'Football' : station.type === '8ball' ? 'Cricket' : 'Pickleball'}
+                        </p>
+                      </div>
+                      <Badge className={station.is_occupied ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}>
+                        {station.is_occupied ? 'Occupied' : 'Available'}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl font-bold text-gray-900">₹{station.hourly_rate}/hr</span>
+                      <Button
+                        onClick={() => navigate('/public/booking')}
+                        size="sm"
+                        className="bg-green-600 hover:bg-green-700 text-white rounded-full"
+                      >
+                        Book Now
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+
+          <div className="text-center mt-8">
+            <Button
+              onClick={() => navigate('/public/booking')}
+              variant="outline"
+              className="rounded-full border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
+            >
+              View All Available Slots
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section id="how-it-works" className="py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              How It Works
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Book your court in three simple steps
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { step: '1', title: 'Choose Your Court', description: 'Select from Football, Cricket, or Pickleball courts', icon: Trophy },
+              { step: '2', title: 'Pick Your Slot', description: 'Choose your preferred date and time slot', icon: Calendar },
+              { step: '3', title: 'Pay & Confirm', description: 'Complete payment and get instant confirmation', icon: CheckCircle2 },
+            ].map((item, index) => (
+              <Card key={index} className="text-center p-8 hover:shadow-xl transition-shadow border-2 border-transparent hover:border-green-200">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <item.icon className="h-8 w-8 text-white" />
+                </div>
+                <div className="text-4xl font-bold text-green-600 mb-4">{item.step}</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
+                <p className="text-gray-600">{item.description}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews Section */}
+      <section id="reviews" className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <Star key={i} className="h-6 w-6 fill-yellow-400 text-yellow-400" />
+              ))}
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              What Our Customers Say
+            </h2>
+            <p className="text-lg text-gray-600">
+              Trusted by athletes and sports enthusiasts
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { name: 'Rajesh Kumar', rating: 5, text: 'Excellent facilities! The football court is FIFA approved and well-maintained. Booking was super easy.' },
+              { name: 'Priya Sharma', rating: 5, text: 'Love the cricket facilities here. Professional setup and great customer service. Highly recommended!' },
+              { name: 'Amit Patel', rating: 5, text: 'Best pickleball court in the city. Clean, modern, and the booking system is very convenient.' },
+            ].map((review, index) => (
+              <Card key={index} className="p-6 hover:shadow-xl transition-shadow">
+                <div className="flex gap-1 mb-4">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-gray-700 mb-4 italic">"{review.text}"</p>
+                <p className="font-semibold text-gray-900">— {review.name}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Founder Section */}
+      <section id="about" className="py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Our Story</Badge>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Meet Jai - Our Founder
+              </h2>
+              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                With a passion for sports and a vision to create world-class facilities, Jai founded Turf45 to provide athletes and sports enthusiasts with premium courts and fields. His dedication to excellence and commitment to quality has made Turf45 the premier destination for football, cricket, and pickleball in the region.
+              </p>
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                At Turf45, we believe that every athlete deserves access to top-tier facilities. Our mission is to inspire and empower athletes to reach their full potential through our state-of-the-art courts and exceptional service.
+              </p>
+              <Button
+                onClick={() => navigate('/public/booking')}
+                size="lg"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-lg shadow-green-500/30"
+              >
+                Book Your Court Today
+              </Button>
+            </div>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-green-400/20 rounded-3xl blur-2xl"></div>
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"
+                  alt="Founder"
+                  className="w-full h-[500px] object-cover"
+                />
               </div>
             </div>
           </div>
         </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-lg text-gray-600">
+              Everything you need to know about booking
+            </p>
+          </div>
+
+          <Accordion type="single" collapsible className="w-full space-y-4">
+            <AccordionItem value="payment-failed" className="bg-white rounded-xl border-2 border-green-100 px-6">
+              <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline">
+                What should I do if payment fails?
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-600">
+                If your payment fails, please try again. If the issue persists, contact our support team at +91 93451 87098 or email contact@turf45.in. We'll help you complete your booking.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="cancel-reschedule" className="bg-white rounded-xl border-2 border-green-100 px-6">
+              <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline">
+                Can I cancel or reschedule my booking?
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-600">
+                Yes, you can cancel or reschedule your booking up to 2 hours before your scheduled time. Please refer to our <a href="/refund-policy" className="text-green-600 hover:underline">Cancellation & Refund Policy</a> for detailed information.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="confirmation" className="bg-white rounded-xl border-2 border-green-100 px-6">
+              <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline">
+                How will I receive booking confirmation?
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-600">
+                You'll receive an instant confirmation via SMS and email after successful payment. You can also view your booking details in your account dashboard.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="arrival-time" className="bg-white rounded-xl border-2 border-green-100 px-6">
+              <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline">
+                When should I arrive for my booking?
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-600">
+                We recommend arriving 10-15 minutes before your scheduled time to complete check-in and warm-up. Your court will be ready at your booked time.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-8 mb-12">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-2">
+                  <Trophy className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-xl font-bold">Turf45</h3>
+              </div>
+              <p className="text-gray-400 text-sm">
+                Premium sports facilities for football, cricket, and pickleball. Book your court today!
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><a href="/support" className="hover:text-green-400 transition-colors">Support</a></li>
+                <li><a href="/refund-policy" className="hover:text-green-400 transition-colors">Cancellation & Refund Policy</a></li>
+                <li><a href="/terms" className="hover:text-green-400 transition-colors">Terms & Conditions</a></li>
+                <li><a href="/privacy" className="hover:text-green-400 transition-colors">Privacy Policy</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-4">Contact</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li className="flex items-center gap-2">
+                  <Phone className="h-4 w-4" />
+                  <a href="tel:+919345187098" className="hover:text-green-400 transition-colors">+91 93451 87098</a>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Mail className="h-4 w-4" />
+                  <a href="mailto:contact@turf45.in" className="hover:text-green-400 transition-colors">contact@turf45.in</a>
+                </li>
+                <li className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4" />
+                  <span>Chennai, Tamil Nadu</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-4">Follow Us</h4>
+              <div className="flex gap-4">
+                <a href="https://instagram.com/turf45" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-green-500 transition-colors">
+                  <Instagram className="h-5 w-5" />
+                </a>
+                <a href="https://twitter.com/turf45" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-green-500 transition-colors">
+                  <Twitter className="h-5 w-5" />
+                </a>
+                <a href="https://facebook.com/turf45" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-green-500 transition-colors">
+                  <Facebook className="h-5 w-5" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-700 pt-8 text-center text-sm text-gray-400">
+            <p>© {new Date().getFullYear()} Turf45. All rights reserved.</p>
+          </div>
+        </div>
       </footer>
-      
-      {/* Elegant animated elements */}
-      <div className="fixed top-[12%] left-[8%] text-turf45-green opacity-15 animate-float">
-        <Trophy size={28} className="animate-wiggle" />
-      </div>
-      <div className="fixed bottom-[18%] right-[12%] text-turf45-lightgreen opacity-15 animate-float delay-300">
-        <Sparkles size={26} className="animate-pulse-soft" />
-      </div>
-      <div className="fixed top-[35%] right-[8%] text-turf45-green opacity-15 animate-float delay-150">
-        <Star size={24} className="animate-wiggle" />
-      </div>
-      <div className="fixed bottom-[30%] left-[15%] text-turf45-lightgreen opacity-15 animate-float delay-200">
-        <Trophy size={22} className="animate-pulse-soft" />
-      </div>
     </div>
   );
 };
