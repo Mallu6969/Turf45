@@ -58,29 +58,29 @@ const Stations = () => {
         onOpenChange={setOpenAddDialog} 
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-slide-up mb-8">
-        <Card className="bg-gradient-to-r from-green-900/30 to-green-700/20 border-green-500/40 border-2 animate-fade-in shadow-lg shadow-green-500/20">
-          <CardContent className="p-6 flex items-center justify-between">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-slide-up">
+        <Card className="bg-gradient-to-r from-green-900/20 to-green-700/10 border-green-500/30 border animate-fade-in">
+          <CardContent className="p-4 flex items-center justify-between">
             <div>
-              <p className="text-base text-muted-foreground font-medium">Main Turf Court</p>
-              <p className="text-4xl font-bold mt-2">{activeTurf} / {turfCourts.length} Active</p>
-              <p className="text-sm text-green-400 mt-2 font-semibold">Football & Cricket</p>
+              <p className="text-sm text-muted-foreground">Main Turf Court</p>
+              <p className="text-2xl font-bold">{activeTurf} / {turfCourts.length} Active</p>
+              <p className="text-xs text-green-500 mt-1">Football & Cricket</p>
             </div>
-            <div className="rounded-full bg-green-500/20 p-4 border-2 border-green-500">
-              <Trophy className="h-10 w-10 text-green-400" />
+            <div className="rounded-full bg-green-900/30 p-3">
+              <Trophy className="h-6 w-6 text-green-500" />
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-gradient-to-r from-blue-900/30 to-blue-700/20 border-blue-500/40 border-2 animate-fade-in delay-100 shadow-lg shadow-blue-500/20">
-          <CardContent className="p-6 flex items-center justify-between">
+        <Card className="bg-gradient-to-r from-blue-900/20 to-blue-700/10 border-blue-500/30 border animate-fade-in delay-100">
+          <CardContent className="p-4 flex items-center justify-between">
             <div>
-              <p className="text-base text-muted-foreground font-medium">Pickleball Court</p>
-              <p className="text-4xl font-bold mt-2">{activePickleball} / {pickleballCourts.length} Active</p>
-              <p className="text-sm text-blue-400 mt-2 font-semibold">Indoor Court</p>
+              <p className="text-sm text-muted-foreground">Pickleball Court</p>
+              <p className="text-2xl font-bold">{activePickleball} / {pickleballCourts.length} Active</p>
+              <p className="text-xs text-blue-400 mt-1">Indoor Court</p>
             </div>
-            <div className="rounded-full bg-blue-500/20 p-4 border-2 border-blue-500">
-              <Target className="h-10 w-10 text-blue-400" />
+            <div className="rounded-full bg-blue-900/30 p-3">
+              <Target className="h-6 w-6 text-blue-400" />
             </div>
           </CardContent>
         </Card>

@@ -274,28 +274,28 @@ const StationCard: React.FC<StationCardProps> = ({ station }) => {
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
-                  <AlertDialogHeader>
+                <AlertDialogHeader>
                   <AlertDialogTitle>Delete Court?</AlertDialogTitle>
-                    <AlertDialogDescription>
+                  <AlertDialogDescription>
                     Are you sure you want to delete "{station.name}"? This action cannot be undone.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction 
-                      onClick={handleDeleteStation}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleDeleteStation}
                     className="bg-red-500 hover:bg-red-600"
-                    >
-                      Delete
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                  >
+                    Delete
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </CardContent>
 
-        <CardFooter className="pt-0 relative z-10">
-          <StationActions 
+        <CardFooter className="pt-4 pb-6 relative z-10">
+          <StationActions
             station={station}
             customers={customers}
             onStartSession={startSession}
