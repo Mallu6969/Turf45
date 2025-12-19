@@ -3,7 +3,6 @@ import { usePOS } from '@/context/POSContext';
 import StationCard from '@/components/StationCard';
 import { Card, CardContent } from '@/components/ui/card';
 import { Trophy, Plus, Target } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import AddStationDialog from '@/components/AddStationDialog';
 import PinVerificationDialog from '@/components/PinVerificationDialog';
 
@@ -20,7 +19,10 @@ const Stations = () => {
   const activeTurf = turfCourts.filter(s => s.isOccupied).length;
   const activePickleball = pickleballCourts.filter(s => s.isOccupied).length;
 
-  const handleAddCourtClick = () => {
+  const handleAddCourtClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('🎯 Add Court button clicked!');
     setOpenPinDialog(true);
   };
 
@@ -30,16 +32,15 @@ const Stations = () => {
 
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
-      <div className="flex items-center justify-between animate-slide-down">
+      <div className="flex items-center justify-between mb-6 relative z-[100]">
         <h2 className="text-3xl font-bold tracking-tight gradient-text font-heading">Court Management</h2>
-        <div className="flex space-x-2">
-          <Button 
-            className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 relative z-10"
-            onClick={handleAddCourtClick}
-          >
-            <Plus className="mr-2 h-4 w-4" /> Add Court
-          </Button>
-        </div>
+        <button 
+          className="inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 font-medium"
+          onClick={handleAddCourtClick}
+          type="button"
+        >
+          <Plus className="h-4 w-4" /> Add Court
+        </button>
       </div>
 
       {/* PIN Verification Dialog */}
