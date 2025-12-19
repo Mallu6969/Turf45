@@ -296,7 +296,7 @@ const Login = () => {
   };
 
   return (
-    <div className="public-page min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-green-50 relative overflow-hidden px-4">
+    <div className="public-page min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-green-50 via-white to-green-50 relative overflow-hidden px-4">
       <video 
         ref={videoRef} 
         style={{ display: 'none' }}
@@ -645,6 +645,26 @@ const Login = () => {
                   )}
         </DialogContent>
       </Dialog>
+
+      {/* Footer */}
+      <footer className="absolute bottom-0 left-0 right-0 py-6 px-4 text-center">
+        <div className="flex flex-col items-center gap-3">
+          <a 
+            href="https://cuephoriatech.in" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 text-green-400 hover:text-green-300 transition-all text-sm font-medium"
+          >
+            <span>&lt; &gt;</span>
+            <span className="text-green-400">Cuephoria</span>
+            <span className="text-gray-600">Tech</span>
+            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+          <p className="text-xs text-gray-500">Powered by Cuephoria Tech</p>
+        </div>
+      </footer>
     </div>
   );
 };

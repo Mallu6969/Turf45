@@ -1,7 +1,7 @@
 // src/components/AppSidebar.tsx
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ShoppingCart, User, BarChart2, Settings, Package, Clock, Users, Menu, Shield, PowerOff, BookOpen, Calendar, Users2, UserCircle, CreditCard } from 'lucide-react';
+import { Home, ShoppingCart, User, BarChart2, Settings, Package, Clock, Users, Menu, Shield, PowerOff, BookOpen, Calendar, Users2, UserCircle, CreditCard, ExternalLink } from 'lucide-react';
 import { 
   Sidebar, 
   SidebarContent, 
@@ -171,7 +171,7 @@ const AppSidebar: React.FC = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="p-4">
+      <SidebarFooter className="p-4 space-y-3">
         <div className="group bg-cuephoria-dark rounded-lg p-4 shadow-lg border border-turf45-green/20 hover:border-turf45-green/60 hover:shadow-[0_0_20px_rgba(16, 185, 129, 0.3)] transition-all duration-300 ease-in-out">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -198,6 +198,17 @@ const AppSidebar: React.FC = () => {
             </button>
           </div>
         </div>
+        <a 
+          href="https://cuephoriatech.in" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-turf45-green/10 hover:bg-turf45-green/20 border border-turf45-green/30 text-turf45-green hover:text-turf45-lightgreen transition-all text-xs font-medium group"
+        >
+          <span>&lt; &gt;</span>
+          <span className="text-turf45-green">Cuephoria</span>
+          <span className="text-gray-400">Tech</span>
+          <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+        </a>
       </SidebarFooter>
     </Sidebar>
   );

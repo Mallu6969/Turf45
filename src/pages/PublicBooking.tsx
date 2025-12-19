@@ -2258,7 +2258,7 @@ export default function PublicBooking() {
                 title="Click for secret feature"
               />
               <p className="text-gray-400 text-sm">
-                © {new Date().getFullYear()} NerfTurf. All rights reserved.
+                © {new Date().getFullYear()} Turf45. All rights reserved.
               </p>
             </div>
             <div className="flex items-center space-x-4">
@@ -2271,39 +2271,36 @@ export default function PublicBooking() {
 
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="flex flex-wrap justify-center md:justify-start gap-6">
-              <button
-                onClick={() => {
-                  setLegalDialogType("terms");
-                  setShowLegalDialog(true);
-                }}
+              <a
+                href="/terms"
                 className="text-gray-400 hover:text-white hover:underline text-sm flex items-center gap-1 transition"
               >
                 Terms & Conditions
-              </button>
-              <button
-                onClick={() => {
-                  setLegalDialogType("privacy");
-                  setShowLegalDialog(true);
-                }}
+              </a>
+              <a
+                href="/privacy"
                 className="text-gray-400 hover:text-white hover:underline text-sm flex items-center gap-1 transition"
               >
                 Privacy Policy
-              </button>
-              <button
-                onClick={() => {
-                  setLegalDialogType("contact");
-                  setShowLegalDialog(true);
-                }}
+              </a>
+              <a
+                href="/support"
                 className="text-gray-400 hover:text-white hover:underline text-sm flex items-center gap-1 transition"
               >
                 Contact Us
-              </button>
-              <button
-                onClick={() => setShowRefundDialog(true)}
+              </a>
+              <a
+                href="/refund-policy"
                 className="text-gray-400 hover:text-white hover:underline text-sm flex items-center gap-1 transition"
               >
                 Refund Policy
-              </button>
+              </a>
+              <a
+                href="/login"
+                className="text-gray-400 hover:text-white hover:underline text-sm flex items-center gap-1 transition"
+              >
+                Management Login
+              </a>
             </div>
 
             <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-400">
@@ -2315,10 +2312,29 @@ export default function PublicBooking() {
               </div>
               <div className="flex items-center gap-1">
                 <Mail className="h-4 w-4" />
-                <a href="mailto:contact@nerfturf.in" className="hover:text-white transition-colors">
-                  contact@nerfturf.in
+                <a href="mailto:contact@turf45.in" className="hover:text-white transition-colors">
+                  contact@turf45.in
                 </a>
               </div>
+            </div>
+          </div>
+
+          <div className="border-t border-white/10 pt-6">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-xs text-gray-500">Powered by</p>
+              <a 
+                href="https://cuephoriatech.in" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 text-green-400 hover:text-green-300 transition-all text-sm font-medium"
+              >
+                <span>&lt; &gt;</span>
+                <span className="text-green-400">Cuephoria</span>
+                <span className="text-gray-300">Tech</span>
+                <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
             </div>
           </div>
         </div>

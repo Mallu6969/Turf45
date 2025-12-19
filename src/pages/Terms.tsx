@@ -227,7 +227,39 @@ const Terms = () => {
             Book a Court Now
           </Button>
         </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-12 px-4 mt-16">
+        <div className="max-w-7xl mx-auto">
+          <div className="border-t border-gray-700 pt-8">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-sm text-gray-400">© {new Date().getFullYear()} Turf45. All rights reserved.</p>
+              <div className="flex items-center gap-4">
+                <a 
+                  href="/login" 
+                  className="text-sm text-gray-400 hover:text-green-400 transition-colors"
+                >
+                  Management Login
+                </a>
+                <a 
+                  href="https://cuephoriatech.in" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 text-green-400 hover:text-green-300 transition-all text-sm font-medium"
+                >
+                  <span>&lt; &gt;</span>
+                  <span className="text-green-400">Cuephoria</span>
+                  <span className="text-gray-300">Tech</span>
+                  <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
+      </footer>
     </div>
   );
 };

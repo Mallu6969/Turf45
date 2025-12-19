@@ -125,8 +125,8 @@ const Index: React.FC = () => {
                 </h1>
                 <p className="text-xs text-gray-500">Premium Sports Facility</p>
               </div>
-            </div>
-
+        </div>
+        
             {/* Desktop Navigation */}
             {!isMobile && (
               <nav className="hidden md:flex items-center gap-8">
@@ -158,15 +158,15 @@ const Index: React.FC = () => {
                     placeholder="Search here..."
                     className="pl-10 pr-4 py-2 rounded-full border border-gray-200 bg-white/50 backdrop-blur-sm text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 w-48"
                   />
-                </div>
+      </div>
               )}
-              
-              <Button
+
+          <Button
                 onClick={() => navigate('/public/booking')}
                 className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-6 shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-105"
               >
                 Book Now
-              </Button>
+          </Button>
 
               {isMobile && (
                 <button
@@ -213,8 +213,8 @@ const Index: React.FC = () => {
             src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=80"
             alt="Football Court"
             className="w-full h-full object-cover"
-          />
-        </div>
+            />
+          </div>
 
         {/* Floating Badge */}
         <div className="absolute top-8 left-8 z-20">
@@ -235,15 +235,15 @@ const Index: React.FC = () => {
             <Facebook className="h-5 w-5 text-green-600" />
           </a>
         </div>
-
+        
         {/* Hero Content */}
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
             Refresh, Relax, and Rediscover<br />
             <span className="bg-gradient-to-r from-green-300 to-green-100 bg-clip-text text-transparent">
               Life's Simple Pleasures
-            </span>
-          </h1>
+          </span>
+        </h1>
           <p className="text-xl md:text-2xl text-gray-100 mb-8 max-w-2xl mx-auto leading-relaxed">
             Rediscover the beauty in life's simplest pleasures, and let every moment here remind you of the joy of true relaxation.
           </p>
@@ -258,17 +258,17 @@ const Index: React.FC = () => {
               Book a Slot
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button
+          <Button
               onClick={() => navigate('/public/booking')}
               variant="outline"
-              size="lg"
+            size="lg"
               className="bg-white/10 backdrop-blur-md border-2 border-white/30 text-white rounded-full px-8 py-6 text-lg font-semibold hover:bg-white/20 transition-all duration-300"
-            >
+          >
               See Today's Availability
-            </Button>
+          </Button>
           </div>
         </div>
-
+        
         {/* Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
           <ChevronDown className="h-8 w-8 text-white/80" />
@@ -351,7 +351,7 @@ const Index: React.FC = () => {
                 </div>
                 <h2 className="text-3xl font-bold text-gray-900">Turf45</h2>
               </div>
-              
+
               <div className="flex gap-2 mb-6">
                 <Button variant="outline" className="rounded-full">Competition</Button>
                 <Button className="bg-green-600 hover:bg-green-700 text-white rounded-full">Training</Button>
@@ -494,7 +494,7 @@ const Index: React.FC = () => {
           <p className="text-center text-gray-600 mt-8">
             Reserve a court for individual practice, team sessions, or personalized coaching to elevate your performance.
           </p>
-        </div>
+                              </div>
       </section>
 
       {/* Available Today Preview */}
@@ -507,12 +507,12 @@ const Index: React.FC = () => {
             <p className="text-lg text-gray-600">
               Quick preview of today's available slots
             </p>
-          </div>
+                              </div>
 
           {stationsLoading ? (
             <div className="flex justify-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600"></div>
-            </div>
+                            </div>
           ) : (
             <div className="grid md:grid-cols-3 gap-6">
               {liveStations.slice(0, 3).map((station) => (
@@ -526,9 +526,9 @@ const Index: React.FC = () => {
                         </p>
                       </div>
                       <Badge className={station.is_occupied ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}>
-                        {station.is_occupied ? 'Occupied' : 'Available'}
-                      </Badge>
-                    </div>
+                              {station.is_occupied ? 'Occupied' : 'Available'}
+                            </Badge>
+                          </div>
                     <div className="flex items-center justify-between">
                       <span className="text-2xl font-bold text-gray-900">₹{station.hourly_rate}/hr</span>
                       <Button
@@ -538,12 +538,12 @@ const Index: React.FC = () => {
                       >
                         Book Now
                       </Button>
-                    </div>
-                  </div>
+                          </div>
+                        </div>
                 </Card>
               ))}
-            </div>
-          )}
+                </div>
+              )}
 
           <div className="text-center mt-8">
             <Button
@@ -568,7 +568,7 @@ const Index: React.FC = () => {
               Book your court in three simple steps
             </p>
           </div>
-
+          
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { step: '1', title: 'Choose Your Court', description: 'Select from Football, Cricket, or Pickleball courts', icon: Trophy },
@@ -584,8 +584,8 @@ const Index: React.FC = () => {
                 <p className="text-gray-600">{item.description}</p>
               </Card>
             ))}
-          </div>
-        </div>
+              </div>
+            </div>
       </section>
 
       {/* Why Players Choose Turf45 */}
@@ -597,7 +597,7 @@ const Index: React.FC = () => {
               From FIFA-approved surfaces to pro-grade lighting, every detail is engineered for peak performance and unforgettable sessions.
             </p>
           </div>
-
+          
           <div className="grid lg:grid-cols-3 gap-8">
             {[
               {
@@ -620,7 +620,7 @@ const Index: React.FC = () => {
                 <div className="flex items-start gap-4">
                   <div className="p-3 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 text-white shadow-md">
                     <Shield className="h-5 w-5" />
-                  </div>
+                </div>
                   <div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-3">{item.title}</h3>
                     <p className="text-gray-600 mb-4 leading-relaxed">{item.body}</p>
@@ -629,10 +629,10 @@ const Index: React.FC = () => {
                         <li key={p} className="flex items-center gap-2">
                           <CheckCircle2 className="h-4 w-4 text-green-600" />
                           <span>{p}</span>
-                        </li>
+                </li>
                       ))}
-                    </ul>
-                  </div>
+              </ul>
+            </div>
                 </div>
               </Card>
             ))}
@@ -649,7 +649,7 @@ const Index: React.FC = () => {
               Flexible options for solo practice, squads, academies, and corporate leagues. Pay per slot or lock in season passes.
             </p>
           </div>
-
+          
           <div className="grid lg:grid-cols-3 gap-8">
             <Card className="p-8 border border-green-100 shadow-lg hover:shadow-2xl transition-all duration-300">
               <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Season Pass</Badge>
@@ -706,7 +706,7 @@ const Index: React.FC = () => {
               Trusted by athletes and sports enthusiasts
             </p>
           </div>
-
+          
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { name: 'Rajesh Kumar', rating: 5, text: 'Excellent facilities! The football court is FIFA approved and well-maintained. Booking was super easy.' },
@@ -774,8 +774,8 @@ const Index: React.FC = () => {
             <p className="text-lg text-gray-600">
               Everything you need to know about booking
             </p>
-          </div>
-
+            </div>
+            
           <Accordion type="single" collapsible className="w-full space-y-4">
             <AccordionItem value="payment-failed" className="bg-white rounded-xl border-2 border-green-100 px-6">
               <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline">
@@ -813,9 +813,9 @@ const Index: React.FC = () => {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-        </div>
-      </section>
-
+                  </div>
+                    </section>
+                    
       {/* Footer */}
       <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-16 px-4">
         <div className="max-w-7xl mx-auto">
@@ -824,15 +824,15 @@ const Index: React.FC = () => {
               <div className="flex items-center gap-3 mb-4">
                 <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-2">
                   <Trophy className="h-6 w-6 text-white" />
-                </div>
+                  </div>
                 <h3 className="text-xl font-bold">Turf45</h3>
-              </div>
+                      </div>
               <p className="text-gray-400 text-sm">
                 Premium sports facilities for football, cricket, and pickleball. Book your court today!
               </p>
-            </div>
-
-            <div>
+                    </div>
+                    
+                      <div>
               <h4 className="font-semibold mb-4">Quick Links</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><a href="/support" className="hover:text-green-400 transition-colors">Support</a></li>
@@ -840,9 +840,9 @@ const Index: React.FC = () => {
                 <li><a href="/terms" className="hover:text-green-400 transition-colors">Terms & Conditions</a></li>
                 <li><a href="/privacy" className="hover:text-green-400 transition-colors">Privacy Policy</a></li>
               </ul>
-            </div>
-
-            <div>
+                    </div>
+                    
+                      <div>
               <h4 className="font-semibold mb-4">Contact</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li className="flex items-center gap-2">
@@ -858,9 +858,9 @@ const Index: React.FC = () => {
                   <span>Chennai, Tamil Nadu</span>
                 </li>
               </ul>
-            </div>
-
-            <div>
+                    </div>
+                    
+                      <div>
               <h4 className="font-semibold mb-4">Follow Us</h4>
               <div className="flex gap-4">
                 <a href="https://instagram.com/turf45" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-green-500 transition-colors">
@@ -872,12 +872,35 @@ const Index: React.FC = () => {
                 <a href="https://facebook.com/turf45" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-green-500 transition-colors">
                   <Facebook className="h-5 w-5" />
                 </a>
-              </div>
+                  </div>
             </div>
           </div>
-
-          <div className="border-t border-gray-700 pt-8 text-center text-sm text-gray-400">
-            <p>© {new Date().getFullYear()} Turf45. All rights reserved.</p>
+          
+          <div className="border-t border-gray-700 pt-8">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-sm text-gray-400">© {new Date().getFullYear()} Turf45. All rights reserved.</p>
+              <div className="flex items-center gap-4">
+                <a 
+                  href="/login" 
+                  className="text-sm text-gray-400 hover:text-green-400 transition-colors"
+                >
+                  Management Login
+                </a>
+                <a 
+                  href="https://cuephoriatech.in" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 text-green-400 hover:text-green-300 transition-all text-sm font-medium"
+                >
+                  <span>&lt; &gt;</span>
+                  <span className="text-green-400">Cuephoria</span>
+                  <span className="text-gray-300">Tech</span>
+                  <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
