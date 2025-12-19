@@ -31,15 +31,15 @@ const Stations = () => {
   };
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
-      <div className="flex items-center justify-between mb-6 relative z-[100]">
-        <h2 className="text-3xl font-bold tracking-tight gradient-text font-heading">Court Management</h2>
+    <div className="flex-1 space-y-6 p-8 pt-6">
+      <div className="flex items-center justify-between mb-8 relative z-[100]">
+        <h2 className="text-4xl font-bold tracking-tight gradient-text font-heading">Court Management</h2>
         <button 
-          className="inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 font-medium"
+          className="inline-flex items-center justify-center gap-2 rounded-md px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 font-semibold text-base"
           onClick={handleAddCourtClick}
           type="button"
         >
-          <Plus className="h-4 w-4" /> Add Court
+          <Plus className="h-5 w-5" /> Add Court
         </button>
       </div>
 
@@ -58,46 +58,46 @@ const Stations = () => {
         onOpenChange={setOpenAddDialog} 
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-slide-up">
-        <Card className="bg-gradient-to-r from-green-900/20 to-green-700/10 border-green-500/30 border animate-fade-in">
-          <CardContent className="p-4 flex items-center justify-between">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-slide-up mb-8">
+        <Card className="bg-gradient-to-r from-green-900/30 to-green-700/20 border-green-500/40 border-2 animate-fade-in shadow-lg shadow-green-500/20">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Main Turf Court</p>
-              <p className="text-2xl font-bold">{activeTurf} / {turfCourts.length} Active</p>
-              <p className="text-xs text-green-500 mt-1">Football & Cricket</p>
+              <p className="text-base text-muted-foreground font-medium">Main Turf Court</p>
+              <p className="text-4xl font-bold mt-2">{activeTurf} / {turfCourts.length} Active</p>
+              <p className="text-sm text-green-400 mt-2 font-semibold">Football & Cricket</p>
             </div>
-            <div className="rounded-full bg-green-900/30 p-3">
-              <Trophy className="h-6 w-6 text-green-500" />
+            <div className="rounded-full bg-green-500/20 p-4 border-2 border-green-500">
+              <Trophy className="h-10 w-10 text-green-400" />
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-gradient-to-r from-blue-900/20 to-blue-700/10 border-blue-500/30 border animate-fade-in delay-100">
-          <CardContent className="p-4 flex items-center justify-between">
+        <Card className="bg-gradient-to-r from-blue-900/30 to-blue-700/20 border-blue-500/40 border-2 animate-fade-in delay-100 shadow-lg shadow-blue-500/20">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Pickleball Court</p>
-              <p className="text-2xl font-bold">{activePickleball} / {pickleballCourts.length} Active</p>
-              <p className="text-xs text-blue-400 mt-1">Indoor Court</p>
+              <p className="text-base text-muted-foreground font-medium">Pickleball Court</p>
+              <p className="text-4xl font-bold mt-2">{activePickleball} / {pickleballCourts.length} Active</p>
+              <p className="text-sm text-blue-400 mt-2 font-semibold">Indoor Court</p>
             </div>
-            <div className="rounded-full bg-blue-900/30 p-3">
-              <Target className="h-6 w-6 text-blue-400" />
+            <div className="rounded-full bg-blue-500/20 p-4 border-2 border-blue-500">
+              <Target className="h-10 w-10 text-blue-400" />
             </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Courts Grid - Side by Side */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Main Turf Section */}
         <div className="animate-slide-up delay-200">
-          <div className="flex items-center mb-4">
-            <Trophy className="h-5 w-5 text-green-500 mr-2" />
-            <h3 className="text-xl font-semibold font-heading">Main Turf Court</h3>
-            <span className="ml-2 bg-green-800/30 text-green-400 text-xs px-2 py-1 rounded-full">
+          <div className="flex items-center mb-6">
+            <Trophy className="h-7 w-7 text-green-500 mr-3" />
+            <h3 className="text-2xl font-bold font-heading">Main Turf Court</h3>
+            <span className="ml-3 bg-green-800/40 text-green-300 text-sm px-3 py-1 rounded-full font-semibold">
               {activeTurf} active
             </span>
           </div>
-          <p className="text-xs text-gray-400 mb-4">FIFA-approved for Football & Cricket</p>
+          <p className="text-sm text-gray-400 mb-6 font-medium">FIFA-approved for Football & Cricket</p>
           
           <div className="space-y-4">
             {turfCourts
@@ -123,14 +123,14 @@ const Stations = () => {
 
         {/* Pickleball Section */}
         <div className="animate-slide-up delay-300">
-          <div className="flex items-center mb-4">
-            <Target className="h-5 w-5 text-blue-400 mr-2" />
-            <h3 className="text-xl font-semibold font-heading">Pickleball Court</h3>
-            <span className="ml-2 bg-blue-800/30 text-blue-400 text-xs px-2 py-1 rounded-full">
+          <div className="flex items-center mb-6">
+            <Target className="h-7 w-7 text-blue-400 mr-3" />
+            <h3 className="text-2xl font-bold font-heading">Pickleball Court</h3>
+            <span className="ml-3 bg-blue-800/40 text-blue-300 text-sm px-3 py-1 rounded-full font-semibold">
               {activePickleball} active
             </span>
           </div>
-          <p className="text-xs text-gray-400 mb-4">Indoor court</p>
+          <p className="text-sm text-gray-400 mb-6 font-medium">Indoor court</p>
           
           <div className="space-y-4">
             {pickleballCourts

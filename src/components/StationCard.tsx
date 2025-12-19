@@ -59,12 +59,12 @@ const StationCard: React.FC<StationCardProps> = ({ station }) => {
     <>
       <Card 
         className={`
-          relative overflow-hidden h-full transition-all duration-500
+          relative overflow-hidden h-full min-h-[420px] transition-all duration-500
           ${station.isOccupied 
-            ? 'border-red-500/50 shadow-lg shadow-red-500/20' 
+            ? 'border-red-500/60 shadow-2xl shadow-red-500/30 border-2' 
             : isTurf 
-              ? 'border-green-500/50 shadow-lg shadow-green-500/20 hover:shadow-green-500/40' 
-              : 'border-blue-500/50 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40'
+              ? 'border-green-500/60 shadow-2xl shadow-green-500/30 hover:shadow-green-500/50 border-2' 
+              : 'border-blue-500/60 shadow-2xl shadow-blue-500/30 hover:shadow-blue-500/50 border-2'
           }
           hover:scale-[1.02] cursor-pointer
         `}
@@ -73,20 +73,20 @@ const StationCard: React.FC<StationCardProps> = ({ station }) => {
         <div className="absolute inset-0 overflow-hidden">
           {isTurf ? (
             /* Football/Cricket Turf Ground */
-            <div className="absolute inset-0 bg-gradient-to-br from-green-800 via-green-700 to-green-900">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-700 via-green-600 to-green-800">
               {/* Grass texture effect */}
-              <div className="absolute inset-0 opacity-30" style={{
+              <div className="absolute inset-0 opacity-20" style={{
                 backgroundImage: `repeating-linear-gradient(
                   0deg,
                   transparent,
                   transparent 2px,
-                  rgba(0, 100, 0, 0.3) 2px,
-                  rgba(0, 100, 0, 0.3) 4px
+                  rgba(0, 100, 0, 0.2) 2px,
+                  rgba(0, 100, 0, 0.2) 4px
                 )`
               }}></div>
               
               {/* Football field lines */}
-              <svg className="absolute inset-0 w-full h-full opacity-40" viewBox="0 0 100 60" preserveAspectRatio="none">
+              <svg className="absolute inset-0 w-full h-full opacity-50" viewBox="0 0 100 60" preserveAspectRatio="none">
                 {/* Outer boundary */}
                 <rect x="5" y="5" width="90" height="50" fill="none" stroke="white" strokeWidth="0.5"/>
                 
@@ -111,9 +111,9 @@ const StationCard: React.FC<StationCardProps> = ({ station }) => {
             </div>
           ) : (
             /* Pickleball Court */
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-800 to-cyan-900">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-700 via-blue-600 to-cyan-700">
               {/* Court surface texture */}
-              <div className="absolute inset-0 opacity-20" style={{
+              <div className="absolute inset-0 opacity-15" style={{
                 backgroundImage: `repeating-linear-gradient(
                   45deg,
                   transparent,
@@ -124,7 +124,7 @@ const StationCard: React.FC<StationCardProps> = ({ station }) => {
               }}></div>
               
               {/* Pickleball court lines */}
-              <svg className="absolute inset-0 w-full h-full opacity-60" viewBox="0 0 100 60" preserveAspectRatio="none">
+              <svg className="absolute inset-0 w-full h-full opacity-70" viewBox="0 0 100 60" preserveAspectRatio="none">
                 {/* Outer boundary */}
                 <rect x="15" y="5" width="70" height="50" fill="none" stroke="white" strokeWidth="0.8"/>
                 
@@ -148,42 +148,49 @@ const StationCard: React.FC<StationCardProps> = ({ station }) => {
             </div>
           )}
           
-          {/* Dark overlay for occupied courts */}
+          {/* Semi-dark overlay for better text visibility */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"></div>
+          
+          {/* Extra dark overlay for occupied courts */}
           {station.isOccupied && (
-            <div className="absolute inset-0 bg-black/40"></div>
+            <div className="absolute inset-0 bg-black/30"></div>
           )}
         </div>
 
         {/* Coupon Badge */}
         {station.isOccupied && hasCoupon && (
-          <div className="absolute top-3 right-3 z-30 flex items-center gap-1 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg animate-pulse">
-            <Tag className="h-3 w-3" />
+          <div className="absolute top-4 right-4 z-30 flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-sm font-bold px-4 py-2 rounded-full shadow-2xl animate-pulse border-2 border-white"
+               style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
+            <Tag className="h-4 w-4" />
             {session.couponCode}
           </div>
         )}
 
         {/* Sport Badge for Turf */}
         {isTurf && currentSport && (
-          <div className="absolute top-3 left-3 z-30 bg-white/20 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full border border-white/30">
+          <div className="absolute top-4 left-4 z-30 bg-white/30 backdrop-blur-md text-white text-sm font-bold px-4 py-2 rounded-full border-2 border-white/50 shadow-xl" 
+               style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
             {currentSport === 'football' ? '⚽ Football' : '🏏 Cricket'}
           </div>
         )}
 
-        <CardHeader className="pb-3 relative z-10">
+        <CardHeader className="pb-4 relative z-10">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               {isTurf ? (
-                <div className="w-10 h-10 rounded-full bg-green-500/20 backdrop-blur-sm flex items-center justify-center border-2 border-green-500">
-                  <Trophy className="h-5 w-5 text-green-400" />
+                <div className="w-12 h-12 rounded-full bg-green-500/30 backdrop-blur-md flex items-center justify-center border-2 border-white shadow-lg">
+                  <Trophy className="h-6 w-6 text-white" />
                 </div>
               ) : (
-                <div className="w-10 h-10 rounded-full bg-blue-500/20 backdrop-blur-sm flex items-center justify-center border-2 border-blue-500">
-                  <Target className="h-5 w-5 text-blue-400" />
+                <div className="w-12 h-12 rounded-full bg-blue-500/30 backdrop-blur-md flex items-center justify-center border-2 border-white shadow-lg">
+                  <Target className="h-6 w-6 text-white" />
                 </div>
               )}
               <div>
-                <h3 className="text-lg font-bold text-white drop-shadow-lg">{station.name}</h3>
-                <p className="text-xs text-white/80">
+                <h3 className="text-xl font-bold text-white" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5)' }}>
+                  {station.name}
+                </h3>
+                <p className="text-sm text-white font-medium" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
                   {isTurf ? 'FIFA-Approved Turf' : 'Indoor Court'}
                 </p>
               </div>
@@ -191,70 +198,81 @@ const StationCard: React.FC<StationCardProps> = ({ station }) => {
             
             {/* Status badge */}
             <div className={`
-              px-3 py-1 rounded-full text-xs font-bold backdrop-blur-md border-2
+              px-4 py-2 rounded-full text-sm font-bold backdrop-blur-md border-2 shadow-xl
               ${station.isOccupied 
-                ? 'bg-red-500/30 text-red-100 border-red-400 animate-pulse' 
-                : 'bg-green-500/30 text-green-100 border-green-400'
+                ? 'bg-red-500/40 text-white border-white animate-pulse' 
+                : 'bg-green-500/40 text-white border-white'
               }
-            `}>
+            `}
+            style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
               {station.isOccupied ? '🔴 IN USE' : '🟢 AVAILABLE'}
             </div>
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-3 relative z-10">
+        <CardContent className="space-y-4 relative z-10">
           {/* Session Info or Rate */}
           {station.isOccupied && station.currentSession ? (
-            <div className="bg-black/50 backdrop-blur-md rounded-lg p-3 border border-white/10">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-white/70 text-sm">Playing:</span>
-                <span className="text-white font-semibold">{customerName}</span>
+            <div className="bg-black/60 backdrop-blur-md rounded-xl p-4 border-2 border-white/30 shadow-xl">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-white text-base font-medium" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
+                  Playing:
+                </span>
+                <span className="text-white text-lg font-bold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
+                  {customerName}
+                </span>
               </div>
               
               <StationTimer session={station.currentSession} />
               
               {isDiscounted && (
-                <div className="mt-2 flex items-center gap-2 text-xs">
-                  <Tag className="h-3 w-3 text-orange-400" />
-                  <span className="text-white/70">Rate:</span>
-                  <span className="line-through text-white/50">₹{originalRate}</span>
-                  <span className="text-orange-400 font-bold">₹{discountedRate}/hr</span>
+                <div className="mt-3 flex items-center gap-2 text-sm">
+                  <Tag className="h-4 w-4 text-orange-300" />
+                  <span className="text-white font-medium">Rate:</span>
+                  <span className="line-through text-white/70">₹{originalRate}</span>
+                  <span className="text-orange-300 font-bold text-base">₹{discountedRate}/hr</span>
                 </div>
               )}
             </div>
           ) : (
-            <div className="bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20">
+            <div className="bg-white/20 backdrop-blur-md rounded-xl p-5 border-2 border-white/40 shadow-xl">
               <div className="flex items-center justify-between">
-                <span className="text-white/90 font-medium">Hourly Rate</span>
-                <span className="text-2xl font-bold text-white">₹{station.hourlyRate}</span>
+                <span className="text-white text-lg font-semibold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
+                  Hourly Rate
+                </span>
+                <span className="text-4xl font-black text-white" style={{ textShadow: '0 4px 8px rgba(0,0,0,0.8)' }}>
+                  ₹{station.hourlyRate}
+                </span>
               </div>
             </div>
           )}
 
           {/* Action buttons */}
-          <div className="flex gap-2">
-              <Button 
-                variant="ghost" 
-              size="sm"
-                onClick={handleEditClick}
-              className="flex-1 bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm"
-              >
-              <Edit2 className="h-4 w-4 mr-1" />
+          <div className="flex gap-3">
+            <Button
+              variant="ghost"
+              size="default"
+              onClick={handleEditClick}
+              className="flex-1 bg-white/20 hover:bg-white/30 text-white border-2 border-white/40 backdrop-blur-md font-semibold text-base shadow-lg"
+              style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}
+            >
+              <Edit2 className="h-5 w-5 mr-2" />
               Edit
-              </Button>
+            </Button>
             
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button 
-                    variant="ghost" 
-                  size="sm"
-                  className="flex-1 bg-red-500/20 hover:bg-red-500/30 text-red-100 border border-red-400/30 backdrop-blur-sm"
-                    disabled={station.isOccupied}
-                  >
-                  <Trash2 className="h-4 w-4 mr-1" />
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="default"
+                  className="flex-1 bg-red-500/30 hover:bg-red-500/40 text-white border-2 border-red-400/50 backdrop-blur-md font-semibold text-base shadow-lg disabled:opacity-50"
+                  disabled={station.isOccupied}
+                  style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}
+                >
+                  <Trash2 className="h-5 w-5 mr-2" />
                   Delete
-                  </Button>
-                </AlertDialogTrigger>
+                </Button>
+              </AlertDialogTrigger>
               <AlertDialogContent>
                   <AlertDialogHeader>
                   <AlertDialogTitle>Delete Court?</AlertDialogTitle>
