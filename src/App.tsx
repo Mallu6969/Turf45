@@ -109,9 +109,6 @@ const ProtectedRoute = ({
             <GlobalNotificationBell />
           </div>
           {children}
-          <footer className="mt-auto w-full py-2 text-center text-xs text-turf45-green/80 bg-black/80 border-t border-turf45-green/20 font-semibold tracking-wide z-50 backdrop-blur-sm">
-            TURF 45 - FIFA Approved Turf Facility<sup className="text-turf45-green">™</sup>
-          </footer>
         </div>
       </div>
     </SidebarProvider>
