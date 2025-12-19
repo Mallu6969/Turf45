@@ -89,7 +89,7 @@ const EditStationDialog: React.FC<EditStationDialogProps> = ({
               onChange={(e) => setHourlyRate(parseFloat(e.target.value))}
               placeholder="Enter hourly rate"
               min={10}
-              step={50}
+              step={1}
               required
               className="focus:ring-green-500 focus:border-green-500"
             />

@@ -177,7 +177,7 @@ const AddStationDialog: React.FC<AddStationDialogProps> = ({ open, onOpenChange 
                     <Input 
                       type="number" 
                       min="10" 
-                      step="50" 
+                      step="1" 
                       {...field} 
                       className="focus:ring-green-500 focus:border-green-500"
                     />
