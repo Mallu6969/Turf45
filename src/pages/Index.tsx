@@ -12,23 +12,33 @@ import {
   Mail,
   MapPin,
   Clock,
-  MessageCircle,
   Instagram,
   Facebook,
   Twitter,
-  Play,
   Trophy,
   Users,
-  Sparkles,
   Shield,
   Award,
   Heart,
   Search,
   Menu,
   X,
-  ChevronLeft,
   ChevronDown,
-  LogIn
+  LogIn,
+  Zap,
+  Target,
+  TrendingUp,
+  Video,
+  Wifi,
+  Droplets,
+  Sun,
+  Lightbulb,
+  CheckCircle,
+  PlayCircle,
+  DollarSign,
+  Timer,
+  UserCheck,
+  Map
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Badge } from '@/components/ui/badge';
@@ -119,67 +129,67 @@ const Index: React.FC = () => {
   };
 
   return (
-    <div className="public-page min-h-screen bg-gradient-to-br from-white via-green-50/20 to-white">
-      {/* Navigation Bar */}
+    <div className="public-page min-h-screen bg-white">
+      {/* Premium Navigation Bar */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled 
-          ? 'backdrop-blur-md bg-white/60 border-b border-green-100/50 shadow-md' 
-          : 'backdrop-blur-xl bg-white/90 border-b border-green-100 shadow-sm'
+          ? 'backdrop-blur-xl bg-white/80 border-b border-gray-100 shadow-lg' 
+          : 'backdrop-blur-md bg-white/95 border-b border-gray-50'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <img
                 src="/Turf45_transparent.png"
-                alt="Turf45 - Premium Sports Facility"
+                alt="Turf45 - FIFA Approved Courts"
                 className="h-12 md:h-14 w-auto object-contain transition-all duration-300 hover:scale-105"
                 style={{
-                  filter: "drop-shadow(0 2px 8px rgba(16, 185, 129, 0.3))",
+                  filter: "drop-shadow(0 2px 12px rgba(16, 185, 129, 0.4))",
                 }}
               />
-        </div>
+            </div>
         
             {/* Desktop Navigation */}
             {!isMobile && (
               <nav className="hidden md:flex items-center gap-8">
-                <button onClick={() => scrollToSection('about')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
-                  About Us
-                </button>
                 <button onClick={() => scrollToSection('facilities')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
                   Facilities
                 </button>
-                <button onClick={() => scrollToSection('how-it-works')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
-                  How It Works
+                <button onClick={() => scrollToSection('pricing')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                  Pricing
+                </button>
+                <button onClick={() => scrollToSection('about')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                  About
                 </button>
                 <button onClick={() => scrollToSection('reviews')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
                   Reviews
                 </button>
                 <button onClick={() => navigate('/support')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
-                  Support
+                  Contact
                 </button>
               </nav>
             )}
 
-            {/* Search & Actions */}
+            {/* Actions */}
             <div className="flex items-center gap-4">
               {!isMobile && (
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Search here..."
-                    className="pl-10 pr-4 py-2 rounded-full border border-gray-200 bg-white/50 backdrop-blur-sm text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 w-48"
-                  />
-      </div>
+                <Button
+                  onClick={() => navigate('/public/booking')}
+                  variant="outline"
+                  className="rounded-full border-2 border-green-600 text-green-600 hover:bg-green-50"
+                >
+                  <Calendar className="h-4 w-4 mr-2" />
+                  View Availability
+                </Button>
               )}
 
-          <Button
+              <Button
                 onClick={() => navigate('/public/booking')}
                 className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-6 shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-105"
               >
                 Book Now
-          </Button>
+              </Button>
 
               {isMobile && (
                 <button
@@ -197,803 +207,1023 @@ const Index: React.FC = () => {
         {mobileMenuOpen && isMobile && (
           <div className="md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-xl">
             <div className="px-4 py-4 space-y-3">
-              <button onClick={() => scrollToSection('about')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
-                About Us
-              </button>
               <button onClick={() => scrollToSection('facilities')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
                 Facilities
               </button>
-              <button onClick={() => scrollToSection('how-it-works')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
-                How It Works
+              <button onClick={() => scrollToSection('pricing')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+                Pricing
+              </button>
+              <button onClick={() => scrollToSection('about')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+                About
               </button>
               <button onClick={() => scrollToSection('reviews')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
                 Reviews
               </button>
               <button onClick={() => navigate('/support')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
-                Support
+                Contact
               </button>
             </div>
           </div>
         )}
       </header>
 
-      {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
-        {/* Enhanced Background with Clean Gradient */}
+      {/* Hero Section - Premium Design */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        {/* Dynamic Background */}
         <div className="absolute inset-0 z-0">
-          {/* Background image */}
           <img
             src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=80"
-            alt="Football Court"
+            alt="FIFA Approved Football Court"
             className="w-full h-full object-cover"
-            />
-          
-          {/* Green gradient overlay for premium feel */}
-          <div className="absolute inset-0 bg-gradient-to-b from-green-900/50 via-green-800/40 to-green-900/60 z-10"></div>
-          
-          {/* Additional subtle green accent for depth */}
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/25 via-transparent to-green-800/30 z-10"></div>
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-green-900/90 via-green-800/85 to-emerald-900/90"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.3)_100%)]"></div>
+        </div>
+
+        {/* Floating Trust Badges */}
+        <div className="absolute top-32 left-8 z-20 animate-fade-in hidden lg:block">
+          <div className="bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-green-100">
+            <div className="flex items-center gap-3">
+              <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-3">
+                <Award className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <p className="font-bold text-gray-900">FIFA Approved</p>
+                <p className="text-sm text-gray-600">Premium Turf</p>
+              </div>
+            </div>
           </div>
-
-        {/* Floating Badge */}
-        <div className="absolute top-8 left-8 z-20">
-          <Badge className="bg-white/90 backdrop-blur-md text-green-600 px-4 py-2 rounded-full border border-green-200 shadow-lg">
-            All-in-one Sports Facilities Center
-          </Badge>
         </div>
 
-        {/* Social Media Icons */}
-        <div className="absolute right-8 top-1/2 transform -translate-y-1/2 z-20 hidden lg:flex flex-col gap-4">
-          <a href="https://instagram.com/turf45" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/90 backdrop-blur-md rounded-full hover:bg-white transition-all hover:scale-110 shadow-lg">
-            <Instagram className="h-5 w-5 text-green-600" />
-          </a>
-          <a href="https://twitter.com/turf45" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/90 backdrop-blur-md rounded-full hover:bg-white transition-all hover:scale-110 shadow-lg">
-            <Twitter className="h-5 w-5 text-green-600" />
-          </a>
-          <a href="https://facebook.com/turf45" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/90 backdrop-blur-md rounded-full hover:bg-white transition-all hover:scale-110 shadow-lg">
-            <Facebook className="h-5 w-5 text-green-600" />
-          </a>
+        {/* Live Status Indicator */}
+        <div className="absolute top-32 right-8 z-20 animate-fade-in hidden lg:block">
+          <div className="bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-green-100">
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                <div className="absolute inset-0 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+              </div>
+              <div>
+                <p className="font-bold text-gray-900">Live Booking</p>
+                <p className="text-sm text-gray-600">{liveStations.filter(s => !s.is_occupied).length} Courts Available</p>
+              </div>
+            </div>
+          </div>
         </div>
-        
+
         {/* Hero Content */}
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white animate-fade-in">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-slide-up">
-            Refresh, Relax, and Rediscover<br />
-            <span className="bg-gradient-to-r from-green-300 via-emerald-200 to-green-100 bg-clip-text text-transparent animate-text-gradient">
-              Life's Simple Pleasures
-          </span>
-        </h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed animate-slide-up drop-shadow-lg" style={{ animationDelay: '0.2s' }}>
-            Rediscover the beauty in life's simplest pleasures, and let every moment here remind you of the joy of true relaxation.
+        <div className="relative z-10 max-w-6xl mx-auto px-4 text-center text-white animate-fade-in">
+          <Badge className="mb-6 bg-green-500/20 backdrop-blur-sm text-green-100 px-6 py-3 text-base border border-green-400/30 animate-slide-up">
+            🏆 FIFA Approved Football & Cricket Turf - ESTD 2021
+          </Badge>
+          
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            Premium Sports
+            <br />
+            <span className="bg-gradient-to-r from-green-300 via-emerald-200 to-green-100 bg-clip-text text-transparent">
+              Facilities Redefined
+            </span>
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-green-50 mb-10 max-w-3xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            Experience world-class FIFA-approved football courts, professional cricket turfs, and premium pickleball facilities. Book your slot in seconds.
           </p>
           
-          {/* Primary CTA */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up" style={{ animationDelay: '0.4s' }}>
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-slide-up" style={{ animationDelay: '0.3s' }}>
             <Button
               onClick={() => navigate('/public/booking')}
               size="lg"
-              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-2xl shadow-green-500/50 transition-all duration-300 hover:scale-110 hover:shadow-green-500/70 group animate-breathe"
+              className="bg-white text-green-600 hover:bg-green-50 rounded-full px-10 py-7 text-lg font-bold shadow-2xl transition-all duration-300 hover:scale-110 group"
             >
-              Book a Slot
+              Book Your Court Now
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
-          <Button
-              onClick={() => navigate('/public/booking')}
+            <Button
+              onClick={() => scrollToSection('facilities')}
               variant="outline"
-            size="lg"
-              className="bg-white/10 backdrop-blur-md border-2 border-white/30 text-white rounded-full px-8 py-6 text-lg font-semibold hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:scale-105"
-          >
-              See Today's Availability
-          </Button>
+              size="lg"
+              className="bg-transparent backdrop-blur-sm border-2 border-white/50 text-white rounded-full px-10 py-7 text-lg font-semibold hover:bg-white/10 hover:border-white transition-all duration-300"
+            >
+              <PlayCircle className="mr-2 h-5 w-5" />
+              Explore Facilities
+            </Button>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto animate-slide-up" style={{ animationDelay: '0.4s' }}>
+            {[
+              { number: '1000+', label: 'Matches Played', icon: Trophy },
+              { number: '500+', label: 'Happy Athletes', icon: Users },
+              { number: '99%', label: 'Satisfaction Rate', icon: Star },
+              { number: '24/7', label: 'Support Available', icon: Shield },
+            ].map((stat, idx) => (
+              <div key={idx} className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                <stat.icon className="h-8 w-8 text-green-300 mx-auto mb-3" />
+                <p className="text-3xl font-black text-white mb-1">{stat.number}</p>
+                <p className="text-sm text-green-100">{stat.label}</p>
+              </div>
+            ))}
           </div>
         </div>
         
         {/* Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
-          <ChevronDown className="h-8 w-8 text-white/80" />
-        </div>
-
-      </section>
-
-      {/* Welcome Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-white via-green-50/30 to-gray-50/50 animate-fade-in">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* Outdoor Area Card */}
-            <Card className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-slide-up">
-              <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent z-10"></div>
-              <img
-                src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80"
-                alt="Football Court"
-                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <CardContent className="p-6 relative z-10">
-                <Badge className="mb-3 bg-green-500/10 text-green-700 border-green-300">Outdoor area</Badge>
-                <p className="text-gray-700 font-medium">Versatile space for a wide range of activities.</p>
-                <ArrowRight className="mt-4 h-5 w-5 text-green-600 group-hover:translate-x-2 transition-transform" />
-              </CardContent>
-            </Card>
-
-            {/* Sports Center Card */}
-            <Card className="relative overflow-hidden bg-gradient-to-br from-white to-green-50/30 border-2 border-green-200/60 group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-green-300 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              <CardContent className="p-8 h-full flex flex-col justify-between">
-                <div>
-                  <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Sports center</Badge>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                    Welcome to Turf45, where we inspire athletes and fitness enthusiasts to reach new heights.
-                  </h3>
-                </div>
-                <Button
-                  onClick={() => navigate('/public/booking')}
-                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full w-fit group-hover:scale-105 transition-transform"
-                >
-                  Get in touch
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Indoor Court Card */}
-            <Card className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent z-10"></div>
-              <img
-                src="https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80"
-                alt="Indoor Court"
-                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <CardContent className="p-6 relative z-10">
-                <Badge className="mb-3 bg-green-500/10 text-green-700 border-green-300">Indoor</Badge>
-                <h4 className="font-bold text-gray-900 mb-2">Pickleball Court</h4>
-                <p className="text-gray-700 text-sm mb-4">Explore the ideal space to play, train, and reach new heights. Where passion meets.</p>
-                <div className="flex gap-2">
-                  <button className="p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors">
-                    <ChevronLeft className="h-4 w-4 text-gray-700" />
-                  </button>
-                  <button className="p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors">
-                    <ChevronRight className="h-4 w-4 text-gray-700" />
-                  </button>
-                </div>
-              </CardContent>
-            </Card>
+          <div className="flex flex-col items-center">
+            <p className="text-white text-sm mb-2 font-medium">Discover More</p>
+            <ChevronDown className="h-8 w-8 text-white" />
           </div>
         </div>
       </section>
 
-      {/* Discover Excellence Section */}
-      <section id="facilities" className="py-20 px-4 bg-gradient-to-br from-green-50/40 via-white to-gray-50/30 animate-fade-in">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row gap-12 items-start">
-            {/* Left Content */}
-            <div className="flex-1 animate-slide-up">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-2">
-                  <Trophy className="h-6 w-6 text-white" />
-                </div>
-                <h2 className="text-3xl font-bold text-gray-900">Turf45</h2>
-              </div>
-
-              <div className="flex gap-2 mb-6">
-                <Button variant="outline" className="rounded-full">Competition</Button>
-                <Button className="bg-green-600 hover:bg-green-700 text-white rounded-full">Training</Button>
-                <Button variant="outline" className="rounded-full">Friendly match</Button>
-              </div>
-
-              <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Discover Excellence in Courts, Fields, and Beyond
-              </h3>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                We provide premium courts for both individual and group training. Our advanced sports facilities boast diverse courts and fields for every athlete.
-              </p>
-
+      {/* Quick Booking Bar */}
+      <section className="bg-gradient-to-r from-green-500 to-green-600 py-6 px-4 shadow-xl sticky top-20 z-40">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3 text-white">
+            <Zap className="h-6 w-6" />
+            <p className="font-semibold">Quick Booking - Get instant confirmation in seconds!</p>
+          </div>
+          <div className="flex gap-3">
+            {['Football', 'Cricket', 'Pickleball'].map((sport) => (
               <Button
-                onClick={() => navigate('/public/booking')}
-                size="lg"
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-lg shadow-green-500/30"
+                key={sport}
+                onClick={() => navigate(`/public/booking?sport=${sport.toLowerCase()}`)}
+                variant="outline"
+                className="bg-white/20 backdrop-blur-sm border-white/40 text-white hover:bg-white hover:text-green-600 rounded-full font-semibold"
               >
-                Book a Court
+                {sport}
               </Button>
-
-              {/* Refer Friends */}
-              <div className="mt-8 p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-green-200 shadow-lg">
-                <h4 className="font-semibold text-gray-900 mb-4">Refer a friend</h4>
-                <div className="flex items-center gap-4">
-                  <Button variant="outline" className="rounded-full">Share link</Button>
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-green-600 border-2 border-white"></div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Image */}
-            <div className="flex-1 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl group">
-                <img
-                  src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80"
-                  alt="Sports Facility"
-                  className="w-full h-[600px] object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Sport Selector Cards */}
-      <section className="py-20 px-4 relative overflow-hidden animate-fade-in">
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-12 animate-slide-up">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Choose Your Sport
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Select from our premium facilities and book your preferred court
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Football Card */}
-            <Card 
-              onClick={() => navigate('/public/booking?sport=football')}
-              className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 border-transparent hover:border-green-500 animate-slide-up"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent z-10"></div>
-              <img
-                src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80"
-                alt="Football Court"
-                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <CardContent className="p-6 relative z-10">
-                <Badge className="mb-3 bg-green-500/10 text-green-700 border-green-300">Playground</Badge>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">Football</h3>
-                <p className="text-gray-600 mb-4">State-of-the-Art FIFA Approved Football Courts for All Athletes.</p>
-                <Button 
-                  variant="ghost" 
-                  className="text-green-600 hover:text-green-700 hover:bg-green-50 p-0 group"
-                >
-                  Book Now
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Cricket Card */}
-            <Card 
-              onClick={() => navigate('/public/booking?sport=cricket')}
-              className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 border-transparent hover:border-green-500 animate-slide-up"
-              style={{ animationDelay: '0.1s' }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent z-10"></div>
-              <img
-                src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80"
-                alt="Cricket Court"
-                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <CardContent className="p-6 relative z-10">
-                <Badge className="mb-3 bg-green-500/10 text-green-700 border-green-300">Playground</Badge>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">Cricket</h3>
-                <p className="text-gray-600 mb-4">Top-Tier Cricket Facilities for Professional Training.</p>
-                <Button 
-                  variant="ghost" 
-                  className="text-green-600 hover:text-green-700 hover:bg-green-50 p-0 group"
-                >
-                  Book Now
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Pickleball Card */}
-            <Card 
-              onClick={() => navigate('/public/booking?sport=pickleball')}
-              className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 border-transparent hover:border-green-500 animate-slide-up"
-              style={{ animationDelay: '0.2s' }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent z-10"></div>
-              <img
-                src="https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80"
-                alt="Pickleball Court"
-                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-
-              <CardContent className="p-6 relative z-10">
-                <Badge className="mb-3 bg-green-500/10 text-green-700 border-green-300">Tennis court</Badge>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">Pickleball</h3>
-                <p className="text-gray-600 mb-4">State-of-the-Art Courts and Fields for All Athletes.</p>
-                <Button 
-                  variant="ghost" 
-                  className="text-green-600 hover:text-green-700 hover:bg-green-50 p-0 group"
-                >
-                  Book Now
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          <p className="text-center text-gray-600 mt-8">
-            Reserve a court for individual practice, team sessions, or personalized coaching to elevate your performance.
-          </p>
-                              </div>
-      </section>
-
-      {/* Available Today Preview */}
-      <section className="py-20 px-4 bg-gradient-to-b from-white via-green-50/25 to-white">
+      {/* Live Availability Dashboard */}
+      <section className="py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-10">
+            <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Live Updates</Badge>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Available Today
+              Available Right Now
             </h2>
-            <p className="text-lg text-gray-600">
-              Quick preview of today's available slots
-            </p>
-                              </div>
+            <p className="text-lg text-gray-600">Real-time availability across all courts</p>
+          </div>
 
           {stationsLoading ? (
             <div className="flex justify-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600"></div>
-                            </div>
+            </div>
           ) : (
             <div className="grid md:grid-cols-3 gap-6">
-              {liveStations.slice(0, 3).map((station) => (
-                <Card key={station.id} className="overflow-hidden hover:shadow-xl transition-shadow">
+              {liveStations.map((station) => (
+                <Card key={station.id} className="overflow-hidden hover:shadow-2xl transition-all duration-300 border-2 hover:border-green-500 group">
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <div>
-                        <h3 className="font-bold text-lg text-gray-900">{station.name}</h3>
-                        <p className="text-sm text-gray-600">
-                          {station.type === 'ps5' ? 'Football' : station.type === '8ball' ? 'Cricket' : 'Pickleball'}
+                        <h3 className="font-bold text-xl text-gray-900">{station.name}</h3>
+                        <p className="text-sm text-gray-600 flex items-center gap-2 mt-1">
+                          <MapPin className="h-3 w-3" />
+                          {station.type === 'ps5' ? 'Football Court' : station.type === '8ball' ? 'Cricket Turf' : 'Pickleball Court'}
                         </p>
                       </div>
-                      <Badge className={station.is_occupied ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}>
-                              {station.is_occupied ? 'Occupied' : 'Available'}
-                            </Badge>
-                          </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-2xl font-bold text-gray-900">₹{station.hourly_rate}/hr</span>
+                      <Badge className={station.is_occupied ? 'bg-red-100 text-red-700 border-red-300' : 'bg-green-100 text-green-700 border-green-300 animate-pulse'}>
+                        {station.is_occupied ? 'Occupied' : 'Available'}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                      <div>
+                        <p className="text-sm text-gray-500">Starting from</p>
+                        <p className="text-3xl font-bold text-gray-900">₹{station.hourly_rate}<span className="text-lg text-gray-500">/hr</span></p>
+                      </div>
                       <Button
                         onClick={() => navigate('/public/booking')}
-                        size="sm"
-                        className="bg-green-600 hover:bg-green-700 text-white rounded-full"
+                        disabled={station.is_occupied}
+                        className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full group-hover:scale-105 transition-transform disabled:opacity-50"
                       >
                         Book Now
                       </Button>
-                          </div>
-                        </div>
+                    </div>
+                  </div>
                 </Card>
               ))}
-                </div>
-              )}
+            </div>
+          )}
 
           <div className="text-center mt-8">
             <Button
               onClick={() => navigate('/public/booking')}
               variant="outline"
+              size="lg"
               className="rounded-full border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
             >
-              View All Available Slots
+              View All Courts & Timings
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
-      <section id="how-it-works" className="py-20 px-4 animate-fade-in">
+      {/* Premium Facilities Showcase */}
+      <section id="facilities" className="py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 animate-slide-up">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              How It Works
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">World-Class Infrastructure</Badge>
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              Premium Sports Facilities
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Book your court in three simple steps
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              State-of-the-art courts designed for professional athletes and sports enthusiasts
             </p>
           </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
+
+          <div className="grid lg:grid-cols-3 gap-8 mb-16">
+            {/* Football */}
+            <Card 
+              onClick={() => navigate('/public/booking?sport=football')}
+              className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500"
+            >
+              <div className="relative h-72">
+                <img
+                  src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80"
+                  alt="FIFA Approved Football Court"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                <Badge className="absolute top-4 left-4 bg-green-500 text-white border-0">FIFA Approved</Badge>
+              </div>
+              <CardContent className="p-8">
+                <h3 className="text-3xl font-bold text-gray-900 mb-3">Football Courts</h3>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  FIFA-approved synthetic turf with professional-grade drainage system. Perfect for 5-a-side and 7-a-side matches.
+                </p>
+                <ul className="space-y-2 mb-6">
+                  {['Premium FIFA-approved turf', 'Professional floodlights', 'Standard goal posts', 'Covered seating area'].map((feature) => (
+                    <li key={feature} className="flex items-center gap-2 text-gray-700">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full group-hover:scale-105 transition-transform">
+                  Book Football Court
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Cricket */}
+            <Card 
+              onClick={() => navigate('/public/booking?sport=cricket')}
+              className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500"
+            >
+              <div className="relative h-72">
+                <img
+                  src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80"
+                  alt="Professional Cricket Turf"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                <Badge className="absolute top-4 left-4 bg-blue-500 text-white border-0">Professional Grade</Badge>
+              </div>
+              <CardContent className="p-8">
+                <h3 className="text-3xl font-bold text-gray-900 mb-3">Cricket Turfs</h3>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  Professional cricket turf with authentic bounce and pace. Ideal for practice sessions and competitive matches.
+                </p>
+                <ul className="space-y-2 mb-6">
+                  {['Professional turf wicket', 'Practice nets available', 'Cricket equipment rental', 'Covered pavilion'].map((feature) => (
+                    <li key={feature} className="flex items-center gap-2 text-gray-700">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full group-hover:scale-105 transition-transform">
+                  Book Cricket Turf
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Pickleball */}
+            <Card 
+              onClick={() => navigate('/public/booking?sport=pickleball')}
+              className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500"
+            >
+              <div className="relative h-72">
+                <img
+                  src="https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80"
+                  alt="Premium Pickleball Court"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                <Badge className="absolute top-4 left-4 bg-purple-500 text-white border-0">Indoor Court</Badge>
+              </div>
+              <CardContent className="p-8">
+                <h3 className="text-3xl font-bold text-gray-900 mb-3">Pickleball Courts</h3>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  State-of-the-art indoor pickleball courts with climate control. Perfect for players of all skill levels.
+                </p>
+                <ul className="space-y-2 mb-6">
+                  {['Tournament-grade court', 'Climate controlled', 'Equipment provided', 'Beginner-friendly'].map((feature) => (
+                    <li key={feature} className="flex items-center gap-2 text-gray-700">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full group-hover:scale-105 transition-transform">
+                  Book Pickleball Court
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Facility Features Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { step: '1', title: 'Choose Your Court', description: 'Select from Football, Cricket, or Pickleball courts', icon: Trophy },
-              { step: '2', title: 'Pick Your Slot', description: 'Choose your preferred date and time slot', icon: Calendar },
-              { step: '3', title: 'Pay & Confirm', description: 'Complete payment and get instant confirmation', icon: CheckCircle2 },
-            ].map((item, index) => (
-              <Card key={index} className="text-center p-8 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-green-200 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 transition-transform duration-300 hover:scale-110">
-                  <item.icon className="h-8 w-8 text-white" />
+              { icon: Lightbulb, title: 'Pro Lighting', desc: 'LED floodlights for night games' },
+              { icon: Droplets, title: 'Drainage System', desc: 'Advanced water management' },
+              { icon: Wifi, title: 'Free WiFi', desc: 'Stay connected at all times' },
+              { icon: Video, title: 'CCTV Security', desc: '24/7 surveillance for safety' },
+              { icon: UserCheck, title: 'Trained Staff', desc: 'Professional on-ground support' },
+              { icon: Timer, title: 'Flexible Timing', desc: 'Early morning to late night' },
+              { icon: Shield, title: 'Insured Facility', desc: 'Complete safety coverage' },
+              { icon: DollarSign, title: 'Best Pricing', desc: 'Transparent & competitive rates' },
+            ].map((feature, idx) => (
+              <Card key={idx} className="p-6 text-center hover:shadow-lg transition-all duration-300 border-2 border-gray-100 hover:border-green-200">
+                <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <feature.icon className="h-8 w-8 text-white" />
                 </div>
-                <div className="text-4xl font-bold text-green-600 mb-4">{item.step}</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
-                <p className="text-gray-600">{item.description}</p>
+                <h4 className="font-bold text-gray-900 mb-2">{feature.title}</h4>
+                <p className="text-sm text-gray-600">{feature.desc}</p>
               </Card>
             ))}
-              </div>
-            </div>
+          </div>
+        </div>
       </section>
 
-      {/* Pickleball Mascot - Ricky Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-green-50/30 via-white to-emerald-50/20 relative overflow-hidden animate-fade-in">
-        {/* Subtle decorative background elements */}
-        <div className="absolute inset-0 opacity-[0.04]">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-green-400 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-400 rounded-full blur-3xl"></div>
-        </div>
+      {/* Why Choose Turf45 */}
+      <section className="py-20 px-4 bg-gradient-to-br from-green-50 via-white to-green-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Why Turf45?</Badge>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                The Premier Choice for Athletes
+              </h2>
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                From FIFA-approved surfaces to professional-grade amenities, every aspect of Turf45 is engineered for peak athletic performance and unforgettable sports experiences.
+              </p>
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Left: Ricky Mascot Image */}
-            <div className="relative animate-slide-up">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl group">
-                {/* Ricky Mascot - transparent background, no white background */}
-                <div className="aspect-square flex items-center justify-center bg-transparent p-8">
-                  <RickyMascot
-                    size="xl"
-                    className="mx-auto"
-                  />
-                </div>
+              <div className="space-y-4">
+                {[
+                  {
+                    icon: Trophy,
+                    title: 'FIFA Approved Standards',
+                    desc: 'International quality turf certified for professional play'
+                  },
+                  {
+                    icon: Target,
+                    title: 'Professional Equipment',
+                    desc: 'High-quality goal posts, nets, and sports gear'
+                  },
+                  {
+                    icon: TrendingUp,
+                    title: 'Advanced Booking System',
+                    desc: 'Real-time availability with instant confirmation'
+                  },
+                  {
+                    icon: Shield,
+                    title: 'Safe & Sanitized',
+                    desc: 'Regular cleaning and maintenance protocols'
+                  },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-4 p-4 bg-white rounded-xl border-2 border-gray-100 hover:border-green-200 hover:shadow-lg transition-all">
+                    <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-3 flex-shrink-0">
+                      <item.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 mb-1">{item.title}</h4>
+                      <p className="text-gray-600 text-sm">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Right: Content with Pickleball Logo */}
-            <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              <div className="flex items-center gap-4 mb-6">
-                {/* Pickleball Logo */}
-                <div className="flex-shrink-0">
-                  <img
-                    src="https://iili.io/flpj90Q.jpg"
-                    alt="Pickleball Logo"
-                    className="h-16 w-16 object-contain"
-                  />
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-green-600 rounded-3xl blur-3xl opacity-20"></div>
+              <img
+                src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80"
+                alt="Premium Sports Facility"
+                className="relative rounded-3xl shadow-2xl"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing & Packages */}
+      <section id="pricing" className="py-20 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Flexible Options</Badge>
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              Transparent Pricing
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Choose from pay-per-slot or season passes. All prices include taxes - no hidden charges.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Pay Per Slot */}
+            <Card className="border-2 border-gray-200 p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+              <div className="text-center mb-6">
+                <Badge className="mb-4 bg-gray-100 text-gray-700">Flexible</Badge>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Pay Per Slot</h3>
+                <p className="text-gray-600 mb-6">Book whenever you want</p>
+                <div className="text-5xl font-bold text-gray-900 mb-2">
+                  ₹600<span className="text-2xl text-gray-500">/hr</span>
                 </div>
-                <Badge className="bg-green-500/10 text-green-700 border-green-300">Pickleball Mascot</Badge>
+                <p className="text-sm text-gray-500">Starting price</p>
               </div>
-              
+              <ul className="space-y-3 mb-8">
+                {['Instant booking confirmation', 'Choose any available slot', 'No commitment required', 'Online payment support', 'Modify booking anytime'].map((feature) => (
+                  <li key={feature} className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                    <span className="text-gray-700">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button 
+                onClick={() => navigate('/public/booking')}
+                className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-full py-6 text-lg font-semibold"
+              >
+                Book Single Slot
+              </Button>
+            </Card>
+
+            {/* Monthly Pass - Featured */}
+            <Card className="border-2 border-green-500 p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 relative">
+              <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-500 text-white border-0">Most Popular</Badge>
+              <div className="text-center mb-6">
+                <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Best Value</Badge>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Monthly Pass</h3>
+                <p className="text-gray-600 mb-6">Save up to 20%</p>
+                <div className="text-5xl font-bold text-gray-900 mb-2">
+                  ₹12,000<span className="text-2xl text-gray-500">/month</span>
+                </div>
+                <p className="text-sm text-gray-500">~25 hours of play</p>
+              </div>
+              <ul className="space-y-3 mb-8">
+                {['Priority booking slots', '20% discount on hourly rate', 'Free equipment rental', 'Dedicated support manager', 'Flexible time credits', 'Guest passes included'].map((feature) => (
+                  <li key={feature} className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                    <span className="text-gray-700">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button 
+                onClick={() => navigate('/public/booking')}
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full py-6 text-lg font-semibold"
+              >
+                Get Monthly Pass
+              </Button>
+            </Card>
+
+            {/* Corporate/Team */}
+            <Card className="border-2 border-gray-200 p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+              <div className="text-center mb-6">
+                <Badge className="mb-4 bg-blue-100 text-blue-700 border-blue-300">Corporate</Badge>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Team Package</h3>
+                <p className="text-gray-600 mb-6">For teams & corporates</p>
+                <div className="text-5xl font-bold text-gray-900 mb-2">
+                  Custom
+                </div>
+                <p className="text-sm text-gray-500">Tailored pricing</p>
+              </div>
+              <ul className="space-y-3 mb-8">
+                {['Block booking discounts', 'Tournament hosting', 'Coaching sessions available', 'Team roster management', 'Custom scheduling', 'Dedicated account manager'].map((feature) => (
+                  <li key={feature} className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                    <span className="text-gray-700">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button 
+                onClick={() => navigate('/support')}
+                variant="outline"
+                className="w-full border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white rounded-full py-6 text-lg font-semibold"
+              >
+                Contact Sales
+              </Button>
+            </Card>
+          </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-gray-600 mb-4">All prices are inclusive of GST. No hidden charges.</p>
+            <Button 
+              onClick={() => navigate('/public/booking')}
+              variant="outline"
+              size="lg"
+              className="rounded-full border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
+            >
+              View Live Availability & Book
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Booking Process */}
+      <section className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Simple & Fast</Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Book in 3 Easy Steps
+            </h2>
+            <p className="text-lg text-gray-600">Get confirmed in seconds with our instant booking system</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 relative">
+            {/* Connection Lines */}
+            <div className="hidden md:block absolute top-20 left-0 right-0 h-1 bg-gradient-to-r from-green-200 via-green-400 to-green-200 z-0" style={{ top: '80px' }}></div>
+
+            {[
+              {
+                step: '01',
+                icon: Target,
+                title: 'Select Your Sport',
+                desc: 'Choose from Football, Cricket, or Pickleball courts'
+              },
+              {
+                step: '02',
+                icon: Calendar,
+                title: 'Pick Date & Time',
+                desc: 'View real-time availability and select your preferred slot'
+              },
+              {
+                step: '03',
+                icon: CheckCircle2,
+                title: 'Instant Confirmation',
+                desc: 'Pay securely and receive immediate booking confirmation'
+              },
+            ].map((item, idx) => (
+              <div key={idx} className="relative z-10">
+                <Card className="p-8 text-center hover:shadow-2xl transition-all duration-300 border-2 border-green-100 hover:border-green-500 bg-white">
+                  <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <item.icon className="h-10 w-10 text-white" />
+                  </div>
+                  <div className="text-6xl font-black text-green-100 mb-4">{item.step}</div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">{item.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+                </Card>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Button 
+              onClick={() => navigate('/public/booking')}
+              size="lg"
+              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-10 py-7 text-lg font-bold shadow-2xl shadow-green-500/30"
+            >
+              Start Booking Now
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Ricky Mascot Section */}
+      <section className="py-20 px-4 bg-gradient-to-br from-green-50 via-emerald-50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="order-2 lg:order-1">
+              <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300 flex items-center gap-2 w-fit">
+                <img src="https://iili.io/flpj90Q.jpg" alt="Pickleball" className="h-6 w-6 object-contain" />
+                Pickleball Mascot
+              </Badge>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Meet Ricky - Our Pickleball Mascot
+                Meet Ricky - Our Pickleball Champion
               </h2>
-              
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                Ricky is the official mascot of Turf45's Pickleball courts! This energetic and friendly rabbit loves pickleball and is here to welcome you to our premium pickleball facilities. Join Ricky on the court for an amazing pickleball experience!
+                Ricky is the official mascot of Turf45's Pickleball courts! This energetic and friendly character embodies the spirit of pickleball - fun, fast-paced, and friendly. Join Ricky on our premium pickleball courts for an unforgettable experience!
               </p>
-              
-              <div className="space-y-4 mb-8">
-                <div className="flex items-start gap-3 p-4 bg-white/80 rounded-xl border border-green-100">
-                  <Trophy className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Official Pickleball Mascot</h3>
-                    <p className="text-gray-600 text-sm">Ricky represents our commitment to pickleball excellence</p>
+
+              <div className="grid sm:grid-cols-2 gap-4 mb-8">
+                {[
+                  { icon: Trophy, title: 'Official Mascot', desc: 'Representing pickleball excellence' },
+                  { icon: Heart, title: 'Friendly Spirit', desc: 'Welcoming players of all levels' },
+                  { icon: Zap, title: 'Energetic Vibes', desc: 'Bringing excitement to every game' },
+                  { icon: Star, title: 'Premium Courts', desc: 'State-of-the-art facilities' },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-3 p-4 bg-white rounded-xl border-2 border-green-100">
+                    <item.icon className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-sm mb-1">{item.title}</h4>
+                      <p className="text-xs text-gray-600">{item.desc}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-3 p-4 bg-white/80 rounded-xl border border-green-100">
-                  <Heart className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Friendly & Energetic</h3>
-                    <p className="text-gray-600 text-sm">Ricky brings fun and excitement to every game</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-4 bg-white/80 rounded-xl border border-green-100">
-                  <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Premium Facilities</h3>
-                    <p className="text-gray-600 text-sm">Play on state-of-the-art pickleball courts with Ricky</p>
-                  </div>
-                </div>
+                ))}
               </div>
-              
+
               <Button
                 onClick={() => navigate('/public/booking?sport=pickleball')}
                 size="lg"
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-105"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-lg shadow-green-500/30"
               >
-                Book Pickleball Court
+                Book Pickleball with Ricky
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
+
+            <div className="order-1 lg:order-2 relative">
+              <div className="bg-gradient-to-br from-green-200 to-emerald-200 rounded-3xl p-8 shadow-2xl">
+                <RickyMascot size="xl" className="mx-auto" />
               </div>
             </div>
-      </section>
-
-      {/* Why Players Choose Turf45 */}
-      <section className="py-20 px-4 bg-gradient-to-br from-white via-green-50/35 to-white animate-fade-in">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 animate-slide-up">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Why Players Choose Turf45</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              From FIFA-approved surfaces to pro-grade lighting, every detail is engineered for peak performance and unforgettable sessions.
-            </p>
-          </div>
-          
-          <div className="grid lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Pro Surfaces & Lighting",
-                body: "FIFA-approved football turf, ICC-inspired cricket wickets, and USA Pickleball-ready courts with calibrated lighting for clean ball tracking day or night.",
-                points: ["Match-quality grass infill", "Even bounce & traction", "Weather-ready drainage"],
-              },
-              {
-                title: "Player Services",
-                body: "On-ground coordinators, hydration points, digital waivers, and instant confirmations keep you focused on the game—not logistics.",
-                points: ["Fast check-in", "Real-time slot sync", "On-call support"],
-              },
-              {
-                title: "Performance & Safety",
-                body: "Regular turf audits, shock-absorbent underlay, and sanitization between sessions to reduce fatigue and keep your squad protected.",
-                points: ["Impact-tested padding", "Non-slip sidelines", "Pre-game inspection"],
-              },
-            ].map((item, idx) => (
-              <Card key={idx} className="p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-green-100/70 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: `${idx * 0.1}s` }}>
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 text-white shadow-md">
-                    <Shield className="h-5 w-5" />
-                </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{item.title}</h3>
-                    <p className="text-gray-600 mb-4 leading-relaxed">{item.body}</p>
-                    <ul className="space-y-2 text-sm text-gray-600">
-                      {item.points.map((p) => (
-                        <li key={p} className="flex items-center gap-2">
-                          <CheckCircle2 className="h-4 w-4 text-green-600" />
-                          <span>{p}</span>
-                </li>
-                      ))}
-              </ul>
-            </div>
-                </div>
-              </Card>
-            ))}
           </div>
         </div>
       </section>
 
-      {/* Packages & Training */}
-      <section className="py-20 px-4 animate-fade-in">
+      {/* Testimonials & Reviews */}
+      <section id="reviews" className="py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 animate-slide-up">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Memberships, Coaching & Group Play</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Flexible options for solo practice, squads, academies, and corporate leagues. Pay per slot or lock in season passes.
-            </p>
-          </div>
-          
-          <div className="grid lg:grid-cols-3 gap-8">
-            <Card className="p-8 border border-green-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 animate-slide-up">
-              <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Season Pass</Badge>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">6-Week Grind</h3>
-              <p className="text-gray-600 mb-4">Lock in consistent training with priority slots and lower hourly rates.</p>
-              <ul className="space-y-2 text-sm text-gray-600 mb-6">
-                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />Reserved prime-time windows</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />Up to 20% savings on add-on slots</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />Team roster tagging</li>
-              </ul>
-              <Button onClick={() => navigate('/public/booking')} className="rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white w-full">View Slots</Button>
-            </Card>
-
-            <Card className="p-8 border border-green-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              <Badge className="mb-4 bg-amber-100 text-amber-700 border-amber-300">Coaching</Badge>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Skill Labs</h3>
-              <p className="text-gray-600 mb-4">Certified coaches for fundamentals, match IQ, and conditioning.</p>
-              <ul className="space-y-2 text-sm text-gray-600 mb-6">
-                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />1:1 or small-group sessions</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />Video breakdown add-on</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />Warm-up & cooldown protocols</li>
-              </ul>
-              <Button onClick={() => navigate('/public/booking')} className="rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white w-full">Book Coaching</Button>
-            </Card>
-
-            <Card className="p-8 border border-green-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              <Badge className="mb-4 bg-blue-100 text-blue-800 border-blue-200">Groups & Events</Badge>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Leagues & Corporate</h3>
-              <p className="text-gray-600 mb-4">End-to-end turf management for leagues, corporate days, and tournaments.</p>
-              <ul className="space-y-2 text-sm text-gray-600 mb-6">
-                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />Block bookings & bulk pricing</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />Officials & equipment on request</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />On-site coordination & PA support</li>
-              </ul>
-              <Button onClick={() => navigate('/support')} variant="outline" className="rounded-full border-2 border-green-600 text-green-700 hover:bg-green-50 w-full">Talk to Us</Button>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Reviews Section */}
-      <section id="reviews" className="py-20 px-4 bg-gradient-to-b from-white via-green-50/30 to-white animate-fade-in">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 animate-slide-up">
+          <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-2 mb-4">
               {[1, 2, 3, 4, 5].map((i) => (
-                <Star key={i} className="h-6 w-6 fill-yellow-400 text-yellow-400" />
+                <Star key={i} className="h-8 w-8 fill-yellow-400 text-yellow-400" />
               ))}
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              What Our Customers Say
+            <Badge className="mb-4 bg-yellow-100 text-yellow-800 border-yellow-300">4.9/5 Rating</Badge>
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              Loved by Athletes
             </h2>
-            <p className="text-lg text-gray-600">
-              Trusted by athletes and sports enthusiasts
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Join hundreds of satisfied players who choose Turf45 for their sports needs
             </p>
           </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
+
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
             {[
-              { name: 'Rajesh Kumar', rating: 5, text: 'Excellent facilities! The football court is FIFA approved and well-maintained. Booking was super easy.' },
-              { name: 'Priya Sharma', rating: 5, text: 'Love the cricket facilities here. Professional setup and great customer service. Highly recommended!' },
-              { name: 'Amit Patel', rating: 5, text: 'Best pickleball court in the city. Clean, modern, and the booking system is very convenient.' },
-            ].map((review, index) => (
-              <Card key={index} className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+              {
+                name: 'Rajesh Kumar',
+                role: 'Football Enthusiast',
+                rating: 5,
+                text: 'Excellent facilities! The FIFA-approved football court is top-notch. Booking was seamless and the staff is very professional. Best turf in Chennai!',
+                image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80'
+              },
+              {
+                name: 'Priya Sharma',
+                role: 'Cricket Coach',
+                rating: 5,
+                text: 'Outstanding cricket facilities! The turf quality is phenomenal and perfect for training sessions. My students love practicing here. Highly recommended!',
+                image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80'
+              },
+              {
+                name: 'Amit Patel',
+                role: 'Pickleball Player',
+                rating: 5,
+                text: 'Best pickleball court in the city! Clean, modern, and well-maintained. The indoor setup is perfect. The online booking system makes it so convenient.',
+                image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&q=80'
+              },
+            ].map((review, idx) => (
+              <Card key={idx} className="p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-gray-100">
                 <div className="flex gap-1 mb-4">
                   {[1, 2, 3, 4, 5].map((i) => (
-                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                <p className="text-gray-700 mb-4 italic">"{review.text}"</p>
-                <p className="font-semibold text-gray-900">— {review.name}</p>
+                <p className="text-gray-700 mb-6 italic leading-relaxed">"{review.text}"</p>
+                <div className="flex items-center gap-3">
+                  <img src={review.image} alt={review.name} className="w-12 h-12 rounded-full object-cover" />
+                  <div>
+                    <p className="font-bold text-gray-900">{review.name}</p>
+                    <p className="text-sm text-gray-600">{review.role}</p>
+                  </div>
+                </div>
               </Card>
             ))}
+          </div>
+
+          {/* Social Proof */}
+          <div className="grid md:grid-cols-4 gap-6">
+            <Card className="p-6 text-center border-2 border-green-100">
+              <p className="text-4xl font-bold text-green-600 mb-2">1000+</p>
+              <p className="text-gray-600">Matches Hosted</p>
+            </Card>
+            <Card className="p-6 text-center border-2 border-green-100">
+              <p className="text-4xl font-bold text-green-600 mb-2">500+</p>
+              <p className="text-gray-600">Happy Athletes</p>
+            </Card>
+            <Card className="p-6 text-center border-2 border-green-100">
+              <p className="text-4xl font-bold text-green-600 mb-2">4.9★</p>
+              <p className="text-gray-600">Average Rating</p>
+            </Card>
+            <Card className="p-6 text-center border-2 border-green-100">
+              <p className="text-4xl font-bold text-green-600 mb-2">99%</p>
+              <p className="text-gray-600">Satisfaction Rate</p>
+            </Card>
           </div>
         </div>
       </section>
 
-      {/* Founder Section */}
-      <section id="about" className="py-20 px-4 relative overflow-hidden animate-fade-in">
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="animate-slide-up">
+      {/* About/Founder Section */}
+      <section id="about" className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-green-600 rounded-3xl blur-3xl opacity-20"></div>
+              <img
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"
+                alt="Jai - Founder of Turf45"
+                className="relative rounded-3xl shadow-2xl w-full h-[600px] object-cover"
+              />
+            </div>
+
+            <div>
               <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Our Story</Badge>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Meet Jai - Our Founder
+                Meet Jai - Founder & Sports Visionary
               </h2>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                With a passion for sports and a vision to create world-class facilities, Jai founded Turf45 to provide athletes and sports enthusiasts with premium courts and fields. His dedication to excellence and commitment to quality has made Turf45 the premier destination for football, cricket, and pickleball in the region.
+                Founded in 2021, Turf45 was born from a passion for sports and a vision to create world-class facilities accessible to every athlete. Jai's dedication to excellence and commitment to quality has made Turf45 the premier destination for football, cricket, and pickleball in Chennai.
               </p>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                At Turf45, we believe that every athlete deserves access to top-tier facilities. Our mission is to inspire and empower athletes to reach their full potential through our state-of-the-art courts and exceptional service.
+                "At Turf45, we believe every athlete deserves access to professional-grade facilities. Our mission is to inspire and empower athletes to reach their full potential through exceptional courts and outstanding service." - Jai, Founder
               </p>
+
+              <div className="space-y-4 mb-8">
+                {[
+                  { icon: Award, text: 'FIFA Approved Facilities' },
+                  { icon: Trophy, text: 'Professional Grade Equipment' },
+                  { icon: Shield, text: 'Trusted by 500+ Athletes' },
+                  { icon: Target, text: 'Commitment to Excellence' },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-3">
+                    <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-2">
+                      <item.icon className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="text-gray-700 font-medium">{item.text}</span>
+                  </div>
+                ))}
+              </div>
+
               <Button
                 onClick={() => navigate('/public/booking')}
                 size="lg"
                 className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-lg shadow-green-500/30"
               >
                 Book Your Court Today
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-            </div>
-            <div className="relative animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-green-400/20 rounded-3xl blur-2xl animate-pulse"></div>
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl group">
-                <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"
-                  alt="Founder"
-                  className="w-full h-[500px] object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-green-50/25 via-white to-white animate-fade-in">
+      <section className="py-20 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12 animate-slide-up">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Help Center</Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Frequently Asked Questions
             </h2>
-            <p className="text-lg text-gray-600">
-              Everything you need to know about booking
-            </p>
-            </div>
-            
+            <p className="text-lg text-gray-600">Everything you need to know about booking at Turf45</p>
+          </div>
+
           <Accordion type="single" collapsible className="w-full space-y-4">
-            <AccordionItem value="payment-failed" className="bg-white rounded-xl border-2 border-green-100 px-6">
-              <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline">
-                What should I do if payment fails?
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-600">
-                If your payment fails, please try again. If the issue persists, contact our support team at +91 93451 87098 or email contact@turf45.in. We'll help you complete your booking.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="cancel-reschedule" className="bg-white rounded-xl border-2 border-green-100 px-6">
-              <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline">
-                Can I cancel or reschedule my booking?
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-600">
-                Yes, you can cancel or reschedule your booking up to 2 hours before your scheduled time. Please refer to our <a href="/refund-policy" className="text-green-600 hover:underline">Cancellation & Refund Policy</a> for detailed information.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="confirmation" className="bg-white rounded-xl border-2 border-green-100 px-6">
-              <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline">
-                How will I receive booking confirmation?
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-600">
-                You'll receive an instant confirmation via SMS and email after successful payment. You can also view your booking details in your account dashboard.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="arrival-time" className="bg-white rounded-xl border-2 border-green-100 px-6">
-              <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline">
-                When should I arrive for my booking?
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-600">
-                We recommend arriving 10-15 minutes before your scheduled time to complete check-in and warm-up. Your court will be ready at your booked time.
-              </AccordionContent>
-            </AccordionItem>
+            {[
+              {
+                q: 'How do I book a court at Turf45?',
+                a: 'Simply click on "Book Now", select your preferred sport (Football, Cricket, or Pickleball), choose your date and time slot, and complete the payment. You\'ll receive instant confirmation via SMS and email.'
+              },
+              {
+                q: 'What are your operating hours?',
+                a: 'We\'re open from 6:00 AM to 11:00 PM, 7 days a week. Slots are available in hourly increments, and you can book as early as 6 AM or as late as 10 PM (1-hour slot until 11 PM).'
+              },
+              {
+                q: 'Can I cancel or reschedule my booking?',
+                a: 'Yes, you can cancel or reschedule up to 2 hours before your booked slot. Please refer to our Cancellation & Refund Policy for detailed information on refunds and rescheduling process.'
+              },
+              {
+                q: 'What payment methods do you accept?',
+                a: 'We accept all major payment methods including Credit/Debit Cards, UPI, Net Banking, and Digital Wallets. All transactions are secure and encrypted.'
+              },
+              {
+                q: 'Do you provide sports equipment?',
+                a: 'Yes! We provide complimentary footballs and cricket equipment. For pickleball, paddles and balls are available. However, you\'re welcome to bring your own equipment if you prefer.'
+              },
+              {
+                q: 'Is there parking available?',
+                a: 'Yes, we have ample free parking space for all visitors. The parking area is well-lit and secure with CCTV surveillance.'
+              },
+              {
+                q: 'Can I bring guests to watch?',
+                a: 'Absolutely! Your guests are welcome to watch from our covered seating area at no additional charge. We have comfortable seating arrangements with a great view of the courts.'
+              },
+              {
+                q: 'What if it rains during my booking?',
+                a: 'Our cricket and football turfs have excellent drainage systems and can handle light rain. In case of heavy rain, we offer free rescheduling to another slot of your choice. Our pickleball courts are indoors and unaffected by weather.'
+              },
+            ].map((faq, idx) => (
+              <AccordionItem key={idx} value={`faq-${idx}`} className="bg-white rounded-xl border-2 border-green-100 px-6 hover:border-green-300 transition-colors">
+                <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline">
+                  {faq.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-gray-600 leading-relaxed">
+                  {faq.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
           </Accordion>
-                  </div>
-                    </section>
-                    
-      {/* Footer */}
-      <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-16 px-4 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid md:grid-cols-4 gap-8 mb-12">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <img
-                  src="/Turf45_transparent.png"
-                  alt="Turf45 Logo"
-                  className="h-12 w-auto object-contain"
-                  style={{
-                    filter: "drop-shadow(0 2px 8px rgba(16, 185, 129, 0.3))",
-                  }}
-                />
-                      </div>
-              <p className="text-gray-400 text-sm">
-                Premium sports facilities for football, cricket, and pickleball. Book your court today!
-              </p>
-                    </div>
-                    
-                      <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="/support" className="hover:text-green-400 transition-colors">Support</a></li>
-                <li><a href="/refund-policy" className="hover:text-green-400 transition-colors">Cancellation & Refund Policy</a></li>
-                <li><a href="/terms" className="hover:text-green-400 transition-colors">Terms & Conditions</a></li>
-                <li><a href="/privacy" className="hover:text-green-400 transition-colors">Privacy Policy</a></li>
-              </ul>
-                    </div>
-                    
-                      <div>
-              <h4 className="font-semibold mb-4">Contact</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li className="flex items-center gap-2">
-                  <Phone className="h-4 w-4" />
-                  <a href="tel:+919345187098" className="hover:text-green-400 transition-colors">+91 93451 87098</a>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Mail className="h-4 w-4" />
-                  <a href="mailto:contact@turf45.in" className="hover:text-green-400 transition-colors">contact@turf45.in</a>
-                </li>
-                <li className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4" />
-                  <span>Chennai, Tamil Nadu</span>
-                </li>
-              </ul>
-                    </div>
-                    
-                      <div>
-              <h4 className="font-semibold mb-4">Follow Us</h4>
-              <div className="flex gap-4">
-                <a href="https://instagram.com/turf45" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-green-500 transition-colors">
-                  <Instagram className="h-5 w-5" />
-                </a>
-                <a href="https://twitter.com/turf45" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-green-500 transition-colors">
-                  <Twitter className="h-5 w-5" />
-                </a>
-                <a href="https://facebook.com/turf45" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-green-500 transition-colors">
-                  <Facebook className="h-5 w-5" />
-                </a>
-                  </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-gray-600 mb-4">Still have questions?</p>
+            <Button
+              onClick={() => navigate('/support')}
+              variant="outline"
+              size="lg"
+              className="rounded-full border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
+            >
+              Contact Support Team
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Location/Contact CTA */}
+      <section className="py-20 px-4 bg-gradient-to-br from-green-500 to-green-600 text-white">
+        <div className="max-w-5xl mx-auto text-center">
+          <Map className="h-16 w-16 mx-auto mb-6 text-green-100" />
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Visit Turf45 Today
+          </h2>
+          <p className="text-xl text-green-50 mb-8 max-w-3xl mx-auto">
+            Experience world-class sports facilities in Chennai. We're open 7 days a week!
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-10">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <MapPin className="h-8 w-8 mx-auto mb-3 text-green-100" />
+              <h3 className="font-bold mb-2">Location</h3>
+              <p className="text-green-50">Chennai, Tamil Nadu</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <Phone className="h-8 w-8 mx-auto mb-3 text-green-100" />
+              <h3 className="font-bold mb-2">Call Us</h3>
+              <a href="tel:+919345187098" className="text-green-50 hover:text-white transition-colors">
+                +91 93451 87098
+              </a>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <Mail className="h-8 w-8 mx-auto mb-3 text-green-100" />
+              <h3 className="font-bold mb-2">Email Us</h3>
+              <a href="mailto:contact@turf45.in" className="text-green-50 hover:text-white transition-colors">
+                contact@turf45.in
+              </a>
             </div>
           </div>
-          
+
+          <Button
+            onClick={() => navigate('/public/booking')}
+            size="lg"
+            className="bg-white text-green-600 hover:bg-green-50 rounded-full px-12 py-7 text-xl font-bold shadow-2xl transition-all duration-300 hover:scale-110"
+          >
+            Book Your Court Now
+            <ArrowRight className="ml-2 h-6 w-6" />
+          </Button>
+        </div>
+      </section>
+
+      {/* Premium Footer */}
+      <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
+            {/* Brand */}
+            <div>
+              <img
+                src="/Turf45_transparent.png"
+                alt="Turf45 Logo"
+                className="h-14 w-auto object-contain mb-4"
+                style={{
+                  filter: "drop-shadow(0 2px 12px rgba(16, 185, 129, 0.4))",
+                }}
+              />
+              <p className="text-gray-400 leading-relaxed mb-4">
+                Premium FIFA-approved sports facilities for football, cricket, and pickleball in Chennai.
+              </p>
+              <div className="flex gap-3">
+                {[
+                  { icon: Instagram, url: 'https://instagram.com/turf45' },
+                  { icon: Facebook, url: 'https://facebook.com/turf45' },
+                  { icon: Twitter, url: 'https://twitter.com/turf45' },
+                ].map((social, idx) => (
+                  <a
+                    key={idx}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 bg-white/10 rounded-full hover:bg-green-500 transition-all duration-300"
+                  >
+                    <social.icon className="h-5 w-5" />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-bold text-lg mb-4">Quick Links</h4>
+              <ul className="space-y-3">
+                {[
+                  { label: 'Book Courts', onClick: () => navigate('/public/booking') },
+                  { label: 'View Availability', onClick: () => navigate('/public/booking') },
+                  { label: 'Facilities', onClick: () => scrollToSection('facilities') },
+                  { label: 'Pricing', onClick: () => scrollToSection('pricing') },
+                  { label: 'About Us', onClick: () => scrollToSection('about') },
+                ].map((link, idx) => (
+                  <li key={idx}>
+                    <button onClick={link.onClick} className="text-gray-400 hover:text-green-400 transition-colors">
+                      {link.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Support */}
+            <div>
+              <h4 className="font-bold text-lg mb-4">Support</h4>
+              <ul className="space-y-3">
+                {[
+                  { label: 'Help Center', href: '/support' },
+                  { label: 'Cancellation Policy', href: '/refund-policy' },
+                  { label: 'Terms & Conditions', href: '/terms' },
+                  { label: 'Privacy Policy', href: '/privacy' },
+                  { label: 'Contact Us', onClick: () => navigate('/support') },
+                ].map((link, idx) => (
+                  <li key={idx}>
+                    {link.href ? (
+                      <a href={link.href} className="text-gray-400 hover:text-green-400 transition-colors">
+                        {link.label}
+                      </a>
+                    ) : (
+                      <button onClick={link.onClick} className="text-gray-400 hover:text-green-400 transition-colors">
+                        {link.label}
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h4 className="font-bold text-lg mb-4">Contact Info</h4>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3 text-gray-400">
+                  <Phone className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                  <a href="tel:+919345187098" className="hover:text-green-400 transition-colors">
+                    +91 93451 87098
+                  </a>
+                </li>
+                <li className="flex items-start gap-3 text-gray-400">
+                  <Mail className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                  <a href="mailto:contact@turf45.in" className="hover:text-green-400 transition-colors">
+                    contact@turf45.in
+                  </a>
+                </li>
+                <li className="flex items-start gap-3 text-gray-400">
+                  <MapPin className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                  <span>Chennai, Tamil Nadu, India</span>
+                </li>
+                <li className="flex items-start gap-3 text-gray-400">
+                  <Clock className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                  <span>Open Daily: 6 AM - 11 PM</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
           <div className="border-t border-gray-700 pt-8">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <p className="text-sm text-gray-400">© {new Date().getFullYear()} Turf45. All rights reserved.</p>
+              <p className="text-gray-400 text-sm">
+                © {new Date().getFullYear()} Turf45. All rights reserved. FIFA Approved Courts - ESTD 2021
+              </p>
               <div className="flex items-center gap-4">
                 <a 
                   href="/login" 
                   className="flex items-center gap-2 text-sm text-gray-400 hover:text-green-400 transition-colors"
                 >
                   <LogIn className="h-4 w-4" />
-                  Management Login
+                  Admin Login
                 </a>
                 <a 
                   href="https://cuephoriatech.in" 
