@@ -69,13 +69,20 @@ const StationCard: React.FC<StationCardProps> = ({ station }) => {
           hover:scale-[1.02] cursor-pointer
         `}
       >
-        {/* Realistic Court Background */}
+        {/* Realistic Court Background with Real Photos */}
         <div className="absolute inset-0 overflow-hidden">
           {isTurf ? (
-            /* Football/Cricket Turf Ground */
-            <div className="absolute inset-0 bg-gradient-to-br from-green-700 via-green-600 to-green-800">
-              {/* Grass texture effect */}
-              <div className="absolute inset-0 opacity-20" style={{
+            /* Football/Cricket Turf Ground with Real Aerial Photo */
+            <div className="absolute inset-0">
+              <img 
+                src="/T45 TOP VIEW.jpeg" 
+                alt="Turf Aerial View"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-green-700/80 via-green-600/80 to-green-800/80" />
+              
+              {/* Grass texture overlay */}
+              <div className="absolute inset-0 opacity-10" style={{
                 backgroundImage: `repeating-linear-gradient(
                   0deg,
                   transparent,
@@ -85,8 +92,8 @@ const StationCard: React.FC<StationCardProps> = ({ station }) => {
                 )`
               }}></div>
               
-              {/* Football field lines */}
-              <svg className="absolute inset-0 w-full h-full opacity-50" viewBox="0 0 100 60" preserveAspectRatio="none">
+              {/* Football field lines overlay */}
+              <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 100 60" preserveAspectRatio="none">
                 {/* Outer boundary */}
                 <rect x="5" y="5" width="90" height="50" fill="none" stroke="white" strokeWidth="0.5"/>
                 
@@ -110,10 +117,17 @@ const StationCard: React.FC<StationCardProps> = ({ station }) => {
               <div className="absolute inset-0 bg-gradient-to-t from-green-900/20 to-transparent animate-pulse" style={{ animationDuration: '3s' }}></div>
             </div>
           ) : (
-            /* Pickleball Court */
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-700 via-blue-600 to-cyan-700">
-              {/* Court surface texture */}
-              <div className="absolute inset-0 opacity-15" style={{
+            /* Pickleball Court with Real Aerial Photo */
+            <div className="absolute inset-0">
+              <img 
+                src="/Pickleball top view.jpeg" 
+                alt="Pickleball Aerial View"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-700/80 via-blue-600/80 to-cyan-700/80" />
+              
+              {/* Court surface texture overlay */}
+              <div className="absolute inset-0 opacity-10" style={{
                 backgroundImage: `repeating-linear-gradient(
                   45deg,
                   transparent,
@@ -123,8 +137,8 @@ const StationCard: React.FC<StationCardProps> = ({ station }) => {
                 )`
               }}></div>
               
-              {/* Pickleball court lines */}
-              <svg className="absolute inset-0 w-full h-full opacity-70" viewBox="0 0 100 60" preserveAspectRatio="none">
+              {/* Pickleball court lines overlay */}
+              <svg className="absolute inset-0 w-full h-full opacity-50" viewBox="0 0 100 60" preserveAspectRatio="none">
                 {/* Outer boundary */}
                 <rect x="15" y="5" width="70" height="50" fill="none" stroke="white" strokeWidth="0.8"/>
                 
