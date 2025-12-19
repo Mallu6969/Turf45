@@ -274,6 +274,27 @@ const Index: React.FC = () => {
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
           <ChevronDown className="h-8 w-8 text-white/80" />
         </div>
+
+        {/* Ricky Mascot - Floating in Hero */}
+        <div className="absolute bottom-20 left-8 z-20 hidden lg:block">
+          <div className="relative animate-float-slow">
+            <div className="absolute -inset-4 bg-green-500/20 rounded-full blur-2xl animate-pulse"></div>
+            <div className="relative bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-2xl border-2 border-green-200/50 hover:border-green-400 transition-all duration-300 hover:scale-110 group">
+              <img
+                src="https://iili.io/J9VqJpJ.png"
+                alt="Ricky - Turf45 Mascot"
+                className="w-32 h-32 object-contain animate-bounce-slow group-hover:animate-bounce"
+                onError={(e) => {
+                  // Fallback if image doesn't load
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+              <div className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                #45
+              </div>
+            </div>
+                  </div>
+                  </div>
       </section>
 
       {/* Welcome Section */}
@@ -404,8 +425,22 @@ const Index: React.FC = () => {
       </section>
 
       {/* Sport Selector Cards */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-20 px-4 relative overflow-hidden">
+        {/* Ricky Mascot - Floating on Left Side */}
+        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-0 opacity-5 hover:opacity-10 transition-opacity duration-300 hidden xl:block">
+          <div className="relative animate-float-slow">
+            <img
+              src="https://iili.io/J9VqJpJ.png"
+              alt="Ricky - Turf45 Mascot"
+              className="w-64 h-64 object-contain"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Choose Your Sport
@@ -477,6 +512,22 @@ const Index: React.FC = () => {
                 alt="Pickleball Court"
                 className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
               />
+              
+              {/* Ricky Mascot on Pickleball Card */}
+              <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <div className="relative animate-bounce-slow">
+                  <div className="absolute -inset-2 bg-green-500/30 rounded-full blur-lg animate-pulse"></div>
+                  <img
+                    src="https://iili.io/J9VqJpJ.png"
+                    alt="Ricky - Pickleball Mascot"
+                    className="w-20 h-20 object-contain relative z-10 drop-shadow-lg"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                </div>
+              </div>
+
               <CardContent className="p-6 relative z-10">
                 <Badge className="mb-3 bg-green-500/10 text-green-700 border-green-300">Tennis court</Badge>
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">Pickleball</h3>
