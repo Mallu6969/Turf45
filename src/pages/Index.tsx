@@ -119,7 +119,7 @@ const Index: React.FC = () => {
   };
 
   return (
-    <div className="public-page min-h-screen bg-gradient-to-br from-white via-green-50/30 to-white">
+    <div className="public-page min-h-screen bg-white">
       {/* Navigation Bar */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled 
@@ -219,25 +219,20 @@ const Index: React.FC = () => {
 
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
-        {/* Enhanced Background with Multiple Layers */}
+        {/* Enhanced Background with Clean Gradient */}
         <div className="absolute inset-0 z-0">
-          {/* Vibrant gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-green-600/30 via-green-500/20 via-emerald-400/25 to-green-700/35 z-10"></div>
-          
-          {/* Animated gradient orbs */}
-          <div className="absolute top-0 left-0 w-96 h-96 bg-green-400/30 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-500/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-green-300/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-          
-          {/* Background image with better blend */}
+          {/* Background image */}
           <img
             src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=80"
             alt="Football Court"
-            className="w-full h-full object-cover opacity-80 mix-blend-overlay"
-            />
+            className="w-full h-full object-cover"
+          />
           
-          {/* Additional overlay for depth */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-10"></div>
+          {/* Clean gradient overlay for better contrast */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60 z-10"></div>
+          
+          {/* Subtle green accent overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-green-900/20 via-transparent to-emerald-900/30 z-10"></div>
         </div>
 
         {/* Floating Badge */}
@@ -268,7 +263,7 @@ const Index: React.FC = () => {
               Life's Simple Pleasures
           </span>
         </h1>
-          <p className="text-xl md:text-2xl text-white/95 mb-8 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed animate-slide-up drop-shadow-lg" style={{ animationDelay: '0.2s' }}>
             Rediscover the beauty in life's simplest pleasures, and let every moment here remind you of the joy of true relaxation.
           </p>
           
@@ -301,7 +296,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* Welcome Section */}
-      <section className="py-20 px-4 animate-fade-in">
+      <section className="py-20 px-4 bg-gradient-to-b from-white to-gray-50/50 animate-fade-in">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-3 gap-6">
             {/* Outdoor Area Card */}
@@ -320,7 +315,7 @@ const Index: React.FC = () => {
             </Card>
 
             {/* Sports Center Card */}
-            <Card className="relative overflow-hidden bg-gradient-to-br from-green-50 to-white border-2 border-green-200 group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            <Card className="relative overflow-hidden bg-white border-2 border-green-200/60 group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-green-300 animate-slide-up" style={{ animationDelay: '0.1s' }}>
               <CardContent className="p-8 h-full flex flex-col justify-between">
                 <div>
                   <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Sports center</Badge>
@@ -365,7 +360,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* Discover Excellence Section */}
-      <section id="facilities" className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white animate-fade-in">
+      <section id="facilities" className="py-20 px-4 bg-gradient-to-b from-gray-50/50 to-white animate-fade-in">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row gap-12 items-start">
             {/* Left Content */}
@@ -526,7 +521,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* Available Today Preview */}
-      <section className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white">
+      <section className="py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -617,11 +612,11 @@ const Index: React.FC = () => {
       </section>
 
       {/* Pickleball Mascot - Ricky Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white relative overflow-hidden animate-fade-in">
-        {/* Decorative background elements */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-green-400 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-400 rounded-full blur-3xl"></div>
+      <section className="py-20 px-4 bg-gradient-to-b from-white to-gray-50/30 relative overflow-hidden animate-fade-in">
+        {/* Subtle decorative background elements */}
+        <div className="absolute inset-0 opacity-[0.03]">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-green-500 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-500 rounded-full blur-3xl"></div>
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
@@ -698,7 +693,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* Why Players Choose Turf45 */}
-      <section className="py-20 px-4 bg-gradient-to-br from-white via-green-50/60 to-white animate-fade-in">
+      <section className="py-20 px-4 bg-gradient-to-b from-gray-50/50 via-white to-gray-50/30 animate-fade-in">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Why Players Choose Turf45</h2>
@@ -800,7 +795,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* Reviews Section */}
-      <section id="reviews" className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white animate-fade-in">
+      <section id="reviews" className="py-20 px-4 bg-white animate-fade-in">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 animate-slide-up">
             <div className="flex items-center justify-center gap-2 mb-4">
@@ -874,7 +869,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white animate-fade-in">
+      <section className="py-20 px-4 bg-gradient-to-b from-gray-50/30 to-white animate-fade-in">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
