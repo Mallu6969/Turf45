@@ -56,40 +56,42 @@ const EditStationDialog: React.FC<EditStationDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] bg-background border-cuephoria-purple">
+      <DialogContent className="sm:max-w-[425px] bg-[#1A1F2C] border-green-500/30">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Edit size={16} />
-            Edit Station
+          <DialogTitle className="flex items-center gap-2 text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-emerald-500">
+            <Edit size={16} className="text-green-500" />
+            Edit Court
           </DialogTitle>
-          <DialogDescription>
-            Update station name and hourly rate
+          <DialogDescription className="text-gray-400">
+            Update court name and hourly rate
           </DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Station Name</Label>
+            <Label htmlFor="name" className="text-gray-300">Court Name</Label>
             <Input
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter station name"
+              placeholder="Enter court name"
               required
+              className="focus:ring-green-500 focus:border-green-500"
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="hourlyRate">Hourly Rate</Label>
+            <Label htmlFor="hourlyRate" className="text-gray-300">Hourly Rate (₹)</Label>
             <Input
               id="hourlyRate"
               type="number"
               value={hourlyRate}
               onChange={(e) => setHourlyRate(parseFloat(e.target.value))}
               placeholder="Enter hourly rate"
-              min={0}
-              step={0.01}
+              min={10}
+              step={50}
               required
+              className="focus:ring-green-500 focus:border-green-500"
             />
           </div>
           
@@ -99,12 +101,13 @@ const EditStationDialog: React.FC<EditStationDialogProps> = ({
               variant="outline" 
               onClick={() => onOpenChange(false)}
               disabled={isLoading}
+              className="border-gray-600 hover:bg-gray-800"
             >
               Cancel
             </Button>
             <Button 
               type="submit" 
-              className="bg-cuephoria-purple hover:bg-cuephoria-purple/80" 
+              className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white" 
               disabled={isLoading || !name || hourlyRate <= 0}
             >
               {isLoading ? 'Saving...' : 'Save Changes'}
