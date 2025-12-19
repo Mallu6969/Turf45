@@ -73,13 +73,12 @@ const AppSidebar: React.FC = () => {
               </SheetTrigger>
               <SheetContent side="left" className="p-0 w-[80%] max-w-[280px] bg-[#1A1F2C] border-r-0">
                 <div className="h-full flex flex-col">
-                  <div className="p-4 flex items-center gap-3">
+                  <div className="p-4 flex items-center justify-center">
                     <img
                       src="/Turf45_transparent.png"
                       alt="TURF 45 Logo"
-                      className="h-12 w-12 object-contain animate-bounce filter drop-shadow-[0_0_15px_rgba(110,89,165,0.8)] animate-neon-pulse"
+                      className="h-12 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(16,185,129,0.8)]"
                     />
-                    <span className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-nerfturf-lightpurple via-nerfturf-magenta to-nerfturf-purple font-heading">NerfTurf</span>
                   </div>
                   <div className="mx-4 h-px bg-nerfturf-purple/30" />
                   <div className="flex-1 overflow-auto py-2">
@@ -133,7 +132,6 @@ const AppSidebar: React.FC = () => {
                 </div>
               </SheetContent>
             </Sheet>
-            <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-nerfturf-lightpurple to-nerfturf-purple font-heading">NerfTurf</span>
           </div>
         </div>
         <div className="pt-16"></div>
@@ -144,13 +142,12 @@ const AppSidebar: React.FC = () => {
   // Desktop version with Sidebar
   return (
     <Sidebar className="border-r-0 bg-[#1A1F2C] text-white w-[250px]">
-      <SidebarHeader className="p-4 flex items-center gap-3">
+      <SidebarHeader className="p-4 flex items-center justify-center">
         <img
           src="/Turf45_transparent.png"
           alt="TURF 45 Logo"
           className="h-14 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(16,185,129,0.8)]"
         />
-        <span className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-turf45-green via-turf45-lightgreen to-turf45-green font-heading">TURF 45</span>
       </SidebarHeader>
       <SidebarSeparator className="mx-4 bg-turf45-green/30" />
       <SidebarContent className="mt-2">
