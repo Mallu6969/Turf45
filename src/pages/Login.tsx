@@ -731,7 +731,7 @@ const Login = () => {
           <div className="relative mx-auto w-full max-w-[220px] h-auto sm:w-64 sm:h-64">
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-turf45-green/20 to-turf45-lightgreen/10 blur-lg"></div>
             <img 
-              src="/turf45-logo.png" 
+              src="https://iili.io/flpVPUP.jpg" 
               alt="TURF 45 - FIFA Approved Football, Cricket & Pickleball Turf" 
               className="relative w-full h-auto mx-auto drop-shadow-[0_0_15px_rgba(16, 185, 129, 0.4)]"
             />

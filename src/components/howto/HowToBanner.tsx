@@ -16,7 +16,7 @@ const HowToBanner: React.FC = () => (
     {/* Logo image */}
     <div className="flex-shrink-0">
       <img
-        src="/turf45-logo.png"
+        src="https://iili.io/flpVPUP.jpg"
         alt="TURF 45 Logo"
         className="w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover shadow border-2 border-turf45-green/20 bg-black/60"
         loading="lazy"

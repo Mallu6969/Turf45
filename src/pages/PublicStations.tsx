@@ -151,8 +151,8 @@ const PublicStations = () => {
           <div className="flex flex-col items-center mb-8">
             <div className="mb-6 animate-float">
               <img 
-                src="https://iili.io/KpfrAog.jpg" 
-                alt="NerfTurf Logo" 
+                src="https://iili.io/flpVPUP.jpg" 
+                alt="TURF 45 Logo" 
                 className="h-24 shadow-lg shadow-nerfturf-purple/30"
               />
             </div>
@@ -306,8 +306,8 @@ const PublicStations = () => {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
             <img 
-              src="https://iili.io/KpfrAog.jpg"
-              alt="NerfTurf Logo" 
+              src="https://iili.io/flpVPUP.jpg"
+              alt="TURF 45 Logo" 
               className="h-8 mr-3" 
             />
             <p className="text-gray-400 text-sm">
@@ -348,8 +348,8 @@ const ImprovedLoadingView = ({ error }: { error: string | null }) => {
       <div className="w-full max-w-md flex flex-col items-center justify-center animate-fade-in">
         <div className="w-32 h-32 mb-8 flex items-center justify-center">
           <img 
-            src="https://iili.io/KpfrAog.jpg" 
-            alt="NerfTurf Logo" 
+            src="https://iili.io/flpVPUP.jpg" 
+            alt="TURF 45 Logo" 
             className="animate-flip-in"
           />
         </div>
@@ -375,8 +375,8 @@ const ImprovedLoadingView = ({ error }: { error: string | null }) => {
               <div className="w-16 h-16 border-t-4 border-r-4 border-transparent border-solid rounded-full border-r-nerfturf-purple absolute animate-spin-slow"></div>
               <div className="absolute">
                 <img 
-                  src="https://iili.io/KpfrAog.jpg" 
-                  alt="NerfTurf Logo" 
+                  src="https://iili.io/flpVPUP.jpg" 
+                  alt="TURF 45 Logo" 
                   className="h-10 w-12 animate-pulse-soft"
                 />
               </div>
@@ -400,8 +400,8 @@ const NoStationsView = ({ error }: { error: string | null }) => {
       <div className="w-full max-w-md py-12 px-6 flex flex-col items-center justify-center animate-fade-in">
         <div className="w-32 h-32 mb-8 flex items-center justify-center">
           <img 
-            src="https://iili.io/KpfrAog.jpg" 
-            alt="NerfTurf Logo"
+            src="https://iili.io/flpVPUP.jpg" 
+            alt="TURF 45 Logo"
             className="animate-float" 
           />
         </div>
