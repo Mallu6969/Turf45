@@ -133,9 +133,9 @@ const Index: React.FC = () => {
               <img
                 src="/Turf45_transparent.png"
                 alt="Turf45 - Premium Sports Facility"
-                className="h-20 md:h-24 lg:h-28 w-auto object-contain transition-all duration-300 hover:scale-105"
+                className="h-12 md:h-14 w-auto object-contain transition-all duration-300 hover:scale-105"
                 style={{
-                  filter: "drop-shadow(0 2px 12px rgba(16, 185, 129, 0.4))",
+                  filter: "drop-shadow(0 2px 8px rgba(16, 185, 129, 0.3))",
                 }}
               />
         </div>
