@@ -43,6 +43,7 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { format, parse, getDay } from "date-fns";
+import { RickyMascot } from "@/components/RickyMascot";
 
 /* =========================
    Types
@@ -1525,18 +1526,20 @@ export default function PublicBooking() {
         <div className="absolute bottom-10 left-1/3 h-56 w-56 rounded-full bg-nerfturf-magenta/20 blur-3xl" />
       </div>
 
-      {/* Ricky Mascot - Floating Decorative Element */}
-      <div className="absolute bottom-32 right-8 z-10 hidden lg:block pointer-events-none">
+      {/* Ricky Mascot - Interactive Helper */}
+      <div className="absolute bottom-32 right-8 z-10 hidden lg:block">
         <div className="relative animate-float-slow">
-          <div className="absolute -inset-6 bg-green-500/10 rounded-full blur-2xl animate-pulse"></div>
-          <div className="relative opacity-30 hover:opacity-50 transition-opacity duration-300">
-            <img
-              src="https://iili.io/J9VqJpJ.png"
-              alt="Ricky - Turf45 Mascot"
-              className="w-32 h-32 object-contain filter drop-shadow-2xl animate-wiggle-playful"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
+          <div className="relative opacity-30 hover:opacity-100 transition-opacity duration-300">
+            <RickyMascot
+              size="lg"
+              position="decorative"
+              messages={[
+                "Fill in your details to get started! 📝",
+                "Select your favorite station! 🎮",
+                "Pick a date and time! 📅",
+                "Almost there! Complete your booking! 💳",
+                "Need help? Just click me! 💬",
+              ]}
             />
           </div>
         </div>

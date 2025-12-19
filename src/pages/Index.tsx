@@ -40,6 +40,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
+import { RickyMascot } from "@/components/RickyMascot";
 
 interface Station {
   id: string;
@@ -275,26 +276,24 @@ const Index: React.FC = () => {
           <ChevronDown className="h-8 w-8 text-white/80" />
         </div>
 
-        {/* Ricky Mascot - Floating in Hero */}
+        {/* Ricky Mascot - Interactive in Hero */}
         <div className="absolute bottom-20 left-8 z-20 hidden lg:block">
           <div className="relative animate-float-slow">
-            <div className="absolute -inset-4 bg-green-500/20 rounded-full blur-2xl animate-pulse"></div>
-            <div className="relative bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-2xl border-2 border-green-200/50 hover:border-green-400 transition-all duration-300 hover:scale-110 group">
-              <img
-                src="https://iili.io/J9VqJpJ.png"
-                alt="Ricky - Turf45 Mascot"
-                className="w-32 h-32 object-contain animate-bounce-slow group-hover:animate-bounce"
-                onError={(e) => {
-                  // Fallback if image doesn't load
-                  e.currentTarget.style.display = 'none';
-                }}
+            <div className="relative bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-2xl border-2 border-green-200/50 hover:border-green-400 transition-all duration-300">
+              <RickyMascot
+                size="lg"
+                position="hero"
+                messages={[
+                  "Welcome to Turf45! 🎉",
+                  "Book your court in seconds! ⚡",
+                  "I'm Ricky, your friendly guide! 🐰",
+                  "Let's get you playing today! 🏓",
+                  "Best facilities in town! 🏆",
+                ]}
               />
-              <div className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
-                #45
-              </div>
             </div>
-                  </div>
-                  </div>
+          </div>
+        </div>
       </section>
 
       {/* Welcome Section */}
@@ -426,16 +425,18 @@ const Index: React.FC = () => {
 
       {/* Sport Selector Cards */}
       <section className="py-20 px-4 relative overflow-hidden">
-        {/* Ricky Mascot - Floating on Left Side */}
-        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-0 opacity-5 hover:opacity-10 transition-opacity duration-300 hidden xl:block">
+        {/* Ricky Mascot - Interactive on Left Side */}
+        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-0 opacity-5 hover:opacity-100 transition-opacity duration-300 hidden xl:block">
           <div className="relative animate-float-slow">
-            <img
-              src="https://iili.io/J9VqJpJ.png"
-              alt="Ricky - Turf45 Mascot"
-              className="w-64 h-64 object-contain"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
+            <RickyMascot
+              size="xl"
+              position="decorative"
+              messages={[
+                "Choose your favorite sport! ⚽🏏🏓",
+                "All our courts are top-notch! 🌟",
+                "Football, Cricket, or Pickleball? 🎯",
+                "Book now and save your slot! ⏰",
+              ]}
             />
           </div>
         </div>
@@ -515,17 +516,16 @@ const Index: React.FC = () => {
               
               {/* Ricky Mascot on Pickleball Card */}
               <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="relative animate-bounce-slow">
-                  <div className="absolute -inset-2 bg-green-500/30 rounded-full blur-lg animate-pulse"></div>
-                  <img
-                    src="https://iili.io/J9VqJpJ.png"
-                    alt="Ricky - Pickleball Mascot"
-                    className="w-20 h-20 object-contain relative z-10 drop-shadow-lg"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                </div>
+                <RickyMascot
+                  size="md"
+                  position="card"
+                  messages={[
+                    "Pickleball is my favorite! 🏓",
+                    "This court is amazing! ⭐",
+                    "Book now and let's play! 🎾",
+                    "You'll love it here! 💚",
+                  ]}
+                />
               </div>
 
               <CardContent className="p-6 relative z-10">
@@ -780,8 +780,24 @@ const Index: React.FC = () => {
       </section>
 
       {/* Founder Section */}
-      <section id="about" className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
+      <section id="about" className="py-20 px-4 relative overflow-hidden">
+        {/* Ricky Mascot - Interactive Decorative Element */}
+        <div className="absolute top-10 right-10 z-0 opacity-10 hover:opacity-100 transition-opacity duration-300 hidden xl:block">
+          <div className="relative animate-float-slow">
+            <RickyMascot
+              size="xl"
+              position="decorative"
+              messages={[
+                "Jai is an amazing founder! 👏",
+                "Turf45 is built with passion! ❤️",
+                "Join our sports community! 🤝",
+                "We're here to serve you! 🎯",
+              ]}
+            />
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Our Story</Badge>
@@ -869,8 +885,24 @@ const Index: React.FC = () => {
                     </section>
                     
       {/* Footer */}
-      <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-16 px-4">
-        <div className="max-w-7xl mx-auto">
+      <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-16 px-4 relative overflow-hidden">
+        {/* Ricky Mascot in Footer */}
+        <div className="absolute bottom-0 right-8 opacity-20 hover:opacity-100 transition-opacity duration-300 hidden lg:block">
+          <div className="relative animate-float-slow">
+            <RickyMascot
+              size="lg"
+              position="footer"
+              messages={[
+                "Thanks for visiting! 🙏",
+                "See you on the court! 🏓",
+                "Book again soon! ⚡",
+                "Stay active, stay happy! 💪",
+              ]}
+            />
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div>
               <div className="flex items-center gap-3 mb-4">
