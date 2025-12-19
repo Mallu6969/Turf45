@@ -146,13 +146,13 @@ const AppSidebar: React.FC = () => {
     <Sidebar className="border-r-0 bg-[#1A1F2C] text-white w-[250px]">
       <SidebarHeader className="p-4 flex items-center gap-3">
         <img
-          src="https://iili.io/KpfrAog.jpg"
-          alt="NerfTurf Logo"
-          className="h-14 w-14 object-contain animate-bounce filter drop-shadow-[0_0_15px_rgba(110,89,165,0.8)] animate-neon-pulse"
+          src="/turf45-logo.png"
+          alt="TURF 45 Logo"
+          className="h-14 w-14 object-contain animate-bounce filter drop-shadow-[0_0_15px_rgba(16,185,129,0.8)] animate-neon-pulse"
         />
-        <span className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-nerfturf-lightpurple via-nerfturf-magenta to-nerfturf-purple font-heading">NerfTurf</span>
+        <span className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-turf45-green via-turf45-lightgreen to-turf45-green font-heading">TURF 45</span>
       </SidebarHeader>
-      <SidebarSeparator className="mx-4 bg-nerfturf-purple/30" />
+      <SidebarSeparator className="mx-4 bg-turf45-green/30" />
       <SidebarContent className="mt-2">
         <SidebarGroup>
           <SidebarGroupContent>
@@ -161,7 +161,7 @@ const AppSidebar: React.FC = () => {
                 <SidebarMenuItem key={item.path} className={`animate-fade-in delay-${index * 100} text-base`}>
                   <SidebarMenuButton asChild isActive={location.pathname === item.path}>
                     <Link to={item.path} className="flex items-center menu-item py-2.5">
-                      <item.icon className={`mr-3 h-6 w-6 ${location.pathname === item.path ? 'text-nerfturf-lightpurple animate-pulse-soft' : ''}`} />
+                      <item.icon className={`mr-3 h-6 w-6 ${location.pathname === item.path ? 'text-turf45-green animate-pulse-soft' : ''}`} />
                       <span className="font-quicksand">{item.label}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -172,19 +172,19 @@ const AppSidebar: React.FC = () => {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="p-4">
-        <div className="group bg-cuephoria-dark rounded-lg p-4 shadow-lg border border-nerfturf-purple/20 hover:border-nerfturf-purple/60 hover:shadow-[0_0_20px_rgba(110, 89, 165, 0.3)] transition-all duration-300 ease-in-out">
+        <div className="group bg-cuephoria-dark rounded-lg p-4 shadow-lg border border-turf45-green/20 hover:border-turf45-green/60 hover:shadow-[0_0_20px_rgba(16, 185, 129, 0.3)] transition-all duration-300 ease-in-out">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               {isAdmin ? (
-                <Shield className="h-6 w-6 text-nerfturf-lightpurple" />
+                <Shield className="h-6 w-6 text-turf45-green" />
               ) : (
-                <User className="h-6 w-6 text-nerfturf-lightpurple" />
+                <User className="h-6 w-6 text-turf45-green" />
               )}
               <div className="flex flex-col">
                 <span className="text-sm font-medium font-quicksand text-white">
                   {user.username}
                 </span>
-                <span className="text-xs text-nerfturf-lightpurple font-quicksand">
+                <span className="text-xs text-turf45-green font-quicksand">
                   {isAdmin ? '(Administrator)' : '(Staff)'}
                 </span>
               </div>

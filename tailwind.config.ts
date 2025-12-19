@@ -87,6 +87,16 @@ export default {
           dark: '#000000',
           darker: '#0a0a0a',
           light: '#F1F0FB',
+        },
+        turf45: {
+          green: '#10B981', // Primary green (lime-green from logo)
+          lightgreen: '#34D399', // Lighter green variant
+          darkgreen: '#059669', // Darker green variant
+          yellow: '#FCD34D', // Yellow star accent
+          black: '#000000', // Black text/numbers
+          dark: '#0a0a0a',
+          darker: '#000000',
+          light: '#D1FAE5', // Light green background
         }
       },
       borderRadius: {

@@ -729,22 +729,22 @@ const Login = () => {
       <div className={`w-full max-w-md z-10 ${animationClass}`}>
         <div className="mb-8 text-center">
           <div className="relative mx-auto w-full max-w-[220px] h-auto sm:w-64 sm:h-64">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-nerfturf-purple/20 to-nerfturf-magenta/10 blur-lg"></div>
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-turf45-green/20 to-turf45-lightgreen/10 blur-lg"></div>
             <img 
-              src="https://iili.io/KpfrAog.jpg" 
-              alt="NerfTurf - Premier Snooker & 8-Ball" 
-              className="relative w-full h-auto mx-auto drop-shadow-[0_0_15px_rgba(110, 89, 165, 0.4)]"
+              src="/turf45-logo.png" 
+              alt="TURF 45 - FIFA Approved Football, Cricket & Pickleball Turf" 
+              className="relative w-full h-auto mx-auto drop-shadow-[0_0_15px_rgba(16, 185, 129, 0.4)]"
             />
           </div>
-          <p className="mt-3 text-muted-foreground/70 font-semibold tracking-widest animate-fade-in bg-gradient-to-r from-nerfturf-lightpurple via-nerfturf-magenta to-nerfturf-lightpurple bg-clip-text text-transparent text-xs sm:text-sm uppercase">ADMINISTRATOR PORTAL</p>
+          <p className="mt-3 text-muted-foreground/70 font-semibold tracking-widest animate-fade-in bg-gradient-to-r from-turf45-green via-turf45-lightgreen to-turf45-green bg-clip-text text-transparent text-xs sm:text-sm uppercase">ADMINISTRATOR PORTAL</p>
         </div>
         
-        <Card className="bg-black/80 border border-nerfturf-purple/30 shadow-xl shadow-nerfturf-purple/40 backdrop-blur-lg animate-fade-in delay-100 rounded-xl overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-nerfturf-purple/5 to-nerfturf-magenta/5 opacity-50 rounded-xl"></div>
+        <Card className="bg-black/80 border border-turf45-green/30 shadow-xl shadow-turf45-green/40 backdrop-blur-lg animate-fade-in delay-100 rounded-xl overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-turf45-green/5 to-turf45-lightgreen/5 opacity-50 rounded-xl"></div>
           <div className="absolute w-full h-full bg-grid-pattern opacity-5"></div>
           
           <CardHeader className="text-center relative z-10 p-4 sm:p-6">
-            <CardTitle className="text-xl sm:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-nerfturf-lightpurple to-nerfturf-magenta font-bold">Club Manager Login</CardTitle>
+            <CardTitle className="text-xl sm:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-turf45-green to-turf45-lightgreen font-bold">Facility Manager Login</CardTitle>
             <CardDescription className="text-muted-foreground font-medium text-xs sm:text-sm">Enter your credentials to access the control panel</CardDescription>
           </CardHeader>
           

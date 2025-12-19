@@ -74,8 +74,8 @@ const ProtectedRoute = ({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] via-[#1a0f1a] to-[#1a1a1a]">
-        <div className="animate-spin-slow h-10 w-10 rounded-full border-4 border-nerfturf-purple border-t-transparent shadow-lg shadow-nerfturf-purple/50"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] via-[#0a1a0a] to-[#1a1a1a]">
+        <div className="animate-spin-slow h-10 w-10 rounded-full border-4 border-turf45-green border-t-transparent shadow-lg shadow-turf45-green/50"></div>
       </div>
     );
   }
@@ -102,8 +102,8 @@ const ProtectedRoute = ({
             <GlobalNotificationBell />
           </div>
           {children}
-          <footer className="mt-auto w-full py-2 text-center text-xs text-nerfturf-lightpurple/80 bg-black/80 border-t border-nerfturf-purple/20 font-semibold tracking-wide z-50 backdrop-blur-sm">
-            Designed & Developed by Cuephoria Tech<sup className="text-nerfturf-purple">™</sup>
+          <footer className="mt-auto w-full py-2 text-center text-xs text-turf45-green/80 bg-black/80 border-t border-turf45-green/20 font-semibold tracking-wide z-50 backdrop-blur-sm">
+            TURF 45 - FIFA Approved Turf Facility<sup className="text-turf45-green">™</sup>
           </footer>
         </div>
       </div>

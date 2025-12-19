@@ -79,34 +79,34 @@ const Index: React.FC = () => {
         <div 
           className="absolute inset-0 opacity-5"
           style={{ 
-            backgroundImage: 'linear-gradient(to right, rgb(110, 89, 165) 1px, transparent 1px), linear-gradient(to bottom, rgb(110, 89, 165) 1px, transparent 1px)',
+            backgroundImage: 'linear-gradient(to right, rgb(16, 185, 129) 1px, transparent 1px), linear-gradient(to bottom, rgb(16, 185, 129) 1px, transparent 1px)',
             backgroundSize: '60px 60px' 
           }}>
         </div>
         
         {/* Elegant gradients */}
-        <div className="absolute top-0 left-1/4 w-[700px] h-[700px] rounded-full bg-gradient-to-br from-nerfturf-purple/10 to-transparent blur-[120px] animate-float opacity-30"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-nerfturf-magenta/10 to-transparent blur-[100px] animate-float opacity-30" style={{animationDelay: '3s'}}></div>
+        <div className="absolute top-0 left-1/4 w-[700px] h-[700px] rounded-full bg-gradient-to-br from-turf45-green/10 to-transparent blur-[120px] animate-float opacity-30"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-turf45-lightgreen/10 to-transparent blur-[100px] animate-float opacity-30" style={{animationDelay: '3s'}}></div>
         
         {/* Subtle light streaks */}
-        <div className="absolute top-[25%] w-full h-px bg-gradient-to-r from-transparent via-nerfturf-purple/15 to-transparent"></div>
-        <div className="absolute top-[65%] w-full h-px bg-gradient-to-r from-transparent via-nerfturf-magenta/15 to-transparent"></div>
+        <div className="absolute top-[25%] w-full h-px bg-gradient-to-r from-transparent via-turf45-green/15 to-transparent"></div>
+        <div className="absolute top-[65%] w-full h-px bg-gradient-to-r from-transparent via-turf45-lightgreen/15 to-transparent"></div>
         
         {/* Elegant floating particles */}
-        <div className="absolute w-2 h-2 bg-nerfturf-lightpurple/20 rounded-full top-1/4 left-1/4 animate-float"></div>
-        <div className="absolute w-2 h-2 bg-nerfturf-magenta/20 rounded-full top-3/4 right-1/4 animate-float" style={{animationDelay: '1.5s'}}></div>
-        <div className="absolute w-2 h-2 bg-nerfturf-lightpurple/20 rounded-full top-1/2 left-3/4 animate-float" style={{animationDelay: '2.5s'}}></div>
-        <div className="absolute w-1.5 h-1.5 bg-nerfturf-magenta/20 rounded-full top-1/3 right-1/3 animate-float" style={{animationDelay: '3.5s'}}></div>
+        <div className="absolute w-2 h-2 bg-turf45-green/20 rounded-full top-1/4 left-1/4 animate-float"></div>
+        <div className="absolute w-2 h-2 bg-turf45-lightgreen/20 rounded-full top-3/4 right-1/4 animate-float" style={{animationDelay: '1.5s'}}></div>
+        <div className="absolute w-2 h-2 bg-turf45-green/20 rounded-full top-1/2 left-3/4 animate-float" style={{animationDelay: '2.5s'}}></div>
+        <div className="absolute w-1.5 h-1.5 bg-turf45-lightgreen/20 rounded-full top-1/3 right-1/3 animate-float" style={{animationDelay: '3.5s'}}></div>
       </div>
 
       {/* Header */}
-      <header className="h-20 md:h-24 flex items-center px-4 md:px-8 border-b border-nerfturf-purple/30 relative z-10 backdrop-blur-md bg-black/40">
+      <header className="h-20 md:h-24 flex items-center px-4 md:px-8 border-b border-turf45-green/30 relative z-10 backdrop-blur-md bg-black/40">
         <Logo />
         <div className="ml-auto flex items-center gap-2 md:gap-3">
           <Button
             variant="outline"
             size={isMobile ? "icon" : "default"}
-            className="text-nerfturf-lightpurple border-nerfturf-purple/50 hover:bg-nerfturf-purple/30 hover:border-nerfturf-purple/70 transition-all duration-300"
+            className="text-turf45-green border-turf45-green/50 hover:bg-turf45-green/30 hover:border-turf45-green/70 transition-all duration-300"
             onClick={() => navigate('/login')}
             title="Management Login"
           >
@@ -116,11 +116,11 @@ const Index: React.FC = () => {
           <Button
             variant="default"
             size={isMobile ? "sm" : "default"}
-            className="bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta text-white hover:from-nerfturf-purple hover:to-nerfturf-magenta shadow-lg shadow-nerfturf-purple/50 transition-all duration-300 text-sm md:text-base"
-            onClick={() => window.open('https://app.nerfturf.in/public/booking', '_blank')}
+            className="bg-gradient-to-r from-turf45-green to-turf45-lightgreen text-white hover:from-turf45-green hover:to-turf45-lightgreen shadow-lg shadow-turf45-green/50 transition-all duration-300 text-sm md:text-base"
+            onClick={() => window.open('/public/booking', '_blank')}
           >
             <Calendar className="h-4 w-4 md:mr-2" />
-            <span className="hidden sm:inline">Book a Slot</span>
+            <span className="hidden sm:inline">Book a Court</span>
             <span className="sm:hidden">Book</span>
           </Button>
         </div>
@@ -130,43 +130,43 @@ const Index: React.FC = () => {
       <section className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12 md:py-16 relative z-10">
         <div className="mb-6 sm:mb-8 md:mb-10 animate-float-shadow">
           <div className="relative">
-            <div className="absolute -inset-3 bg-gradient-to-r from-nerfturf-purple/30 to-nerfturf-magenta/30 rounded-full opacity-80 blur-2xl animate-pulse-glow"></div>
+            <div className="absolute -inset-3 bg-gradient-to-r from-turf45-green/30 to-turf45-lightgreen/30 rounded-full opacity-80 blur-2xl animate-pulse-glow"></div>
             <img
-              src="https://iili.io/KpfrAog.jpg"
-              alt="NerfTurf Logo" 
-              className="h-28 sm:h-32 md:h-36 lg:h-44 relative z-10 drop-shadow-[0_0_20px_rgba(110, 89, 165, 0.6)]"
+              src="/turf45-logo.png"
+              alt="TURF 45 Logo" 
+              className="h-28 sm:h-32 md:h-36 lg:h-44 relative z-10 drop-shadow-[0_0_20px_rgba(16, 185, 129, 0.6)]"
             />
           </div>
         </div>
         
         <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-center text-white font-heading leading-tight mb-4 md:mb-6 tracking-tight px-2">
           Welcome to{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-nerfturf-lightpurple via-nerfturf-magenta to-nerfturf-purple animate-text-gradient">
-            NerfTurf
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-turf45-green via-turf45-lightgreen to-turf45-green animate-text-gradient">
+            TURF 45
           </span>
         </h1>
         
-        <p className="text-lg sm:text-xl md:text-2xl text-center text-nerfturf-lightpurple/80 max-w-3xl mb-3 md:mb-4 font-light px-4">
-          Chennai's Premier Snooker & Gaming Lounge
+        <p className="text-lg sm:text-xl md:text-2xl text-center text-turf45-green/80 max-w-3xl mb-3 md:mb-4 font-light px-4">
+          FIFA Approved Football, Cricket & Pickleball Turf
         </p>
         
         <p className="text-base sm:text-lg text-center text-gray-300 max-w-2xl mb-6 md:mb-8 px-4">
-          Experience the elegance of professional snooker, pool tables, and PlayStation 5 gaming in a sophisticated, world-class setting.
+          Experience premium quality green turfs for football, cricket, and pickleball. Book your court today and enjoy world-class facilities.
         </p>
         
         {/* Primary Booking CTA - Prominent */}
         <div className="mb-12 md:mb-16 flex flex-col items-center px-4">
           <Button
             size="lg"
-            className="bg-gradient-to-r from-nerfturf-purple via-nerfturf-magenta to-nerfturf-purple text-white hover:from-nerfturf-purple hover:via-nerfturf-magenta hover:to-nerfturf-purple shadow-2xl shadow-nerfturf-purple/50 transition-all duration-300 text-base sm:text-lg md:text-xl px-8 sm:px-12 py-5 sm:py-6 rounded-full group relative overflow-hidden animate-pulse-soft"
-            onClick={() => window.open('https://app.nerfturf.in/public/booking', '_blank')}
+            className="bg-gradient-to-r from-turf45-green via-turf45-lightgreen to-turf45-green text-white hover:from-turf45-green hover:via-turf45-lightgreen hover:to-turf45-green shadow-2xl shadow-turf45-green/50 transition-all duration-300 text-base sm:text-lg md:text-xl px-8 sm:px-12 py-5 sm:py-6 rounded-full group relative overflow-hidden animate-pulse-soft"
+            onClick={() => window.open('/public/booking', '_blank')}
           >
-            <div className="absolute inset-0 w-full bg-gradient-to-r from-nerfturf-purple/0 via-white/20 to-nerfturf-purple/0 animate-shimmer pointer-events-none"></div>
+            <div className="absolute inset-0 w-full bg-gradient-to-r from-turf45-green/0 via-white/20 to-turf45-green/0 animate-shimmer pointer-events-none"></div>
             <Calendar className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 group-hover:scale-110 transition-transform" />
-            <span className="font-bold">Reserve a Slot</span>
+            <span className="font-bold">Reserve a Court</span>
           </Button>
           <p className="text-xs sm:text-sm text-gray-400 mt-3 md:mt-4 text-center max-w-md px-2">
-            Click above to book your snooker table, pool table, or PlayStation 5 gaming session
+            Click above to book your football, cricket, or pickleball court
           </p>
         </div>
         
@@ -175,30 +175,30 @@ const Index: React.FC = () => {
           <Button
             size="lg"
             variant="outline"
-            className="text-nerfturf-lightpurple border-nerfturf-purple/60 hover:bg-nerfturf-purple/30 hover:border-nerfturf-lightpurple/80 group relative overflow-hidden transition-all duration-300 text-lg px-8"
+            className="text-turf45-green border-turf45-green/60 hover:bg-turf45-green/30 hover:border-turf45-lightgreen/80 group relative overflow-hidden transition-all duration-300 text-lg px-8"
             onClick={() => navigate('/public/stations')}
           >
-            <div className="absolute inset-0 w-full bg-gradient-to-r from-nerfturf-purple/0 via-nerfturf-lightpurple/20 to-nerfturf-purple/0 animate-shimmer pointer-events-none"></div>
+            <div className="absolute inset-0 w-full bg-gradient-to-r from-turf45-green/0 via-turf45-green/20 to-turf45-green/0 animate-shimmer pointer-events-none"></div>
             <Monitor className="mr-2 h-5 w-5 animate-pulse-soft" />
-            <span>View Table Availability</span>
+            <span>View Court Availability</span>
           </Button>
         </div>
 
-        {/* Live Station Status Section */}
+        {/* Live Court Status Section */}
         <div className="w-full max-w-6xl mx-auto mb-12 md:mb-20 px-4">
-          <div className="bg-gradient-to-br from-black/70 via-nerfturf-purple/20 to-black/70 border border-nerfturf-purple/50 rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden backdrop-blur-md">
+          <div className="bg-gradient-to-br from-black/70 via-turf45-green/20 to-black/70 border border-turf45-green/50 rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden backdrop-blur-md">
             <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-            <div className="absolute top-0 right-0 h-96 w-96 bg-nerfturf-purple/10 blur-3xl rounded-full"></div>
-            <div className="absolute bottom-0 left-0 h-96 w-96 bg-nerfturf-magenta/10 blur-3xl rounded-full"></div>
+            <div className="absolute top-0 right-0 h-96 w-96 bg-turf45-green/10 blur-3xl rounded-full"></div>
+            <div className="absolute bottom-0 left-0 h-96 w-96 bg-turf45-lightgreen/10 blur-3xl rounded-full"></div>
             
             <div className="relative z-10">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 md:mb-8">
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                  <div className="p-2 sm:p-3 rounded-xl bg-gradient-to-br from-nerfturf-purple/30 to-nerfturf-magenta/30 border border-nerfturf-purple/40 shrink-0">
-                    <Radio className="h-5 w-5 sm:h-6 sm:w-6 text-nerfturf-lightpurple animate-pulse" />
+                  <div className="p-2 sm:p-3 rounded-xl bg-gradient-to-br from-turf45-green/30 to-turf45-lightgreen/30 border border-turf45-green/40 shrink-0">
+                    <Radio className="h-5 w-5 sm:h-6 sm:w-6 text-turf45-green animate-pulse" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1">Live Station Status</h2>
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1">Live Court Status</h2>
                     <p className="text-gray-400 text-xs sm:text-sm flex items-center gap-2">
                       <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse shrink-0"></span>
                       <span className="truncate">Real-time updates every 30 seconds</span>
@@ -208,23 +208,23 @@ const Index: React.FC = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="text-nerfturf-lightpurple border-nerfturf-purple/50 hover:bg-nerfturf-purple/30 shrink-0 whitespace-nowrap text-xs sm:text-sm"
+                  className="text-turf45-green border-turf45-green/50 hover:bg-turf45-green/30 shrink-0 whitespace-nowrap text-xs sm:text-sm"
                   onClick={() => navigate('/public/stations')}
                 >
-                  View All Stations
+                  View All Courts
                 </Button>
               </div>
 
               {stationsLoading ? (
                 <div className="flex items-center justify-center py-12">
-                  <div className="animate-spin-slow h-8 w-8 rounded-full border-4 border-nerfturf-purple border-t-transparent"></div>
+                  <div className="animate-spin-slow h-8 w-8 rounded-full border-4 border-turf45-green border-t-transparent"></div>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {liveStations.map((station) => {
-                    const isPS5 = station.type === 'ps5';
-                    const isPool = station.type === '8ball';
-                    const isVR = station.type === 'vr';
+                    const isFootball = station.type === 'ps5' || station.name.toLowerCase().includes('football');
+                    const isCricket = station.type === '8ball' || station.name.toLowerCase().includes('cricket');
+                    const isPickleball = station.type === 'vr' || station.name.toLowerCase().includes('pickleball');
                     
                     return (
                       <div
@@ -232,7 +232,7 @@ const Index: React.FC = () => {
                         className={`group relative overflow-hidden rounded-xl border-2 transition-all duration-300 ${
                           station.is_occupied
                             ? 'bg-gradient-to-br from-red-500/10 via-red-500/5 to-red-500/10 border-red-500/40'
-                            : 'bg-gradient-to-br from-green-500/10 via-green-500/5 to-green-500/10 border-green-500/40'
+                            : 'bg-gradient-to-br from-turf45-green/10 via-turf45-green/5 to-turf45-green/10 border-turf45-green/40'
                         } hover:scale-[1.02] hover:shadow-xl`}
                       >
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
@@ -241,21 +241,21 @@ const Index: React.FC = () => {
                           <div className="flex items-start justify-between mb-4">
                             <div className="flex items-center gap-3">
                               <div className={`p-2.5 rounded-lg ${
-                                isPS5 ? 'bg-blue-500/20 border border-blue-500/30' :
-                                isPool ? 'bg-amber-500/20 border border-amber-500/30' :
-                                'bg-purple-500/20 border border-purple-500/30'
+                                isFootball ? 'bg-turf45-green/20 border border-turf45-green/30' :
+                                isCricket ? 'bg-turf45-lightgreen/20 border border-turf45-lightgreen/30' :
+                                'bg-turf45-green/20 border border-turf45-green/30'
                               }`}>
-                                {isPS5 ? (
-                                  <Gamepad2 className={`h-5 w-5 ${isPS5 ? 'text-blue-400' : ''}`} />
-                                ) : isPool ? (
-                                  <Timer className="h-5 w-5 text-amber-400" />
+                                {isFootball ? (
+                                  <Gamepad2 className="h-5 w-5 text-turf45-green" />
+                                ) : isCricket ? (
+                                  <Timer className="h-5 w-5 text-turf45-lightgreen" />
                                 ) : (
-                                  <Headset className="h-5 w-5 text-purple-400" />
+                                  <Headset className="h-5 w-5 text-turf45-green" />
                                 )}
                               </div>
                               <div>
                                 <h3 className="text-lg font-bold text-white">{station.name}</h3>
-                                <p className="text-xs text-gray-400 capitalize">{station.type === '8ball' ? 'Pool Table' : station.type === 'ps5' ? 'PlayStation 5' : 'VR Station'}</p>
+                                <p className="text-xs text-gray-400 capitalize">{isFootball ? 'Football Court' : isCricket ? 'Cricket Court' : 'Pickleball Court'}</p>
                               </div>
                             </div>
                             <Badge className={
@@ -287,7 +287,7 @@ const Index: React.FC = () => {
 
               {liveStations.length === 0 && !stationsLoading && (
                 <div className="text-center py-12">
-                  <p className="text-gray-400">No stations available at the moment</p>
+                  <p className="text-gray-400">No courts available at the moment</p>
                 </div>
               )}
             </div>
@@ -296,70 +296,70 @@ const Index: React.FC = () => {
         
         {/* Features - Enhanced */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mx-auto mb-20">
-          <div className="bg-gradient-to-br from-black/70 via-nerfturf-purple/30 to-black/70 p-8 rounded-2xl border-2 border-nerfturf-purple/40 hover:border-nerfturf-purple/60 transition-all duration-500 hover:shadow-2xl hover:shadow-nerfturf-purple/40 hover:-translate-y-2 group backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-nerfturf-purple/0 via-white/5 to-nerfturf-purple/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+          <div className="bg-gradient-to-br from-black/70 via-turf45-green/30 to-black/70 p-8 rounded-2xl border-2 border-turf45-green/40 hover:border-turf45-green/60 transition-all duration-500 hover:shadow-2xl hover:shadow-turf45-green/40 hover:-translate-y-2 group backdrop-blur-sm relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-turf45-green/0 via-white/5 to-turf45-green/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
             <div className="relative z-10">
               <div className="flex items-center mb-5">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-nerfturf-purple/30 to-nerfturf-magenta/30 flex items-center justify-center text-nerfturf-lightpurple group-hover:scale-110 transition-transform duration-300 border-2 border-nerfturf-purple/40 shadow-lg shadow-nerfturf-purple/20">
+                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-turf45-green/30 to-turf45-lightgreen/30 flex items-center justify-center text-turf45-green group-hover:scale-110 transition-transform duration-300 border-2 border-turf45-green/40 shadow-lg shadow-turf45-green/20">
                   <Trophy size={28} />
                 </div>
-                <h3 className="ml-4 text-2xl font-bold text-white">Professional Tables</h3>
+                <h3 className="ml-4 text-2xl font-bold text-white">FIFA Approved</h3>
               </div>
-              <p className="text-gray-300 leading-relaxed mb-4">Experience world-class snooker and pool tables, meticulously maintained to professional tournament standards.</p>
+              <p className="text-gray-300 leading-relaxed mb-4">Experience world-class FIFA approved football turfs, meticulously maintained to professional standards.</p>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>3 Premium Snooker Tables</span>
+                  <span>FIFA Approved Football Courts</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>1 American Pool Table</span>
+                  <span>Professional Cricket Turfs</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>Tournament-Grade Equipment</span>
+                  <span>Premium Pickleball Courts</span>
                 </li>
               </ul>
             </div>
           </div>
           
-          <div className="bg-gradient-to-br from-black/70 via-nerfturf-magenta/30 to-black/70 p-8 rounded-2xl border-2 border-nerfturf-magenta/40 hover:border-nerfturf-magenta/60 transition-all duration-500 hover:shadow-2xl hover:shadow-nerfturf-magenta/40 hover:-translate-y-2 group backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-nerfturf-magenta/0 via-white/5 to-nerfturf-magenta/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+          <div className="bg-gradient-to-br from-black/70 via-turf45-lightgreen/30 to-black/70 p-8 rounded-2xl border-2 border-turf45-lightgreen/40 hover:border-turf45-lightgreen/60 transition-all duration-500 hover:shadow-2xl hover:shadow-turf45-lightgreen/40 hover:-translate-y-2 group backdrop-blur-sm relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-turf45-lightgreen/0 via-white/5 to-turf45-lightgreen/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
             <div className="relative z-10">
               <div className="flex items-center mb-5">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-nerfturf-magenta/30 to-nerfturf-purple/30 flex items-center justify-center text-nerfturf-magenta group-hover:scale-110 transition-transform duration-300 border-2 border-nerfturf-magenta/40 shadow-lg shadow-nerfturf-magenta/20">
+                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-turf45-lightgreen/30 to-turf45-green/30 flex items-center justify-center text-turf45-lightgreen group-hover:scale-110 transition-transform duration-300 border-2 border-turf45-lightgreen/40 shadow-lg shadow-turf45-lightgreen/20">
                   <Sparkles size={28} />
                 </div>
-                <h3 className="ml-4 text-2xl font-bold text-white">Refined Ambiance</h3>
+                <h3 className="ml-4 text-2xl font-bold text-white">Premium Quality</h3>
               </div>
-              <p className="text-gray-300 leading-relaxed mb-4">Immerse yourself in our sophisticated lounge atmosphere, designed for serious players and enthusiasts alike.</p>
+              <p className="text-gray-300 leading-relaxed mb-4">Immerse yourself in our premium green turfs, designed for serious athletes and sports enthusiasts.</p>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>Premium Lighting & Acoustics</span>
+                  <span>Well-Maintained Green Turfs</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>Climate-Controlled Environment</span>
+                  <span>Professional Lighting</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>Elegant Lounge Seating</span>
+                  <span>Clean & Safe Environment</span>
                 </li>
               </ul>
             </div>
           </div>
           
-          <div className="bg-gradient-to-br from-black/70 via-nerfturf-purple/30 to-black/70 p-8 rounded-2xl border-2 border-nerfturf-purple/40 hover:border-nerfturf-purple/60 transition-all duration-500 hover:shadow-2xl hover:shadow-nerfturf-purple/40 hover:-translate-y-2 group backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-nerfturf-purple/0 via-white/5 to-nerfturf-purple/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+          <div className="bg-gradient-to-br from-black/70 via-turf45-green/30 to-black/70 p-8 rounded-2xl border-2 border-turf45-green/40 hover:border-turf45-green/60 transition-all duration-500 hover:shadow-2xl hover:shadow-turf45-green/40 hover:-translate-y-2 group backdrop-blur-sm relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-turf45-green/0 via-white/5 to-turf45-green/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
             <div className="relative z-10">
               <div className="flex items-center mb-5">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-nerfturf-purple/30 to-nerfturf-magenta/30 flex items-center justify-center text-nerfturf-lightpurple group-hover:scale-110 transition-transform duration-300 border-2 border-nerfturf-purple/40 shadow-lg shadow-nerfturf-purple/20">
+                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-turf45-green/30 to-turf45-lightgreen/30 flex items-center justify-center text-turf45-green group-hover:scale-110 transition-transform duration-300 border-2 border-turf45-green/40 shadow-lg shadow-turf45-green/20">
                   <Users size={28} />
                 </div>
-                <h3 className="ml-4 text-2xl font-bold text-white">Elite Community</h3>
+                <h3 className="ml-4 text-2xl font-bold text-white">Active Community</h3>
               </div>
-              <p className="text-gray-300 leading-relaxed mb-4">Join our exclusive community of skilled players, participate in tournaments, and refine your game.</p>
+              <p className="text-gray-300 leading-relaxed mb-4">Join our active community of sports enthusiasts, participate in tournaments, and improve your game.</p>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-400" />
@@ -367,7 +367,7 @@ const Index: React.FC = () => {
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>Skill Development Programs</span>
+                  <span>Skill Development Sessions</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-400" />
@@ -380,64 +380,64 @@ const Index: React.FC = () => {
         
         {/* Stats */}
         <div className="w-full max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
-          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-nerfturf-purple/30 backdrop-blur-md rounded-xl border border-nerfturf-purple/40 hover:border-nerfturf-purple/60 transition-all duration-300 hover:shadow-lg hover:shadow-nerfturf-purple/30">
-            <Trophy className="h-8 w-8 text-nerfturf-lightpurple mx-auto mb-3" />
+          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-turf45-green/30 backdrop-blur-md rounded-xl border border-turf45-green/40 hover:border-turf45-green/60 transition-all duration-300 hover:shadow-lg hover:shadow-turf45-green/30">
+            <Trophy className="h-8 w-8 text-turf45-green mx-auto mb-3" />
+            <div className="text-3xl font-bold text-white">FIFA</div>
+            <div className="text-sm text-gray-300 mt-1">Approved</div>
+          </div>
+          
+          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-turf45-lightgreen/30 backdrop-blur-md rounded-xl border border-turf45-lightgreen/40 hover:border-turf45-lightgreen/60 transition-all duration-300 hover:shadow-lg hover:shadow-turf45-lightgreen/30">
+            <Star className="h-8 w-8 text-turf45-lightgreen mx-auto mb-3" />
             <div className="text-3xl font-bold text-white">3</div>
-            <div className="text-sm text-gray-300 mt-1">Snooker Tables</div>
+            <div className="text-sm text-gray-300 mt-1">Sports Types</div>
           </div>
           
-          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-nerfturf-magenta/30 backdrop-blur-md rounded-xl border border-nerfturf-magenta/40 hover:border-nerfturf-magenta/60 transition-all duration-300 hover:shadow-lg hover:shadow-nerfturf-magenta/30">
-            <Star className="h-8 w-8 text-nerfturf-magenta mx-auto mb-3" />
-            <div className="text-3xl font-bold text-white">1</div>
-            <div className="text-sm text-gray-300 mt-1">American Pool</div>
-          </div>
-          
-          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-nerfturf-purple/30 backdrop-blur-md rounded-xl border border-nerfturf-purple/40 hover:border-nerfturf-purple/60 transition-all duration-300 hover:shadow-lg hover:shadow-nerfturf-purple/30">
-            <Users className="h-8 w-8 text-nerfturf-lightpurple mx-auto mb-3" />
-            <div className="text-3xl font-bold text-white">2</div>
-            <div className="text-sm text-gray-300 mt-1">PlayStation 5</div>
-          </div>
-          
-          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-nerfturf-magenta/30 backdrop-blur-md rounded-xl border border-nerfturf-magenta/40 hover:border-nerfturf-magenta/60 transition-all duration-300 hover:shadow-lg hover:shadow-nerfturf-magenta/30">
-            <Sparkles className="h-8 w-8 text-nerfturf-magenta mx-auto mb-3" />
+          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-turf45-green/30 backdrop-blur-md rounded-xl border border-turf45-green/40 hover:border-turf45-green/60 transition-all duration-300 hover:shadow-lg hover:shadow-turf45-green/30">
+            <Users className="h-8 w-8 text-turf45-green mx-auto mb-3" />
             <div className="text-3xl font-bold text-white">Premium</div>
-            <div className="text-sm text-gray-300 mt-1">Experience</div>
+            <div className="text-sm text-gray-300 mt-1">Turf Quality</div>
+          </div>
+          
+          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-turf45-lightgreen/30 backdrop-blur-md rounded-xl border border-turf45-lightgreen/40 hover:border-turf45-lightgreen/60 transition-all duration-300 hover:shadow-lg hover:shadow-turf45-lightgreen/30">
+            <Sparkles className="h-8 w-8 text-turf45-lightgreen mx-auto mb-3" />
+            <div className="text-3xl font-bold text-white">24/7</div>
+            <div className="text-sm text-gray-300 mt-1">Booking</div>
           </div>
         </div>
         
         {/* CTA Section */}
-        <div className="w-full max-w-5xl mx-auto bg-gradient-to-br from-black/70 via-nerfturf-purple/40 to-black/70 border border-nerfturf-purple/50 rounded-3xl p-12 relative overflow-hidden backdrop-blur-md">
+        <div className="w-full max-w-5xl mx-auto bg-gradient-to-br from-black/70 via-turf45-green/40 to-black/70 border border-turf45-green/50 rounded-3xl p-12 relative overflow-hidden backdrop-blur-md">
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-          <div className="absolute top-0 right-0 h-80 w-80 bg-nerfturf-purple/10 blur-3xl rounded-full"></div>
-          <div className="absolute bottom-0 left-0 h-80 w-80 bg-nerfturf-magenta/10 blur-3xl rounded-full"></div>
+          <div className="absolute top-0 right-0 h-80 w-80 bg-turf45-green/10 blur-3xl rounded-full"></div>
+          <div className="absolute bottom-0 left-0 h-80 w-80 bg-turf45-lightgreen/10 blur-3xl rounded-full"></div>
           
           <div className="relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-6 tracking-tight">Ready to Experience NerfTurf?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-6 tracking-tight">Ready to Experience TURF 45?</h2>
             <p className="text-center text-gray-300 mb-10 max-w-2xl mx-auto text-lg leading-relaxed">
-              Step into Chennai's most sophisticated snooker, pool, and gaming venue. Reserve your table and experience excellence.
+              Step into our FIFA approved turf facility. Reserve your court and experience premium quality green turfs for football, cricket, and pickleball.
             </p>
             <div className="flex flex-col items-center gap-6">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-nerfturf-purple via-nerfturf-magenta to-nerfturf-purple text-white hover:from-nerfturf-purple hover:via-nerfturf-magenta hover:to-nerfturf-purple shadow-2xl shadow-nerfturf-purple/50 group transition-all duration-300 text-xl px-12 py-6 rounded-full relative overflow-hidden animate-pulse-soft"
-                onClick={() => window.open('https://app.nerfturf.in/public/booking', '_blank')}
+                className="bg-gradient-to-r from-turf45-green via-turf45-lightgreen to-turf45-green text-white hover:from-turf45-green hover:via-turf45-lightgreen hover:to-turf45-green shadow-2xl shadow-turf45-green/50 group transition-all duration-300 text-xl px-12 py-6 rounded-full relative overflow-hidden animate-pulse-soft"
+                onClick={() => window.open('/public/booking', '_blank')}
               >
-                <div className="absolute inset-0 w-full bg-gradient-to-r from-nerfturf-purple/0 via-white/20 to-nerfturf-purple/0 animate-shimmer pointer-events-none"></div>
+                <div className="absolute inset-0 w-full bg-gradient-to-r from-turf45-green/0 via-white/20 to-turf45-green/0 animate-shimmer pointer-events-none"></div>
                 <Calendar className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
-                <span className="font-bold">Book a Slot Now</span>
+                <span className="font-bold">Book a Court Now</span>
               </Button>
               <p className="text-sm text-gray-400 text-center max-w-md">
-                Reserve your preferred table or gaming station in just a few clicks
+                Reserve your preferred court in just a few clicks
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mt-4 justify-center">
                 <Button
                   size="lg"
                   variant="outline"
-                  className="text-nerfturf-lightpurple border-nerfturf-purple/60 hover:bg-nerfturf-purple/30 hover:border-nerfturf-lightpurple/80 transition-all duration-300 text-base px-6"
+                  className="text-turf45-green border-turf45-green/60 hover:bg-turf45-green/30 hover:border-turf45-lightgreen/80 transition-all duration-300 text-base px-6"
                   onClick={() => navigate('/public/stations')}
                 >
                   <Monitor className="mr-2 h-4 w-4" />
-                  View All Stations
+                  View All Courts
                 </Button>
               </div>
             </div>
@@ -446,12 +446,12 @@ const Index: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-10 border-t border-nerfturf-purple/30 relative z-10 mt-auto backdrop-blur-sm bg-black/30">
+      <footer className="py-10 border-t border-turf45-green/30 relative z-10 mt-auto backdrop-blur-sm bg-black/30">
         <div className="max-w-6xl mx-auto px-8">
           <div className="flex flex-col md:flex-row justify-between items-center mb-10">
             <div className="flex items-center mb-6 md:mb-0">
               <Logo size="sm" />
-              <span className="ml-3 text-gray-400">© {new Date().getFullYear()} NerfTurf. All rights reserved.</span>
+              <span className="ml-3 text-gray-400">© {new Date().getFullYear()} TURF 45. All rights reserved.</span>
             </div>
             
             <div className="flex space-x-6">
@@ -459,28 +459,28 @@ const Index: React.FC = () => {
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="text-gray-400 hover:text-nerfturf-lightpurple transition-colors"
+                  className="text-gray-400 hover:text-turf45-green transition-colors"
                   onClick={() => setOpenDialog('terms')}
                 >
                   Terms
                 </Button>
-                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-[#1a1a1a] to-[#1a0f1a] border-nerfturf-purple/40 text-white">
+                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-[#1a1a1a] to-[#0a1a0a] border-turf45-green/40 text-white">
                   <DialogHeader>
                     <DialogTitle className="text-2xl font-bold text-white">Terms and Conditions</DialogTitle>
                   </DialogHeader>
                   <div className="space-y-6 text-gray-300 mt-4">
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-nerfturf-lightpurple">1. Acceptance of Terms</h2>
+                      <h2 className="text-lg font-semibold text-turf45-green">1. Acceptance of Terms</h2>
                       <p>
-                        By accessing and using NerfTurf's services, you agree to be bound by these Terms and Conditions. 
+                        By accessing and using TURF 45's services, you agree to be bound by these Terms and Conditions. 
                         If you do not agree to these terms, please do not use our services.
                       </p>
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-nerfturf-lightpurple">2. Table Reservations</h2>
+                      <h2 className="text-lg font-semibold text-turf45-green">2. Court Reservations</h2>
                       <p>
-                        NerfTurf provides snooker and 8-ball pool facilities on a reservation or walk-in basis, subject to availability.
+                        TURF 45 provides FIFA approved football, cricket, and pickleball turf facilities on a reservation or walk-in basis, subject to availability.
                         Members receive preferential rates and booking privileges.
                       </p>
                       <p>
@@ -489,19 +489,19 @@ const Index: React.FC = () => {
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-nerfturf-lightpurple">3. Club Conduct</h2>
+                      <h2 className="text-lg font-semibold text-turf45-green">3. Facility Conduct</h2>
                       <p>
-                        Members and guests must maintain appropriate conduct within our premises. NerfTurf reserves the right to refuse service 
+                        Members and guests must maintain appropriate conduct within our premises. TURF 45 reserves the right to refuse service 
                         to anyone engaging in disruptive, abusive, or inappropriate behavior.
                       </p>
                       <p>
-                        Players are responsible for any damage caused to equipment, tables, or fixtures through improper use.
+                        Players are responsible for any damage caused to equipment, courts, or fixtures through improper use.
                         Damages will be charged at repair or replacement cost.
                       </p>
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-nerfturf-lightpurple">4. Cancellations and Refunds</h2>
+                      <h2 className="text-lg font-semibold text-turf45-green">4. Cancellations and Refunds</h2>
                       <p>
                         Reservations may be cancelled or rescheduled at least 2 hours prior without penalty.
                         Late cancellations or no-shows may incur a 50% booking fee.
@@ -512,9 +512,9 @@ const Index: React.FC = () => {
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-nerfturf-lightpurple">5. Modifications</h2>
+                      <h2 className="text-lg font-semibold text-turf45-green">5. Modifications</h2>
                       <p>
-                        NerfTurf reserves the right to modify these terms at any time. Changes take effect immediately 
+                        TURF 45 reserves the right to modify these terms at any time. Changes take effect immediately 
                         upon posting. Continued use constitutes acceptance of modified terms.
                       </p>
                     </section>
@@ -526,21 +526,21 @@ const Index: React.FC = () => {
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="text-gray-400 hover:text-nerfturf-lightpurple transition-colors"
+                  className="text-gray-400 hover:text-turf45-green transition-colors"
                   onClick={() => setOpenDialog('privacy')}
                 >
                   Privacy
                 </Button>
-                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-[#1a1a1a] to-[#1a0f1a] border-nerfturf-purple/40 text-white">
+                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-[#1a1a1a] to-[#0a1a0a] border-turf45-green/40 text-white">
                   <DialogHeader>
                     <DialogTitle className="text-2xl font-bold text-white">Privacy Policy</DialogTitle>
                   </DialogHeader>
                   <div className="space-y-6 text-gray-300 mt-4">
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-nerfturf-lightpurple">1. Information Collection</h2>
+                      <h2 className="text-lg font-semibold text-turf45-green">1. Information Collection</h2>
                       <p>
-                        NerfTurf collects personal information including name, contact details, 
-                        and payment information when you register or reserve tables.
+                        TURF 45 collects personal information including name, contact details, 
+                        and payment information when you register or reserve courts.
                       </p>
                       <p>
                         We collect usage data such as playing preferences, session duration, and purchase history 
@@ -549,11 +549,11 @@ const Index: React.FC = () => {
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-nerfturf-lightpurple">2. Information Usage</h2>
+                      <h2 className="text-lg font-semibold text-turf45-green">2. Information Usage</h2>
                       <p>We use collected information to:</p>
                       <ul className="list-disc pl-6 space-y-2">
                         <li>Process reservations and payments</li>
-                        <li>Personalize your club experience</li>
+                        <li>Personalize your facility experience</li>
                         <li>Communicate services and promotions</li>
                         <li>Improve our facilities</li>
                         <li>Maintain security and prevent fraud</li>
@@ -561,7 +561,7 @@ const Index: React.FC = () => {
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-nerfturf-lightpurple">3. Information Sharing</h2>
+                      <h2 className="text-lg font-semibold text-turf45-green">3. Information Sharing</h2>
                       <p>We do not sell or rent personal information. We may share with:</p>
                       <ul className="list-disc pl-6 space-y-2">
                         <li>Service providers assisting operations</li>
@@ -571,7 +571,7 @@ const Index: React.FC = () => {
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-nerfturf-lightpurple">4. Your Rights</h2>
+                      <h2 className="text-lg font-semibold text-turf45-green">4. Your Rights</h2>
                       <p>You have the right to:</p>
                       <ul className="list-disc pl-6 space-y-2">
                         <li>Access your information</li>
@@ -583,9 +583,9 @@ const Index: React.FC = () => {
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-nerfturf-lightpurple">5. Policy Changes</h2>
+                      <h2 className="text-lg font-semibold text-turf45-green">5. Policy Changes</h2>
                       <p>
-                        NerfTurf may update this policy anytime. Changes are posted on our website. 
+                        TURF 45 may update this policy anytime. Changes are posted on our website. 
                         Continued use after modifications constitutes acceptance.
                       </p>
                     </section>
@@ -598,37 +598,37 @@ const Index: React.FC = () => {
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="text-gray-400 hover:text-nerfturf-lightpurple transition-colors"
+                    className="text-gray-400 hover:text-turf45-green transition-colors"
                   >
                     Contact
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-80 bg-gradient-to-br from-[#1a1a1a] to-[#1a0f1a] border-nerfturf-purple/40 text-white p-5 backdrop-blur-md">
-                  <h3 className="font-semibold text-lg mb-4 text-nerfturf-lightpurple">Contact Us</h3>
+                <PopoverContent className="w-80 bg-gradient-to-br from-[#1a1a1a] to-[#0a1a0a] border-turf45-green/40 text-white p-5 backdrop-blur-md">
+                  <h3 className="font-semibold text-lg mb-4 text-turf45-green">Contact Us</h3>
                   
                   <div className="space-y-4">
                     <div className="flex items-start">
-                      <Phone className="h-5 w-5 text-nerfturf-lightpurple mr-3 mt-0.5" />
+                      <Phone className="h-5 w-5 text-turf45-green mr-3 mt-0.5" />
                       <div>
                         <p className="text-sm font-medium text-white">Phone</p>
-                        <a href="tel:+919345187098" className="text-gray-300 text-sm hover:text-nerfturf-lightpurple transition-colors">
+                        <a href="tel:+919345187098" className="text-gray-300 text-sm hover:text-turf45-green transition-colors">
                           +91 93451 87098
                         </a>
                       </div>
                     </div>
                     
                     <div className="flex items-start">
-                      <Mail className="h-5 w-5 text-nerfturf-magenta mr-3 mt-0.5" />
+                      <Mail className="h-5 w-5 text-turf45-lightgreen mr-3 mt-0.5" />
                       <div>
                         <p className="text-sm font-medium text-white">Email</p>
-                        <a href="mailto:contact@nerfturf.in" className="text-gray-300 text-sm hover:text-nerfturf-magenta transition-colors">
-                          contact@nerfturf.in
+                        <a href="mailto:contact@turf45.in" className="text-gray-300 text-sm hover:text-turf45-lightgreen transition-colors">
+                          contact@turf45.in
                         </a>
                       </div>
                     </div>
                     
                     <div className="flex items-start">
-                      <Clock className="h-5 w-5 text-nerfturf-lightpurple mr-3 mt-0.5" />
+                      <Clock className="h-5 w-5 text-turf45-green mr-3 mt-0.5" />
                       <div>
                         <p className="text-sm font-medium text-white">Hours</p>
                         <span className="text-gray-300 text-sm">Open Daily</span>
@@ -636,13 +636,12 @@ const Index: React.FC = () => {
                     </div>
                     
                     <div className="flex items-start">
-                      <MapPin className="h-5 w-5 text-nerfturf-magenta mr-3 mt-0.5" />
+                      <MapPin className="h-5 w-5 text-turf45-lightgreen mr-3 mt-0.5" />
                       <div>
                         <p className="text-sm font-medium text-white">Location</p>
                         <span className="text-gray-300 text-sm leading-relaxed">
-                          40, S W Boag Rd, CIT Nagar West,<br />
-                          T. Nagar, Chennai,<br />
-                          Tamil Nadu 600035
+                          TURF 45 Facility<br />
+                          Chennai, Tamil Nadu
                         </span>
                       </div>
                     </div>
@@ -653,19 +652,19 @@ const Index: React.FC = () => {
           </div>
           
           <div className="text-xs text-center text-gray-500">
-            <p className="mb-2 text-gray-400">Designed & Developed by Cuephoria Tech<sup>™</sup></p>
+            <p className="mb-2 text-gray-400">TURF 45 - FIFA Approved Turf Facility</p>
             <div className="flex flex-col md:flex-row justify-center items-center gap-6 text-gray-400">
               <div className="flex items-center gap-2">
-                <Phone className="h-3 w-3 text-nerfturf-purple" />
-                <a href="tel:+919345187098" className="hover:text-nerfturf-lightpurple transition-colors">+91 93451 87098</a>
+                <Phone className="h-3 w-3 text-turf45-green" />
+                <a href="tel:+919345187098" className="hover:text-turf45-green transition-colors">+91 93451 87098</a>
               </div>
               <div className="flex items-center gap-2">
-                <Mail className="h-3 w-3 text-nerfturf-purple" />
-                <a href="mailto:contact@nerfturf.in" className="hover:text-nerfturf-lightpurple transition-colors">contact@nerfturf.in</a>
+                <Mail className="h-3 w-3 text-turf45-green" />
+                <a href="mailto:contact@turf45.in" className="hover:text-turf45-green transition-colors">contact@turf45.in</a>
               </div>
               <div className="flex items-center gap-2">
-                <MapPin className="h-3 w-3 text-nerfturf-purple" />
-                <span>40, S W Boag Rd, T. Nagar, Chennai</span>
+                <MapPin className="h-3 w-3 text-turf45-green" />
+                <span>Chennai, Tamil Nadu</span>
               </div>
             </div>
           </div>
@@ -673,16 +672,16 @@ const Index: React.FC = () => {
       </footer>
       
       {/* Elegant animated elements */}
-      <div className="fixed top-[12%] left-[8%] text-nerfturf-lightpurple opacity-15 animate-float">
+      <div className="fixed top-[12%] left-[8%] text-turf45-green opacity-15 animate-float">
         <Trophy size={28} className="animate-wiggle" />
       </div>
-      <div className="fixed bottom-[18%] right-[12%] text-nerfturf-magenta opacity-15 animate-float delay-300">
+      <div className="fixed bottom-[18%] right-[12%] text-turf45-lightgreen opacity-15 animate-float delay-300">
         <Sparkles size={26} className="animate-pulse-soft" />
       </div>
-      <div className="fixed top-[35%] right-[8%] text-nerfturf-lightpurple opacity-15 animate-float delay-150">
+      <div className="fixed top-[35%] right-[8%] text-turf45-green opacity-15 animate-float delay-150">
         <Star size={24} className="animate-wiggle" />
       </div>
-      <div className="fixed bottom-[30%] left-[15%] text-nerfturf-magenta opacity-15 animate-float delay-200">
+      <div className="fixed bottom-[30%] left-[15%] text-turf45-lightgreen opacity-15 animate-float delay-200">
         <Trophy size={22} className="animate-pulse-soft" />
       </div>
     </div>
