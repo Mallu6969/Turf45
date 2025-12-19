@@ -296,7 +296,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-green-50 relative overflow-hidden px-4">
+    <div className="public-page min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-green-50 relative overflow-hidden px-4">
       <video 
         ref={videoRef} 
         style={{ display: 'none' }}

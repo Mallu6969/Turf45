@@ -106,7 +106,7 @@ const Index: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-green-50/30 to-white">
+    <div className="public-page min-h-screen bg-gradient-to-br from-white via-green-50/30 to-white">
       {/* Navigation Bar */}
       <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-green-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

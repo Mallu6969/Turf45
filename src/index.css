@@ -6,45 +6,45 @@
 
 @layer base {
   :root {
-    /* Fresh light theme for Turf45 */
-    --background: 150 35% 97%;
-    --foreground: 150 25% 12%;
+    /* Dark theme for admin portal - keep original */
+    --background: 225 20% 13%;
+    --foreground: 0 0% 100%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 150 25% 12%;
+    --card: 225 20% 13%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 150 25% 12%;
+    --popover: 225 20% 13%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 150 60% 40%; /* emerald green */
-    --primary-foreground: 0 0% 100%;
+    --primary: 280 65% 50%;  /* purple for NerfTurf */
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 155 45% 92%; /* soft mint */
-    --secondary-foreground: 150 30% 20%;
+    --secondary: 320 100% 50%;  /* magenta */
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 150 20% 92%;
-    --muted-foreground: 150 15% 35%;
+    --muted: 225 20% 20%;
+    --muted-foreground: 225 10% 70%;
 
-    --accent: 45 100% 52%;  /* warm amber accent */
-    --accent-foreground: 150 30% 15%;
+    --accent: 180 100% 50%;  /* cyan accent */
+    --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 70% 50%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 150 20% 85%;
-    --input: 150 20% 85%;
-    --ring: 150 60% 40%;  /* emerald ring */
+    --border: 225 20% 25%;
+    --input: 225 20% 25%;
+    --ring: 280 65% 50%;  /* purple ring */
 
     --radius: 0.75rem;
 
-    --sidebar-background: 150 30% 96%;
-    --sidebar-foreground: 150 25% 12%;
-    --sidebar-primary: 150 60% 40%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 150 20% 90%;
-    --sidebar-accent-foreground: 150 25% 20%;
-    --sidebar-border: 150 20% 85%;
-    --sidebar-ring: 150 60% 40%;
+    --sidebar-background: 225 20% 13%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 280 65% 50%;  /* purple */
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 225 20% 18%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 225 20% 25%;
+    --sidebar-ring: 280 65% 50%;  /* purple */
   }
 
   * {
@@ -76,40 +76,40 @@
   margin-right: 2px;
 }
 
-/* Custom scrollbar for light theme with green accent */
+/* Custom scrollbar for dark theme with purple accent */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(16, 185, 129, 0.08);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(16, 185, 129, 0.5);
+  background: rgba(110, 89, 165, 0.5);  /* purple */
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(16, 185, 129, 0.7);
+  background: rgba(110, 89, 165, 0.7);  /* purple hover */
 }
 
-/* Better outlines for focus - Turf45 green */
+/* Better outlines for focus - NerfTurf purple */
 :focus-visible {
-  outline: 2px solid #10B981;
+  outline: 2px solid #6E59A5;  /* purple */
   outline-offset: 2px;
 }
 
-/* Gradient text for headings - Turf45 emerald to lime */
+/* Gradient text for headings - NerfTurf purple/magenta gradient */
 .gradient-text {
-  @apply bg-gradient-to-r from-turf45-green via-turf45-lightgreen to-amber-400 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-nerfturf-purple via-nerfturf-magenta to-nerfturf-lightpurple bg-clip-text text-transparent;
 }
 
-/* Cards hover effects - Turf45 soft green glow */
+/* Cards hover effects - NerfTurf purple glow */
 .card-hover {
-  @apply transition-all duration-300 hover:shadow-lg hover:shadow-turf45-green/20 hover:translate-y-[-4px];
+  @apply transition-all duration-300 hover:shadow-lg hover:shadow-nerfturf-purple/20 hover:translate-y-[-4px];
 }
 
 /* Mobile optimizations */
@@ -388,6 +388,37 @@
   }
 }
 
+/* Light theme for public pages only */
+.public-page {
+  --background: 150 35% 97%;
+  --foreground: 150 25% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 150 25% 12%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 150 25% 12%;
+  --primary: 150 60% 40%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 155 45% 92%;
+  --secondary-foreground: 150 30% 20%;
+  --muted: 150 20% 92%;
+  --muted-foreground: 150 15% 35%;
+  --accent: 45 100% 52%;
+  --accent-foreground: 150 30% 15%;
+  --destructive: 0 70% 50%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 150 20% 85%;
+  --input: 150 20% 85%;
+  --ring: 150 60% 40%;
+}
+
+.public-page::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.5);
+}
+
+.public-page::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.7);
+}
+
 .action-button-glow:hover {
   animation: pulse-glow 2s infinite;
   transform: translateY(-2px);
@@ -432,14 +463,14 @@
 }
 
 .nerfturf-filter-tag:hover:not([data-state="active"]) {
-  background: rgba(16, 185, 129, 0.12);  /* green hover */
-  color: #0f9f6c;  /* green */
+  background: rgba(110, 89, 165, 0.08);  /* purple hover */
+  color: #6E59A5;  /* purple */
 }
 
 .nerfturf-filter-tag[data-state="active"] {
-  background: #10B981;  /* emerald */
+  background: #6E59A5;  /* purple */
   color: #fff;
-  box-shadow: 0 2px 10px 0 rgba(16, 185, 129, 0.2);  /* green shadow */
+  box-shadow: 0 2px 10px 0 rgba(110, 89, 165, 0.15);  /* purple shadow */
 }
 
 .nerfturf-filter-tag[data-state="active"]::after {
@@ -451,13 +482,13 @@
   bottom: 6px;
   height: 3px;
   border-radius: 2px;
-  background: linear-gradient(to right, #10B981 60%, #34D399 100%);  /* green gradient */
+  background: linear-gradient(to right, #6E59A5 60%, #9b87f5 100%);  /* purple gradient */
   opacity: 0.9;
 }
 
 .nerfturf-filter-tag:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.7);  /* green focus */
+  box-shadow: 0 0 0 2px rgba(110, 89, 165, 0.7);  /* purple focus */
 }
 
 @media (max-width: 600px) {

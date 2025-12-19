@@ -81,8 +81,8 @@ const ProtectedRoute = ({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-green-50 to-white">
-        <div className="animate-spin-slow h-10 w-10 rounded-full border-4 border-turf45-green border-t-transparent shadow-lg shadow-turf45-green/30"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] via-[#0a1a0a] to-[#1a1a1a]">
+        <div className="animate-spin-slow h-10 w-10 rounded-full border-4 border-turf45-green border-t-transparent shadow-lg shadow-turf45-green/50"></div>
       </div>
     );
   }
