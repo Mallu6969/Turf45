@@ -34,7 +34,7 @@ const Stations = () => {
         <h2 className="text-3xl font-bold tracking-tight gradient-text font-heading">Court Management</h2>
         <div className="flex space-x-2">
           <Button 
-            className="bg-cuephoria-purple hover:bg-cuephoria-purple/80"
+            className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 relative z-10"
             onClick={handleAddCourtClick}
           >
             <Plus className="mr-2 h-4 w-4" /> Add Court
