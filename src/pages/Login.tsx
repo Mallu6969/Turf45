@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/context/AuthContext';
-import { Shield, Users, Eye, EyeOff, ArrowLeft, Lock, KeyRound, User, Sparkles, Award } from 'lucide-react';
+import { Shield, Users, Eye, EyeOff, ArrowLeft, Lock, KeyRound, User, Sparkles, Award, FileText } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -396,14 +396,14 @@ const Login = () => {
                   <TabsList className="grid w-full grid-cols-2 bg-white/5 backdrop-blur-sm rounded-2xl p-1.5 border border-white/10">
                     <TabsTrigger 
                       value="admin" 
-                      className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-green-500/50 rounded-xl transition-all duration-300 text-white/70"
+                      className="flex items-center justify-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-green-500/50 rounded-xl transition-all duration-300 text-white/70"
                     >
                       <Shield size={16} />
                       Admin
                     </TabsTrigger>
                     <TabsTrigger 
                       value="staff" 
-                      className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-green-500/50 rounded-xl transition-all duration-300 text-white/70"
+                      className="flex items-center justify-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-green-500/50 rounded-xl transition-all duration-300 text-white/70"
                     >
                       <Users size={16} />
                       Staff
@@ -500,6 +500,19 @@ const Login = () => {
                 <p className="text-xs text-center text-white/40 leading-relaxed">
                   🔒 Your login is secured with end-to-end encryption
                 </p>
+              </div>
+
+              {/* View Logs Button */}
+              <div className="pt-2 border-t border-white/10">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => navigate('/login-logs')}
+                  className="w-full text-white/60 hover:text-white hover:bg-white/5 rounded-xl h-10 text-sm font-medium transition-all duration-300"
+                >
+                  <FileText size={16} className="mr-2" />
+                  View Login Logs
+                </Button>
               </div>
             </CardContent>
           </form>
