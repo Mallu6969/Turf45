@@ -302,24 +302,6 @@ const Index: React.FC = () => {
           <ChevronDown className="h-8 w-8 text-white/80" />
         </div>
 
-        {/* Ricky Mascot - Interactive in Hero */}
-        <div className="absolute bottom-20 left-8 z-20 hidden lg:block">
-          <div className="relative animate-float-slow">
-            <div className="relative bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-2xl border-2 border-green-200/50 hover:border-green-400 transition-all duration-300">
-              <RickyMascot
-                size="lg"
-                position="hero"
-                messages={[
-                  "Welcome to Turf45! 🎉",
-                  "Book your court in seconds! ⚡",
-                  "I'm Ricky, your friendly guide! 🐰",
-                  "Let's get you playing today! 🏓",
-                  "Best facilities in town! 🏆",
-                ]}
-              />
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* Welcome Section */}
@@ -451,22 +433,6 @@ const Index: React.FC = () => {
 
       {/* Sport Selector Cards */}
       <section className="py-20 px-4 relative overflow-hidden animate-fade-in">
-        {/* Ricky Mascot - Interactive on Left Side */}
-        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-0 opacity-5 hover:opacity-100 transition-opacity duration-300 hidden xl:block">
-          <div className="relative animate-float-slow">
-            <RickyMascot
-              size="xl"
-              position="decorative"
-              messages={[
-                "Choose your favorite sport! ⚽🏏🏓",
-                "All our courts are top-notch! 🌟",
-                "Football, Cricket, or Pickleball? 🎯",
-                "Book now and save your slot! ⏰",
-              ]}
-            />
-          </div>
-        </div>
-
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -542,20 +508,6 @@ const Index: React.FC = () => {
                 className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
               />
               
-              {/* Ricky Mascot on Pickleball Card */}
-              <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <RickyMascot
-                  size="md"
-                  position="card"
-                  messages={[
-                    "Pickleball is my favorite! 🏓",
-                    "This court is amazing! ⭐",
-                    "Book now and let's play! 🎾",
-                    "You'll love it here! 💚",
-                  ]}
-                />
-              </div>
-
               <CardContent className="p-6 relative z-10">
                 <Badge className="mb-3 bg-green-500/10 text-green-700 border-green-300">Tennis court</Badge>
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">Pickleball</h3>
@@ -668,7 +620,7 @@ const Index: React.FC = () => {
             </div>
       </section>
 
-      {/* Ricky Explaining Rules Section */}
+      {/* Pickleball Mascot - Ricky Section */}
       <section className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white relative overflow-hidden animate-fade-in">
         {/* Decorative background elements */}
         <div className="absolute inset-0 opacity-5">
@@ -678,143 +630,72 @@ const Index: React.FC = () => {
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Left: Ricky Image */}
+            {/* Left: Ricky Mascot Image */}
             <div className="relative animate-slide-up">
               <div className="relative rounded-3xl overflow-hidden shadow-2xl group">
-                {/* Placeholder for Ricky explaining rules image - user will add the actual image */}
-                <div className="aspect-square bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <RickyMascot
-                      size="xl"
-                      position="hero"
-                      messages={[
-                        "Let me explain the rules! 📋",
-                        "Follow these simple guidelines! ✅",
-                        "I'll help you understand! 🤓",
-                        "Rules make the game fun! 🎯",
-                      ]}
-                      className="mx-auto mb-4"
-                    />
-                    <p className="text-sm text-gray-500 mt-4">Image: Ricky Explaining Rules</p>
-                  </div>
+                {/* Ricky Mascot - transparent background, no white background */}
+                <div className="aspect-square flex items-center justify-center bg-transparent p-8">
+                  <RickyMascot
+                    size="xl"
+                    className="mx-auto"
+                  />
                 </div>
-                {/* Replace the div above with: */}
-                {/* <img src="/path-to-ricky-explaining-rules.png" alt="Ricky Explaining Rules" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" /> */}
               </div>
             </div>
 
-            {/* Right: Content */}
+            {/* Right: Content with Pickleball Logo */}
             <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Rules & Guidelines</Badge>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Learn the Rules with Ricky
-              </h2>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                Our friendly mascot Ricky is here to help you understand the rules of each sport. Whether you're playing football, cricket, or pickleball, Ricky makes learning fun and easy!
-              </p>
-              <div className="space-y-4 mb-8">
-                <div className="flex items-start gap-3 p-4 bg-white/80 rounded-xl border border-green-100">
-                  <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Clear & Simple Explanations</h3>
-                    <p className="text-gray-600 text-sm">Easy-to-understand rules explained in a fun way</p>
-                  </div>
+              <div className="flex items-center gap-4 mb-6">
+                {/* Pickleball Logo */}
+                <div className="flex-shrink-0">
+                  <img
+                    src="https://iili.io/flpj90Q.jpg"
+                    alt="Pickleball Logo"
+                    className="h-16 w-16 object-contain"
+                  />
                 </div>
-                <div className="flex items-start gap-3 p-4 bg-white/80 rounded-xl border border-green-100">
-                  <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Sport-Specific Guidelines</h3>
-                    <p className="text-gray-600 text-sm">Rules tailored to each sport we offer</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-4 bg-white/80 rounded-xl border border-green-100">
-                  <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Interactive Learning</h3>
-                    <p className="text-gray-600 text-sm">Engage with Ricky to learn and have fun</p>
-                  </div>
-                </div>
+                <Badge className="bg-green-500/10 text-green-700 border-green-300">Pickleball Mascot</Badge>
               </div>
-              <Button
-                onClick={() => scrollToSection('how-it-works')}
-                size="lg"
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-105"
-              >
-                View All Rules
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Ricky Playing Section */}
-      <section className="py-20 px-4 relative overflow-hidden animate-fade-in">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Left: Content */}
-            <div className="animate-slide-up">
-              <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">In Action</Badge>
+              
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                See Ricky in Action
+                Meet Ricky - Our Pickleball Mascot
               </h2>
+              
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                Watch Ricky showcase the sports facilities at Turf45! From football to pickleball, Ricky demonstrates how much fun you can have on our premium courts.
+                Ricky is the official mascot of Turf45's Pickleball courts! This energetic and friendly rabbit loves pickleball and is here to welcome you to our premium pickleball facilities. Join Ricky on the court for an amazing pickleball experience!
               </p>
+              
               <div className="space-y-4 mb-8">
-                <div className="flex items-start gap-3 p-4 bg-green-50/50 rounded-xl border border-green-100">
-                  <Play className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Live Demonstrations</h3>
-                    <p className="text-gray-600 text-sm">See how each sport is played on our courts</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-4 bg-green-50/50 rounded-xl border border-green-100">
+                <div className="flex items-start gap-3 p-4 bg-white/80 rounded-xl border border-green-100">
                   <Trophy className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Professional Tips</h3>
-                    <p className="text-gray-600 text-sm">Learn techniques and strategies from Ricky</p>
+                    <h3 className="font-semibold text-gray-900 mb-1">Official Pickleball Mascot</h3>
+                    <p className="text-gray-600 text-sm">Ricky represents our commitment to pickleball excellence</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 p-4 bg-green-50/50 rounded-xl border border-green-100">
+                <div className="flex items-start gap-3 p-4 bg-white/80 rounded-xl border border-green-100">
                   <Heart className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Fun & Engaging</h3>
-                    <p className="text-gray-600 text-sm">Enjoy watching Ricky's energetic gameplay</p>
+                    <h3 className="font-semibold text-gray-900 mb-1">Friendly & Energetic</h3>
+                    <p className="text-gray-600 text-sm">Ricky brings fun and excitement to every game</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-4 bg-white/80 rounded-xl border border-green-100">
+                  <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Premium Facilities</h3>
+                    <p className="text-gray-600 text-sm">Play on state-of-the-art pickleball courts with Ricky</p>
                   </div>
                 </div>
               </div>
+              
               <Button
-                onClick={() => navigate('/public/booking')}
+                onClick={() => navigate('/public/booking?sport=pickleball')}
                 size="lg"
                 className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-105"
               >
-                Book Your Court Now
+                Book Pickleball Court
               </Button>
-            </div>
-
-            {/* Right: Ricky Playing Image */}
-            <div className="relative animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl group">
-                {/* Placeholder for Ricky playing image - user will add the actual image */}
-                <div className="aspect-square bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <RickyMascot
-                      size="xl"
-                      position="hero"
-                      messages={[
-                        "Let's play together! 🏓",
-                        "I love playing here! ⚽",
-                        "Join me on the court! 🎾",
-                        "This is so much fun! 🎉",
-                      ]}
-                      className="mx-auto mb-4"
-                    />
-                    <p className="text-sm text-gray-500 mt-4">Image: Ricky Playing</p>
-                  </div>
-                </div>
-                {/* Replace the div above with: */}
-                {/* <img src="/path-to-ricky-playing.png" alt="Ricky Playing" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" /> */}
-              </div>
             </div>
           </div>
         </div>
@@ -961,22 +842,6 @@ const Index: React.FC = () => {
 
       {/* Founder Section */}
       <section id="about" className="py-20 px-4 relative overflow-hidden animate-fade-in">
-        {/* Ricky Mascot - Interactive Decorative Element */}
-        <div className="absolute top-10 right-10 z-0 opacity-10 hover:opacity-100 transition-opacity duration-300 hidden xl:block">
-          <div className="relative animate-float-slow">
-            <RickyMascot
-              size="xl"
-              position="decorative"
-              messages={[
-                "Jai is an amazing founder! 👏",
-                "Turf45 is built with passion! ❤️",
-                "Join our sports community! 🤝",
-                "We're here to serve you! 🎯",
-              ]}
-            />
-          </div>
-        </div>
-
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="animate-slide-up">
@@ -1066,22 +931,6 @@ const Index: React.FC = () => {
                     
       {/* Footer */}
       <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-16 px-4 relative overflow-hidden">
-        {/* Ricky Mascot in Footer */}
-        <div className="absolute bottom-0 right-8 opacity-20 hover:opacity-100 transition-opacity duration-300 hidden lg:block">
-          <div className="relative animate-float-slow">
-            <RickyMascot
-              size="lg"
-              position="footer"
-              messages={[
-                "Thanks for visiting! 🙏",
-                "See you on the court! 🏓",
-                "Book again soon! ⚡",
-                "Stay active, stay happy! 💪",
-              ]}
-            />
-          </div>
-        </div>
-
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div>

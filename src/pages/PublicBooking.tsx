@@ -43,8 +43,6 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { format, parse, getDay } from "date-fns";
-import { RickyMascot } from "@/components/RickyMascot";
-
 /* =========================
    Types
    ========================= */
@@ -1524,25 +1522,6 @@ export default function PublicBooking() {
         <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-nerfturf-purple/20 blur-3xl" />
         <div className="absolute top-1/3 -right-24 h-64 w-64 rounded-full bg-nerfturf-cyan/20 blur-3xl" />
         <div className="absolute bottom-10 left-1/3 h-56 w-56 rounded-full bg-nerfturf-magenta/20 blur-3xl" />
-      </div>
-
-      {/* Ricky Mascot - Interactive Helper */}
-      <div className="absolute bottom-32 right-8 z-10 hidden lg:block">
-        <div className="relative animate-float-slow">
-          <div className="relative opacity-30 hover:opacity-100 transition-opacity duration-300">
-            <RickyMascot
-              size="lg"
-              position="decorative"
-              messages={[
-                "Fill in your details to get started! 📝",
-                "Select your favorite station! 🎮",
-                "Pick a date and time! 📅",
-                "Almost there! Complete your booking! 💳",
-                "Need help? Just click me! 💬",
-              ]}
-            />
-          </div>
-        </div>
       </div>
 
       {/* Coupon Promotional Popup - Hidden for now */}
