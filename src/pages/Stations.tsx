@@ -86,8 +86,9 @@ const Stations = () => {
         </Card>
       </div>
 
-      <div className="space-y-6">
-        {/* Main Turf Section - First */}
+      {/* Courts Grid - Side by Side */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Main Turf Section */}
         <div className="animate-slide-up delay-200">
           <div className="flex items-center mb-4">
             <Trophy className="h-5 w-5 text-green-500 mr-2" />
@@ -95,12 +96,10 @@ const Stations = () => {
             <span className="ml-2 bg-green-800/30 text-green-400 text-xs px-2 py-1 rounded-full">
               {activeTurf} active
             </span>
-            <span className="ml-2 text-xs text-gray-400">
-              FIFA-approved for Football & Cricket
-            </span>
           </div>
+          <p className="text-xs text-gray-400 mb-4">FIFA-approved for Football & Cricket</p>
           
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+          <div className="space-y-4">
             {turfCourts
               .sort((a, b) => {
                 const numA = parseInt(a.name.replace(/\D/g, '')) || 0;
@@ -113,10 +112,16 @@ const Stations = () => {
                 </div>
               ))
             }
+            
+            {turfCourts.length === 0 && (
+              <div className="text-center py-8 text-gray-500">
+                No turf courts available. Add one using the button above.
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Pickleball Section - Second */}
+        {/* Pickleball Section */}
         <div className="animate-slide-up delay-300">
           <div className="flex items-center mb-4">
             <Target className="h-5 w-5 text-blue-400 mr-2" />
@@ -124,11 +129,10 @@ const Stations = () => {
             <span className="ml-2 bg-blue-800/30 text-blue-400 text-xs px-2 py-1 rounded-full">
               {activePickleball} active
             </span>
-            <span className="ml-2 text-xs text-gray-400">
-              Indoor court
-            </span>
           </div>
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+          <p className="text-xs text-gray-400 mb-4">Indoor court</p>
+          
+          <div className="space-y-4">
             {pickleballCourts
               .sort((a, b) => {
                 const numA = parseInt(a.name.replace(/\D/g, '')) || 0;
@@ -141,6 +145,12 @@ const Stations = () => {
                 </div>
               ))
             }
+            
+            {pickleballCourts.length === 0 && (
+              <div className="text-center py-8 text-gray-500">
+                No pickleball courts available. Add one using the button above.
+              </div>
+            )}
           </div>
         </div>
       </div>
