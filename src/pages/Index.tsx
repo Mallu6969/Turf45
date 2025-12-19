@@ -119,7 +119,7 @@ const Index: React.FC = () => {
   };
 
   return (
-    <div className="public-page min-h-screen bg-white">
+    <div className="public-page min-h-screen bg-gradient-to-br from-white via-green-50/20 to-white">
       {/* Navigation Bar */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled 
@@ -296,7 +296,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* Welcome Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-white to-gray-50/50 animate-fade-in">
+      <section className="py-20 px-4 bg-gradient-to-b from-white via-green-50/30 to-gray-50/50 animate-fade-in">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-3 gap-6">
             {/* Outdoor Area Card */}
@@ -315,7 +315,7 @@ const Index: React.FC = () => {
             </Card>
 
             {/* Sports Center Card */}
-            <Card className="relative overflow-hidden bg-white border-2 border-green-200/60 group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-green-300 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            <Card className="relative overflow-hidden bg-gradient-to-br from-white to-green-50/30 border-2 border-green-200/60 group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-green-300 animate-slide-up" style={{ animationDelay: '0.1s' }}>
               <CardContent className="p-8 h-full flex flex-col justify-between">
                 <div>
                   <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Sports center</Badge>
@@ -360,7 +360,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* Discover Excellence Section */}
-      <section id="facilities" className="py-20 px-4 bg-gradient-to-b from-gray-50/50 to-white animate-fade-in">
+      <section id="facilities" className="py-20 px-4 bg-gradient-to-br from-green-50/40 via-white to-gray-50/30 animate-fade-in">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row gap-12 items-start">
             {/* Left Content */}
@@ -521,7 +521,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* Available Today Preview */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-20 px-4 bg-gradient-to-b from-white via-green-50/25 to-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -612,11 +612,11 @@ const Index: React.FC = () => {
       </section>
 
       {/* Pickleball Mascot - Ricky Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-white to-gray-50/30 relative overflow-hidden animate-fade-in">
+      <section className="py-20 px-4 bg-gradient-to-br from-green-50/30 via-white to-emerald-50/20 relative overflow-hidden animate-fade-in">
         {/* Subtle decorative background elements */}
-        <div className="absolute inset-0 opacity-[0.03]">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-green-500 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-500 rounded-full blur-3xl"></div>
+        <div className="absolute inset-0 opacity-[0.04]">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-green-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-400 rounded-full blur-3xl"></div>
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
@@ -693,7 +693,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* Why Players Choose Turf45 */}
-      <section className="py-20 px-4 bg-gradient-to-b from-gray-50/50 via-white to-gray-50/30 animate-fade-in">
+      <section className="py-20 px-4 bg-gradient-to-br from-white via-green-50/35 to-white animate-fade-in">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Why Players Choose Turf45</h2>
@@ -795,7 +795,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* Reviews Section */}
-      <section id="reviews" className="py-20 px-4 bg-white animate-fade-in">
+      <section id="reviews" className="py-20 px-4 bg-gradient-to-b from-white via-green-50/30 to-white animate-fade-in">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 animate-slide-up">
             <div className="flex items-center justify-center gap-2 mb-4">
@@ -869,7 +869,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-gray-50/30 to-white animate-fade-in">
+      <section className="py-20 px-4 bg-gradient-to-br from-green-50/25 via-white to-white animate-fade-in">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
