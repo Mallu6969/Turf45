@@ -20,23 +20,42 @@ import {
   Shield,
   Award,
   Heart,
+  Search,
   Menu,
   X,
+  ChevronDown,
+  LogIn,
+  Zap,
   Target,
-  Sparkles,
+  TrendingUp,
+  Video,
+  Wifi,
+  Droplets,
+  Sun,
   Lightbulb,
-  BookOpen,
-  Play
+  CheckCircle,
+  PlayCircle,
+  DollarSign,
+  Timer,
+  UserCheck,
+  Map
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Badge } from '@/components/ui/badge';
 import { useIsMobile } from '@/hooks/use-mobile';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
+import { RickyMascot } from "@/components/RickyMascot";
 
 interface Station {
   id: string;
   name: string;
-  type: 'turf' | 'pickleball';
+  type: 'ps5' | '8ball' | 'vr';
   hourly_rate: number;
   is_occupied: boolean;
 }
@@ -110,12 +129,12 @@ const Index: React.FC = () => {
   };
 
   return (
-    <div className="public-page min-h-screen bg-black">
+    <div className="public-page min-h-screen bg-white">
       {/* Premium Navigation Bar */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled 
-          ? 'backdrop-blur-xl bg-black/80 border-b border-green-500/20 shadow-lg shadow-green-500/10' 
-          : 'backdrop-blur-md bg-black/95 border-b border-green-500/10'
+          ? 'backdrop-blur-xl bg-white/80 border-b border-gray-100 shadow-lg' 
+          : 'backdrop-blur-md bg-white/95 border-b border-gray-50'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
@@ -126,27 +145,27 @@ const Index: React.FC = () => {
                 alt="Turf45 - FIFA Approved Courts"
                 className="h-12 md:h-14 w-auto object-contain transition-all duration-300 hover:scale-105"
                 style={{
-                  filter: "drop-shadow(0 2px 12px rgba(16, 185, 129, 0.6))",
+                  filter: "drop-shadow(0 2px 12px rgba(16, 185, 129, 0.4))",
                 }}
               />
-            </div>
+        </div>
         
             {/* Desktop Navigation */}
             {!isMobile && (
               <nav className="hidden md:flex items-center gap-8">
-                <button onClick={() => scrollToSection('facilities')} className="text-gray-300 hover:text-green-400 transition-colors font-medium">
+                <button onClick={() => scrollToSection('facilities')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
                   Facilities
                 </button>
-                <button onClick={() => scrollToSection('coaching')} className="text-gray-300 hover:text-green-400 transition-colors font-medium">
-                  Coaching
+                <button onClick={() => scrollToSection('pricing')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                  Pricing
                 </button>
-                <button onClick={() => scrollToSection('ricky')} className="text-gray-300 hover:text-green-400 transition-colors font-medium">
-                  Meet Ricky
+                <button onClick={() => scrollToSection('about')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                  About
                 </button>
-                <button onClick={() => scrollToSection('achievements')} className="text-gray-300 hover:text-green-400 transition-colors font-medium">
-                  Achievements
+                <button onClick={() => scrollToSection('reviews')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                  Reviews
                 </button>
-                <button onClick={() => navigate('/support')} className="text-gray-300 hover:text-green-400 transition-colors font-medium">
+                <button onClick={() => navigate('/support')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
                   Contact
                 </button>
               </nav>
@@ -156,26 +175,26 @@ const Index: React.FC = () => {
             <div className="flex items-center gap-4">
               {!isMobile && (
                 <Button
-                  onClick={() => navigate('/public/stations')}
+                  onClick={() => navigate('/public/booking')}
                   variant="outline"
-                  className="rounded-full border-2 border-green-500 text-green-400 hover:bg-green-500/10"
+                  className="rounded-full border-2 border-green-600 text-green-600 hover:bg-green-50"
                 >
-                  <Clock className="h-4 w-4 mr-2" />
-                  Live Status
+                  <Calendar className="h-4 w-4 mr-2" />
+                  View Availability
                 </Button>
               )}
 
-              <Button
+          <Button
                 onClick={() => navigate('/public/booking')}
-                className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-full px-6 shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-105"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-6 shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-105"
               >
                 Book Now
-              </Button>
+          </Button>
 
               {isMobile && (
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="p-2 rounded-lg hover:bg-gray-800 transition-colors text-white"
+                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
                 >
                   {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                 </button>
@@ -186,21 +205,21 @@ const Index: React.FC = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && isMobile && (
-          <div className="md:hidden border-t border-green-500/20 bg-black/95 backdrop-blur-xl">
+          <div className="md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-xl">
             <div className="px-4 py-4 space-y-3">
-              <button onClick={() => scrollToSection('facilities')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-500/10 text-gray-300 font-medium">
+              <button onClick={() => scrollToSection('facilities')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
                 Facilities
               </button>
-              <button onClick={() => scrollToSection('coaching')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-500/10 text-gray-300 font-medium">
-                Coaching
+              <button onClick={() => scrollToSection('pricing')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+                Pricing
               </button>
-              <button onClick={() => scrollToSection('ricky')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-500/10 text-gray-300 font-medium">
-                Meet Ricky
+              <button onClick={() => scrollToSection('about')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+                About
               </button>
-              <button onClick={() => scrollToSection('achievements')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-500/10 text-gray-300 font-medium">
-                Achievements
+              <button onClick={() => scrollToSection('reviews')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+                Reviews
               </button>
-              <button onClick={() => navigate('/support')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-500/10 text-gray-300 font-medium">
+              <button onClick={() => navigate('/support')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
                 Contact
               </button>
             </div>
@@ -208,45 +227,45 @@ const Index: React.FC = () => {
         )}
       </header>
 
-      {/* Hero Section with T45 TOP VIEW Background */}
+      {/* Hero Section - Premium Design */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        {/* Aerial View Background */}
+        {/* Dynamic Background - Real Aerial Photo */}
         <div className="absolute inset-0 z-0">
           <img
             src="/T45 TOP VIEW.jpeg"
-            alt="Turf45 Aerial View"
-            className="w-full h-full object-cover opacity-40"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.4)_100%)]"></div>
-        </div>
+            alt="Turf45 Aerial View - FIFA Approved Football Court"
+            className="w-full h-full object-cover opacity-30"
+            />
+          <div className="absolute inset-0 bg-gradient-to-br from-green-900/90 via-green-800/85 to-emerald-900/90"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.3)_100%)]"></div>
+          </div>
 
-        {/* Floating Badges */}
+        {/* Floating Trust Badges */}
         <div className="absolute top-32 left-8 z-20 animate-fade-in hidden lg:block">
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-green-500/30">
+          <div className="bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-green-100">
             <div className="flex items-center gap-3">
               <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-3">
                 <Award className="h-6 w-6 text-white" />
               </div>
               <div>
-                <p className="font-bold text-white">FIFA Approved</p>
-                <p className="text-sm text-green-300">Premium Turf</p>
+                <p className="font-bold text-gray-900">FIFA Approved</p>
+                <p className="text-sm text-gray-600">Premium Turf</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Live Status */}
+        {/* Live Status Indicator */}
         <div className="absolute top-32 right-8 z-20 animate-fade-in hidden lg:block">
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-green-500/30">
+          <div className="bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-green-100">
             <div className="flex items-center gap-3">
               <div className="relative">
                 <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                 <div className="absolute inset-0 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
               </div>
               <div>
-                <p className="font-bold text-white">Live Booking</p>
-                <p className="text-sm text-green-300">{liveStations.filter(s => !s.is_occupied).length} Courts Available</p>
+                <p className="font-bold text-gray-900">Live Booking</p>
+                <p className="text-sm text-gray-600">{liveStations.filter(s => !s.is_occupied).length} Courts Available</p>
               </div>
             </div>
           </div>
@@ -254,20 +273,20 @@ const Index: React.FC = () => {
         
         {/* Hero Content */}
         <div className="relative z-10 max-w-6xl mx-auto px-4 text-center text-white animate-fade-in">
-          <div className="mb-6 inline-block bg-green-500/20 backdrop-blur-sm text-green-100 px-6 py-3 text-base border border-green-400/30 animate-slide-up rounded-full">
+          <Badge className="mb-6 bg-green-500/20 backdrop-blur-sm text-green-100 px-6 py-3 text-base border border-green-400/30 animate-slide-up">
             🏆 FIFA Approved Football & Cricket Turf - ESTD 2021
-          </div>
+          </Badge>
           
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight animate-slide-up" style={{ animationDelay: '0.1s' }}>
             Premium Sports
             <br />
             <span className="bg-gradient-to-r from-green-300 via-emerald-200 to-green-100 bg-clip-text text-transparent">
               Facilities Redefined
-            </span>
-          </h1>
+          </span>
+        </h1>
           
           <p className="text-xl md:text-2xl text-green-50 mb-10 max-w-3xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            Experience world-class FIFA-approved turf, professional cricket ground, and premium pickleball facilities. Book your slot in seconds.
+            Experience world-class FIFA-approved football courts, professional cricket turfs, and premium pickleball facilities. Book your slot in seconds.
           </p>
           
           {/* CTA Buttons */}
@@ -280,148 +299,666 @@ const Index: React.FC = () => {
               Book Your Court Now
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
-            
-            <Button
-              onClick={() => navigate('/public/stations')}
-              size="lg"
+          <Button
+              onClick={() => scrollToSection('facilities')}
               variant="outline"
-              className="border-2 border-white text-white hover:bg-white/10 rounded-full px-10 py-7 text-lg font-bold backdrop-blur-sm transition-all duration-300"
+            size="lg"
+              className="bg-transparent backdrop-blur-sm border-2 border-white/50 text-white rounded-full px-10 py-7 text-lg font-semibold hover:bg-white/10 hover:border-white transition-all duration-300"
+          >
+              <PlayCircle className="mr-2 h-5 w-5" />
+              Explore Facilities
+          </Button>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto animate-slide-up" style={{ animationDelay: '0.4s' }}>
+            {[
+              { number: '1000+', label: 'Matches Played', icon: Trophy },
+              { number: '500+', label: 'Happy Athletes', icon: Users },
+              { number: '99%', label: 'Satisfaction Rate', icon: Star },
+              { number: '24/7', label: 'Support Available', icon: Shield },
+            ].map((stat, idx) => (
+              <div key={idx} className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                <stat.icon className="h-8 w-8 text-green-300 mx-auto mb-3" />
+                <p className="text-3xl font-black text-white mb-1">{stat.number}</p>
+                <p className="text-sm text-green-100">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+          <div className="flex flex-col items-center">
+            <p className="text-white text-sm mb-2 font-medium">Discover More</p>
+            <ChevronDown className="h-8 w-8 text-white" />
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Booking Bar */}
+      <section className="bg-gradient-to-r from-green-500 to-green-600 py-6 px-4 shadow-xl sticky top-20 z-40">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3 text-white">
+            <Zap className="h-6 w-6" />
+            <p className="font-semibold">Quick Booking - Get instant confirmation in seconds!</p>
+                </div>
+          <div className="flex gap-3">
+            {['Football', 'Cricket', 'Pickleball'].map((sport) => (
+                <Button
+                key={sport}
+                onClick={() => navigate(`/public/booking?sport=${sport.toLowerCase()}`)}
+                variant="outline"
+                className="bg-white/20 backdrop-blur-sm border-white/40 text-white hover:bg-white hover:text-green-600 rounded-full font-semibold"
+              >
+                {sport}
+                </Button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Live Availability Dashboard */}
+      <section className="py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-10">
+            <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Live Updates</Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Available Right Now
+            </h2>
+            <p className="text-lg text-gray-600">Real-time availability across all courts</p>
+              </div>
+
+          {stationsLoading ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600"></div>
+              </div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-6">
+              {liveStations.map((station) => (
+                <Card key={station.id} className="overflow-hidden hover:shadow-2xl transition-all duration-300 border-2 hover:border-green-500 group">
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="font-bold text-xl text-gray-900">{station.name}</h3>
+                        <p className="text-sm text-gray-600 flex items-center gap-2 mt-1">
+                          <MapPin className="h-3 w-3" />
+                          {station.type === 'ps5' ? 'Football Court' : station.type === '8ball' ? 'Cricket Turf' : 'Pickleball Court'}
+                        </p>
+                      </div>
+                      <Badge className={station.is_occupied ? 'bg-red-100 text-red-700 border-red-300' : 'bg-green-100 text-green-700 border-green-300 animate-pulse'}>
+                        {station.is_occupied ? 'Occupied' : 'Available'}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                      <div>
+                        <p className="text-sm text-gray-500">Starting from</p>
+                        <p className="text-3xl font-bold text-gray-900">₹{station.hourly_rate}<span className="text-lg text-gray-500">/hr</span></p>
+                      </div>
+              <Button
+                onClick={() => navigate('/public/booking')}
+                        disabled={station.is_occupied}
+                        className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full group-hover:scale-105 transition-transform disabled:opacity-50"
+              >
+                        Book Now
+              </Button>
+                  </div>
+                </div>
+                </Card>
+              ))}
+              </div>
+          )}
+
+          <div className="text-center mt-8">
+            <Button
+              onClick={() => navigate('/public/booking')}
+              variant="outline"
+              size="lg"
+              className="rounded-full border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
             >
-              View Live Status
+              View All Courts & Timings
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
+        </div>
+      </section>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <Trophy className="h-8 w-8 text-green-400 mx-auto mb-2" />
-              <p className="text-3xl font-bold text-white">100+</p>
-              <p className="text-green-200 text-sm">Tournaments</p>
+      {/* Premium Facilities Showcase */}
+      <section id="facilities" className="py-20 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">World-Class Infrastructure</Badge>
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              Premium Sports Facilities
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              State-of-the-art courts designed for professional athletes and sports enthusiasts
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8 mb-16">
+            {/* Football */}
+            <Card 
+              onClick={() => navigate('/public/booking?sport=football')}
+              className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500"
+            >
+              <div className="relative h-72">
+              <img
+                src="/T45 TOP VIEW.jpeg"
+                  alt="Turf45 FIFA Approved Football Court - Aerial View"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                <Badge className="absolute top-4 left-4 bg-green-500 text-white border-0">FIFA Approved</Badge>
+              </div>
+              <CardContent className="p-8">
+                <h3 className="text-3xl font-bold text-gray-900 mb-3">Football Courts</h3>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  FIFA-approved synthetic turf with professional-grade drainage system. Perfect for 5-a-side and 7-a-side matches.
+                </p>
+                <ul className="space-y-2 mb-6">
+                  {['Premium FIFA-approved turf', 'Professional floodlights', 'Standard goal posts', 'Covered seating area'].map((feature) => (
+                    <li key={feature} className="flex items-center gap-2 text-gray-700">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full group-hover:scale-105 transition-transform">
+                  Book Football Court
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Cricket */}
+            <Card 
+              onClick={() => navigate('/public/booking?sport=cricket')}
+              className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500"
+            >
+              <div className="relative h-72">
+              <img
+                src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80"
+                  alt="Professional Cricket Turf"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                <Badge className="absolute top-4 left-4 bg-blue-500 text-white border-0">Professional Grade</Badge>
+              </div>
+              <CardContent className="p-8">
+                <h3 className="text-3xl font-bold text-gray-900 mb-3">Cricket Turfs</h3>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  Professional cricket turf with authentic bounce and pace. Ideal for practice sessions and competitive matches.
+                </p>
+                <ul className="space-y-2 mb-6">
+                  {['Professional turf wicket', 'Practice nets available', 'Cricket equipment rental', 'Covered pavilion'].map((feature) => (
+                    <li key={feature} className="flex items-center gap-2 text-gray-700">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full group-hover:scale-105 transition-transform">
+                  Book Cricket Turf
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Pickleball */}
+            <Card 
+              onClick={() => navigate('/public/booking?sport=pickleball')}
+              className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500"
+            >
+              <div className="relative h-72">
+              <img
+                src="https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80"
+                  alt="Premium Pickleball Court"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                <Badge className="absolute top-4 left-4 bg-purple-500 text-white border-0">Indoor Court</Badge>
+              </div>
+              <CardContent className="p-8">
+                <h3 className="text-3xl font-bold text-gray-900 mb-3">Pickleball Courts</h3>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  State-of-the-art indoor pickleball courts with climate control. Perfect for players of all skill levels.
+                </p>
+                <ul className="space-y-2 mb-6">
+                  {['Tournament-grade court', 'Climate controlled', 'Equipment provided', 'Beginner-friendly'].map((feature) => (
+                    <li key={feature} className="flex items-center gap-2 text-gray-700">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full group-hover:scale-105 transition-transform">
+                  Book Pickleball Court
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Facility Features Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: Lightbulb, title: 'Pro Lighting', desc: 'LED floodlights for night games' },
+              { icon: Droplets, title: 'Drainage System', desc: 'Advanced water management' },
+              { icon: Wifi, title: 'Free WiFi', desc: 'Stay connected at all times' },
+              { icon: Video, title: 'CCTV Security', desc: '24/7 surveillance for safety' },
+              { icon: UserCheck, title: 'Trained Staff', desc: 'Professional on-ground support' },
+              { icon: Timer, title: 'Flexible Timing', desc: 'Early morning to late night' },
+              { icon: Shield, title: 'Insured Facility', desc: 'Complete safety coverage' },
+              { icon: DollarSign, title: 'Best Pricing', desc: 'Transparent & competitive rates' },
+            ].map((feature, idx) => (
+              <Card key={idx} className="p-6 text-center hover:shadow-lg transition-all duration-300 border-2 border-gray-100 hover:border-green-200">
+                <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <feature.icon className="h-8 w-8 text-white" />
+                </div>
+                <h4 className="font-bold text-gray-900 mb-2">{feature.title}</h4>
+                <p className="text-sm text-gray-600">{feature.desc}</p>
+              </Card>
+            ))}
+          </div>
+                              </div>
+      </section>
+
+      {/* Why Choose Turf45 */}
+      <section className="py-20 px-4 bg-gradient-to-br from-green-50 via-white to-green-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Why Turf45?</Badge>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                The Premier Choice for Athletes
+            </h2>
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                From FIFA-approved surfaces to professional-grade amenities, every aspect of Turf45 is engineered for peak athletic performance and unforgettable sports experiences.
+              </p>
+
+              <div className="space-y-4">
+                {[
+                  {
+                    icon: Trophy,
+                    title: 'FIFA Approved Standards',
+                    desc: 'International quality turf certified for professional play'
+                  },
+                  {
+                    icon: Target,
+                    title: 'Professional Equipment',
+                    desc: 'High-quality goal posts, nets, and sports gear'
+                  },
+                  {
+                    icon: TrendingUp,
+                    title: 'Advanced Booking System',
+                    desc: 'Real-time availability with instant confirmation'
+                  },
+                  {
+                    icon: Shield,
+                    title: 'Safe & Sanitized',
+                    desc: 'Regular cleaning and maintenance protocols'
+                  },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-4 p-4 bg-white rounded-xl border-2 border-gray-100 hover:border-green-200 hover:shadow-lg transition-all">
+                    <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-3 flex-shrink-0">
+                      <item.icon className="h-6 w-6 text-white" />
+                            </div>
+                      <div>
+                      <h4 className="font-bold text-gray-900 mb-1">{item.title}</h4>
+                      <p className="text-gray-600 text-sm">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <Users className="h-8 w-8 text-blue-400 mx-auto mb-2" />
-              <p className="text-3xl font-bold text-white">5000+</p>
-              <p className="text-blue-200 text-sm">Players</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <Award className="h-8 w-8 text-yellow-400 mx-auto mb-2" />
-              <p className="text-3xl font-bold text-white">50+</p>
-              <p className="text-yellow-200 text-sm">Championships</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <Star className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-              <p className="text-3xl font-bold text-white">4.9</p>
-              <p className="text-purple-200 text-sm">Rating</p>
+
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-green-600 rounded-3xl blur-3xl opacity-20"></div>
+              <img
+                src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80"
+                alt="Premium Sports Facility"
+                className="relative rounded-3xl shadow-2xl"
+              />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Facilities Showcase Section */}
-      <section id="facilities" className="py-20 px-4 bg-gradient-to-b from-black via-gray-950 to-black">
+      {/* Pricing & Packages */}
+      <section id="pricing" className="py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-green-400 via-emerald-300 to-green-500 bg-clip-text text-transparent">
-            World-Class Sports Facilities
-          </h2>
-          <p className="text-center text-gray-400 text-lg mb-16">
-            FIFA-Approved Turf & Premium Pickleball Court
-          </p>
-          
-          {/* Main Court Showcases */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12 animate-fade-in">
-            {/* Multi-Sport Turf */}
-            <div className="relative group overflow-hidden rounded-2xl shadow-2xl border-2 border-green-500/30 cursor-pointer" onClick={() => navigate('/public/booking')}>
-              <img 
-                src="/T45 TOP VIEW.jpeg" 
-                alt="Multi-Sport Turf Aerial View"
-                className="w-full h-[500px] object-cover group-hover:scale-110 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-green-950/95 via-green-900/40 to-transparent">
-                <div className="absolute bottom-8 left-8 right-8">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Trophy className="h-7 w-7 text-green-400" />
-                    <span className="bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-sm font-bold border border-green-500">
-                      FIFA APPROVED
-                    </span>
-                  </div>
-                  <h3 className="text-3xl font-bold text-white mb-2">Multi-Sport Turf</h3>
-                  <p className="text-green-200 text-lg mb-4">Professional Football & Cricket Ground</p>
-                  <Button className="bg-green-600 hover:bg-green-700">
-                    <Calendar className="mr-2 h-4 w-4" />
-                    Book Now
-                  </Button>
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Flexible Options</Badge>
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              Transparent Pricing
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Choose from pay-per-slot or season passes. All prices include taxes - no hidden charges.
+                        </p>
+                      </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Pay Per Slot */}
+            <Card className="border-2 border-gray-200 p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+              <div className="text-center mb-6">
+                <Badge className="mb-4 bg-gray-100 text-gray-700">Flexible</Badge>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Pay Per Slot</h3>
+                <p className="text-gray-600 mb-6">Book whenever you want</p>
+                <div className="text-5xl font-bold text-gray-900 mb-2">
+                  ₹600<span className="text-2xl text-gray-500">/hr</span>
+                          </div>
+                <p className="text-sm text-gray-500">Starting price</p>
+              </div>
+              <ul className="space-y-3 mb-8">
+                {['Instant booking confirmation', 'Choose any available slot', 'No commitment required', 'Online payment support', 'Modify booking anytime'].map((feature) => (
+                  <li key={feature} className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                    <span className="text-gray-700">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+                      <Button
+                        onClick={() => navigate('/public/booking')}
+                className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-full py-6 text-lg font-semibold"
+                      >
+                Book Single Slot
+                      </Button>
+            </Card>
+
+            {/* Monthly Pass - Featured */}
+            <Card className="border-2 border-green-500 p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 relative">
+              <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-500 text-white border-0">Most Popular</Badge>
+              <div className="text-center mb-6">
+                <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Best Value</Badge>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Monthly Pass</h3>
+                <p className="text-gray-600 mb-6">Save up to 20%</p>
+                <div className="text-5xl font-bold text-gray-900 mb-2">
+                  ₹12,000<span className="text-2xl text-gray-500">/month</span>
+                          </div>
+                <p className="text-sm text-gray-500">~25 hours of play</p>
+                        </div>
+              <ul className="space-y-3 mb-8">
+                {['Priority booking slots', '20% discount on hourly rate', 'Free equipment rental', 'Dedicated support manager', 'Flexible time credits', 'Guest passes included'].map((feature) => (
+                  <li key={feature} className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                    <span className="text-gray-700">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button 
+                onClick={() => navigate('/public/booking')}
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full py-6 text-lg font-semibold"
+              >
+                Get Monthly Pass
+              </Button>
+                </Card>
+
+            {/* Corporate/Team */}
+            <Card className="border-2 border-gray-200 p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+              <div className="text-center mb-6">
+                <Badge className="mb-4 bg-blue-100 text-blue-700 border-blue-300">Corporate</Badge>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Team Package</h3>
+                <p className="text-gray-600 mb-6">For teams & corporates</p>
+                <div className="text-5xl font-bold text-gray-900 mb-2">
+                  Custom
                 </div>
+                <p className="text-sm text-gray-500">Tailored pricing</p>
               </div>
-            </div>
-            
-            {/* Pickleball Court */}
-            <div className="relative group overflow-hidden rounded-2xl shadow-2xl border-2 border-blue-500/30 cursor-pointer" onClick={() => navigate('/public/booking')}>
-              <img 
-                src="/Pickleball top view.jpeg" 
-                alt="Pickleball Court Aerial View"
-                className="w-full h-[500px] object-cover group-hover:scale-110 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-950/95 via-blue-900/40 to-transparent">
-                <div className="absolute bottom-8 left-8 right-8">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Target className="h-7 w-7 text-blue-400" />
-                    <span className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm font-bold border border-blue-500">
-                      INDOOR COURT
-                    </span>
-                  </div>
-                  <h3 className="text-3xl font-bold text-white mb-2">Pickleball Court</h3>
-                  <p className="text-blue-200 text-lg mb-4">Premium All-Weather Court</p>
-                  <Button className="bg-blue-600 hover:bg-blue-700">
-                    <Calendar className="mr-2 h-4 w-4" />
-                    Book Now
-                  </Button>
+              <ul className="space-y-3 mb-8">
+                {['Block booking discounts', 'Tournament hosting', 'Coaching sessions available', 'Team roster management', 'Custom scheduling', 'Dedicated account manager'].map((feature) => (
+                  <li key={feature} className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                    <span className="text-gray-700">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button 
+                onClick={() => navigate('/support')}
+                variant="outline"
+                className="w-full border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white rounded-full py-6 text-lg font-semibold"
+              >
+                Contact Sales
+              </Button>
+            </Card>
                 </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Action Photos Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="relative overflow-hidden rounded-xl aspect-square group">
-              <img src="/Football 1.jpeg" alt="Women's Football" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-t from-pink-950/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                <p className="absolute bottom-3 left-3 text-white font-bold">Women's Football</p>
-              </div>
-            </div>
-            <div className="relative overflow-hidden rounded-xl aspect-square group">
-              <img src="/Cricket.jpeg" alt="Cricket Action" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-t from-orange-950/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                <p className="absolute bottom-3 left-3 text-white font-bold">Cricket</p>
-              </div>
-            </div>
-            <div className="relative overflow-hidden rounded-xl aspect-square group">
-              <img src="/Practice Match.jpg" alt="Practice Match" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-t from-green-950/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                <p className="absolute bottom-3 left-3 text-white font-bold">Matches</p>
-              </div>
-            </div>
-            <div className="relative overflow-hidden rounded-xl aspect-square group">
-              <img src="/Pickleball side wall.jpeg" alt="Pickleball" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-950/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                <p className="absolute bottom-3 left-3 text-white font-bold">Pickleball</p>
-              </div>
-            </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-gray-600 mb-4">All prices are inclusive of GST. No hidden charges.</p>
+            <Button
+              onClick={() => navigate('/public/booking')}
+              variant="outline"
+              size="lg"
+              className="rounded-full border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
+            >
+              View Live Availability & Book
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* Women's Football Team Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-green-950/30 via-black to-black">
+      {/* Booking Process */}
+      <section className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-pink-400 via-purple-300 to-pink-500 bg-clip-text text-transparent">
-            Women's Football Team
-          </h2>
-          <p className="text-center text-gray-400 text-lg mb-16">
-            Empowering women through sports 💪⚽
-          </p>
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Simple & Fast</Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Book in 3 Easy Steps
+            </h2>
+            <p className="text-lg text-gray-600">Get confirmed in seconds with our instant booking system</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 relative">
+            {/* Connection Lines */}
+            <div className="hidden md:block absolute top-20 left-0 right-0 h-1 bg-gradient-to-r from-green-200 via-green-400 to-green-200 z-0" style={{ top: '80px' }}></div>
+
+            {[
+              {
+                step: '01',
+                icon: Target,
+                title: 'Select Your Sport',
+                desc: 'Choose from Football, Cricket, or Pickleball courts'
+              },
+              {
+                step: '02',
+                icon: Calendar,
+                title: 'Pick Date & Time',
+                desc: 'View real-time availability and select your preferred slot'
+              },
+              {
+                step: '03',
+                icon: CheckCircle2,
+                title: 'Instant Confirmation',
+                desc: 'Pay securely and receive immediate booking confirmation'
+              },
+            ].map((item, idx) => (
+              <div key={idx} className="relative z-10">
+                <Card className="p-8 text-center hover:shadow-2xl transition-all duration-300 border-2 border-green-100 hover:border-green-500 bg-white">
+                  <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <item.icon className="h-10 w-10 text-white" />
+                </div>
+                  <div className="text-6xl font-black text-green-100 mb-4">{item.step}</div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{item.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+              </Card>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Button 
+              onClick={() => navigate('/public/booking')}
+              size="lg"
+              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-10 py-7 text-lg font-bold shadow-2xl shadow-green-500/30"
+            >
+              Start Booking Now
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Ricky Mascot Section */}
+      <section className="py-20 px-4 bg-gradient-to-br from-green-50 via-emerald-50 to-white">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300 inline-flex items-center gap-2">
+              <img src="https://iili.io/flpj90Q.jpg" alt="Pickleball" className="h-6 w-6 object-contain" />
+              Pickleball Mascot
+            </Badge>
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              Meet Ricky - Our Pickleball Champion
+            </h2>
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl mx-auto">
+              Ricky is the official mascot of Turf45's Pickleball courts! This energetic and friendly character embodies the spirit of pickleball - fun, fast-paced, and friendly.
+            </p>
+          </div>
+          
+          {/* Ricky - Large and Centered */}
+          <div className="flex justify-center mb-12">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-emerald-400 rounded-full blur-3xl opacity-30 animate-pulse"></div>
+              <div className="relative bg-gradient-to-br from-green-100 to-emerald-100 rounded-3xl p-12 md:p-16 shadow-2xl">
+                <div className="w-64 h-64 md:w-96 md:h-96 flex items-center justify-center">
+                  <img
+                    src="https://iili.io/f0nWwnj.png"
+                    alt="Ricky - Turf45 Pickleball Mascot"
+                    className="w-full h-full object-contain drop-shadow-2xl animate-bounce-slow"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Features Grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {[
+              { icon: Trophy, title: 'Official Mascot', desc: 'Representing pickleball excellence' },
+              { icon: Heart, title: 'Friendly Spirit', desc: 'Welcoming players of all levels' },
+              { icon: Zap, title: 'Energetic Vibes', desc: 'Bringing excitement to every game' },
+              { icon: Star, title: 'Premium Courts', desc: 'State-of-the-art facilities' },
+            ].map((item, idx) => (
+              <Card key={idx} className="p-6 text-center hover:shadow-xl transition-all duration-300 border-2 border-green-100 hover:border-green-300">
+                <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <item.icon className="h-8 w-8 text-white" />
+                </div>
+                <h4 className="font-bold text-gray-900 mb-2">{item.title}</h4>
+                <p className="text-sm text-gray-600">{item.desc}</p>
+            </Card>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <div className="text-center">
+            <Button
+              onClick={() => navigate('/public/booking?sport=pickleball')}
+              size="lg"
+              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-10 py-7 text-xl font-bold shadow-2xl shadow-green-500/40 hover:scale-110 transition-all duration-300"
+            >
+              Book Pickleball with Ricky
+              <ArrowRight className="ml-2 h-6 w-6" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials & Reviews */}
+      <section id="reviews" className="py-20 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <Star key={i} className="h-8 w-8 fill-yellow-400 text-yellow-400" />
+              ))}
+            </div>
+            <Badge className="mb-4 bg-yellow-100 text-yellow-800 border-yellow-300">4.9/5 Rating</Badge>
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              Loved by Athletes
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Join hundreds of satisfied players who choose Turf45 for their sports needs
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            {[
+              {
+                name: 'Rajesh Kumar',
+                role: 'Football Enthusiast',
+                rating: 5,
+                text: 'Excellent facilities! The FIFA-approved football court is top-notch. Booking was seamless and the staff is very professional. Best turf in Chennai!',
+                image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80'
+              },
+              {
+                name: 'Priya Sharma',
+                role: 'Cricket Coach',
+                rating: 5,
+                text: 'Outstanding cricket facilities! The turf quality is phenomenal and perfect for training sessions. My students love practicing here. Highly recommended!',
+                image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80'
+              },
+              {
+                name: 'Amit Patel',
+                role: 'Pickleball Player',
+                rating: 5,
+                text: 'Best pickleball court in the city! Clean, modern, and well-maintained. The indoor setup is perfect. The online booking system makes it so convenient.',
+                image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&q=80'
+              },
+            ].map((review, idx) => (
+              <Card key={idx} className="p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-gray-100">
+                <div className="flex gap-1 mb-4">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-gray-700 mb-6 italic leading-relaxed">"{review.text}"</p>
+                <div className="flex items-center gap-3">
+                  <img src={review.image} alt={review.name} className="w-12 h-12 rounded-full object-cover" />
+                  <div>
+                    <p className="font-bold text-gray-900">{review.name}</p>
+                    <p className="text-sm text-gray-600">{review.role}</p>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          {/* Social Proof */}
+          <div className="grid md:grid-cols-4 gap-6">
+            <Card className="p-6 text-center border-2 border-green-100">
+              <p className="text-4xl font-bold text-green-600 mb-2">1000+</p>
+              <p className="text-gray-600">Matches Hosted</p>
+            </Card>
+            <Card className="p-6 text-center border-2 border-green-100">
+              <p className="text-4xl font-bold text-green-600 mb-2">500+</p>
+              <p className="text-gray-600">Happy Athletes</p>
+            </Card>
+            <Card className="p-6 text-center border-2 border-green-100">
+              <p className="text-4xl font-bold text-green-600 mb-2">4.9★</p>
+              <p className="text-gray-600">Average Rating</p>
+            </Card>
+            <Card className="p-6 text-center border-2 border-green-100">
+              <p className="text-4xl font-bold text-green-600 mb-2">99%</p>
+              <p className="text-gray-600">Satisfaction Rate</p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Women's Football Team Section - NEW */}
+      <section className="py-20 px-4 bg-gradient-to-b from-pink-50 via-purple-50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Women's Football Team 💪⚽
+            </h2>
+            <p className="text-xl text-gray-600">
+              Empowering women through sports
+            </p>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <div className="relative group overflow-hidden rounded-2xl shadow-2xl border-2 border-pink-500/30">
+            <div className="relative group overflow-hidden rounded-2xl shadow-2xl">
               <img src="/Football 1.jpeg" alt="Women's Football Team" className="w-full h-[450px] object-cover group-hover:scale-110 transition-transform duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-pink-950/90 via-pink-900/40 to-transparent">
                 <div className="absolute bottom-8 left-8 right-8">
@@ -437,7 +974,7 @@ const Index: React.FC = () => {
               </div>
             </div>
             
-            <div className="relative group overflow-hidden rounded-2xl shadow-2xl border-2 border-pink-500/30">
+            <div className="relative group overflow-hidden rounded-2xl shadow-2xl">
               <img src="/Football 2.jpeg" alt="Women's Football Action" className="w-full h-[450px] object-cover group-hover:scale-110 transition-transform duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-pink-950/90 via-pink-900/40 to-transparent">
                 <div className="absolute bottom-8 left-8 right-8">
@@ -454,10 +991,9 @@ const Index: React.FC = () => {
             </div>
           </div>
           
-          {/* CTA for Women's Program */}
-          <div className="text-center bg-gradient-to-r from-pink-900/20 to-purple-900/20 border border-pink-500/30 rounded-2xl p-8">
-            <h3 className="text-2xl font-bold text-white mb-3">Join Our Women's Football Program</h3>
-            <p className="text-gray-300 mb-6">Professional training and a supportive community await you</p>
+          <div className="text-center bg-gradient-to-r from-pink-50 to-purple-50 border-2 border-pink-200 rounded-2xl p-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">Join Our Women's Football Program</h3>
+            <p className="text-gray-600 mb-6">Professional training and a supportive community await you</p>
             <Button className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-8 py-3 text-lg">
               Learn More
             </Button>
@@ -465,19 +1001,95 @@ const Index: React.FC = () => {
         </div>
       </section>
 
-      {/* Professional Coaching Section */}
-      <section id="coaching" className="py-20 px-4 bg-gradient-to-b from-black via-gray-950 to-black">
+      {/* Players in Action Section - NEW */}
+      <section className="py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-orange-400 via-yellow-300 to-orange-500 bg-clip-text text-transparent">
-            Professional Coaching Programs
-          </h2>
-          <p className="text-center text-gray-400 text-lg mb-16">
-            Expert training sessions for all skill levels
-          </p>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Players in Action
+            </h2>
+            <p className="text-xl text-gray-600">
+              Real players, real passion
+            </p>
+          </div>
+          
+          {/* Men's Football */}
+          <div className="mb-16">
+            <div className="flex items-center gap-3 mb-8">
+              <Trophy className="h-8 w-8 text-green-600" />
+              <h3 className="text-3xl font-bold text-gray-900">Men's Football Action</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {['FB MODEL 1.jpeg', 'FB MODEL 2.jpeg', 'FB MODEL 3.jpeg'].map((img, idx) => (
+                <div key={idx} className="relative group overflow-hidden rounded-2xl shadow-xl">
+                  <img src={`/${img}`} alt={`Football Model ${idx + 1}`} className="w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-green-950/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute bottom-6 left-6">
+                      <p className="text-white font-bold text-lg">⚽ Football Pro</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {/* Cricket Action */}
+            <div className="mt-12">
+              <div className="flex items-center gap-3 mb-8">
+                <Trophy className="h-8 w-8 text-orange-600" />
+                <h3 className="text-3xl font-bold text-gray-900">Cricket Action</h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {['Cricket.jpeg', 'Cricket 2.jpeg'].map((img, idx) => (
+                  <div key={idx} className="relative group overflow-hidden rounded-2xl shadow-xl">
+                    <img src={`/${img}`} alt={`Cricket Match ${idx + 1}`} className="w-full h-[350px] object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-orange-950/70 to-transparent">
+                      <div className="absolute bottom-4 left-4">
+                        <p className="text-white font-bold text-lg">🏏 Cricket Action</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          {/* Pickleball Champions */}
+          <div>
+            <div className="flex items-center gap-3 mb-8">
+              <Target className="h-8 w-8 text-blue-600" />
+              <h3 className="text-3xl font-bold text-gray-900">Pickleball Champions</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              {['Pickleball model.jpeg', 'Pickleball model 2.jpeg', 'Pickleball model 3.jpeg', 'Pickleball model 4.jpeg'].map((img, idx) => (
+                <div key={idx} className="relative group overflow-hidden rounded-2xl shadow-xl">
+                  <img src={`/${img}`} alt={`Pickleball Model ${idx + 1}`} className="w-full h-[350px] object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-950/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute bottom-4 left-4">
+                      <p className="text-white font-bold">🎾 Pickleball Pro</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Professional Coaching Section - NEW */}
+      <section className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Professional Coaching Programs
+            </h2>
+            <p className="text-xl text-gray-600">
+              Expert training sessions for all skill levels
+            </p>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Football Coaching */}
-            <div className="relative rounded-2xl overflow-hidden group shadow-2xl border-2 border-green-500/30">
+            <div className="relative rounded-2xl overflow-hidden group shadow-2xl">
               <img src="/FB Coaching 1.jpg" alt="Football Coaching Session" className="w-full h-[450px] object-cover group-hover:scale-110 transition-transform duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-green-950/95 via-green-900/50 to-transparent">
                 <div className="absolute bottom-8 left-8 right-8">
@@ -499,7 +1111,7 @@ const Index: React.FC = () => {
             </div>
             
             {/* Multi-Sport Coaching */}
-            <div className="relative rounded-2xl overflow-hidden group shadow-2xl border-2 border-orange-500/30">
+            <div className="relative rounded-2xl overflow-hidden group shadow-2xl">
               <img src="/FB Coaching 2.jpeg" alt="Sports Coaching Session" className="w-full h-[450px] object-cover group-hover:scale-110 transition-transform duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-orange-950/95 via-orange-900/50 to-transparent">
                 <div className="absolute bottom-8 left-8 right-8">
@@ -523,105 +1135,194 @@ const Index: React.FC = () => {
         </div>
       </section>
 
-      {/* Players in Action Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-gray-950 to-black">
+      {/* About/Founder Section */}
+      <section id="about" className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-green-400 via-blue-300 to-purple-500 bg-clip-text text-transparent">
-            Players in Action
-          </h2>
-          <p className="text-center text-gray-400 text-lg mb-16">
-            Real players, real passion
-          </p>
-          
-          {/* Men's Football Models */}
-          <div className="mb-16">
-            <div className="flex items-center gap-3 mb-8">
-              <Trophy className="h-8 w-8 text-green-400" />
-              <h3 className="text-3xl font-bold text-green-400">Men's Football Action</h3>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {['FB MODEL 1.jpeg', 'FB MODEL 2.jpeg', 'FB MODEL 3.jpeg'].map((img, idx) => (
-                <div key={idx} className="relative group overflow-hidden rounded-2xl shadow-2xl border-2 border-green-500/30">
-                  <img src={`/${img}`} alt={`Football Model ${idx + 1}`} className="w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-green-950/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="absolute bottom-6 left-6">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Trophy className="h-5 w-5 text-green-400" />
-                        <span className="text-green-300 font-bold">Men's Squad</span>
-                      </div>
-                      <p className="text-white font-bold text-lg">⚽ Football Pro</p>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-green-600 rounded-3xl blur-3xl opacity-20"></div>
+              <img
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"
+                alt="Jai - Founder of Turf45"
+                className="relative rounded-3xl shadow-2xl w-full h-[600px] object-cover"
+              />
+        </div>
+
+            <div>
+              <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Our Story</Badge>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Meet Jai - Founder & Sports Visionary
+              </h2>
+              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                Founded in 2021, Turf45 was born from a passion for sports and a vision to create world-class facilities accessible to every athlete. Jai's dedication to excellence and commitment to quality has made Turf45 the premier destination for football, cricket, and pickleball in Chennai.
+              </p>
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                "At Turf45, we believe every athlete deserves access to professional-grade facilities. Our mission is to inspire and empower athletes to reach their full potential through exceptional courts and outstanding service." - Jai, Founder
+              </p>
+
+              <div className="space-y-4 mb-8">
+                {[
+                  { icon: Award, text: 'FIFA Approved Facilities' },
+                  { icon: Trophy, text: 'Professional Grade Equipment' },
+                  { icon: Shield, text: 'Trusted by 500+ Athletes' },
+                  { icon: Target, text: 'Commitment to Excellence' },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-3">
+                    <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-2">
+                      <item.icon className="h-5 w-5 text-white" />
                     </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            {/* Cricket Action */}
-            <div className="mt-12">
-              <div className="flex items-center gap-3 mb-8">
-                <Trophy className="h-8 w-8 text-orange-400" />
-                <h3 className="text-3xl font-bold text-orange-400">Cricket Action</h3>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {['Cricket.jpeg', 'Cricket 2.jpeg'].map((img, idx) => (
-                  <div key={idx} className="relative group overflow-hidden rounded-2xl shadow-2xl border-2 border-orange-500/30">
-                    <img src={`/${img}`} alt={`Cricket Match ${idx + 1}`} className="w-full h-[350px] object-cover group-hover:scale-110 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-orange-950/70 to-transparent">
-                      <div className="absolute bottom-4 left-4">
-                        <p className="text-white font-bold text-lg">🏏 Cricket Action</p>
-                      </div>
-                    </div>
+                    <span className="text-gray-700 font-medium">{item.text}</span>
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-          
-          {/* Pickleball Champions */}
-          <div>
-            <div className="flex items-center gap-3 mb-8">
-              <Target className="h-8 w-8 text-blue-400" />
-              <h3 className="text-3xl font-bold text-blue-400">Pickleball Champions</h3>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              {['Pickleball model.jpeg', 'Pickleball model 2.jpeg', 'Pickleball model 3.jpeg', 'Pickleball model 4.jpeg'].map((img, idx) => (
-                <div key={idx} className="relative group overflow-hidden rounded-2xl shadow-2xl border-2 border-blue-500/30">
-                  <img src={`/${img}`} alt={`Pickleball Model ${idx + 1}`} className="w-full h-[350px] object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-950/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="absolute bottom-4 left-4">
-                      <p className="text-white font-bold">🎾 Pickleball Pro</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+
+              <Button
+                onClick={() => navigate('/public/booking')}
+                size="lg"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-lg shadow-green-500/30"
+              >
+                Book Your Court Today
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Meet Ricky Section */}
-      <section id="ricky" className="py-20 px-4 bg-gradient-to-b from-black via-blue-950/30 to-black">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-blue-400 via-purple-300 to-pink-500 bg-clip-text text-transparent">
-            Meet Ricky - Your Sports Guide
+      {/* FAQ Section */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Help Center</Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-lg text-gray-600">Everything you need to know about booking at Turf45</p>
+            </div>
+            
+          <Accordion type="single" collapsible className="w-full space-y-4">
+            {[
+              {
+                q: 'How do I book a court at Turf45?',
+                a: 'Simply click on "Book Now", select your preferred sport (Football, Cricket, or Pickleball), choose your date and time slot, and complete the payment. You\'ll receive instant confirmation via SMS and email.'
+              },
+              {
+                q: 'What are your operating hours?',
+                a: 'We\'re open from 6:00 AM to 11:00 PM, 7 days a week. Slots are available in hourly increments, and you can book as early as 6 AM or as late as 10 PM (1-hour slot until 11 PM).'
+              },
+              {
+                q: 'Can I cancel or reschedule my booking?',
+                a: 'Yes, you can cancel or reschedule up to 2 hours before your booked slot. Please refer to our Cancellation & Refund Policy for detailed information on refunds and rescheduling process.'
+              },
+              {
+                q: 'What payment methods do you accept?',
+                a: 'We accept all major payment methods including Credit/Debit Cards, UPI, Net Banking, and Digital Wallets. All transactions are secure and encrypted.'
+              },
+              {
+                q: 'Do you provide sports equipment?',
+                a: 'Yes! We provide complimentary footballs and cricket equipment. For pickleball, paddles and balls are available. However, you\'re welcome to bring your own equipment if you prefer.'
+              },
+              {
+                q: 'Is there parking available?',
+                a: 'Yes, we have ample free parking space for all visitors. The parking area is well-lit and secure with CCTV surveillance.'
+              },
+              {
+                q: 'Can I bring guests to watch?',
+                a: 'Absolutely! Your guests are welcome to watch from our covered seating area at no additional charge. We have comfortable seating arrangements with a great view of the courts.'
+              },
+              {
+                q: 'What if it rains during my booking?',
+                a: 'Our cricket and football turfs have excellent drainage systems and can handle light rain. In case of heavy rain, we offer free rescheduling to another slot of your choice. Our pickleball courts are indoors and unaffected by weather.'
+              },
+            ].map((faq, idx) => (
+              <AccordionItem key={idx} value={`faq-${idx}`} className="bg-white rounded-xl border-2 border-green-100 px-6 hover:border-green-300 transition-colors">
+              <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline">
+                  {faq.q}
+              </AccordionTrigger>
+                <AccordionContent className="text-gray-600 leading-relaxed">
+                  {faq.a}
+              </AccordionContent>
+            </AccordionItem>
+            ))}
+          </Accordion>
+
+          <div className="mt-12 text-center">
+            <p className="text-gray-600 mb-4">Still have questions?</p>
+            <Button
+              onClick={() => navigate('/support')}
+              variant="outline"
+              size="lg"
+              className="rounded-full border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
+            >
+              Contact Support Team
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Location/Contact CTA */}
+      <section className="py-20 px-4 bg-gradient-to-br from-green-500 to-green-600 text-white">
+        <div className="max-w-5xl mx-auto text-center">
+          <Map className="h-16 w-16 mx-auto mb-6 text-green-100" />
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Visit Turf45 Today
           </h2>
-          <p className="text-center text-gray-400 text-lg mb-16">
-            Our friendly mascot here to help you learn and play! 🎾
+          <p className="text-xl text-green-50 mb-8 max-w-3xl mx-auto">
+            Experience world-class sports facilities in Chennai. We're open 7 days a week!
           </p>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-10">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <MapPin className="h-8 w-8 mx-auto mb-3 text-green-100" />
+              <h3 className="font-bold mb-2">Location</h3>
+              <p className="text-green-50">Chennai, Tamil Nadu</p>
+                  </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <Phone className="h-8 w-8 mx-auto mb-3 text-green-100" />
+              <h3 className="font-bold mb-2">Call Us</h3>
+              <a href="tel:+919345187098" className="text-green-50 hover:text-white transition-colors">
+                +91 93451 87098
+              </a>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <Mail className="h-8 w-8 mx-auto mb-3 text-green-100" />
+              <h3 className="font-bold mb-2">Email Us</h3>
+              <a href="mailto:contact@turf45.in" className="text-green-50 hover:text-white transition-colors">
+                contact@turf45.in
+              </a>
+            </div>
+          </div>
+
+          <Button
+            onClick={() => navigate('/public/booking')}
+              size="lg"
+            className="bg-white text-green-600 hover:bg-green-50 rounded-full px-12 py-7 text-xl font-bold shadow-2xl transition-all duration-300 hover:scale-110"
+          >
+            Book Your Court Now
+            <ArrowRight className="ml-2 h-6 w-6" />
+          </Button>
+          </div>
+      </section>
+
+      {/* Meet Ricky Section - NEW */}
+      <section className="py-20 px-4 bg-gradient-to-b from-blue-50 via-purple-50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Meet Ricky - Your Sports Guide 🎾
+            </h2>
+            <p className="text-xl text-gray-600">
+              Our friendly mascot here to help you learn and play!
+            </p>
+          </div>
           
           {/* Ricky Introduction */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             <div className="relative group">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-blue-500/30">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-blue-200">
                 <img src="/Ricky.jpg" alt="Ricky Mascot" className="w-full h-[400px] object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-blue-900/30 to-transparent">
                   <div className="absolute bottom-6 left-6 right-6">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Target className="h-6 w-6 text-blue-400" />
-                      <span className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm font-bold">
-                        MASCOT
-                      </span>
-                    </div>
                     <p className="text-white font-bold text-2xl">Meet Ricky! 👋</p>
                     <p className="text-blue-200 text-sm mt-1">Your friendly pickleball guide</p>
                   </div>
@@ -630,16 +1331,10 @@ const Index: React.FC = () => {
             </div>
             
             <div className="relative group">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-green-500/30">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-green-200">
                 <img src="/Ricky Playing.jpg" alt="Ricky Playing" className="w-full h-[400px] object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-green-950/90 via-green-900/30 to-transparent">
                   <div className="absolute bottom-6 left-6 right-6">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Trophy className="h-6 w-6 text-green-400" />
-                      <span className="bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-sm font-bold">
-                        IN ACTION
-                      </span>
-                    </div>
                     <p className="text-white font-bold text-2xl">Ricky Plays! 🎾</p>
                     <p className="text-green-200 text-sm mt-1">Watch and learn from Ricky</p>
                   </div>
@@ -648,16 +1343,10 @@ const Index: React.FC = () => {
             </div>
             
             <div className="relative group">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-orange-500/30">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-orange-200">
                 <img src="/Ricky Coaching.jpeg" alt="Ricky Coaching" className="w-full h-[400px] object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-orange-950/90 via-orange-900/30 to-transparent">
                   <div className="absolute bottom-6 left-6 right-6">
-                    <div className="flex items-center gap-2 mb-2">
-                      <BookOpen className="h-6 w-6 text-orange-400" />
-                      <span className="bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-sm font-bold">
-                        COACHING
-                      </span>
-                    </div>
                     <p className="text-white font-bold text-2xl">Coach Ricky! 📚</p>
                     <p className="text-orange-200 text-sm mt-1">Expert tips and guidance</p>
                   </div>
@@ -667,60 +1356,39 @@ const Index: React.FC = () => {
           </div>
           
           {/* Learn with Ricky */}
-          <div className="bg-gradient-to-br from-purple-900/20 to-blue-900/20 border-2 border-purple-500/30 rounded-3xl p-8 mb-12">
-            <h3 className="text-3xl font-bold text-center mb-3 text-purple-300">
+          <div className="bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-3xl p-8 mb-12">
+            <h3 className="text-3xl font-bold text-center mb-3 text-purple-600">
               📖 Learn with Ricky
             </h3>
-            <p className="text-center text-gray-300 mb-8">
+            <p className="text-center text-gray-600 mb-8">
               Ricky explains everything you need to know!
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Rules */}
-              <div className="relative group overflow-hidden rounded-xl shadow-2xl border-2 border-blue-400/40 bg-gradient-to-br from-blue-900/40 to-cyan-900/40">
+              <div className="relative group overflow-hidden rounded-xl shadow-xl border-2 border-blue-200">
                 <img src="/Rules.jpg" alt="Ricky Explains Rules" className="w-full h-[350px] object-cover group-hover:scale-110 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-blue-900/50 to-transparent">
                   <div className="absolute bottom-6 left-6 right-6">
-                    <div className="flex items-center gap-2 mb-2">
-                      <BookOpen className="h-6 w-6 text-blue-300" />
-                      <span className="bg-blue-500/30 text-blue-200 px-3 py-1 rounded-full text-xs font-bold">
-                        GAME RULES
-                      </span>
-                    </div>
                     <p className="text-white font-bold text-xl">📜 Rules Explained</p>
                     <p className="text-blue-200 text-sm mt-1">Learn the game basics</p>
                   </div>
                 </div>
               </div>
               
-              {/* Wow Tips */}
-              <div className="relative group overflow-hidden rounded-xl shadow-2xl border-2 border-yellow-400/40 bg-gradient-to-br from-yellow-900/40 to-orange-900/40">
+              <div className="relative group overflow-hidden rounded-xl shadow-xl border-2 border-yellow-200">
                 <img src="/Wow.jpg" alt="Ricky Amazing Tips" className="w-full h-[350px] object-cover group-hover:scale-110 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-orange-950/90 via-orange-900/50 to-transparent">
                   <div className="absolute bottom-6 left-6 right-6">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Sparkles className="h-6 w-6 text-yellow-300" />
-                      <span className="bg-yellow-500/30 text-yellow-200 px-3 py-1 rounded-full text-xs font-bold">
-                        PRO TIPS
-                      </span>
-                    </div>
                     <p className="text-white font-bold text-xl">✨ Wow! Pro Tips</p>
                     <p className="text-yellow-200 text-sm mt-1">Amazing tricks & techniques</p>
                   </div>
                 </div>
               </div>
               
-              {/* Proposals */}
-              <div className="relative group overflow-hidden rounded-xl shadow-2xl border-2 border-purple-400/40 bg-gradient-to-br from-purple-900/40 to-pink-900/40">
+              <div className="relative group overflow-hidden rounded-xl shadow-xl border-2 border-purple-200">
                 <img src="/Proposal.jpg" alt="Ricky Proposals" className="w-full h-[350px] object-cover group-hover:scale-110 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-950/90 via-purple-900/50 to-transparent">
                   <div className="absolute bottom-6 left-6 right-6">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Lightbulb className="h-6 w-6 text-purple-300" />
-                      <span className="bg-purple-500/30 text-purple-200 px-3 py-1 rounded-full text-xs font-bold">
-                        IDEAS
-                      </span>
-                    </div>
                     <p className="text-white font-bold text-xl">💡 Game Plans</p>
                     <p className="text-purple-200 text-sm mt-1">Strategy & proposals</p>
                   </div>
@@ -731,9 +1399,8 @@ const Index: React.FC = () => {
           
           {/* Play with Ricky Promo */}
           <div className="text-center">
-            <div className="relative inline-block rounded-2xl overflow-hidden shadow-2xl border-4 border-blue-500/50 max-w-3xl mx-auto">
+            <div className="relative inline-block rounded-2xl overflow-hidden shadow-2xl border-4 border-blue-300 max-w-3xl mx-auto">
               <img src="/PLAY WITH RICKY Code.jpg" alt="Play with Ricky Promo" className="w-full" />
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 via-transparent to-transparent pointer-events-none"></div>
             </div>
             <div className="mt-8">
               <Button 
@@ -747,28 +1414,27 @@ const Index: React.FC = () => {
         </div>
       </section>
 
-      {/* Achievements Carousel */}
-      <section id="achievements" className="py-20 px-4 bg-gradient-to-b from-black via-gray-950 to-black overflow-hidden">
+      {/* Achievements Carousel - NEW */}
+      <section className="py-20 px-4 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-yellow-400 via-orange-300 to-yellow-500 bg-clip-text text-transparent">
-            Our Achievements
-          </h2>
-          <p className="text-center text-gray-400 text-lg mb-4">
-            Celebrating success, building champions 🏆
-          </p>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Our Achievements 🏆
+            </h2>
+            <p className="text-xl text-gray-600">
+              Celebrating success, building champions
+            </p>
+          </div>
         </div>
         
         {/* Infinite Scrolling Carousel */}
         <div className="relative mb-12">
-          {/* Gradient Overlays */}
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
           
-          {/* Scrolling Container */}
           <div className="flex gap-6 animate-scroll-left">
-            {/* First set */}
             {Array.from({ length: 24 }, (_, i) => i + 1).map((num) => (
-              <div key={`first-${num}`} className="flex-shrink-0 w-[400px] h-[300px] rounded-xl overflow-hidden shadow-2xl border-2 border-yellow-500/30 group">
+              <div key={`first-${num}`} className="flex-shrink-0 w-[400px] h-[300px] rounded-xl overflow-hidden shadow-2xl border-2 border-yellow-300 group">
                 <img 
                   src={`/A${num}.jpeg`} 
                   alt={`Achievement ${num}`}
@@ -777,9 +1443,8 @@ const Index: React.FC = () => {
               </div>
             ))}
             
-            {/* Duplicate for seamless loop */}
             {Array.from({ length: 24 }, (_, i) => i + 1).map((num) => (
-              <div key={`second-${num}`} className="flex-shrink-0 w-[400px] h-[300px] rounded-xl overflow-hidden shadow-2xl border-2 border-yellow-500/30 group">
+              <div key={`second-${num}`} className="flex-shrink-0 w-[400px] h-[300px] rounded-xl overflow-hidden shadow-2xl border-2 border-yellow-300 group">
                 <img 
                   src={`/A${num}.jpeg`} 
                   alt={`Achievement ${num}`}
@@ -792,129 +1457,195 @@ const Index: React.FC = () => {
         
         {/* Achievement Stats */}
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div className="text-center bg-gradient-to-br from-yellow-900/20 to-orange-900/20 border border-yellow-500/30 rounded-xl p-6">
-            <Trophy className="h-8 w-8 text-yellow-400 mx-auto mb-2" />
-            <p className="text-3xl font-bold text-white">100+</p>
-            <p className="text-yellow-300 text-sm">Tournaments</p>
-          </div>
-          <div className="text-center bg-gradient-to-br from-green-900/20 to-emerald-900/20 border border-green-500/30 rounded-xl p-6">
-            <Users className="h-8 w-8 text-green-400 mx-auto mb-2" />
-            <p className="text-3xl font-bold text-white">5000+</p>
-            <p className="text-green-300 text-sm">Players</p>
-          </div>
-          <div className="text-center bg-gradient-to-br from-blue-900/20 to-cyan-900/20 border border-blue-500/30 rounded-xl p-6">
-            <Award className="h-8 w-8 text-blue-400 mx-auto mb-2" />
-            <p className="text-3xl font-bold text-white">50+</p>
-            <p className="text-green-300 text-sm">Championships</p>
-          </div>
-          <div className="text-center bg-gradient-to-br from-purple-900/20 to-pink-900/20 border border-purple-500/30 rounded-xl p-6">
-            <Star className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-            <p className="text-3xl font-bold text-white">24+</p>
-            <p className="text-purple-300 text-sm">Achievements</p>
-          </div>
+          <Card className="text-center bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-200 p-6">
+            <Trophy className="h-8 w-8 text-yellow-600 mx-auto mb-2" />
+            <p className="text-3xl font-bold text-gray-900">100+</p>
+            <p className="text-gray-600 text-sm">Tournaments</p>
+          </Card>
+          <Card className="text-center bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 p-6">
+            <Users className="h-8 w-8 text-green-600 mx-auto mb-2" />
+            <p className="text-3xl font-bold text-gray-900">5000+</p>
+            <p className="text-gray-600 text-sm">Players</p>
+          </Card>
+          <Card className="text-center bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-blue-200 p-6">
+            <Award className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+            <p className="text-3xl font-bold text-gray-900">50+</p>
+            <p className="text-gray-600 text-sm">Championships</p>
+          </Card>
+          <Card className="text-center bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-200 p-6">
+            <Star className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+            <p className="text-3xl font-bold text-gray-900">24+</p>
+            <p className="text-gray-600 text-sm">Achievements</p>
+          </Card>
         </div>
       </section>
 
-      {/* Pickleball Promotion Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-black via-blue-950/20 to-black">
+      {/* Pickleball Promotion Section - NEW */}
+      <section className="py-20 px-4 bg-gradient-to-b from-blue-50 to-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent">
-            Book Your Pickleball Court
-          </h2>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Book Your Pickleball Court 🎾
+            </h2>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {['Pickleball45 Book slot.jpg', 'Pickleball45 book slot 3.jpg', 'Pickleball45 Book slot 2.jpg'].map((img, idx) => (
               <div 
                 key={idx}
-                className="cursor-pointer transform hover:scale-105 transition-transform duration-500"
+                className="cursor-pointer transform hover:scale-105 transition-transform duration-500 rounded-2xl overflow-hidden shadow-xl"
                 onClick={() => navigate('/public/booking')}
               >
-                <img src={`/${img}`} alt={`Book Pickleball Slot ${idx + 1}`} className="w-full rounded-2xl shadow-2xl" />
+                <img src={`/${img}`} alt={`Book Pickleball Slot ${idx + 1}`} className="w-full" />
               </div>
             ))}
           </div>
           
-          {/* Pickleball Team */}
           <div className="text-center">
             <img src="/Pickleball45 team.jpg" alt="Pickleball Team" className="max-w-4xl mx-auto rounded-2xl shadow-2xl" />
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gradient-to-b from-gray-950 to-black border-t border-green-500/20 pt-16 pb-8 px-4">
+      {/* Premium Footer */}
+      <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-16 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
             {/* Brand */}
             <div>
               <img
                 src="/Turf45_transparent.png"
-                alt="Turf45"
-                className="h-16 w-auto mb-4"
-                style={{ filter: "drop-shadow(0 2px 8px rgba(16, 185, 129, 0.4))" }}
+                alt="Turf45 Logo"
+                className="h-14 w-auto object-contain mb-4"
+                style={{
+                  filter: "drop-shadow(0 2px 12px rgba(16, 185, 129, 0.4))",
+                }}
               />
-              <p className="text-gray-400 text-sm mb-4">
-                FIFA-approved sports facilities offering premium turf and pickleball courts.
+              <p className="text-gray-400 leading-relaxed mb-4">
+                Premium FIFA-approved sports facilities for football, cricket, and pickleball in Chennai.
               </p>
-              <div className="flex gap-4">
-                <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                  <Instagram className="h-5 w-5" />
-                </a>
-                <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                  <Facebook className="h-5 w-5" />
-                </a>
-                <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
-                  <Twitter className="h-5 w-5" />
-                </a>
+              <div className="flex gap-3">
+                {[
+                  { icon: Instagram, url: 'https://instagram.com/turf45' },
+                  { icon: Facebook, url: 'https://facebook.com/turf45' },
+                  { icon: Twitter, url: 'https://twitter.com/turf45' },
+                ].map((social, idx) => (
+                  <a
+                    key={idx}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 bg-white/10 rounded-full hover:bg-green-500 transition-all duration-300"
+                  >
+                    <social.icon className="h-5 w-5" />
+                  </a>
+                ))}
               </div>
-            </div>
-
+                    </div>
+                    
             {/* Quick Links */}
-            <div>
-              <h4 className="font-bold text-white mb-4">Quick Links</h4>
-              <ul className="space-y-2">
-                <li><button onClick={() => scrollToSection('facilities')} className="text-gray-400 hover:text-green-400 transition-colors text-sm">Facilities</button></li>
-                <li><button onClick={() => scrollToSection('coaching')} className="text-gray-400 hover:text-green-400 transition-colors text-sm">Coaching</button></li>
-                <li><button onClick={() => navigate('/public/booking')} className="text-gray-400 hover:text-green-400 transition-colors text-sm">Book a Court</button></li>
-                <li><button onClick={() => navigate('/public/stations')} className="text-gray-400 hover:text-green-400 transition-colors text-sm">Live Status</button></li>
-              </ul>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h4 className="font-bold text-white mb-4">Contact Us</h4>
+                      <div>
+              <h4 className="font-bold text-lg mb-4">Quick Links</h4>
               <ul className="space-y-3">
-                <li className="flex items-start gap-3 text-gray-400 text-sm">
-                  <MapPin className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
-                  <span>Turf45, Sports Complex, City</span>
-                </li>
-                <li className="flex items-center gap-3 text-gray-400 text-sm">
-                  <Phone className="h-5 w-5 text-green-400 flex-shrink-0" />
-                  <span>+91 1234567890</span>
-                </li>
-                <li className="flex items-center gap-3 text-gray-400 text-sm">
-                  <Mail className="h-5 w-5 text-green-400 flex-shrink-0" />
-                  <span>info@turf45.com</span>
-                </li>
+                {[
+                  { label: 'Book Courts', onClick: () => navigate('/public/booking') },
+                  { label: 'View Availability', onClick: () => navigate('/public/booking') },
+                  { label: 'Facilities', onClick: () => scrollToSection('facilities') },
+                  { label: 'Pricing', onClick: () => scrollToSection('pricing') },
+                  { label: 'About Us', onClick: () => scrollToSection('about') },
+                ].map((link, idx) => (
+                  <li key={idx}>
+                    <button onClick={link.onClick} className="text-gray-400 hover:text-green-400 transition-colors">
+                      {link.label}
+                    </button>
+                  </li>
+                ))}
               </ul>
-            </div>
-
-            {/* Hours */}
-            <div>
-              <h4 className="font-bold text-white mb-4">Operating Hours</h4>
-              <ul className="space-y-2 text-gray-400 text-sm">
-                <li>Monday - Friday: 6 AM - 11 PM</li>
-                <li>Saturday - Sunday: 5 AM - 12 AM</li>
-                <li className="text-green-400 font-semibold mt-3">Open All Days</li>
+                    </div>
+                    
+            {/* Support */}
+                      <div>
+              <h4 className="font-bold text-lg mb-4">Support</h4>
+              <ul className="space-y-3">
+                {[
+                  { label: 'Help Center', href: '/support' },
+                  { label: 'Cancellation Policy', href: '/refund-policy' },
+                  { label: 'Terms & Conditions', href: '/terms' },
+                  { label: 'Privacy Policy', href: '/privacy' },
+                  { label: 'Contact Us', onClick: () => navigate('/support') },
+                ].map((link, idx) => (
+                  <li key={idx}>
+                    {link.href ? (
+                      <a href={link.href} className="text-gray-400 hover:text-green-400 transition-colors">
+                        {link.label}
+                      </a>
+                    ) : (
+                      <button onClick={link.onClick} className="text-gray-400 hover:text-green-400 transition-colors">
+                        {link.label}
+                      </button>
+                    )}
+                </li>
+                ))}
+              </ul>
+                    </div>
+                    
+            {/* Contact */}
+                      <div>
+              <h4 className="font-bold text-lg mb-4">Contact Info</h4>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3 text-gray-400">
+                  <Phone className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                  <a href="tel:+919345187098" className="hover:text-green-400 transition-colors">
+                    +91 93451 87098
+                  </a>
+                </li>
+                <li className="flex items-start gap-3 text-gray-400">
+                  <Mail className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                  <a href="mailto:contact@turf45.in" className="hover:text-green-400 transition-colors">
+                    contact@turf45.in
+                  </a>
+                </li>
+                <li className="flex items-start gap-3 text-gray-400">
+                  <MapPin className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                  <span>Chennai, Tamil Nadu, India</span>
+                </li>
+                <li className="flex items-start gap-3 text-gray-400">
+                  <Clock className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                  <span>Open Daily: 6 AM - 11 PM</span>
+                </li>
               </ul>
             </div>
           </div>
-
-          {/* Copyright */}
-          <div className="border-t border-gray-800 pt-8 text-center">
-            <p className="text-gray-400 text-sm">
-              © 2024 Turf45. All rights reserved. | FIFA Approved Courts since 2021
-            </p>
+          
+          {/* Bottom Bar */}
+          <div className="border-t border-gray-700 pt-8">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-gray-400 text-sm">
+                © {new Date().getFullYear()} Turf45. All rights reserved. FIFA Approved Courts - ESTD 2021
+              </p>
+              <div className="flex items-center gap-4">
+                <a 
+                  href="/login" 
+                  className="flex items-center gap-2 text-sm text-gray-400 hover:text-green-400 transition-colors"
+                >
+                  <LogIn className="h-4 w-4" />
+                  Admin Login
+                </a>
+                <a 
+                  href="https://cuephoriatech.in" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 text-green-400 hover:text-green-300 transition-all text-sm font-medium"
+                >
+                  <span>&lt; &gt;</span>
+                  <span className="text-green-400">Cuephoria</span>
+                  <span className="text-gray-300">Tech</span>
+                  <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
