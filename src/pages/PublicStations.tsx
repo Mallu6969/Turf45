@@ -131,14 +131,24 @@ const PublicStations = () => {
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
-      {/* Premium Background */}
+      {/* Premium Background with Subtle Sports Turf Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1920&q=80"
-          alt="Gaming Background"
-          className="w-full h-full object-cover opacity-5"
+          src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=80"
+          alt="Sports Turf Background"
+          className="w-full h-full object-cover opacity-[0.03]"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-white via-green-50/30 to-white"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-green-50/20 to-emerald-50/30"></div>
+        {/* Subtle pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.02]" style={{
+          backgroundImage: `repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 20px,
+            rgba(16, 185, 129, 0.1) 20px,
+            rgba(16, 185, 129, 0.1) 21px
+          )`
+        }}></div>
       </div>
 
       {/* Animated Gradient Orbs */}
