@@ -31,15 +31,15 @@ const Logo: React.FC<LogoProps> = ({ size = 'md', className }) => {
         {/* Green glow effect */}
         <div className="absolute -inset-1 bg-gradient-to-r from-turf45-green/20 to-turf45-lightgreen/20 rounded-full opacity-60 blur-md group-hover:opacity-90 transition-opacity duration-300"></div>
         <img
-          src="/turf45-logo.svg"
+          src="/Turf45_transparent.png"
           alt="TURF 45 - FIFA Approved Football, Cricket & Pickleball Turf"
           height={height}
-          width={width}
+          width={width * 1.2}
           style={{
             objectFit: "contain",
             background: "transparent",
             maxHeight: height, 
-            maxWidth: width,
+            maxWidth: width * 1.2,
             filter: "drop-shadow(0 0 8px rgba(16, 185, 129, 0.4))",
           }}
             className={`select-none relative z-10 group-hover:drop-shadow-[0_0_12px_rgba(16,185,129,0.6)] transition-all duration-300 ${className || ""}`}

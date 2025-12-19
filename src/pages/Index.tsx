@@ -130,18 +130,14 @@ const Index: React.FC = () => {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="absolute -inset-2 bg-gradient-to-r from-green-500/20 to-green-400/20 rounded-full blur-lg"></div>
-                <div className="relative bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-2">
-                  <Trophy className="h-6 w-6 text-white" />
-                </div>
-              </div>
-              <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">
-                  Turf45
-                </h1>
-                <p className="text-xs text-gray-500">Premium Sports Facility</p>
-              </div>
+              <img
+                src="/Turf45_transparent.png"
+                alt="Turf45 - Premium Sports Facility"
+                className="h-20 md:h-24 lg:h-28 w-auto object-contain transition-all duration-300 hover:scale-105"
+                style={{
+                  filter: "drop-shadow(0 2px 12px rgba(16, 185, 129, 0.4))",
+                }}
+              />
         </div>
         
             {/* Desktop Navigation */}
@@ -935,10 +931,14 @@ const Index: React.FC = () => {
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-2">
-                  <Trophy className="h-6 w-6 text-white" />
-                  </div>
-                <h3 className="text-xl font-bold">Turf45</h3>
+                <img
+                  src="/Turf45_transparent.png"
+                  alt="Turf45 Logo"
+                  className="h-12 w-auto object-contain"
+                  style={{
+                    filter: "drop-shadow(0 2px 8px rgba(16, 185, 129, 0.3))",
+                  }}
+                />
                       </div>
               <p className="text-gray-400 text-sm">
                 Premium sports facilities for football, cricket, and pickleball. Book your court today!
