@@ -226,14 +226,14 @@ const Index: React.FC = () => {
             src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=80"
             alt="Football Court"
             className="w-full h-full object-cover"
-          />
+            />
           
-          {/* Clean gradient overlay for better contrast */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60 z-10"></div>
+          {/* Green gradient overlay for premium feel */}
+          <div className="absolute inset-0 bg-gradient-to-b from-green-900/50 via-green-800/40 to-green-900/60 z-10"></div>
           
-          {/* Subtle green accent overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-green-900/20 via-transparent to-emerald-900/30 z-10"></div>
-        </div>
+          {/* Additional subtle green accent for depth */}
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/25 via-transparent to-green-800/30 z-10"></div>
+          </div>
 
         {/* Floating Badge */}
         <div className="absolute top-8 left-8 z-20">
@@ -498,7 +498,7 @@ const Index: React.FC = () => {
                 alt="Pickleball Court"
                 className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
               />
-              
+
               <CardContent className="p-6 relative z-10">
                 <Badge className="mb-3 bg-green-500/10 text-green-700 border-green-300">Tennis court</Badge>
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">Pickleball</h3>
@@ -688,8 +688,8 @@ const Index: React.FC = () => {
                 Book Pickleball Court
               </Button>
             </div>
-          </div>
-        </div>
+              </div>
+            </div>
       </section>
 
       {/* Why Players Choose Turf45 */}
