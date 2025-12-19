@@ -78,15 +78,15 @@ export default {
           light: '#F1F0FB',
         },
         nerfturf: {
-          purple: '#6E59A5',
-          lightpurple: '#9b87f5',
-          magenta: '#FF1493',
-          pink: '#FF00FF',
-          cyan: '#00CED1',
-          blue: '#00FFFF',
-          dark: '#000000',
-          darker: '#0a0a0a',
-          light: '#F1F0FB',
+          purple: '#0f9f6c',       // repurposed to emerald
+          lightpurple: '#34d399',  // soft mint
+          magenta: '#16a34a',      // vivid green accent
+          pink: '#22c55e',         // lime accent
+          cyan: '#2dd4bf',         // teal accent
+          blue: '#10b981',         // core green
+          dark: '#0b1a12',         // deep greenish background
+          darker: '#07130c',
+          light: '#e9f8f1',        // light mint
         },
         turf45: {
           green: '#10B981', // Primary green (lime-green from logo)

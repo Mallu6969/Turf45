@@ -588,6 +588,108 @@ const Index: React.FC = () => {
         </div>
       </section>
 
+      {/* Why Players Choose Turf45 */}
+      <section className="py-20 px-4 bg-gradient-to-br from-white via-green-50/60 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Why Players Choose Turf45</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              From FIFA-approved surfaces to pro-grade lighting, every detail is engineered for peak performance and unforgettable sessions.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Pro Surfaces & Lighting",
+                body: "FIFA-approved football turf, ICC-inspired cricket wickets, and USA Pickleball-ready courts with calibrated lighting for clean ball tracking day or night.",
+                points: ["Match-quality grass infill", "Even bounce & traction", "Weather-ready drainage"],
+              },
+              {
+                title: "Player Services",
+                body: "On-ground coordinators, hydration points, digital waivers, and instant confirmations keep you focused on the game—not logistics.",
+                points: ["Fast check-in", "Real-time slot sync", "On-call support"],
+              },
+              {
+                title: "Performance & Safety",
+                body: "Regular turf audits, shock-absorbent underlay, and sanitization between sessions to reduce fatigue and keep your squad protected.",
+                points: ["Impact-tested padding", "Non-slip sidelines", "Pre-game inspection"],
+              },
+            ].map((item, idx) => (
+              <Card key={idx} className="p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-green-100/70">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 text-white shadow-md">
+                    <Shield className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{item.title}</h3>
+                    <p className="text-gray-600 mb-4 leading-relaxed">{item.body}</p>
+                    <ul className="space-y-2 text-sm text-gray-600">
+                      {item.points.map((p) => (
+                        <li key={p} className="flex items-center gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-green-600" />
+                          <span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Packages & Training */}
+      <section className="py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Memberships, Coaching & Group Play</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Flexible options for solo practice, squads, academies, and corporate leagues. Pay per slot or lock in season passes.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            <Card className="p-8 border border-green-100 shadow-lg hover:shadow-2xl transition-all duration-300">
+              <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Season Pass</Badge>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">6-Week Grind</h3>
+              <p className="text-gray-600 mb-4">Lock in consistent training with priority slots and lower hourly rates.</p>
+              <ul className="space-y-2 text-sm text-gray-600 mb-6">
+                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />Reserved prime-time windows</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />Up to 20% savings on add-on slots</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />Team roster tagging</li>
+              </ul>
+              <Button onClick={() => navigate('/public/booking')} className="rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white w-full">View Slots</Button>
+            </Card>
+
+            <Card className="p-8 border border-green-100 shadow-lg hover:shadow-2xl transition-all duration-300">
+              <Badge className="mb-4 bg-amber-100 text-amber-700 border-amber-300">Coaching</Badge>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Skill Labs</h3>
+              <p className="text-gray-600 mb-4">Certified coaches for fundamentals, match IQ, and conditioning.</p>
+              <ul className="space-y-2 text-sm text-gray-600 mb-6">
+                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />1:1 or small-group sessions</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />Video breakdown add-on</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />Warm-up & cooldown protocols</li>
+              </ul>
+              <Button onClick={() => navigate('/public/booking')} className="rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white w-full">Book Coaching</Button>
+            </Card>
+
+            <Card className="p-8 border border-green-100 shadow-lg hover:shadow-2xl transition-all duration-300">
+              <Badge className="mb-4 bg-blue-100 text-blue-800 border-blue-200">Groups & Events</Badge>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Leagues & Corporate</h3>
+              <p className="text-gray-600 mb-4">End-to-end turf management for leagues, corporate days, and tournaments.</p>
+              <ul className="space-y-2 text-sm text-gray-600 mb-6">
+                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />Block bookings & bulk pricing</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />Officials & equipment on request</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" />On-site coordination & PA support</li>
+              </ul>
+              <Button onClick={() => navigate('/support')} variant="outline" className="rounded-full border-2 border-green-600 text-green-700 hover:bg-green-50 w-full">Talk to Us</Button>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* Reviews Section */}
       <section id="reviews" className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white">
         <div className="max-w-7xl mx-auto">
