@@ -32,6 +32,7 @@ import {
   X,
   CreditCard,
   Headset,
+  LogIn,
 } from "lucide-react";
 import {
   Dialog,
@@ -2297,8 +2298,9 @@ export default function PublicBooking() {
               </a>
               <a
                 href="/login"
-                className="text-gray-400 hover:text-white hover:underline text-sm flex items-center gap-1 transition"
+                className="text-gray-400 hover:text-white hover:underline text-sm flex items-center gap-2 transition"
               >
+                <LogIn className="h-4 w-4" />
                 Management Login
               </a>
             </div>

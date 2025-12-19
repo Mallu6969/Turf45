@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, Clock, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Clock, CheckCircle2, XCircle, AlertTriangle, LogIn } from 'lucide-react';
 import { Trophy } from 'lucide-react';
 
 const RefundPolicy = () => {
@@ -235,8 +235,9 @@ const RefundPolicy = () => {
               <div className="flex items-center gap-4">
                 <a 
                   href="/login" 
-                  className="text-sm text-gray-400 hover:text-green-400 transition-colors"
+                  className="flex items-center gap-2 text-sm text-gray-400 hover:text-green-400 transition-colors"
                 >
+                  <LogIn className="h-4 w-4" />
                   Management Login
                 </a>
                 <a 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Monitor, Clock, Timer, Wifi, Gamepad2, RefreshCcw, Headset } from 'lucide-react';
+import { Monitor, Clock, Timer, Wifi, Gamepad2, RefreshCcw, Headset, LogIn } from 'lucide-react';
 import { Station, Session } from '@/types/pos.types';
 import Logo from '@/components/Logo';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
@@ -326,8 +326,9 @@ const PublicStations = () => {
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <a 
                 href="/login" 
-                className="text-sm text-gray-400 hover:text-green-400 transition-colors"
+                className="flex items-center gap-2 text-sm text-gray-400 hover:text-green-400 transition-colors"
               >
+                <LogIn className="h-4 w-4" />
                 Management Login
               </a>
               <a 

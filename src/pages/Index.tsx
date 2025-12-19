@@ -27,7 +27,8 @@ import {
   Menu,
   X,
   ChevronLeft,
-  ChevronDown
+  ChevronDown,
+  LogIn
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Badge } from '@/components/ui/badge';
@@ -882,8 +883,9 @@ const Index: React.FC = () => {
               <div className="flex items-center gap-4">
                 <a 
                   href="/login" 
-                  className="text-sm text-gray-400 hover:text-green-400 transition-colors"
+                  className="flex items-center gap-2 text-sm text-gray-400 hover:text-green-400 transition-colors"
                 >
+                  <LogIn className="h-4 w-4" />
                   Management Login
                 </a>
                 <a 

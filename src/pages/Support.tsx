@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Phone, Mail, MessageCircle, Clock, MapPin, ArrowLeft, Send } from 'lucide-react';
+import { Phone, Mail, MessageCircle, Clock, MapPin, ArrowLeft, Send, LogIn } from 'lucide-react';
 import { Trophy } from 'lucide-react';
 
 const Support = () => {
@@ -262,8 +262,9 @@ const Support = () => {
               <div className="flex items-center gap-4">
                 <a 
                   href="/login" 
-                  className="text-sm text-gray-400 hover:text-green-400 transition-colors"
+                  className="flex items-center gap-2 text-sm text-gray-400 hover:text-green-400 transition-colors"
                 >
+                  <LogIn className="h-4 w-4" />
                   Management Login
                 </a>
                 <a 
