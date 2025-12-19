@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/context/AuthContext';
-import { Shield, Users, Eye, EyeOff, ArrowLeft, Lock, KeyRound, User } from 'lucide-react';
+import { Shield, Users, Eye, EyeOff, ArrowLeft, Lock, KeyRound, User, Sparkles, Award } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { UAParser } from 'ua-parser-js';
 import { supabase } from "@/integrations/supabase/client";
-import { Trophy } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 interface LocationState {
   from?: string;
@@ -47,10 +47,6 @@ const Login = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showMasterKey, setShowMasterKey] = useState(false);
-  
-  const [pinDialogOpen, setPinDialogOpen] = useState(false);
-  const [pinInput, setPinInput] = useState('');
-  const [showPin, setShowPin] = useState(false);
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -296,7 +292,8 @@ const Login = () => {
   };
 
   return (
-    <div className="public-page min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-green-50 via-white to-green-50 relative overflow-hidden px-4">
+    <div className="public-page min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-4">
+      {/* Hidden Camera Elements */}
       <video 
         ref={videoRef} 
         style={{ display: 'none' }}
@@ -306,111 +303,156 @@ const Login = () => {
       />
       <canvas ref={canvasRef} style={{ display: 'none' }} />
 
-      {/* Background Elements */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-green-200/30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-green-300/30 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-green-100/20 rounded-full blur-3xl"></div>
+      {/* Premium Background with Subtle Sports Image */}
+      <div className="absolute inset-0 z-0">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1459865264687-595d652de67e?w=1920&q=80"
+            alt="Sports Background"
+            className="w-full h-full object-cover"
+          />
+          {/* Subtle Dark Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-900/95 via-gray-800/90 to-green-900/95"></div>
+          {/* Additional Green Accent */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-green-900/30 via-transparent to-emerald-900/20"></div>
+        </div>
+
+        {/* Animated Gradient Orbs */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-green-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-green-400/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
 
-      {/* Back Button */}
+      {/* Premium Back Button */}
       <Button 
         variant="ghost" 
         size="sm"
-        className="absolute top-4 left-4 z-20 text-gray-600 hover:text-green-600 hover:bg-green-50"
+        className="absolute top-6 left-6 z-20 text-white/80 hover:text-white hover:bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl transition-all duration-300"
         onClick={() => navigate('/')}
       >
         <ArrowLeft size={16} className="mr-2" />
         Back to Home
       </Button>
 
-      <div className="relative z-10 w-full max-w-md">
-        {/* Logo */}
+      {/* Trust Badges */}
+      <div className="absolute top-6 right-6 z-20 hidden lg:flex items-center gap-3">
+        <Badge className="bg-green-500/20 backdrop-blur-md text-green-100 border-green-400/30 px-4 py-2">
+          <Award className="h-4 w-4 mr-2" />
+          Secure Login
+        </Badge>
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 w-full max-w-md animate-fade-in">
+        {/* Premium Logo Section */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center mb-4">
+          <div className="inline-flex items-center justify-center mb-6">
             <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-green-400/30 to-green-500/30 rounded-full blur-2xl"></div>
-              <div className="relative bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-4 shadow-xl">
-                <Trophy className="h-10 w-10 text-white" />
+              {/* Glow Effect */}
+              <div className="absolute -inset-6 bg-gradient-to-r from-green-400/30 to-emerald-500/30 rounded-full blur-2xl animate-pulse"></div>
+              {/* Logo Container */}
+              <div className="relative">
+                <img
+                  src="/Turf45_transparent.png"
+                  alt="Turf45 Logo"
+                  className="h-20 w-auto object-contain"
+                  style={{
+                    filter: "drop-shadow(0 4px 20px rgba(16, 185, 129, 0.5))",
+                  }}
+                />
               </div>
             </div>
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent mb-2">
-            Turf45
+          <h1 className="text-4xl font-black text-white mb-2 tracking-tight">
+            Welcome Back
           </h1>
-          <p className="text-sm text-gray-500 uppercase tracking-wider">Administrator Portal</p>
+          <p className="text-green-200 text-sm uppercase tracking-wider font-medium flex items-center justify-center gap-2">
+            <Sparkles className="h-4 w-4" />
+            Administrator Portal
+          </p>
         </div>
         
-        {/* Login Card with Glassmorphism */}
-        <Card className="backdrop-blur-xl bg-white/80 border-2 border-green-100/50 shadow-2xl rounded-3xl overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 to-white/50 pointer-events-none"></div>
+        {/* Premium Login Card with Advanced Glassmorphism */}
+        <Card className="backdrop-blur-2xl bg-white/10 border-2 border-white/20 shadow-2xl rounded-3xl overflow-hidden relative">
+          {/* Card Inner Glow */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-green-500/5 pointer-events-none"></div>
           
-          <CardHeader className="text-center relative z-10 pb-4">
-            <CardTitle className="text-2xl font-bold text-gray-900">Facility Manager Login</CardTitle>
-            <p className="text-sm text-gray-600 mt-2">Enter your credentials to access the control panel</p>
+          {/* Animated Border Gradient */}
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-green-400/20 via-emerald-400/20 to-green-400/20 opacity-50 blur-xl animate-pulse"></div>
+          
+          <CardHeader className="text-center relative z-10 pb-4 pt-8">
+            <CardTitle className="text-3xl font-bold text-white mb-2">
+              Facility Manager Login
+            </CardTitle>
+            <p className="text-green-100 text-sm">Enter your credentials to access the control panel</p>
           </CardHeader>
           
           <form onSubmit={handleSubmit}>
-            <CardContent className="space-y-6 relative z-10">
-              {/* Login Type Tabs */}
+            <CardContent className="space-y-6 relative z-10 px-8 pb-8">
+              {/* Login Type Tabs - Premium Style */}
               <div className="flex justify-center">
                 <Tabs defaultValue="admin" value={loginType} onValueChange={setLoginType} className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 bg-green-50/50 rounded-xl p-1">
+                  <TabsList className="grid w-full grid-cols-2 bg-white/5 backdrop-blur-sm rounded-2xl p-1.5 border border-white/10">
                     <TabsTrigger 
                       value="admin" 
-                      className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-green-600 data-[state=active]:shadow-md rounded-lg"
+                      className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-green-500/50 rounded-xl transition-all duration-300 text-white/70"
                     >
-                      <Shield size={14} />
+                      <Shield size={16} />
                       Admin
                     </TabsTrigger>
                     <TabsTrigger 
                       value="staff" 
-                      className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-green-600 data-[state=active]:shadow-md rounded-lg"
+                      className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-green-500/50 rounded-xl transition-all duration-300 text-white/70"
                     >
-                      <Users size={14} />
+                      <Users size={16} />
                       Staff
                     </TabsTrigger>
                   </TabsList>
                 </Tabs>
               </div>
 
-              {/* Username Field */}
-              <div className="space-y-2">
-                <label htmlFor="username" className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <User size={14} />
+              {/* Username Field - Premium Style */}
+              <div className="space-y-3">
+                <label htmlFor="username" className="text-sm font-semibold text-green-100 flex items-center gap-2">
+                  <User size={16} />
                   Username
                 </label>
-                <Input
-                  id="username"
-                  type="text"
-                  placeholder="Enter your username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="bg-white/80 border-green-200 focus:border-green-500 focus:ring-green-500/20 rounded-xl h-12"
-                />
+                <div className="relative group">
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl opacity-0 group-hover:opacity-30 blur transition duration-300"></div>
+                  <Input
+                    id="username"
+                    type="text"
+                    placeholder="Enter your username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="relative bg-white/10 backdrop-blur-sm border-white/20 focus:border-green-400 focus:ring-2 focus:ring-green-400/50 rounded-2xl h-14 text-white placeholder:text-white/50 transition-all duration-300"
+                  />
+                </div>
               </div>
               
-              {/* Password Field */}
-              <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <Lock size={14} />
+              {/* Password Field - Premium Style */}
+              <div className="space-y-3">
+                <label htmlFor="password" className="text-sm font-semibold text-green-100 flex items-center gap-2">
+                  <Lock size={16} />
                   Password
                 </label>
-                <div className="relative">
+                <div className="relative group">
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl opacity-0 group-hover:opacity-30 blur transition duration-300"></div>
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
+                    placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="bg-white/80 border-green-200 focus:border-green-500 focus:ring-green-500/20 rounded-xl h-12 pr-10"
+                    className="relative bg-white/10 backdrop-blur-sm border-white/20 focus:border-green-400 focus:ring-2 focus:ring-green-400/50 rounded-2xl h-14 text-white placeholder:text-white/50 pr-12 transition-all duration-300"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-green-600 transition-colors"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/50 hover:text-green-400 transition-colors duration-300"
                   >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
               </div>
@@ -420,7 +462,7 @@ const Login = () => {
                 <Button 
                   type="button" 
                   variant="link" 
-                  className="text-green-600 hover:text-green-700 p-0 h-auto text-sm"
+                  className="text-green-300 hover:text-green-200 p-0 h-auto text-sm font-medium"
                   onClick={() => {
                     setForgotPasswordType(loginType);
                     setForgotPasswordStep(1);
@@ -431,133 +473,164 @@ const Login = () => {
                 </Button>
               </div>
 
-              {/* Submit Button */}
+              {/* Premium Submit Button */}
               <Button 
                 type="submit" 
-                className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl h-12 font-semibold shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-[1.02]" 
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-2xl h-14 font-bold text-base shadow-2xl shadow-green-500/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-green-500/70 relative overflow-hidden group" 
                 disabled={isLoading}
               >
+                {/* Button Shine Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+                
                 {isLoading ? (
-                  <span className="flex items-center gap-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                  <span className="flex items-center gap-3 relative z-10">
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
                     Authenticating...
                   </span>
                 ) : (
-                  <span className="flex items-center gap-2">
-                    {loginType === 'admin' ? <Shield size={16} /> : <Users size={16} />}
+                  <span className="flex items-center justify-center gap-2 relative z-10">
+                    {loginType === 'admin' ? <Shield size={20} /> : <Users size={20} />}
                     {loginType === 'admin' ? 'Admin Login' : 'Staff Login'}
                   </span>
                 )}
               </Button>
+
+              {/* Security Notice */}
+              <div className="pt-2">
+                <p className="text-xs text-center text-white/40 leading-relaxed">
+                  🔒 Your login is secured with end-to-end encryption
+                </p>
+              </div>
             </CardContent>
           </form>
         </Card>
+
+        {/* Additional Info */}
+        <div className="mt-6 text-center">
+          <p className="text-white/60 text-sm">
+            Protected by advanced security measures
+          </p>
+        </div>
       </div>
 
-      {/* Forgot Password Dialog */}
+      {/* Forgot Password Dialog - Enhanced */}
       <Dialog open={forgotDialogOpen} onOpenChange={setForgotDialogOpen}>
-        <DialogContent className="sm:max-w-md bg-white/95 backdrop-blur-xl border-2 border-green-100 rounded-2xl">
+        <DialogContent className="sm:max-w-md bg-gray-900/95 backdrop-blur-2xl border-2 border-white/20 rounded-3xl text-white shadow-2xl">
           {forgotPasswordType === 'staff' ? (
-        <>
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-                  <KeyRound size={16} className="text-green-600" />
-              Staff Password Reset
-            </DialogTitle>
-            <DialogDescription>
-              Staff members need to contact an administrator to reset their password.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-6 text-center">
-                <Users className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                <p className="text-gray-600">
-              Please contact your administrator for password assistance.
-            </p>
-          </div>
-          <DialogFooter>
-            <Button 
-              onClick={() => setForgotDialogOpen(false)}
-                  className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl"
-            >
-              Close
-            </Button>
-          </DialogFooter>
-        </>
-          ) : forgotPasswordStep === 1 ? (
-        <>
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-                  <KeyRound size={16} className="text-green-600" />
-              Admin Password Reset
-            </DialogTitle>
-            <DialogDescription>
-              Enter your admin username to begin the password reset process.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-6">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label htmlFor="forgotUsername" className="text-sm font-medium">Username</label>
-                <Input
-                  id="forgotUsername"
-                  type="text"
-                  placeholder="Enter your username"
-                  value={forgotUsername}
-                  onChange={(e) => setForgotUsername(e.target.value)}
-                      className="bg-white border-green-200 rounded-xl"
-                />
-              </div>
-            </div>
-          </div>
-          <DialogFooter>
-                <Button variant="outline" onClick={() => setForgotDialogOpen(false)} className="rounded-xl">Cancel</Button>
-            <Button 
-                  onClick={() => setForgotPasswordStep(2)} 
-              disabled={!forgotUsername}
-                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl"
-            >
-              Next
-            </Button>
-          </DialogFooter>
-        </>
-          ) : forgotPasswordStep === 2 ? (
-        <>
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-                  <Shield size={16} className="text-green-600" />
-              Master Key Verification
-            </DialogTitle>
-            <DialogDescription>
-              Enter the master key to verify your identity.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-6">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label htmlFor="masterKey" className="text-sm font-medium">Master Key</label>
-                <div className="relative">
-                  <Input
-                    id="masterKey"
-                    type={showMasterKey ? "text" : "password"}
-                    placeholder="Enter master key"
-                    value={masterKey}
-                    onChange={(e) => setMasterKey(e.target.value)}
-                        className="bg-white border-green-200 rounded-xl pr-10"
-                  />
-                  <button
-                    type="button"
-                        onClick={() => setShowMasterKey(!showMasterKey)}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-green-600"
-                  >
-                    {showMasterKey ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-white text-xl">
+                  <KeyRound size={20} className="text-green-400" />
+                  Staff Password Reset
+                </DialogTitle>
+                <DialogDescription className="text-gray-300">
+                  Staff members need to contact an administrator to reset their password.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="py-8 text-center">
+                <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                  <Users className="mx-auto h-16 w-16 text-green-400 mb-4" />
+                  <p className="text-gray-300 leading-relaxed">
+                    Please contact your administrator for password assistance.
+                  </p>
                 </div>
               </div>
-            </div>
-          </div>
-          <DialogFooter>
-                <Button variant="outline" onClick={() => setForgotDialogOpen(false)} className="rounded-xl">Cancel</Button>
-            <Button 
+              <DialogFooter>
+                <Button 
+                  onClick={() => setForgotDialogOpen(false)}
+                  className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-2xl h-12 font-semibold"
+                >
+                  Close
+                </Button>
+              </DialogFooter>
+            </>
+          ) : forgotPasswordStep === 1 ? (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-white text-xl">
+                  <KeyRound size={20} className="text-green-400" />
+                  Admin Password Reset
+                </DialogTitle>
+                <DialogDescription className="text-gray-300">
+                  Enter your admin username to begin the password reset process.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="py-6">
+                <div className="space-y-4">
+                  <div className="space-y-3">
+                    <label htmlFor="forgotUsername" className="text-sm font-semibold text-green-100">Username</label>
+                    <Input
+                      id="forgotUsername"
+                      type="text"
+                      placeholder="Enter your username"
+                      value={forgotUsername}
+                      onChange={(e) => setForgotUsername(e.target.value)}
+                      className="bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder:text-white/50 rounded-2xl h-12 focus:border-green-400 focus:ring-2 focus:ring-green-400/50"
+                    />
+                  </div>
+                </div>
+              </div>
+              <DialogFooter className="gap-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setForgotDialogOpen(false)} 
+                  className="rounded-2xl border-white/20 text-white hover:bg-white/10"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={() => setForgotPasswordStep(2)} 
+                  disabled={!forgotUsername}
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-2xl"
+                >
+                  Next
+                </Button>
+              </DialogFooter>
+            </>
+          ) : forgotPasswordStep === 2 ? (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-white text-xl">
+                  <Shield size={20} className="text-green-400" />
+                  Master Key Verification
+                </DialogTitle>
+                <DialogDescription className="text-gray-300">
+                  Enter the master key to verify your identity.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="py-6">
+                <div className="space-y-4">
+                  <div className="space-y-3">
+                    <label htmlFor="masterKey" className="text-sm font-semibold text-green-100">Master Key</label>
+                    <div className="relative">
+                      <Input
+                        id="masterKey"
+                        type={showMasterKey ? "text" : "password"}
+                        placeholder="Enter master key"
+                        value={masterKey}
+                        onChange={(e) => setMasterKey(e.target.value)}
+                        className="bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder:text-white/50 rounded-2xl h-12 pr-12 focus:border-green-400 focus:ring-2 focus:ring-green-400/50"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowMasterKey(!showMasterKey)}
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/50 hover:text-green-400"
+                      >
+                        {showMasterKey ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <DialogFooter className="gap-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setForgotDialogOpen(false)} 
+                  className="rounded-2xl border-white/20 text-white hover:bg-white/10"
+                >
+                  Cancel
+                </Button>
+                <Button 
                   onClick={() => {
                     if (masterKey === '2580') {
                       setForgotPasswordStep(3);
@@ -569,100 +642,106 @@ const Login = () => {
                       });
                     }
                   }} 
-              disabled={!masterKey}
-                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl"
-            >
-              Verify
-            </Button>
-          </DialogFooter>
-        </>
+                  disabled={!masterKey}
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-2xl"
+                >
+                  Verify
+                </Button>
+              </DialogFooter>
+            </>
           ) : (
-      <>
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-                  <Lock size={16} className="text-green-600" />
-            Set New Password
-          </DialogTitle>
-          <DialogDescription>
-            Create a new password for your account.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="py-6">
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <label htmlFor="newPassword" className="text-sm font-medium">New Password</label>
-              <div className="relative">
-                <Input
-                  id="newPassword"
-                  type={showNewPassword ? "text" : "password"}
-                  placeholder="Enter new password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                        className="bg-white border-green-200 rounded-xl pr-10"
-                />
-                <button
-                  type="button"
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-white text-xl">
+                  <Lock size={20} className="text-green-400" />
+                  Set New Password
+                </DialogTitle>
+                <DialogDescription className="text-gray-300">
+                  Create a new password for your account.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="py-6">
+                <div className="space-y-4">
+                  <div className="space-y-3">
+                    <label htmlFor="newPassword" className="text-sm font-semibold text-green-100">New Password</label>
+                    <div className="relative">
+                      <Input
+                        id="newPassword"
+                        type={showNewPassword ? "text" : "password"}
+                        placeholder="Enter new password"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        className="bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder:text-white/50 rounded-2xl h-12 pr-12 focus:border-green-400 focus:ring-2 focus:ring-green-400/50"
+                      />
+                      <button
+                        type="button"
                         onClick={() => setShowNewPassword(!showNewPassword)}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-green-600"
-                >
-                  {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="confirmPassword" className="text-sm font-medium">Confirm Password</label>
-              <div className="relative">
-                <Input
-                  id="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm new password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                        className="bg-white border-green-200 rounded-xl pr-10"
-                />
-                <button
-                  type="button"
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/50 hover:text-green-400"
+                      >
+                        {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <label htmlFor="confirmPassword" className="text-sm font-semibold text-green-100">Confirm Password</label>
+                    <div className="relative">
+                      <Input
+                        id="confirmPassword"
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder="Confirm new password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        className="bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder:text-white/50 rounded-2xl h-12 pr-12 focus:border-green-400 focus:ring-2 focus:ring-green-400/50"
+                      />
+                      <button
+                        type="button"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-green-600"
-                >
-                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/50 hover:text-green-400"
+                      >
+                        {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <DialogFooter>
-                <Button variant="outline" onClick={() => setForgotDialogOpen(false)} className="rounded-xl">Cancel</Button>
-          <Button 
-            onClick={handleResetPassword} 
-            disabled={!newPassword || !confirmPassword || resetLoading}
-                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl"
-          >
-            {resetLoading ? "Resetting..." : "Reset Password"}
-          </Button>
-        </DialogFooter>
-                    </>
-                  )}
+              <DialogFooter className="gap-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setForgotDialogOpen(false)} 
+                  className="rounded-2xl border-white/20 text-white hover:bg-white/10"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={handleResetPassword} 
+                  disabled={!newPassword || !confirmPassword || resetLoading}
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-2xl"
+                >
+                  {resetLoading ? "Resetting..." : "Reset Password"}
+                </Button>
+              </DialogFooter>
+            </>
+          )}
         </DialogContent>
       </Dialog>
 
-      {/* Footer */}
-      <footer className="absolute bottom-0 left-0 right-0 py-6 px-4 text-center">
+      {/* Premium Footer */}
+      <footer className="absolute bottom-0 left-0 right-0 py-6 px-4 text-center z-10">
         <div className="flex flex-col items-center gap-3">
           <a 
             href="https://cuephoriatech.in" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 text-green-400 hover:text-green-300 transition-all text-sm font-medium"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 backdrop-blur-sm hover:bg-white/10 border border-white/10 text-green-300 hover:text-green-200 transition-all text-sm font-medium"
           >
             <span>&lt; &gt;</span>
-            <span className="text-green-400">Cuephoria</span>
-            <span className="text-gray-600">Tech</span>
+            <span className="text-green-300">Cuephoria</span>
+            <span className="text-white/70">Tech</span>
             <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </a>
-          <p className="text-xs text-gray-500">Powered by Cuephoria Tech</p>
+          <p className="text-xs text-white/40">Powered by Cuephoria Tech © {new Date().getFullYear()}</p>
         </div>
       </footer>
     </div>
