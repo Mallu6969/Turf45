@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { usePOS } from '@/context/POSContext';
 import StationCard from '@/components/StationCard';
 import { Card, CardContent } from '@/components/ui/card';
-import { Gamepad2, Plus, Table2, Headset } from 'lucide-react';
+import { Trophy, Plus, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AddStationDialog from '@/components/AddStationDialog';
 import PinVerificationDialog from '@/components/PinVerificationDialog';
@@ -11,21 +11,16 @@ const Stations = () => {
   const { stations } = usePOS();
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openPinDialog, setOpenPinDialog] = useState(false);
-  
-  // Feature flag to enable/disable VR stations section
-  const ENABLE_VR_STATIONS = false; // Set to true to show VR Gaming Stations section
 
-  // Separate stations by type
-  const ps5Stations = stations.filter(station => station.type === 'ps5');
-  const ballStations = stations.filter(station => station.type === '8ball');
-  const vrStations = stations.filter(station => station.type === 'vr');
+  // Separate courts by type
+  const turfCourts = stations.filter(station => station.type === 'turf');
+  const pickleballCourts = stations.filter(station => station.type === 'pickleball');
 
-  // Count active stations
-  const activePs5 = ps5Stations.filter(s => s.isOccupied).length;
-  const activeBall = ballStations.filter(s => s.isOccupied).length;
-  const activeVr = vrStations.filter(s => s.isOccupied).length;
+  // Count active courts
+  const activeTurf = turfCourts.filter(s => s.isOccupied).length;
+  const activePickleball = pickleballCourts.filter(s => s.isOccupied).length;
 
-  const handleAddStationClick = () => {
+  const handleAddCourtClick = () => {
     setOpenPinDialog(true);
   };
 
@@ -36,13 +31,13 @@ const Stations = () => {
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center justify-between animate-slide-down">
-        <h2 className="text-3xl font-bold tracking-tight gradient-text font-heading">Gaming Stations</h2>
+        <h2 className="text-3xl font-bold tracking-tight gradient-text font-heading">Court Management</h2>
         <div className="flex space-x-2">
           <Button 
             className="bg-cuephoria-purple hover:bg-cuephoria-purple/80"
-            onClick={handleAddStationClick}
+            onClick={handleAddCourtClick}
           >
-            <Plus className="mr-2 h-4 w-4" /> Add Station
+            <Plus className="mr-2 h-4 w-4" /> Add Court
           </Button>
         </div>
       </div>
@@ -53,7 +48,7 @@ const Stations = () => {
         onOpenChange={setOpenPinDialog}
         onSuccess={handlePinSuccess}
         title="Admin Access Required"
-        description="Enter the admin PIN to add a new game station"
+        description="Enter the admin PIN to add a new sports court"
       />
 
       {/* Add Station Dialog */}
@@ -66,56 +61,46 @@ const Stations = () => {
         <Card className="bg-gradient-to-r from-green-900/20 to-green-700/10 border-green-500/30 border animate-fade-in">
           <CardContent className="p-4 flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Pool Tables</p>
-              <p className="text-2xl font-bold">{activeBall} / {ballStations.length} Active</p>
+              <p className="text-sm text-muted-foreground">Main Turf Court</p>
+              <p className="text-2xl font-bold">{activeTurf} / {turfCourts.length} Active</p>
+              <p className="text-xs text-green-500 mt-1">Football & Cricket</p>
             </div>
             <div className="rounded-full bg-green-900/30 p-3">
-              <Table2 className="h-6 w-6 text-green-500" />
+              <Trophy className="h-6 w-6 text-green-500" />
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-gradient-to-r from-cuephoria-purple/20 to-cuephoria-lightpurple/20 border-cuephoria-purple/30 border animate-fade-in delay-100">
+        <Card className="bg-gradient-to-r from-blue-900/20 to-blue-700/10 border-blue-500/30 border animate-fade-in delay-100">
           <CardContent className="p-4 flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">PlayStation 5</p>
-              <p className="text-2xl font-bold">{activePs5} / {ps5Stations.length} Active</p>
+              <p className="text-sm text-muted-foreground">Pickleball Court</p>
+              <p className="text-2xl font-bold">{activePickleball} / {pickleballCourts.length} Active</p>
+              <p className="text-xs text-blue-400 mt-1">Indoor Court</p>
             </div>
-            <div className="rounded-full bg-cuephoria-purple/20 p-3">
-              <Gamepad2 className="h-6 w-6 text-cuephoria-lightpurple" />
+            <div className="rounded-full bg-blue-900/30 p-3">
+              <Target className="h-6 w-6 text-blue-400" />
             </div>
           </CardContent>
         </Card>
-
-        {/* VR Gaming Card - Hidden by default */}
-        {ENABLE_VR_STATIONS && (
-          <Card className="bg-gradient-to-r from-blue-900/20 to-blue-700/10 border-blue-500/30 border animate-fade-in delay-200">
-            <CardContent className="p-4 flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">VR Gaming</p>
-                <p className="text-2xl font-bold">{activeVr} / {vrStations.length} Active</p>
-              </div>
-              <div className="rounded-full bg-blue-900/30 p-3">
-                <Headset className="h-6 w-6 text-blue-400" />
-              </div>
-            </CardContent>
-          </Card>
-        )}
       </div>
 
       <div className="space-y-6">
-        {/* Pool Tables Section - First */}
+        {/* Main Turf Section - First */}
         <div className="animate-slide-up delay-200">
           <div className="flex items-center mb-4">
-            <Table2 className="h-5 w-5 text-green-500 mr-2" />
-            <h3 className="text-xl font-semibold font-heading">Pool Tables</h3>
+            <Trophy className="h-5 w-5 text-green-500 mr-2" />
+            <h3 className="text-xl font-semibold font-heading">Main Turf Court</h3>
             <span className="ml-2 bg-green-800/30 text-green-400 text-xs px-2 py-1 rounded-full">
-              {activeBall} active
+              {activeTurf} active
+            </span>
+            <span className="ml-2 text-xs text-gray-400">
+              FIFA-approved for Football & Cricket
             </span>
           </div>
           
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
-            {ballStations
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+            {turfCourts
               .sort((a, b) => {
                 const numA = parseInt(a.name.replace(/\D/g, '')) || 0;
                 const numB = parseInt(b.name.replace(/\D/g, '')) || 0;
@@ -130,58 +115,33 @@ const Stations = () => {
           </div>
         </div>
 
-        {/* PlayStation Section - Second */}
+        {/* Pickleball Section - Second */}
         <div className="animate-slide-up delay-300">
           <div className="flex items-center mb-4">
-            <Gamepad2 className="h-5 w-5 text-cuephoria-lightpurple mr-2" />
-            <h3 className="text-xl font-semibold font-heading">PlayStation 5 Consoles</h3>
-            <span className="ml-2 bg-cuephoria-purple/20 text-cuephoria-lightpurple text-xs px-2 py-1 rounded-full">
-              {activePs5} active
+            <Target className="h-5 w-5 text-blue-400 mr-2" />
+            <h3 className="text-xl font-semibold font-heading">Pickleball Court</h3>
+            <span className="ml-2 bg-blue-800/30 text-blue-400 text-xs px-2 py-1 rounded-full">
+              {activePickleball} active
+            </span>
+            <span className="ml-2 text-xs text-gray-400">
+              Indoor court
             </span>
           </div>
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {ps5Stations
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+            {pickleballCourts
               .sort((a, b) => {
                 const numA = parseInt(a.name.replace(/\D/g, '')) || 0;
                 const numB = parseInt(b.name.replace(/\D/g, '')) || 0;
                 return numA - numB;
               })
               .map((station, index) => (
-                <div key={station.id} className="animate-scale-in" style={{animationDelay: `${(index + ballStations.length) * 100}ms`}}>
+                <div key={station.id} className="animate-scale-in" style={{animationDelay: `${(index + turfCourts.length) * 100}ms`}}>
                   <StationCard station={station} />
                 </div>
               ))
             }
           </div>
         </div>
-
-        {/* VR Gaming Section - Hidden by default, can be enabled by setting ENABLE_VR_STATIONS to true */}
-        {ENABLE_VR_STATIONS && (
-          <div className="animate-slide-up delay-400">
-            <div className="flex items-center mb-4">
-              <Headset className="h-5 w-5 text-blue-400 mr-2" />
-              <h3 className="text-xl font-semibold font-heading">VR Gaming Stations</h3>
-              <span className="ml-2 bg-blue-800/30 text-blue-400 text-xs px-2 py-1 rounded-full">
-                {activeVr} active
-              </span>
-            </div>
-            
-            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              {vrStations
-                .sort((a, b) => {
-                  const numA = parseInt(a.name.replace(/\D/g, '')) || 0;
-                  const numB = parseInt(b.name.replace(/\D/g, '')) || 0;
-                  return numA - numB;
-                })
-                .map((station, index) => (
-                  <div key={station.id} className="animate-scale-in" style={{animationDelay: `${(index + ps5Stations.length + ballStations.length) * 100}ms`}}>
-                    <StationCard station={station} />
-                  </div>
-                ))
-              }
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

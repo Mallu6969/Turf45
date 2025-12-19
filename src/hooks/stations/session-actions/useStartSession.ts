@@ -20,11 +20,13 @@ export const useStartSession = ({
     stationId: string, 
     customerId: string,
     finalRate?: number,
-    couponCode?: string
+    couponCode?: string,
+    sport?: 'football' | 'cricket' | 'pickleball'
   ): Promise<Session | undefined> => {
     try {
       console.log("🚀 Starting session for station:", stationId, "for customer:", customerId);
       console.log("🎟️ Coupon details:", { finalRate, couponCode });
+      console.log("⚽ Sport selected:", sport || 'Not specified');
       
       const station = stations.find(s => s.id === stationId);
       if (!station) {
@@ -71,6 +73,7 @@ export const useStartSession = ({
         originalRate: originalRate,
         couponCode: couponCode,
         discountAmount: discountAmount,
+        sport: sport,
       };
       
       console.log("📦 Created new session object:", JSON.stringify(newSession, null, 2));
@@ -79,7 +82,7 @@ export const useStartSession = ({
       setSessions(prev => [...prev, newSession]);
       setStations(prev => prev.map(s => 
         s.id === stationId 
-          ? { ...s, isOccupied: true, currentSession: newSession } 
+          ? { ...s, isOccupied: true, currentSession: newSession, currentSport: sport } 
           : s
       ));
       
@@ -102,6 +105,7 @@ export const useStartSession = ({
             original_rate: originalRate,
             coupon_code: couponCode,
             discount_amount: discountAmount,
+            sport: sport,
           } as any)
           .select()
           .single();
@@ -149,7 +153,8 @@ export const useStartSession = ({
             .from('stations')
             .update({ 
               is_occupied: true,
-              currentsession: newSession
+              currentsession: newSession,
+              current_sport: sport
             })
             .eq('id', stationId)
             .select();

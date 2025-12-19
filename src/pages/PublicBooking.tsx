@@ -33,6 +33,8 @@ import {
   CreditCard,
   Headset,
   LogIn,
+  Trophy,
+  Target,
 } from "lucide-react";
 import {
   Dialog,
@@ -46,7 +48,7 @@ import { format, parse, getDay } from "date-fns";
 /* =========================
    Types
    ========================= */
-type StationType = "ps5" | "8ball" | "vr";
+type StationType = "turf" | "pickleball";
 interface Station {
   id: string;
   name: string;
@@ -633,14 +635,11 @@ export default function PublicBooking() {
       return;
     }
 
-    const selectedHas8Ball = selectedStations.some(
-      (id) => stations.find((s) => s.id === id && s.type === "8ball")
+    const selectedHasTurf = selectedStations.some(
+      (id) => stations.find((s) => s.id === id && s.type === "turf")
     );
-    const selectedHasPS5 = selectedStations.some(
-      (id) => stations.find((s) => s.id === id && s.type === "ps5")
-    );
-    const selectedHasVR = selectedStations.some(
-      (id) => stations.find((s) => s.id === id && s.type === "vr")
+    const selectedHasPickleball = selectedStations.some(
+      (id) => stations.find((s) => s.id === id && s.type === "pickleball")
     );
     const happyHourActive = isHappyHour(selectedDate, selectedSlot);
 
@@ -807,13 +806,13 @@ export default function PublicBooking() {
         totalDiscount += d;
         breakdown["8-Ball (HH99)"] = d;
       }
-      const ps5s = stations.filter(
-        (s) => selectedStations.includes(s.id) && s.type === "ps5"
+      const turfs = stations.filter(
+        (s) => selectedStations.includes(s.id) && s.type === "turf"
       );
-      const sum2 = ps5s.reduce((x, s) => x + s.hourly_rate, 0);
-      const d2 = sum2 - ps5s.length * 75;
+      const sum2 = turfs.reduce((x, s) => x + s.hourly_rate, 0);
+      const d2 = sum2 * 0.5; // 50% off for turf
       totalDiscount += d2;
-      breakdown["PS5 (HH99+NIT50)"] = d2;
+      breakdown["Turf (HH99+NIT50)"] = d2;
     } else {
       if (appliedCoupons["8ball"] === "HH99") {
         const eightBalls = stations.filter(
@@ -827,15 +826,15 @@ export default function PublicBooking() {
         }
       }
 
-      if (appliedCoupons["ps5"] === "HH99") {
-        const ps5s = stations.filter(
-          (s) => selectedStations.includes(s.id) && s.type === "ps5"
+      if (appliedCoupons["turf"] === "HH99") {
+        const turfs = stations.filter(
+          (s) => selectedStations.includes(s.id) && s.type === "turf"
         );
-        const sum = ps5s.reduce((x, s) => x + s.hourly_rate, 0);
-        const d = sum - ps5s.length * 99;
+        const sum = turfs.reduce((x, s) => x + s.hourly_rate, 0);
+        const d = sum * 0.25; // 25% off for happy hour
         if (d > 0) {
           totalDiscount += d;
-          breakdown["PS5 (HH99)"] = d;
+          breakdown["Turf (HH99)"] = d;
         }
       }
 
@@ -849,24 +848,24 @@ export default function PublicBooking() {
         breakdown[`8-Ball (${appliedCoupons["8ball"]})`] = d;
       }
 
-      if (appliedCoupons["ps5"] === "NIT50" || appliedCoupons["ps5"] === "ALMA50") {
-        const ps5s = stations.filter(
-          (s) => selectedStations.includes(s.id) && s.type === "ps5"
+      if (appliedCoupons["turf"] === "NIT50" || appliedCoupons["turf"] === "ALMA50") {
+        const turfs = stations.filter(
+          (s) => selectedStations.includes(s.id) && s.type === "turf"
         );
-        const sum = ps5s.reduce((x, s) => x + s.hourly_rate, 0);
+        const sum = turfs.reduce((x, s) => x + s.hourly_rate, 0);
         const d = sum * 0.5;
         totalDiscount += d;
-        breakdown[`PS5 (${appliedCoupons["ps5"]})`] = d;
+        breakdown[`Turf (${appliedCoupons["turf"]})`] = d;
       }
 
-      if (appliedCoupons["vr"] === "NIT50" || appliedCoupons["vr"] === "ALMA50") {
-        const vrStations = stations.filter(
-          (s) => selectedStations.includes(s.id) && s.type === "vr"
+      if (appliedCoupons["pickleball"] === "NIT50" || appliedCoupons["pickleball"] === "ALMA50") {
+        const pickleballCourts = stations.filter(
+          (s) => selectedStations.includes(s.id) && s.type === "pickleball"
         );
-        const sum = vrStations.reduce((x, s) => x + s.hourly_rate, 0);
+        const sum = pickleballCourts.reduce((x, s) => x + s.hourly_rate, 0);
         const d = sum * 0.5;
         totalDiscount += d;
-        breakdown[`VR (${appliedCoupons["vr"]})`] = d;
+        breakdown[`Pickleball (${appliedCoupons["pickleball"]})`] = d;
       }
     }
 
@@ -1861,12 +1860,12 @@ export default function PublicBooking() {
                         return (
                           <div key={id} className="flex items-center gap-2">
                             <div className="w-5 h-5 rounded-md bg-nerfturf-purple/20 border border-white/10 flex items-center justify-center">
-                              {s.type === "ps5" ? (
-                                <Gamepad2 className="h-3.5 w-3.5 text-nerfturf-purple" />
-                              ) : s.type === "vr" ? (
-                                <Headset className="h-3.5 w-3.5 text-blue-400" />
+                              {s.type === "turf" ? (
+                                <Trophy className="h-3.5 w-3.5 text-green-500" />
+                              ) : s.type === "pickleball" ? (
+                                <Target className="h-3.5 w-3.5 text-blue-400" />
                               ) : (
-                                <Timer className="h-3.5 w-3.5 text-green-400" />
+                                <Timer className="h-3.5 w-3.5 text-gray-400" />
                               )}
                             </div>
                             <Badge className="bg-white/5 border-white/10 text-gray-200 rounded-full px-2.5 py-1">

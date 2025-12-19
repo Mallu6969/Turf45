@@ -37,10 +37,11 @@ export interface Customer {
 export interface Station {
   id: string;
   name: string;
-  type: 'ps5' | '8ball' | 'vr'; // UPDATED: Added 'vr'
+  type: 'turf' | 'pickleball'; // Turf for Football/Cricket, Pickleball court
   hourlyRate: number;
   isOccupied: boolean;
   currentSession: Session | null;
+  currentSport?: 'football' | 'cricket' | 'pickleball'; // Track which sport is being played on turf
 }
 
 export interface Session {
@@ -54,6 +55,7 @@ export interface Session {
   couponCode?: string;          // ADDED: Coupon applied to session
   originalRate?: number;        // ADDED: Original rate before discount
   discountAmount?: number;      // ADDED: Amount discounted
+  sport?: 'football' | 'cricket' | 'pickleball'; // ADDED: Sport being played
 }
 
 export interface CartItem {

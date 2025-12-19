@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Gift, Tag, Clock, AlertCircle, User as UserIcon } from 'lucide-react';
+import { Search, Gift, Tag, Clock, AlertCircle, User as UserIcon, Trophy, Target } from 'lucide-react';
 import { usePOS, Customer } from '@/context/POSContext';
 import { useToast } from '@/hooks/use-toast';
 import { CurrencyDisplay } from '@/components/ui/currency';
@@ -14,8 +14,9 @@ interface StartSessionDialogProps {
   onOpenChange: (open: boolean) => void;
   stationId: string;
   stationName: string;
+  stationType: 'turf' | 'pickleball';
   baseRate: number;
-  onConfirm: (customerId: string, customerName: string, finalRate: number, couponCode?: string) => void;
+  onConfirm: (customerId: string, customerName: string, finalRate: number, couponCode?: string, sport?: 'football' | 'cricket' | 'pickleball') => void;
 }
 
 const StartSessionDialog: React.FC<StartSessionDialogProps> = ({
@@ -23,6 +24,7 @@ const StartSessionDialog: React.FC<StartSessionDialogProps> = ({
   onOpenChange,
   stationId,
   stationName,
+  stationType,
   baseRate,
   onConfirm,
 }) => {
@@ -32,6 +34,9 @@ const StartSessionDialog: React.FC<StartSessionDialogProps> = ({
   const [customerSearchQuery, setCustomerSearchQuery] = useState('');
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [selectedCoupon, setSelectedCoupon] = useState<string>('none');
+  const [selectedSport, setSelectedSport] = useState<'football' | 'cricket' | 'pickleball'>(
+    stationType === 'turf' ? 'football' : 'pickleball'
+  );
   const [finalRate, setFinalRate] = useState(baseRate);
 
   const filteredCustomers = customerSearchQuery.trim() === ''
@@ -113,16 +118,27 @@ const StartSessionDialog: React.FC<StartSessionDialogProps> = ({
       return;
     }
 
+    if (stationType === 'turf' && !selectedSport) {
+      toast({
+        title: 'Sport Not Selected',
+        description: 'Please select whether playing Football or Cricket',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     onConfirm(
       selectedCustomer.id,
       selectedCustomer.name,
       finalRate,
-      selectedCoupon !== 'none' ? selectedCoupon : undefined
+      selectedCoupon !== 'none' ? selectedCoupon : undefined,
+      selectedSport
     );
     
     // Reset state
     setSelectedCustomer(null);
     setSelectedCoupon('none');
+    setSelectedSport(stationType === 'turf' ? 'football' : 'pickleball');
     setCustomerSearchQuery('');
     onOpenChange(false);
   };
@@ -130,6 +146,7 @@ const StartSessionDialog: React.FC<StartSessionDialogProps> = ({
   const handleCancel = () => {
     setSelectedCustomer(null);
     setSelectedCoupon('none');
+    setSelectedSport(stationType === 'turf' ? 'football' : 'pickleball');
     setCustomerSearchQuery('');
     onOpenChange(false);
   };
@@ -218,6 +235,37 @@ const StartSessionDialog: React.FC<StartSessionDialogProps> = ({
               </div>
             )}
           </div>
+
+          {/* Sport Selection (Only for Turf Courts) */}
+          {stationType === 'turf' && selectedCustomer && (
+            <div className="space-y-3">
+              <Label className="text-base font-medium flex items-center gap-2">
+                <Trophy className="h-4 w-4" />
+                Select Sport
+              </Label>
+              
+              <Select value={selectedSport} onValueChange={(value) => setSelectedSport(value as 'football' | 'cricket')}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Choose sport to play" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="football">
+                    ⚽ Football
+                  </SelectItem>
+                  <SelectItem value="cricket">
+                    🏏 Cricket
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+
+              <div className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-md p-3 flex items-start gap-2">
+                <Trophy className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                <p className="text-sm text-green-900 dark:text-green-100">
+                  <strong>FIFA-Approved Turf:</strong> Our main turf is certified for both Football and Cricket play.
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Coupon Selection */}
           {selectedCustomer && (

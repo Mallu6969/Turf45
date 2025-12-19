@@ -10,7 +10,7 @@ import StartSessionDialog from '@/components/StartSessionDialog';
 interface StationActionsProps {
   station: Station;
   customers: Customer[];
-  onStartSession: (stationId: string, customerId: string, hourlyRate?: number, couponCode?: string) => Promise<void>;
+  onStartSession: (stationId: string, customerId: string, hourlyRate?: number, couponCode?: string, sport?: 'football' | 'cricket' | 'pickleball') => Promise<void>;
   onEndSession: (stationId: string) => Promise<void>;
 }
 
@@ -26,26 +26,28 @@ const StationActions: React.FC<StationActionsProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isStartDialogOpen, setIsStartDialogOpen] = useState(false);
   
-  const isPoolTable = station.type === '8ball';
-  const isVR = station.type === 'vr';
+  const isTurf = station.type === 'turf';
+  const isPickleball = station.type === 'pickleball';
 
   const handleStartSession = async (
     customerId: string,
     customerName: string,
     finalRate: number,
-    couponCode?: string
+    couponCode?: string,
+    sport?: 'football' | 'cricket' | 'pickleball'
   ) => {
     try {
       setIsLoading(true);
-      console.log(`Starting session - Station ID: ${station.id}, Customer ID: ${customerId}, Rate: ${finalRate}, Coupon: ${couponCode || 'none'}`);
+      console.log(`Starting session - Station ID: ${station.id}, Customer ID: ${customerId}, Rate: ${finalRate}, Coupon: ${couponCode || 'none'}, Sport: ${sport || 'N/A'}`);
       
-      await onStartSession(station.id, customerId, finalRate, couponCode);
+      await onStartSession(station.id, customerId, finalRate, couponCode, sport);
       
       setIsStartDialogOpen(false);
       
+      const sportText = sport ? ` for ${sport.charAt(0).toUpperCase() + sport.slice(1)}` : '';
       toast({
         title: "Session Started",
-        description: `Session started for ${customerName} at ${station.name}${couponCode ? ` with ${couponCode}` : ''}`,
+        description: `Session started for ${customerName} at ${station.name}${sportText}${couponCode ? ` with ${couponCode}` : ''}`,
       });
     } catch (error) {
       console.error("Error starting session:", error);
@@ -102,9 +104,9 @@ const StationActions: React.FC<StationActionsProps> = ({
         variant="destructive" 
         className={`
           w-full text-white font-bold py-3 text-lg transition-opacity rounded-lg
-          ${isPoolTable
+          ${isTurf
             ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800'
-            : isVR
+            : isPickleball
               ? 'bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700'
               : 'bg-gradient-to-r from-red-500 to-orange-500 hover:opacity-90'
           }
@@ -124,9 +126,9 @@ const StationActions: React.FC<StationActionsProps> = ({
         variant="default" 
         className={`
           w-full py-3 text-lg font-bold transition-opacity rounded-lg
-          ${isPoolTable
+          ${isTurf
             ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800'
-            : isVR
+            : isPickleball
               ? 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700'
               : 'bg-gradient-to-r from-cuephoria-purple to-cuephoria-lightpurple hover:opacity-90'
           }
@@ -144,6 +146,7 @@ const StationActions: React.FC<StationActionsProps> = ({
         onOpenChange={setIsStartDialogOpen}
         stationId={station.id}
         stationName={station.name}
+        stationType={station.type}
         baseRate={station.hourlyRate}
         onConfirm={handleStartSession}
       />

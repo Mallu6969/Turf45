@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Monitor, Clock, Timer, Wifi, Gamepad2, RefreshCcw, Headset, LogIn, ArrowLeft, Trophy, Activity, Zap } from 'lucide-react';
+import { Clock, Trophy, Activity, RefreshCcw, ArrowLeft, Wifi, Zap, LogIn, Target } from 'lucide-react';
 import { Station, Session } from '@/types/pos.types';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -21,7 +21,7 @@ const PublicStations = () => {
       setRefreshing(true);
       
       try {
-        console.log('Fetching station data...');
+        console.log('Fetching court data...');
         
         // Fetch stations
         const { data: stationsData, error: stationsError } = await supabase
@@ -29,8 +29,8 @@ const PublicStations = () => {
           .select('*');
           
         if (stationsError) {
-          console.error('Error fetching stations:', stationsError);
-          setLoadingError('Failed to load station data');
+          console.error('Error fetching courts:', stationsError);
+          setLoadingError('Failed to load court data');
           throw stationsError;
         }
         
@@ -46,16 +46,17 @@ const PublicStations = () => {
           throw sessionsError;
         }
         
-        console.log('Fetched data:', { stations: stationsData?.length, sessions: sessionsData?.length });
+        console.log('Fetched data:', { courts: stationsData?.length, sessions: sessionsData?.length });
         
         // Transform data to match our types
         const transformedStations: Station[] = stationsData?.map(item => ({
           id: item.id,
           name: item.name,
-          type: item.type as 'ps5' | '8ball' | 'vr',
+          type: item.type as 'turf' | 'pickleball',
           hourlyRate: item.hourly_rate,
           isOccupied: item.is_occupied,
-          currentSession: null
+          currentSession: null,
+          currentSport: item.current_sport as 'football' | 'cricket' | 'pickleball' | undefined
         })) || [];
         
         const transformedSessions: Session[] = sessionsData?.map(item => ({
@@ -64,7 +65,8 @@ const PublicStations = () => {
           customerId: item.customer_id,
           startTime: new Date(item.start_time),
           endTime: item.end_time ? new Date(item.end_time) : undefined,
-          duration: item.duration
+          duration: item.duration,
+          sport: item.sport as 'football' | 'cricket' | 'pickleball' | undefined
         })) || [];
         
         // Connect sessions to stations
@@ -73,7 +75,8 @@ const PublicStations = () => {
           return {
             ...station,
             isOccupied: !!activeSession,
-            currentSession: activeSession || null
+            currentSession: activeSession || null,
+            currentSport: activeSession?.sport || station.currentSport
           };
         });
         
@@ -113,20 +116,16 @@ const PublicStations = () => {
     };
   }, []);
 
-  // Feature flag to enable/disable VR stations section
-  const ENABLE_VR_STATIONS = false;
-
-  // Separate stations by type
-  const ps5Stations = stations.filter(station => station.type === 'ps5');
-  const ballStations = stations.filter(station => station.type === '8ball');
-  const vrStations = stations.filter(station => station.type === 'vr');
+  // Separate courts by type
+  const turfCourts = stations.filter(station => station.type === 'turf');
+  const pickleballCourts = stations.filter(station => station.type === 'pickleball');
 
   if (loading) {
     return <ImprovedLoadingView error={loadingError} />;
   }
 
   if (stations.length === 0 && !loading) {
-    return <NoStationsView error={loadingError} />;
+    return <NoCourtsView error={loadingError} />;
   }
 
   return (
@@ -187,10 +186,10 @@ const PublicStations = () => {
                 </div>
               </div>
               <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-4 text-center">
-                Station Live Status
+                Court Live Status
               </h1>
               <p className="text-xl text-gray-600 max-w-2xl text-center leading-relaxed">
-                Check the availability of our gaming stations in real-time
+                Check the real-time availability of our FIFA-approved sports courts
               </p>
               
               {/* Status Indicator */}
@@ -217,28 +216,28 @@ const PublicStations = () => {
               <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl border-2 border-green-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in">
                 <div className="flex items-center justify-between mb-3">
                   <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-3">
-                    <Timer className="h-6 w-6 text-white" />
+                    <Trophy className="h-6 w-6 text-white" />
                   </div>
                 </div>
-                <div className="text-sm font-medium text-gray-600">Pool Tables</div>
-                <div className="text-3xl font-bold text-gray-900 mt-1">{ballStations.length}</div>
+                <div className="text-sm font-medium text-gray-600">Main Turf</div>
+                <div className="text-3xl font-bold text-gray-900 mt-1">{turfCourts.length}</div>
                 <div className="text-xs text-green-600 mt-2 flex items-center">
                   <Zap className="h-3 w-3 mr-1" />
-                  {ballStations.filter(s => !s.isOccupied).length} available
+                  Football & Cricket
                 </div>
               </div>
 
               <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl border-2 border-green-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in" style={{ animationDelay: '0.1s' }}>
                 <div className="flex items-center justify-between mb-3">
                   <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-3">
-                    <Gamepad2 className="h-6 w-6 text-white" />
+                    <Target className="h-6 w-6 text-white" />
                   </div>
                 </div>
-                <div className="text-sm font-medium text-gray-600">PS5 Consoles</div>
-                <div className="text-3xl font-bold text-gray-900 mt-1">{ps5Stations.length}</div>
+                <div className="text-sm font-medium text-gray-600">Pickleball</div>
+                <div className="text-3xl font-bold text-gray-900 mt-1">{pickleballCourts.length}</div>
                 <div className="text-xs text-blue-600 mt-2 flex items-center">
                   <Zap className="h-3 w-3 mr-1" />
-                  {ps5Stations.filter(s => !s.isOccupied).length} available
+                  {pickleballCourts.filter(s => !s.isOccupied).length} available
                 </div>
               </div>
 
@@ -273,102 +272,75 @@ const PublicStations = () => {
           </div>
         </header>
         
-        {/* Main Stations Content */}
+        {/* Main Courts Content */}
         <main className="py-8 px-4 sm:px-6 md:px-8 max-w-7xl mx-auto transition-all duration-500" 
           style={{ 
             opacity: refreshing ? 0.7 : 1,
             transform: refreshing ? 'scale(0.99)' : 'scale(1)'
           }}>
-          {/* Pool Tables Section */}
+          {/* Main Turf Section */}
           <section className="mb-16 animate-fade-in">
             <div className="flex items-center mb-8">
               <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-3 mr-4 shadow-lg">
-                <Timer className="h-7 w-7 text-white" />
+                <Trophy className="h-7 w-7 text-white" />
               </div>
               <div>
-                <h2 className="text-3xl font-bold text-gray-900">Pool Tables</h2>
-                <p className="text-sm text-gray-600 mt-1">{ballStations.filter(s => !s.isOccupied).length} of {ballStations.length} available</p>
+                <h2 className="text-3xl font-bold text-gray-900">Main Turf Court</h2>
+                <p className="text-sm text-gray-600 mt-1">FIFA-approved for Football & Cricket</p>
               </div>
             </div>
             
-            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {ballStations.length === 0 ? (
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {turfCourts.length === 0 ? (
                 <div className="col-span-full text-center py-16 bg-white/60 backdrop-blur-sm rounded-2xl border-2 border-gray-100">
-                  <Timer className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500 text-lg font-medium">No pool tables available at this location</p>
+                  <Trophy className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500 text-lg font-medium">No turf courts available</p>
                 </div>
               ) : (
-                ballStations.map((station, index) => (
+                turfCourts.map((station, index) => (
                   <div 
                     key={station.id} 
                     className="animate-fade-in"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <PublicStationCard station={station} />
+                    <CourtCard station={station} />
                   </div>
                 ))
               )}
             </div>
           </section>
 
-          {/* PlayStation Section */}
+          {/* Pickleball Section */}
           <section className="mb-16 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <div className="flex items-center mb-8">
               <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-3 mr-4 shadow-lg">
-                <Gamepad2 className="h-7 w-7 text-white" />
+                <Target className="h-7 w-7 text-white" />
               </div>
               <div>
-                <h2 className="text-3xl font-bold text-gray-900">PlayStation 5 Consoles</h2>
-                <p className="text-sm text-gray-600 mt-1">{ps5Stations.filter(s => !s.isOccupied).length} of {ps5Stations.length} available</p>
+                <h2 className="text-3xl font-bold text-gray-900">Pickleball Court</h2>
+                <p className="text-sm text-gray-600 mt-1">{pickleballCourts.filter(s => !s.isOccupied).length} of {pickleballCourts.length} available</p>
               </div>
             </div>
             
-            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {ps5Stations.length === 0 ? (
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {pickleballCourts.length === 0 ? (
                 <div className="col-span-full text-center py-16 bg-white/60 backdrop-blur-sm rounded-2xl border-2 border-gray-100">
-                  <Gamepad2 className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500 text-lg font-medium">No PS5 consoles available at this location</p>
+                  <Target className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500 text-lg font-medium">No pickleball courts available</p>
                 </div>
               ) : (
-                ps5Stations.map((station, index) => (
+                pickleballCourts.map((station, index) => (
                   <div 
                     key={station.id} 
                     className="animate-fade-in"
-                    style={{ animationDelay: `${(index + ballStations.length) * 100}ms` }}
+                    style={{ animationDelay: `${(index + turfCourts.length) * 100}ms` }}
                   >
-                    <PublicStationCard station={station} />
+                    <CourtCard station={station} />
                   </div>
                 ))
               )}
             </div>
           </section>
-
-          {/* VR Gaming Section */}
-          {ENABLE_VR_STATIONS && vrStations.length > 0 && (
-            <section className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              <div className="flex items-center mb-8">
-                <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-3 mr-4 shadow-lg">
-                  <Headset className="h-7 w-7 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-3xl font-bold text-gray-900">VR Gaming Stations</h2>
-                  <p className="text-sm text-gray-600 mt-1">{vrStations.filter(s => !s.isOccupied).length} of {vrStations.length} available</p>
-                </div>
-              </div>
-              
-              <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {vrStations.map((station, index) => (
-                  <div 
-                    key={station.id} 
-                    className="animate-fade-in"
-                    style={{ animationDelay: `${(index + ps5Stations.length + ballStations.length) * 100}ms` }}
-                  >
-                    <PublicStationCard station={station} />
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
         </main>
         
         {/* Premium Footer */}
@@ -386,7 +358,7 @@ const PublicStations = () => {
                   }}
                 />
                 <p className="text-gray-400 leading-relaxed">
-                  Premium sports and gaming facilities in Chennai.
+                  Premium FIFA-approved sports facilities in Chennai.
                 </p>
               </div>
 
@@ -519,7 +491,7 @@ const ImprovedLoadingView = ({ error }: { error: string | null }) => {
             
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                Loading Stations
+                Loading Courts
               </h2>
               <p className="text-gray-600">Getting real-time information...</p>
             </div>
@@ -530,8 +502,8 @@ const ImprovedLoadingView = ({ error }: { error: string | null }) => {
   );
 };
 
-// No Stations View
-const NoStationsView = ({ error }: { error: string | null }) => {
+// No Courts View
+const NoCourtsView = ({ error }: { error: string | null }) => {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-white to-emerald-50"></div>
@@ -553,9 +525,9 @@ const NoStationsView = ({ error }: { error: string | null }) => {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-100 mb-4">
             <div className="text-3xl">⚠️</div>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900">No Stations Available</h2>
+          <h2 className="text-2xl font-bold text-gray-900">No Courts Available</h2>
           <p className="text-gray-600">
-            {error || "There are currently no gaming stations in our system. Please check back later."}
+            {error || "There are currently no courts in our system. Please check back later."}
           </p>
           <Button 
             onClick={() => window.location.reload()}
@@ -569,11 +541,11 @@ const NoStationsView = ({ error }: { error: string | null }) => {
   );
 };
 
-// Premium Station Card
-const PublicStationCard = ({ station }: { station: Station }) => {
-  const isPoolTable = station.type === '8ball';
-  const isVRStation = station.type === 'vr';
+// Premium Court Card
+const CourtCard = ({ station }: { station: Station }) => {
+  const isTurf = station.type === 'turf';
   const sessionStartTime = station.currentSession?.startTime;
+  const currentSport = station.currentSport || station.currentSession?.sport;
   
   const calculateDuration = () => {
     if (!sessionStartTime) return null;
@@ -607,18 +579,9 @@ const PublicStationCard = ({ station }: { station: Station }) => {
     return () => clearInterval(timer);
   }, [station.isOccupied, sessionStartTime]);
 
-  // Get colors and styles based on station type
-  const getStationStyles = () => {
-    if (isVRStation) {
-      return {
-        gradient: 'from-purple-50 to-white',
-        borderColor: 'border-purple-200',
-        iconBg: 'from-purple-500 to-purple-600',
-        textColor: 'text-purple-600',
-        progressBar: 'bg-purple-500',
-        hoverBorder: 'hover:border-purple-300'
-      };
-    } else if (isPoolTable) {
+  // Get colors and styles based on court type
+  const getCourtStyles = () => {
+    if (isTurf) {
       return {
         gradient: 'from-green-50 to-white',
         borderColor: 'border-green-200',
@@ -639,7 +602,7 @@ const PublicStationCard = ({ station }: { station: Station }) => {
     }
   };
 
-  const styles = getStationStyles();
+  const styles = getCourtStyles();
   
   return (
     <div className={`
@@ -669,7 +632,7 @@ const PublicStationCard = ({ station }: { station: Station }) => {
           </Badge>
         </div>
         
-        {/* Station Icon and Name */}
+        {/* Court Icon and Name */}
         <div className="flex items-center mb-6 mt-2">
           <div className={`
             w-12 h-12 rounded-xl flex items-center justify-center mr-4
@@ -677,15 +640,18 @@ const PublicStationCard = ({ station }: { station: Station }) => {
             shadow-lg
             group-hover:scale-110 transition-transform duration-300
           `}>
-            {isVRStation ? (
-              <Headset className="h-6 w-6 text-white" />
-            ) : isPoolTable ? (
-              <Timer className="h-6 w-6 text-white" />
+            {isTurf ? (
+              <Trophy className="h-6 w-6 text-white" />
             ) : (
-              <Monitor className="h-6 w-6 text-white" />
+              <Target className="h-6 w-6 text-white" />
             )}
           </div>
-          <h3 className="text-xl font-bold text-gray-900">{station.name}</h3>
+          <div>
+            <h3 className="text-xl font-bold text-gray-900">{station.name}</h3>
+            {isTurf && currentSport && (
+              <p className="text-sm text-gray-600 capitalize">Playing: {currentSport}</p>
+            )}
+          </div>
         </div>
         
         {/* Duration if occupied */}
@@ -709,7 +675,7 @@ const PublicStationCard = ({ station }: { station: Station }) => {
               <div 
                 className={`h-full ${styles.progressBar} rounded-full transition-all duration-1000`}
                 style={{ 
-                  width: `${Math.min((duration.minutes / (isVRStation ? 15 : 60)) * 100, 100)}%`
+                  width: `${Math.min((duration.minutes / 60) * 100, 100)}%`
                 }}
               ></div>
             </div>
@@ -718,12 +684,12 @@ const PublicStationCard = ({ station }: { station: Station }) => {
         
         {/* Available message */}
         {!station.isOccupied && (
-          <div className="mt-4 py-4 px-4 text-center bg-white/80 rounded-xl border-2 border-dashed ${styles.borderColor}">
+          <div className={`mt-4 py-4 px-4 text-center bg-white/80 rounded-xl border-2 border-dashed ${styles.borderColor}`}>
             <p className={`
               text-sm font-semibold
               ${styles.textColor}
             `}>
-              {isVRStation ? "Ready for VR experience!" : "Ready for next player!"}
+              {isTurf ? "Ready for Football or Cricket!" : "Ready for Pickleball!"}
             </p>
             
             {/* Pulse dots */}

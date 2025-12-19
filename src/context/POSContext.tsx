@@ -483,14 +483,15 @@ export const POSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
   
-  // ✅ UPDATED: Added coupon parameters
+  // ✅ UPDATED: Added coupon parameters and sport selection
   const startSession = async (
     stationId: string, 
     customerId: string,
     finalRate?: number,
-    couponCode?: string
+    couponCode?: string,
+    sport?: 'football' | 'cricket' | 'pickleball'
   ): Promise<void> => {
-    await startSessionBase(stationId, customerId, finalRate, couponCode);
+    await startSessionBase(stationId, customerId, finalRate, couponCode, sport);
   };
   
   const endSession = async (stationId: string): Promise<void> => {
