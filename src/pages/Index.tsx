@@ -148,7 +148,7 @@ const Index: React.FC = () => {
                   filter: "drop-shadow(0 2px 12px rgba(16, 185, 129, 0.4))",
                 }}
               />
-            </div>
+        </div>
         
             {/* Desktop Navigation */}
             {!isMobile && (
@@ -184,12 +184,12 @@ const Index: React.FC = () => {
                 </Button>
               )}
 
-              <Button
+          <Button
                 onClick={() => navigate('/public/booking')}
                 className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-6 shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-105"
               >
                 Book Now
-              </Button>
+          </Button>
 
               {isMobile && (
                 <button
@@ -235,10 +235,10 @@ const Index: React.FC = () => {
             src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=80"
             alt="FIFA Approved Football Court"
             className="w-full h-full object-cover"
-          />
+            />
           <div className="absolute inset-0 bg-gradient-to-br from-green-900/90 via-green-800/85 to-emerald-900/90"></div>
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.3)_100%)]"></div>
-        </div>
+          </div>
 
         {/* Floating Trust Badges */}
         <div className="absolute top-32 left-8 z-20 animate-fade-in hidden lg:block">
@@ -270,7 +270,7 @@ const Index: React.FC = () => {
             </div>
           </div>
         </div>
-
+        
         {/* Hero Content */}
         <div className="relative z-10 max-w-6xl mx-auto px-4 text-center text-white animate-fade-in">
           <Badge className="mb-6 bg-green-500/20 backdrop-blur-sm text-green-100 px-6 py-3 text-base border border-green-400/30 animate-slide-up">
@@ -282,8 +282,8 @@ const Index: React.FC = () => {
             <br />
             <span className="bg-gradient-to-r from-green-300 via-emerald-200 to-green-100 bg-clip-text text-transparent">
               Facilities Redefined
-            </span>
-          </h1>
+          </span>
+        </h1>
           
           <p className="text-xl md:text-2xl text-green-50 mb-10 max-w-3xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
             Experience world-class FIFA-approved football courts, professional cricket turfs, and premium pickleball facilities. Book your slot in seconds.
@@ -299,15 +299,15 @@ const Index: React.FC = () => {
               Book Your Court Now
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button
+          <Button
               onClick={() => scrollToSection('facilities')}
               variant="outline"
-              size="lg"
+            size="lg"
               className="bg-transparent backdrop-blur-sm border-2 border-white/50 text-white rounded-full px-10 py-7 text-lg font-semibold hover:bg-white/10 hover:border-white transition-all duration-300"
-            >
+          >
               <PlayCircle className="mr-2 h-5 w-5" />
               Explore Facilities
-            </Button>
+          </Button>
           </div>
 
           {/* Stats */}
@@ -342,17 +342,17 @@ const Index: React.FC = () => {
           <div className="flex items-center gap-3 text-white">
             <Zap className="h-6 w-6" />
             <p className="font-semibold">Quick Booking - Get instant confirmation in seconds!</p>
-          </div>
+                </div>
           <div className="flex gap-3">
             {['Football', 'Cricket', 'Pickleball'].map((sport) => (
-              <Button
+                <Button
                 key={sport}
                 onClick={() => navigate(`/public/booking?sport=${sport.toLowerCase()}`)}
                 variant="outline"
                 className="bg-white/20 backdrop-blur-sm border-white/40 text-white hover:bg-white hover:text-green-600 rounded-full font-semibold"
               >
                 {sport}
-              </Button>
+                </Button>
             ))}
           </div>
         </div>
@@ -367,12 +367,12 @@ const Index: React.FC = () => {
               Available Right Now
             </h2>
             <p className="text-lg text-gray-600">Real-time availability across all courts</p>
-          </div>
+              </div>
 
           {stationsLoading ? (
             <div className="flex justify-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600"></div>
-            </div>
+              </div>
           ) : (
             <div className="grid md:grid-cols-3 gap-6">
               {liveStations.map((station) => (
@@ -395,18 +395,18 @@ const Index: React.FC = () => {
                         <p className="text-sm text-gray-500">Starting from</p>
                         <p className="text-3xl font-bold text-gray-900">₹{station.hourly_rate}<span className="text-lg text-gray-500">/hr</span></p>
                       </div>
-                      <Button
-                        onClick={() => navigate('/public/booking')}
+              <Button
+                onClick={() => navigate('/public/booking')}
                         disabled={station.is_occupied}
                         className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full group-hover:scale-105 transition-transform disabled:opacity-50"
-                      >
+              >
                         Book Now
-                      </Button>
-                    </div>
+              </Button>
                   </div>
+                </div>
                 </Card>
               ))}
-            </div>
+              </div>
           )}
 
           <div className="text-center mt-8">
@@ -443,8 +443,8 @@ const Index: React.FC = () => {
               className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500"
             >
               <div className="relative h-72">
-                <img
-                  src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80"
+              <img
+                src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80"
                   alt="FIFA Approved Football Court"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
@@ -477,8 +477,8 @@ const Index: React.FC = () => {
               className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500"
             >
               <div className="relative h-72">
-                <img
-                  src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80"
+              <img
+                src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80"
                   alt="Professional Cricket Turf"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
@@ -511,8 +511,8 @@ const Index: React.FC = () => {
               className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500"
             >
               <div className="relative h-72">
-                <img
-                  src="https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80"
+              <img
+                src="https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80"
                   alt="Premium Pickleball Court"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
@@ -561,7 +561,7 @@ const Index: React.FC = () => {
               </Card>
             ))}
           </div>
-        </div>
+                              </div>
       </section>
 
       {/* Why Choose Turf45 */}
@@ -572,7 +572,7 @@ const Index: React.FC = () => {
               <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Why Turf45?</Badge>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 The Premier Choice for Athletes
-              </h2>
+            </h2>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
                 From FIFA-approved surfaces to professional-grade amenities, every aspect of Turf45 is engineered for peak athletic performance and unforgettable sports experiences.
               </p>
@@ -603,8 +603,8 @@ const Index: React.FC = () => {
                   <div key={idx} className="flex items-start gap-4 p-4 bg-white rounded-xl border-2 border-gray-100 hover:border-green-200 hover:shadow-lg transition-all">
                     <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-3 flex-shrink-0">
                       <item.icon className="h-6 w-6 text-white" />
-                    </div>
-                    <div>
+                            </div>
+                      <div>
                       <h4 className="font-bold text-gray-900 mb-1">{item.title}</h4>
                       <p className="text-gray-600 text-sm">{item.desc}</p>
                     </div>
@@ -635,8 +635,8 @@ const Index: React.FC = () => {
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Choose from pay-per-slot or season passes. All prices include taxes - no hidden charges.
-            </p>
-          </div>
+                        </p>
+                      </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {/* Pay Per Slot */}
@@ -647,7 +647,7 @@ const Index: React.FC = () => {
                 <p className="text-gray-600 mb-6">Book whenever you want</p>
                 <div className="text-5xl font-bold text-gray-900 mb-2">
                   ₹600<span className="text-2xl text-gray-500">/hr</span>
-                </div>
+                          </div>
                 <p className="text-sm text-gray-500">Starting price</p>
               </div>
               <ul className="space-y-3 mb-8">
@@ -658,12 +658,12 @@ const Index: React.FC = () => {
                   </li>
                 ))}
               </ul>
-              <Button 
-                onClick={() => navigate('/public/booking')}
+                      <Button
+                        onClick={() => navigate('/public/booking')}
                 className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-full py-6 text-lg font-semibold"
-              >
+                      >
                 Book Single Slot
-              </Button>
+                      </Button>
             </Card>
 
             {/* Monthly Pass - Featured */}
@@ -675,9 +675,9 @@ const Index: React.FC = () => {
                 <p className="text-gray-600 mb-6">Save up to 20%</p>
                 <div className="text-5xl font-bold text-gray-900 mb-2">
                   ₹12,000<span className="text-2xl text-gray-500">/month</span>
-                </div>
+                          </div>
                 <p className="text-sm text-gray-500">~25 hours of play</p>
-              </div>
+                        </div>
               <ul className="space-y-3 mb-8">
                 {['Priority booking slots', '20% discount on hourly rate', 'Free equipment rental', 'Dedicated support manager', 'Flexible time credits', 'Guest passes included'].map((feature) => (
                   <li key={feature} className="flex items-center gap-3">
@@ -692,7 +692,7 @@ const Index: React.FC = () => {
               >
                 Get Monthly Pass
               </Button>
-            </Card>
+                </Card>
 
             {/* Corporate/Team */}
             <Card className="border-2 border-gray-200 p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
@@ -721,11 +721,11 @@ const Index: React.FC = () => {
                 Contact Sales
               </Button>
             </Card>
-          </div>
+                </div>
 
           <div className="mt-12 text-center">
             <p className="text-gray-600 mb-4">All prices are inclusive of GST. No hidden charges.</p>
-            <Button 
+            <Button
               onClick={() => navigate('/public/booking')}
               variant="outline"
               size="lg"
@@ -747,7 +747,7 @@ const Index: React.FC = () => {
             </h2>
             <p className="text-lg text-gray-600">Get confirmed in seconds with our instant booking system</p>
           </div>
-
+          
           <div className="grid md:grid-cols-3 gap-8 relative">
             {/* Connection Lines */}
             <div className="hidden md:block absolute top-20 left-0 right-0 h-1 bg-gradient-to-r from-green-200 via-green-400 to-green-200 z-0" style={{ top: '80px' }}></div>
@@ -776,11 +776,11 @@ const Index: React.FC = () => {
                 <Card className="p-8 text-center hover:shadow-2xl transition-all duration-300 border-2 border-green-100 hover:border-green-500 bg-white">
                   <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <item.icon className="h-10 w-10 text-white" />
-                  </div>
+                </div>
                   <div className="text-6xl font-black text-green-100 mb-4">{item.step}</div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">{item.title}</h3>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{item.title}</h3>
                   <p className="text-gray-600 leading-relaxed">{item.desc}</p>
-                </Card>
+              </Card>
               </div>
             ))}
           </div>
@@ -801,51 +801,64 @@ const Index: React.FC = () => {
       {/* Ricky Mascot Section */}
       <section className="py-20 px-4 bg-gradient-to-br from-green-50 via-emerald-50 to-white">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="order-2 lg:order-1">
-              <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300 flex items-center gap-2 w-fit">
-                <img src="https://iili.io/flpj90Q.jpg" alt="Pickleball" className="h-6 w-6 object-contain" />
-                Pickleball Mascot
-              </Badge>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Meet Ricky - Our Pickleball Champion
-              </h2>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                Ricky is the official mascot of Turf45's Pickleball courts! This energetic and friendly character embodies the spirit of pickleball - fun, fast-paced, and friendly. Join Ricky on our premium pickleball courts for an unforgettable experience!
-              </p>
-
-              <div className="grid sm:grid-cols-2 gap-4 mb-8">
-                {[
-                  { icon: Trophy, title: 'Official Mascot', desc: 'Representing pickleball excellence' },
-                  { icon: Heart, title: 'Friendly Spirit', desc: 'Welcoming players of all levels' },
-                  { icon: Zap, title: 'Energetic Vibes', desc: 'Bringing excitement to every game' },
-                  { icon: Star, title: 'Premium Courts', desc: 'State-of-the-art facilities' },
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-3 p-4 bg-white rounded-xl border-2 border-green-100">
-                    <item.icon className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="font-bold text-gray-900 text-sm mb-1">{item.title}</h4>
-                      <p className="text-xs text-gray-600">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <Button
-                onClick={() => navigate('/public/booking?sport=pickleball')}
-                size="lg"
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-lg shadow-green-500/30"
-              >
-                Book Pickleball with Ricky
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
-
-            <div className="order-1 lg:order-2 relative">
-              <div className="bg-gradient-to-br from-green-200 to-emerald-200 rounded-3xl p-8 shadow-2xl">
-                <RickyMascot size="xl" className="mx-auto" />
+          {/* Header */}
+          <div className="text-center mb-12">
+            <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300 inline-flex items-center gap-2">
+              <img src="https://iili.io/flpj90Q.jpg" alt="Pickleball" className="h-6 w-6 object-contain" />
+              Pickleball Mascot
+            </Badge>
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              Meet Ricky - Our Pickleball Champion
+            </h2>
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl mx-auto">
+              Ricky is the official mascot of Turf45's Pickleball courts! This energetic and friendly character embodies the spirit of pickleball - fun, fast-paced, and friendly.
+            </p>
+          </div>
+          
+          {/* Ricky - Large and Centered */}
+          <div className="flex justify-center mb-12">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-emerald-400 rounded-full blur-3xl opacity-30 animate-pulse"></div>
+              <div className="relative bg-gradient-to-br from-green-100 to-emerald-100 rounded-3xl p-12 md:p-16 shadow-2xl">
+                <div className="w-64 h-64 md:w-96 md:h-96 flex items-center justify-center">
+                  <img
+                    src="https://iili.io/f0nWwnj.png"
+                    alt="Ricky - Turf45 Pickleball Mascot"
+                    className="w-full h-full object-contain drop-shadow-2xl animate-bounce-slow"
+                  />
+                </div>
               </div>
             </div>
+          </div>
+
+          {/* Features Grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {[
+              { icon: Trophy, title: 'Official Mascot', desc: 'Representing pickleball excellence' },
+              { icon: Heart, title: 'Friendly Spirit', desc: 'Welcoming players of all levels' },
+              { icon: Zap, title: 'Energetic Vibes', desc: 'Bringing excitement to every game' },
+              { icon: Star, title: 'Premium Courts', desc: 'State-of-the-art facilities' },
+            ].map((item, idx) => (
+              <Card key={idx} className="p-6 text-center hover:shadow-xl transition-all duration-300 border-2 border-green-100 hover:border-green-300">
+                <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <item.icon className="h-8 w-8 text-white" />
+                </div>
+                <h4 className="font-bold text-gray-900 mb-2">{item.title}</h4>
+                <p className="text-sm text-gray-600">{item.desc}</p>
+            </Card>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <div className="text-center">
+            <Button
+              onClick={() => navigate('/public/booking?sport=pickleball')}
+              size="lg"
+              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-10 py-7 text-xl font-bold shadow-2xl shadow-green-500/40 hover:scale-110 transition-all duration-300"
+            >
+              Book Pickleball with Ricky
+              <ArrowRight className="ml-2 h-6 w-6" />
+            </Button>
           </div>
         </div>
       </section>
@@ -867,7 +880,7 @@ const Index: React.FC = () => {
               Join hundreds of satisfied players who choose Turf45 for their sports needs
             </p>
           </div>
-
+          
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {[
               {
@@ -943,7 +956,7 @@ const Index: React.FC = () => {
                 alt="Jai - Founder of Turf45"
                 className="relative rounded-3xl shadow-2xl w-full h-[600px] object-cover"
               />
-            </div>
+        </div>
 
             <div>
               <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Our Story</Badge>
@@ -995,8 +1008,8 @@ const Index: React.FC = () => {
               Frequently Asked Questions
             </h2>
             <p className="text-lg text-gray-600">Everything you need to know about booking at Turf45</p>
-          </div>
-
+            </div>
+            
           <Accordion type="single" collapsible className="w-full space-y-4">
             {[
               {
@@ -1033,13 +1046,13 @@ const Index: React.FC = () => {
               },
             ].map((faq, idx) => (
               <AccordionItem key={idx} value={`faq-${idx}`} className="bg-white rounded-xl border-2 border-green-100 px-6 hover:border-green-300 transition-colors">
-                <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline">
+              <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline">
                   {faq.q}
-                </AccordionTrigger>
+              </AccordionTrigger>
                 <AccordionContent className="text-gray-600 leading-relaxed">
                   {faq.a}
-                </AccordionContent>
-              </AccordionItem>
+              </AccordionContent>
+            </AccordionItem>
             ))}
           </Accordion>
 
@@ -1073,7 +1086,7 @@ const Index: React.FC = () => {
               <MapPin className="h-8 w-8 mx-auto mb-3 text-green-100" />
               <h3 className="font-bold mb-2">Location</h3>
               <p className="text-green-50">Chennai, Tamil Nadu</p>
-            </div>
+                  </div>
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
               <Phone className="h-8 w-8 mx-auto mb-3 text-green-100" />
               <h3 className="font-bold mb-2">Call Us</h3>
@@ -1092,13 +1105,13 @@ const Index: React.FC = () => {
 
           <Button
             onClick={() => navigate('/public/booking')}
-            size="lg"
+              size="lg"
             className="bg-white text-green-600 hover:bg-green-50 rounded-full px-12 py-7 text-xl font-bold shadow-2xl transition-all duration-300 hover:scale-110"
           >
             Book Your Court Now
             <ArrowRight className="ml-2 h-6 w-6" />
           </Button>
-        </div>
+          </div>
       </section>
 
       {/* Premium Footer */}
@@ -1135,10 +1148,10 @@ const Index: React.FC = () => {
                   </a>
                 ))}
               </div>
-            </div>
-
+                    </div>
+                    
             {/* Quick Links */}
-            <div>
+                      <div>
               <h4 className="font-bold text-lg mb-4">Quick Links</h4>
               <ul className="space-y-3">
                 {[
@@ -1155,10 +1168,10 @@ const Index: React.FC = () => {
                   </li>
                 ))}
               </ul>
-            </div>
-
+                    </div>
+                    
             {/* Support */}
-            <div>
+                      <div>
               <h4 className="font-bold text-lg mb-4">Support</h4>
               <ul className="space-y-3">
                 {[
@@ -1178,13 +1191,13 @@ const Index: React.FC = () => {
                         {link.label}
                       </button>
                     )}
-                  </li>
+                </li>
                 ))}
               </ul>
-            </div>
-
+                    </div>
+                    
             {/* Contact */}
-            <div>
+                      <div>
               <h4 className="font-bold text-lg mb-4">Contact Info</h4>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3 text-gray-400">
@@ -1210,7 +1223,7 @@ const Index: React.FC = () => {
               </ul>
             </div>
           </div>
-
+          
           {/* Bottom Bar */}
           <div className="border-t border-gray-700 pt-8">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
