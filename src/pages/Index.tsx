@@ -57,12 +57,23 @@ const Index: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [liveStations, setLiveStations] = useState<Station[]>([]);
   const [stationsLoading, setStationsLoading] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     if (user) {
       navigate('/dashboard');
     }
   }, [user, navigate]);
+
+  // Handle scroll for header transparency
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Fetch live station data
   useEffect(() => {
@@ -110,7 +121,11 @@ const Index: React.FC = () => {
   return (
     <div className="public-page min-h-screen bg-gradient-to-br from-white via-green-50/30 to-white">
       {/* Navigation Bar */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-green-100 shadow-sm">
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'backdrop-blur-md bg-white/60 border-b border-green-100/50 shadow-md' 
+          : 'backdrop-blur-xl bg-white/90 border-b border-green-100 shadow-sm'
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
@@ -207,16 +222,27 @@ const Index: React.FC = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Background Image with Overlay */}
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
+        {/* Enhanced Background with Multiple Layers */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-green-900/40 via-green-800/30 to-black/50 z-10"></div>
+          {/* Vibrant gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-green-600/30 via-green-500/20 via-emerald-400/25 to-green-700/35 z-10"></div>
+          
+          {/* Animated gradient orbs */}
+          <div className="absolute top-0 left-0 w-96 h-96 bg-green-400/30 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-500/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-green-300/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+          
+          {/* Background image with better blend */}
           <img
             src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=80"
             alt="Football Court"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-80 mix-blend-overlay"
             />
-          </div>
+          
+          {/* Additional overlay for depth */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-10"></div>
+        </div>
 
         {/* Floating Badge */}
         <div className="absolute top-8 left-8 z-20">
@@ -239,23 +265,23 @@ const Index: React.FC = () => {
         </div>
         
         {/* Hero Content */}
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white animate-fade-in">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-slide-up">
             Refresh, Relax, and Rediscover<br />
-            <span className="bg-gradient-to-r from-green-300 to-green-100 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-green-300 via-emerald-200 to-green-100 bg-clip-text text-transparent animate-text-gradient">
               Life's Simple Pleasures
           </span>
         </h1>
-          <p className="text-xl md:text-2xl text-gray-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-white/95 mb-8 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
             Rediscover the beauty in life's simplest pleasures, and let every moment here remind you of the joy of true relaxation.
           </p>
           
           {/* Primary CTA */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up" style={{ animationDelay: '0.4s' }}>
             <Button
               onClick={() => navigate('/public/booking')}
               size="lg"
-              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-2xl shadow-green-500/50 transition-all duration-300 hover:scale-105 group"
+              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-2xl shadow-green-500/50 transition-all duration-300 hover:scale-110 hover:shadow-green-500/70 group animate-breathe"
             >
               Book a Slot
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -264,7 +290,7 @@ const Index: React.FC = () => {
               onClick={() => navigate('/public/booking')}
               variant="outline"
             size="lg"
-              className="bg-white/10 backdrop-blur-md border-2 border-white/30 text-white rounded-full px-8 py-6 text-lg font-semibold hover:bg-white/20 transition-all duration-300"
+              className="bg-white/10 backdrop-blur-md border-2 border-white/30 text-white rounded-full px-8 py-6 text-lg font-semibold hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:scale-105"
           >
               See Today's Availability
           </Button>
@@ -297,11 +323,11 @@ const Index: React.FC = () => {
       </section>
 
       {/* Welcome Section */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 animate-fade-in">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-3 gap-6">
             {/* Outdoor Area Card */}
-            <Card className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+            <Card className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-slide-up">
               <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent z-10"></div>
               <img
                 src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80"
@@ -316,7 +342,7 @@ const Index: React.FC = () => {
             </Card>
 
             {/* Sports Center Card */}
-            <Card className="relative overflow-hidden bg-gradient-to-br from-green-50 to-white border-2 border-green-200 group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+            <Card className="relative overflow-hidden bg-gradient-to-br from-green-50 to-white border-2 border-green-200 group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: '0.1s' }}>
               <CardContent className="p-8 h-full flex flex-col justify-between">
                 <div>
                   <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Sports center</Badge>
@@ -335,7 +361,7 @@ const Index: React.FC = () => {
             </Card>
 
             {/* Indoor Court Card */}
-            <Card className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+            <Card className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: '0.2s' }}>
               <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent z-10"></div>
               <img
                 src="https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80"
@@ -361,11 +387,11 @@ const Index: React.FC = () => {
       </section>
 
       {/* Discover Excellence Section */}
-      <section id="facilities" className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white">
+      <section id="facilities" className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white animate-fade-in">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row gap-12 items-start">
             {/* Left Content */}
-            <div className="flex-1">
+            <div className="flex-1 animate-slide-up">
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-2">
                   <Trophy className="h-6 w-6 text-white" />
@@ -409,12 +435,12 @@ const Index: React.FC = () => {
             </div>
 
             {/* Right Image */}
-            <div className="flex-1">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+            <div className="flex-1 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl group">
                 <img
                   src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80"
                   alt="Sports Facility"
-                  className="w-full h-[600px] object-cover"
+                  className="w-full h-[600px] object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
               </div>
@@ -424,7 +450,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* Sport Selector Cards */}
-      <section className="py-20 px-4 relative overflow-hidden">
+      <section className="py-20 px-4 relative overflow-hidden animate-fade-in">
         {/* Ricky Mascot - Interactive on Left Side */}
         <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-0 opacity-5 hover:opacity-100 transition-opacity duration-300 hidden xl:block">
           <div className="relative animate-float-slow">
@@ -442,7 +468,7 @@ const Index: React.FC = () => {
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Choose Your Sport
             </h2>
@@ -455,7 +481,7 @@ const Index: React.FC = () => {
             {/* Football Card */}
             <Card 
               onClick={() => navigate('/public/booking?sport=football')}
-              className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 border-transparent hover:border-green-500"
+              className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 border-transparent hover:border-green-500 animate-slide-up"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent z-10"></div>
               <img
@@ -480,7 +506,8 @@ const Index: React.FC = () => {
             {/* Cricket Card */}
             <Card 
               onClick={() => navigate('/public/booking?sport=cricket')}
-              className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 border-transparent hover:border-green-500"
+              className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 border-transparent hover:border-green-500 animate-slide-up"
+              style={{ animationDelay: '0.1s' }}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent z-10"></div>
               <img
@@ -505,7 +532,8 @@ const Index: React.FC = () => {
             {/* Pickleball Card */}
             <Card 
               onClick={() => navigate('/public/booking?sport=pickleball')}
-              className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 border-transparent hover:border-green-500"
+              className="relative overflow-hidden group cursor-pointer hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 border-transparent hover:border-green-500 animate-slide-up"
+              style={{ animationDelay: '0.2s' }}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent z-10"></div>
               <img
@@ -610,9 +638,9 @@ const Index: React.FC = () => {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="py-20 px-4">
+      <section id="how-it-works" className="py-20 px-4 animate-fade-in">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               How It Works
             </h2>
@@ -627,8 +655,8 @@ const Index: React.FC = () => {
               { step: '2', title: 'Pick Your Slot', description: 'Choose your preferred date and time slot', icon: Calendar },
               { step: '3', title: 'Pay & Confirm', description: 'Complete payment and get instant confirmation', icon: CheckCircle2 },
             ].map((item, index) => (
-              <Card key={index} className="text-center p-8 hover:shadow-xl transition-shadow border-2 border-transparent hover:border-green-200">
-                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Card key={index} className="text-center p-8 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-green-200 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 transition-transform duration-300 hover:scale-110">
                   <item.icon className="h-8 w-8 text-white" />
                 </div>
                 <div className="text-4xl font-bold text-green-600 mb-4">{item.step}</div>
@@ -640,10 +668,162 @@ const Index: React.FC = () => {
             </div>
       </section>
 
-      {/* Why Players Choose Turf45 */}
-      <section className="py-20 px-4 bg-gradient-to-br from-white via-green-50/60 to-white">
+      {/* Ricky Explaining Rules Section */}
+      <section className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white relative overflow-hidden animate-fade-in">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-green-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-400 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left: Ricky Image */}
+            <div className="relative animate-slide-up">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl group">
+                {/* Placeholder for Ricky explaining rules image - user will add the actual image */}
+                <div className="aspect-square bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
+                  <div className="text-center p-8">
+                    <RickyMascot
+                      size="xl"
+                      position="hero"
+                      messages={[
+                        "Let me explain the rules! 📋",
+                        "Follow these simple guidelines! ✅",
+                        "I'll help you understand! 🤓",
+                        "Rules make the game fun! 🎯",
+                      ]}
+                      className="mx-auto mb-4"
+                    />
+                    <p className="text-sm text-gray-500 mt-4">Image: Ricky Explaining Rules</p>
+                  </div>
+                </div>
+                {/* Replace the div above with: */}
+                {/* <img src="/path-to-ricky-explaining-rules.png" alt="Ricky Explaining Rules" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" /> */}
+              </div>
+            </div>
+
+            {/* Right: Content */}
+            <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Rules & Guidelines</Badge>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Learn the Rules with Ricky
+              </h2>
+              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                Our friendly mascot Ricky is here to help you understand the rules of each sport. Whether you're playing football, cricket, or pickleball, Ricky makes learning fun and easy!
+              </p>
+              <div className="space-y-4 mb-8">
+                <div className="flex items-start gap-3 p-4 bg-white/80 rounded-xl border border-green-100">
+                  <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Clear & Simple Explanations</h3>
+                    <p className="text-gray-600 text-sm">Easy-to-understand rules explained in a fun way</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-4 bg-white/80 rounded-xl border border-green-100">
+                  <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Sport-Specific Guidelines</h3>
+                    <p className="text-gray-600 text-sm">Rules tailored to each sport we offer</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-4 bg-white/80 rounded-xl border border-green-100">
+                  <CheckCircle2 className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Interactive Learning</h3>
+                    <p className="text-gray-600 text-sm">Engage with Ricky to learn and have fun</p>
+                  </div>
+                </div>
+              </div>
+              <Button
+                onClick={() => scrollToSection('how-it-works')}
+                size="lg"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-105"
+              >
+                View All Rules
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Ricky Playing Section */}
+      <section className="py-20 px-4 relative overflow-hidden animate-fade-in">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left: Content */}
+            <div className="animate-slide-up">
+              <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">In Action</Badge>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                See Ricky in Action
+              </h2>
+              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                Watch Ricky showcase the sports facilities at Turf45! From football to pickleball, Ricky demonstrates how much fun you can have on our premium courts.
+              </p>
+              <div className="space-y-4 mb-8">
+                <div className="flex items-start gap-3 p-4 bg-green-50/50 rounded-xl border border-green-100">
+                  <Play className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Live Demonstrations</h3>
+                    <p className="text-gray-600 text-sm">See how each sport is played on our courts</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-4 bg-green-50/50 rounded-xl border border-green-100">
+                  <Trophy className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Professional Tips</h3>
+                    <p className="text-gray-600 text-sm">Learn techniques and strategies from Ricky</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-4 bg-green-50/50 rounded-xl border border-green-100">
+                  <Heart className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Fun & Engaging</h3>
+                    <p className="text-gray-600 text-sm">Enjoy watching Ricky's energetic gameplay</p>
+                  </div>
+                </div>
+              </div>
+              <Button
+                onClick={() => navigate('/public/booking')}
+                size="lg"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-105"
+              >
+                Book Your Court Now
+              </Button>
+            </div>
+
+            {/* Right: Ricky Playing Image */}
+            <div className="relative animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl group">
+                {/* Placeholder for Ricky playing image - user will add the actual image */}
+                <div className="aspect-square bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
+                  <div className="text-center p-8">
+                    <RickyMascot
+                      size="xl"
+                      position="hero"
+                      messages={[
+                        "Let's play together! 🏓",
+                        "I love playing here! ⚽",
+                        "Join me on the court! 🎾",
+                        "This is so much fun! 🎉",
+                      ]}
+                      className="mx-auto mb-4"
+                    />
+                    <p className="text-sm text-gray-500 mt-4">Image: Ricky Playing</p>
+                  </div>
+                </div>
+                {/* Replace the div above with: */}
+                {/* <img src="/path-to-ricky-playing.png" alt="Ricky Playing" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" /> */}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Players Choose Turf45 */}
+      <section className="py-20 px-4 bg-gradient-to-br from-white via-green-50/60 to-white animate-fade-in">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Why Players Choose Turf45</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               From FIFA-approved surfaces to pro-grade lighting, every detail is engineered for peak performance and unforgettable sessions.
@@ -668,7 +848,7 @@ const Index: React.FC = () => {
                 points: ["Impact-tested padding", "Non-slip sidelines", "Pre-game inspection"],
               },
             ].map((item, idx) => (
-              <Card key={idx} className="p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-green-100/70">
+              <Card key={idx} className="p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-green-100/70 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: `${idx * 0.1}s` }}>
                 <div className="flex items-start gap-4">
                   <div className="p-3 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 text-white shadow-md">
                     <Shield className="h-5 w-5" />
@@ -693,9 +873,9 @@ const Index: React.FC = () => {
       </section>
 
       {/* Packages & Training */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 animate-fade-in">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Memberships, Coaching & Group Play</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Flexible options for solo practice, squads, academies, and corporate leagues. Pay per slot or lock in season passes.
@@ -703,7 +883,7 @@ const Index: React.FC = () => {
           </div>
           
           <div className="grid lg:grid-cols-3 gap-8">
-            <Card className="p-8 border border-green-100 shadow-lg hover:shadow-2xl transition-all duration-300">
+            <Card className="p-8 border border-green-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 animate-slide-up">
               <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Season Pass</Badge>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">6-Week Grind</h3>
               <p className="text-gray-600 mb-4">Lock in consistent training with priority slots and lower hourly rates.</p>
@@ -715,7 +895,7 @@ const Index: React.FC = () => {
               <Button onClick={() => navigate('/public/booking')} className="rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white w-full">View Slots</Button>
             </Card>
 
-            <Card className="p-8 border border-green-100 shadow-lg hover:shadow-2xl transition-all duration-300">
+            <Card className="p-8 border border-green-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: '0.1s' }}>
               <Badge className="mb-4 bg-amber-100 text-amber-700 border-amber-300">Coaching</Badge>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Skill Labs</h3>
               <p className="text-gray-600 mb-4">Certified coaches for fundamentals, match IQ, and conditioning.</p>
@@ -727,7 +907,7 @@ const Index: React.FC = () => {
               <Button onClick={() => navigate('/public/booking')} className="rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white w-full">Book Coaching</Button>
             </Card>
 
-            <Card className="p-8 border border-green-100 shadow-lg hover:shadow-2xl transition-all duration-300">
+            <Card className="p-8 border border-green-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: '0.2s' }}>
               <Badge className="mb-4 bg-blue-100 text-blue-800 border-blue-200">Groups & Events</Badge>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Leagues & Corporate</h3>
               <p className="text-gray-600 mb-4">End-to-end turf management for leagues, corporate days, and tournaments.</p>
@@ -743,9 +923,9 @@ const Index: React.FC = () => {
       </section>
 
       {/* Reviews Section */}
-      <section id="reviews" className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white">
+      <section id="reviews" className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white animate-fade-in">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-slide-up">
             <div className="flex items-center justify-center gap-2 mb-4">
               {[1, 2, 3, 4, 5].map((i) => (
                 <Star key={i} className="h-6 w-6 fill-yellow-400 text-yellow-400" />
@@ -765,7 +945,7 @@ const Index: React.FC = () => {
               { name: 'Priya Sharma', rating: 5, text: 'Love the cricket facilities here. Professional setup and great customer service. Highly recommended!' },
               { name: 'Amit Patel', rating: 5, text: 'Best pickleball court in the city. Clean, modern, and the booking system is very convenient.' },
             ].map((review, index) => (
-              <Card key={index} className="p-6 hover:shadow-xl transition-shadow">
+              <Card key={index} className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
                 <div className="flex gap-1 mb-4">
                   {[1, 2, 3, 4, 5].map((i) => (
                     <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
@@ -780,7 +960,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* Founder Section */}
-      <section id="about" className="py-20 px-4 relative overflow-hidden">
+      <section id="about" className="py-20 px-4 relative overflow-hidden animate-fade-in">
         {/* Ricky Mascot - Interactive Decorative Element */}
         <div className="absolute top-10 right-10 z-0 opacity-10 hover:opacity-100 transition-opacity duration-300 hidden xl:block">
           <div className="relative animate-float-slow">
@@ -799,7 +979,7 @@ const Index: React.FC = () => {
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
+            <div className="animate-slide-up">
               <Badge className="mb-4 bg-green-500/10 text-green-700 border-green-300">Our Story</Badge>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Meet Jai - Our Founder
@@ -818,13 +998,13 @@ const Index: React.FC = () => {
                 Book Your Court Today
               </Button>
             </div>
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-green-400/20 rounded-3xl blur-2xl"></div>
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+            <div className="relative animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-green-400/20 rounded-3xl blur-2xl animate-pulse"></div>
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl group">
                 <img
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"
                   alt="Founder"
-                  className="w-full h-[500px] object-cover"
+                  className="w-full h-[500px] object-cover transition-transform duration-700 group-hover:scale-110"
                 />
               </div>
             </div>
@@ -833,9 +1013,9 @@ const Index: React.FC = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white">
+      <section className="py-20 px-4 bg-gradient-to-br from-green-50/50 to-white animate-fade-in">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-slide-up">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Frequently Asked Questions
             </h2>

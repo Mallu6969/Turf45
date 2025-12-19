@@ -89,52 +89,58 @@ export const RickyMascot: React.FC<RickyMascotProps> = ({
       onMouseLeave={handleLeave}
       onClick={handleClick}
     >
-      {/* Speech Bubble */}
+      {/* Modern Cloud Speech Bubble */}
       {showBubble && (
         <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 z-50 animate-fade-in-scale">
-          <div className="relative bg-white rounded-2xl shadow-2xl border-2 border-green-200 p-4 max-w-xs">
-            {/* Close button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowBubble(false);
-              }}
-              className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center hover:bg-green-600 transition-colors shadow-lg z-10"
-            >
-              <X className="h-3 w-3" />
-            </button>
+          <div className="relative max-w-xs">
+            {/* Cloud bubble with tail */}
+            <div className="relative bg-white rounded-3xl shadow-2xl p-5 border border-green-100/50">
+              {/* Cloud shape with smooth curves */}
+              <svg className="absolute bottom-0 left-8 transform translate-y-full -mb-1" width="24" height="12" viewBox="0 0 24 12" fill="none">
+                <path d="M12 12C8 12 5 9 5 5.5C5 2.5 7.5 0 10.5 0C11.5 0 12.5 0.3 13.3 0.8C14.2 1.3 15 2 15.5 3C16.5 2.5 17.8 2.5 18.8 3.3C19.8 4.1 20.3 5.3 20.3 6.5C20.3 8.5 18.8 10 17 10.5C16.5 11 15.5 12 12 12Z" fill="white" stroke="rgb(229, 231, 235)" strokeWidth="0.5"/>
+              </svg>
+              
+              {/* Close button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowBubble(false);
+                }}
+                className="absolute -top-2 -right-2 w-7 h-7 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-all duration-200 shadow-lg z-10 hover:scale-110"
+              >
+                <X className="h-4 w-4" />
+              </button>
 
-            {/* Message */}
-            <div className="flex items-start gap-2">
-              <MessageCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-              <p className="text-sm font-medium text-gray-800 leading-relaxed">
-                {messages[currentMessage]}
-              </p>
-            </div>
-
-            {/* Speech bubble tail */}
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
-              <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-white"></div>
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full">
-                <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-green-200"></div>
+              {/* Message */}
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 mt-0.5">
+                  <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-md">
+                    <MessageCircle className="h-4 w-4 text-white" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-800 leading-relaxed">
+                    {messages[currentMessage]}
+                  </p>
+                  
+                  {/* Message dots indicator */}
+                  {messages.length > 1 && (
+                    <div className="flex gap-1.5 mt-3 justify-center">
+                      {messages.map((_, idx) => (
+                        <div
+                          key={idx}
+                          className={`h-1.5 rounded-full transition-all duration-300 ${
+                            idx === currentMessage
+                              ? 'bg-green-500 w-6'
+                              : 'bg-green-300 w-1.5'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-
-            {/* Pulsing indicator for multiple messages */}
-            {messages.length > 1 && (
-              <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 flex gap-1">
-                {messages.map((_, idx) => (
-                  <div
-                    key={idx}
-                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                      idx === currentMessage
-                        ? 'bg-green-500 w-4'
-                        : 'bg-green-300'
-                    }`}
-                  />
-                ))}
-              </div>
-            )}
           </div>
         </div>
       )}
