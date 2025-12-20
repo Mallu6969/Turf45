@@ -586,46 +586,221 @@ const Index: React.FC = () => {
         </div>
       </section>
 
-      {/* Women's Football Team Highlight - Integrated */}
-      <section className="py-20 px-4 bg-gradient-to-b from-pink-50 via-purple-50 to-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <Badge className="mb-4 bg-pink-500/10 text-pink-700 border-pink-300">Empowering Women in Sports</Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Women's Football Excellence 💪⚽
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Celebrating our champion women's football team
+      {/* PLAYERS IN ACTION - MEGA SECTION */}
+      <section className="relative py-32 px-4 overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black">
+        {/* Animated Background Effects */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-20 left-20 w-96 h-96 bg-green-500 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500 rounded-full blur-3xl animate-pulse delay-300"></div>
+          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-pink-500 rounded-full blur-3xl animate-pulse delay-500"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Main Title */}
+          <div className="text-center mb-20 animate-fade-in">
+            <div className="inline-block mb-6">
+              <div className="bg-gradient-to-r from-green-400 via-blue-400 to-pink-400 text-transparent bg-clip-text">
+                <h2 className="text-6xl md:text-7xl font-black mb-4 animate-text-gradient">
+                  PLAYERS IN ACTION
+                </h2>
+              </div>
+            </div>
+            <p className="text-2xl text-gray-300 max-w-3xl mx-auto animate-slide-up delay-100">
+              Witness excellence, passion, and dedication in every frame
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in">
-            <div className="relative group overflow-hidden rounded-2xl shadow-2xl border-2 border-pink-200">
-              <img src="/Football 1.jpeg" alt="Women's Football Team" className="w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-pink-900/90 via-pink-800/30 to-transparent">
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Trophy className="h-6 w-6 text-pink-300" />
-                    <span className="bg-pink-500/30 text-pink-200 px-3 py-1 rounded-full text-xs font-bold">CHAMPIONS</span>
+
+          {/* WOMEN'S FOOTBALL TEAM - WITH ADIDAS BRANDING */}
+          <div className="mb-32 animate-fade-in delay-200">
+            <div className="flex items-center justify-center gap-6 mb-12">
+              <div className="h-1 w-24 bg-gradient-to-r from-transparent via-pink-500 to-pink-500"></div>
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-4 mb-3">
+                  <h3 className="text-4xl md:text-5xl font-black text-white">WOMEN'S FOOTBALL</h3>
+                  {/* Adidas Branding */}
+                  <div className="bg-white px-4 py-2 rounded-lg shadow-2xl animate-pulse">
+                    <span className="text-black font-black text-2xl">adidas</span>
                   </div>
-                  <h3 className="text-2xl font-bold text-white">Team Unity</h3>
-                  <p className="text-pink-100 text-sm">Together we achieve greatness</p>
+                </div>
+                <p className="text-pink-400 text-xl font-semibold">Official Partner</p>
+              </div>
+              <div className="h-1 w-24 bg-gradient-to-l from-transparent via-pink-500 to-pink-500"></div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="group relative overflow-hidden rounded-3xl shadow-2xl transform hover:scale-105 transition-all duration-700 animate-slide-up delay-300">
+                <img src="/Football 1.jpeg" alt="Women's Football Team" className="w-full h-[500px] object-cover group-hover:scale-110 transition-transform duration-700" />
+                
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-pink-900/95 via-pink-800/50 to-transparent group-hover:from-pink-900/90 transition-all"></div>
+                
+                {/* Adidas Logo Overlay */}
+                <div className="absolute top-6 right-6 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border-2 border-white/30">
+                  <span className="text-white font-black text-lg">adidas</span>
+                </div>
+                
+                {/* Content */}
+                <div className="absolute bottom-8 left-8 right-8">
+                  <div className="flex items-center gap-3 mb-4 animate-slide-up delay-400">
+                    <Trophy className="h-10 w-10 text-pink-400 animate-bounce-slow" />
+                    <span className="bg-pink-500/40 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-bold border-2 border-white/30">
+                      CHAMPIONS
+                    </span>
+                  </div>
+                  <h4 className="text-4xl font-black text-white mb-2 drop-shadow-2xl">Team Unity</h4>
+                  <p className="text-pink-100 text-lg drop-shadow-lg">Empowered by adidas • Champions by choice</p>
+                </div>
+              </div>
+
+              <div className="group relative overflow-hidden rounded-3xl shadow-2xl transform hover:scale-105 transition-all duration-700 animate-slide-up delay-400">
+                <img src="/Football 2.jpeg" alt="Women's Football Action" className="w-full h-[500px] object-cover group-hover:scale-110 transition-transform duration-700" />
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-purple-900/95 via-purple-800/50 to-transparent group-hover:from-purple-900/90 transition-all"></div>
+                
+                {/* Adidas Logo */}
+                <div className="absolute top-6 right-6 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border-2 border-white/30">
+                  <span className="text-white font-black text-lg">adidas</span>
+                </div>
+                
+                <div className="absolute bottom-8 left-8 right-8">
+                  <div className="flex items-center gap-3 mb-4 animate-slide-up delay-500">
+                    <Heart className="h-10 w-10 text-purple-400 animate-pulse" />
+                    <span className="bg-purple-500/40 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-bold border-2 border-white/30">
+                      GAME DAY
+                    </span>
+                  </div>
+                  <h4 className="text-4xl font-black text-white mb-2 drop-shadow-2xl">Match Ready</h4>
+                  <p className="text-purple-100 text-lg drop-shadow-lg">Excellence in every play • Powered by adidas</p>
                 </div>
               </div>
             </div>
-            
-            <div className="relative group overflow-hidden rounded-2xl shadow-2xl border-2 border-purple-200 animate-fade-in delay-100">
-              <img src="/Football 2.jpeg" alt="Women's Football Action" className="w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-purple-900/90 via-purple-800/30 to-transparent">
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Heart className="h-6 w-6 text-purple-300" />
-                    <span className="bg-purple-500/30 text-purple-200 px-3 py-1 rounded-full text-xs font-bold">TEAM SPIRIT</span>
+          </div>
+
+          {/* MEN'S FOOTBALL ACTION */}
+          <div className="mb-32">
+            <div className="flex items-center justify-center gap-6 mb-12">
+              <div className="h-1 w-24 bg-gradient-to-r from-transparent via-green-500 to-green-500"></div>
+              <h3 className="text-4xl md:text-5xl font-black text-transparent bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text">
+                ⚽ MEN'S FOOTBALL
+              </h3>
+              <div className="h-1 w-24 bg-gradient-to-l from-transparent via-green-500 to-green-500"></div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {['FB MODEL 1.jpeg', 'FB MODEL 2.jpeg', 'FB MODEL 3.jpeg'].map((img, idx) => (
+                <div key={idx} className={`group relative overflow-hidden rounded-3xl shadow-2xl transform hover:scale-110 hover:rotate-2 transition-all duration-700 animate-flip-in`} style={{ animationDelay: `${idx * 100}ms` }}>
+                  <img src={`/${img}`} alt={`Football Pro ${idx + 1}`} className="w-full h-[450px] object-cover group-hover:scale-110 transition-transform duration-700" />
+                  
+                  {/* Animated Border */}
+                  <div className="absolute inset-0 border-4 border-green-500 opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl"></div>
+                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-green-950/95 via-green-900/60 to-transparent opacity-80 group-hover:opacity-100 transition-all">
+                    <div className="absolute bottom-6 left-6 right-6">
+                      <div className="bg-green-500/30 backdrop-blur-md px-4 py-2 rounded-full inline-block mb-3 border-2 border-green-400">
+                        <span className="text-white font-bold text-sm">⚽ PRO PLAYER {idx + 1}</span>
+                      </div>
+                      <h5 className="text-2xl font-black text-white drop-shadow-2xl">Champion Striker</h5>
+                      <p className="text-green-200 text-sm drop-shadow-lg">Excellence in action</p>
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-white">Game Day</h3>
-                  <p className="text-purple-100 text-sm">Excellence in every match</p>
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CRICKET ACTION */}
+          <div className="mb-32">
+            <div className="flex items-center justify-center gap-6 mb-12">
+              <div className="h-1 w-24 bg-gradient-to-r from-transparent via-orange-500 to-orange-500"></div>
+              <h3 className="text-4xl md:text-5xl font-black text-transparent bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text">
+                🏏 CRICKET CHAMPIONS
+              </h3>
+              <div className="h-1 w-24 bg-gradient-to-l from-transparent via-orange-500 to-orange-500"></div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {['Cricket.jpeg', 'Cricket 2.jpeg'].map((img, idx) => (
+                <div key={idx} className={`group relative overflow-hidden rounded-3xl shadow-2xl transform hover:scale-105 hover:-rotate-1 transition-all duration-700 animate-scale-in`} style={{ animationDelay: `${idx * 150}ms` }}>
+                  <img src={`/${img}`} alt={`Cricket Action ${idx + 1}`} className="w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700" />
+                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-orange-950/95 via-orange-900/60 to-transparent group-hover:from-orange-950/90 transition-all">
+                    <div className="absolute bottom-8 left-8 right-8">
+                      <div className="bg-orange-500/40 backdrop-blur-md px-6 py-3 rounded-full inline-block mb-4 border-2 border-orange-400 shadow-2xl">
+                        <span className="text-white font-black text-lg">🏏 LIVE ACTION</span>
+                      </div>
+                      <h5 className="text-3xl font-black text-white drop-shadow-2xl">Cricket Excellence</h5>
+                      <p className="text-orange-200 text-lg drop-shadow-lg">Professional grade performance</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* PICKLEBALL PLAYERS */}
+          <div className="mb-32">
+            <div className="flex items-center justify-center gap-6 mb-12">
+              <div className="h-1 w-24 bg-gradient-to-r from-transparent via-blue-500 to-blue-500"></div>
+              <h3 className="text-4xl md:text-5xl font-black text-transparent bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text">
+                🎾 PICKLEBALL STARS
+              </h3>
+              <div className="h-1 w-24 bg-gradient-to-l from-transparent via-blue-500 to-blue-500"></div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {['Pickleball model.jpeg', 'Pickleball model 2.jpeg', 'Pickleball model 3.jpeg', 'Pickleball model 4.jpeg'].map((img, idx) => (
+                <div key={idx} className={`group relative overflow-hidden rounded-2xl shadow-2xl transform hover:scale-110 transition-all duration-700 animate-fade-in`} style={{ animationDelay: `${idx * 100}ms` }}>
+                  <img src={`/${img}`} alt={`Pickleball Pro ${idx + 1}`} className="w-full h-[350px] object-cover group-hover:scale-110 transition-transform duration-700" />
+                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-950/95 via-blue-900/60 to-transparent opacity-90 group-hover:opacity-100 transition-all">
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <div className="bg-blue-500/40 backdrop-blur-md px-3 py-1 rounded-full inline-block mb-2 border border-blue-400">
+                        <span className="text-white font-bold text-xs">🎾 STAR #{idx + 1}</span>
+                      </div>
+                      <h6 className="text-lg font-black text-white drop-shadow-xl">Pickleball Pro</h6>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* BOOK YOUR PICKLEBALL - SUB-SECTION */}
+          <div className="bg-gradient-to-br from-blue-900/30 via-purple-900/30 to-pink-900/30 backdrop-blur-sm rounded-3xl p-12 border-2 border-blue-500/30 shadow-2xl animate-fade-in">
+            <div className="text-center mb-12">
+              <h3 className="text-4xl md:text-5xl font-black text-white mb-4">
+                🎾 BOOK YOUR PICKLEBALL COURT
+              </h3>
+              <p className="text-2xl text-gray-300">Reserve your spot for the ultimate pickleball experience</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {['Pickleball45 Book slot.jpg', 'Pickleball45 book slot 3.jpg', 'Pickleball45 Book slot 2.jpg'].map((img, idx) => (
+                <div 
+                  key={idx}
+                  className="group relative cursor-pointer transform hover:scale-110 hover:rotate-2 transition-all duration-700 rounded-2xl overflow-hidden shadow-2xl animate-slide-up"
+                  style={{ animationDelay: `${idx * 100}ms` }}
+                  onClick={() => navigate('/public/booking')}
+                >
+                  <img src={`/${img}`} alt={`Book Pickleball ${idx + 1}`} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <Button className="bg-white text-blue-600 hover:bg-blue-50 font-black px-8 py-4 text-lg rounded-full shadow-2xl">
+                      BOOK NOW
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <img src="/Pickleball45 team.jpg" alt="Pickleball Team" className="max-w-4xl mx-auto rounded-2xl shadow-2xl mb-8 animate-fade-in delay-300" />
+              <Button 
+                onClick={() => navigate('/public/booking')}
+                className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white px-12 py-6 text-2xl font-black rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300"
+              >
+                BOOK YOUR COURT NOW
+                <ArrowRight className="ml-3 h-8 w-8" />
+              </Button>
             </div>
           </div>
         </div>
@@ -1282,51 +1457,7 @@ const Index: React.FC = () => {
         </div>
       </section>
 
-      {/* Location/Contact CTA */}
-      <section className="py-20 px-4 bg-gradient-to-br from-green-500 to-green-600 text-white">
-        <div className="max-w-5xl mx-auto text-center">
-          <Map className="h-16 w-16 mx-auto mb-6 text-green-100" />
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Visit Turf45 Today
-          </h2>
-          <p className="text-xl text-green-50 mb-8 max-w-3xl mx-auto">
-            Experience world-class sports facilities in Chennai. We're open 7 days a week!
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-6 mb-10">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <MapPin className="h-8 w-8 mx-auto mb-3 text-green-100" />
-              <h3 className="font-bold mb-2">Location</h3>
-              <p className="text-green-50">Chennai, Tamil Nadu</p>
-                  </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <Phone className="h-8 w-8 mx-auto mb-3 text-green-100" />
-              <h3 className="font-bold mb-2">Call Us</h3>
-              <a href="tel:+919345187098" className="text-green-50 hover:text-white transition-colors">
-                +91 93451 87098
-              </a>
-            </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <Mail className="h-8 w-8 mx-auto mb-3 text-green-100" />
-              <h3 className="font-bold mb-2">Email Us</h3>
-              <a href="mailto:contact@turf45.in" className="text-green-50 hover:text-white transition-colors">
-                contact@turf45.in
-              </a>
-            </div>
-          </div>
-
-          <Button
-            onClick={() => navigate('/public/booking')}
-              size="lg"
-            className="bg-white text-green-600 hover:bg-green-50 rounded-full px-12 py-7 text-xl font-bold shadow-2xl transition-all duration-300 hover:scale-110"
-          >
-            Book Your Court Now
-            <ArrowRight className="ml-2 h-6 w-6" />
-          </Button>
-          </div>
-      </section>
-
-      {/* Achievements Carousel - NEW */}
+      {/* Achievements Carousel - MOVED UP */}
       <section className="py-20 px-4 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto mb-12">
           <div className="text-center mb-12">
@@ -1390,6 +1521,50 @@ const Index: React.FC = () => {
             <p className="text-gray-600 text-sm">Achievements</p>
           </Card>
         </div>
+      </section>
+
+      {/* Location/Contact CTA */}
+      <section className="py-20 px-4 bg-gradient-to-br from-green-500 to-green-600 text-white">
+        <div className="max-w-5xl mx-auto text-center">
+          <Map className="h-16 w-16 mx-auto mb-6 text-green-100" />
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Visit Turf45 Today
+          </h2>
+          <p className="text-xl text-green-50 mb-8 max-w-3xl mx-auto">
+            Experience world-class sports facilities in Chennai. We're open 7 days a week!
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-10">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <MapPin className="h-8 w-8 mx-auto mb-3 text-green-100" />
+              <h3 className="font-bold mb-2">Location</h3>
+              <p className="text-green-50">Chennai, Tamil Nadu</p>
+                  </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <Phone className="h-8 w-8 mx-auto mb-3 text-green-100" />
+              <h3 className="font-bold mb-2">Call Us</h3>
+              <a href="tel:+919345187098" className="text-green-50 hover:text-white transition-colors">
+                +91 93451 87098
+              </a>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <Mail className="h-8 w-8 mx-auto mb-3 text-green-100" />
+              <h3 className="font-bold mb-2">Email Us</h3>
+              <a href="mailto:contact@turf45.in" className="text-green-50 hover:text-white transition-colors">
+                contact@turf45.in
+              </a>
+            </div>
+          </div>
+
+          <Button
+            onClick={() => navigate('/public/booking')}
+              size="lg"
+            className="bg-white text-green-600 hover:bg-green-50 rounded-full px-12 py-7 text-xl font-bold shadow-2xl transition-all duration-300 hover:scale-110"
+          >
+            Book Your Court Now
+            <ArrowRight className="ml-2 h-6 w-6" />
+          </Button>
+          </div>
       </section>
 
       {/* Pickleball Promotion Section - NEW */}
