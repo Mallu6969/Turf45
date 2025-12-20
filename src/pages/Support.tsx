@@ -80,10 +80,10 @@ const Support = () => {
             </CardHeader>
             <CardContent>
               <a 
-                href="tel:+919345187098" 
+                href="tel:+919159991592" 
                 className="text-2xl font-bold text-green-600 hover:text-green-700 transition-colors"
               >
-                +91 93451 87098
+                +91 91599 91592
               </a>
               <p className="text-sm text-gray-500 mt-2">Available during business hours</p>
             </CardContent>
@@ -108,7 +108,7 @@ const Support = () => {
                 rel="noopener noreferrer"
                 className="text-2xl font-bold text-green-600 hover:text-green-700 transition-colors"
               >
-                +91 93451 87098
+                +91 91599 91592
               </a>
               <p className="text-sm text-gray-500 mt-2">Quick response guaranteed</p>
             </CardContent>

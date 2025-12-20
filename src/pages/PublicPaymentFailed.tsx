@@ -102,7 +102,7 @@ export default function PublicPaymentFailed() {
             <p className="text-xs text-gray-500">
               Need help? Contact us at{' '}
               <a href="tel:+919345187098" className="text-blue-400 hover:text-blue-300 underline">
-                +91 93451 87098
+                +91 91599 91592
               </a>
             </p>
           </div>

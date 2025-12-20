@@ -199,7 +199,7 @@ const Terms = () => {
                       <strong>Phone:</strong> <a href="tel:+919345187098" className="text-green-600 hover:underline">+91 93451 87098</a>
                     </p>
                     <p className="text-gray-700">
-                      <strong>Email:</strong> <a href="mailto:contact@turf45.in" className="text-green-600 hover:underline">contact@turf45.in</a>
+                      <strong>Email:</strong> <a href="mailto:support@turf45.in" className="text-green-600 hover:underline">support@turf45.in</a>
                     </p>
                     <p className="text-gray-700">
                       <strong>Address:</strong> Chennai, Tamil Nadu

@@ -50,7 +50,7 @@ ${bookingData.couponCode ? `Coupon Applied: ${bookingData.couponCode}` : ''}
 ${bookingData.discountAmount ? `Discount: ₹${bookingData.discountAmount}` : ''}
 
 📍 NerfTurf - Chennai's Premier Snooker & Gaming Lounge
-📞 Contact: +91 93451 87098
+📞 Contact: +91 91599 91592
 🌐 Visit: https://app.nerfturf.in
 
 Please arrive on time and show this confirmation at reception.`;

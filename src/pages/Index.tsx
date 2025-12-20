@@ -1523,74 +1523,50 @@ const Index: React.FC = () => {
         </div>
       </section>
 
-      {/* Location/Contact CTA */}
+      {/* Visit Turf45 Today - Location/Contact CTA */}
       <section className="py-20 px-4 bg-gradient-to-br from-green-500 to-green-600 text-white">
         <div className="max-w-5xl mx-auto text-center">
-          <Map className="h-16 w-16 mx-auto mb-6 text-green-100" />
+          <Map className="h-16 w-16 mx-auto mb-6 text-green-100 animate-bounce-slow" />
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Visit Turf45 Today
           </h2>
           <p className="text-xl text-green-50 mb-8 max-w-3xl mx-auto">
-            Experience world-class sports facilities in Chennai. We're open 7 days a week!
+            Experience world-class sports facilities in Tiruchirappalli. We're open 7 days a week, 6 AM to 10 PM!
           </p>
 
           <div className="grid md:grid-cols-3 gap-6 mb-10">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
               <MapPin className="h-8 w-8 mx-auto mb-3 text-green-100" />
               <h3 className="font-bold mb-2">Location</h3>
-              <p className="text-green-50">Chennai, Tamil Nadu</p>
-                  </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <p className="text-green-50 text-sm leading-relaxed">
+                3rd Cross, RPF Road, K K Nagar<br/>
+                Tiruchirappalli, Tamil Nadu 620021
+              </p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
               <Phone className="h-8 w-8 mx-auto mb-3 text-green-100" />
               <h3 className="font-bold mb-2">Call Us</h3>
-              <a href="tel:+919345187098" className="text-green-50 hover:text-white transition-colors">
-                +91 93451 87098
+              <a href="tel:+919159991592" className="text-green-50 hover:text-white transition-colors text-lg font-semibold">
+                +91 91599 91592
               </a>
             </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
               <Mail className="h-8 w-8 mx-auto mb-3 text-green-100" />
               <h3 className="font-bold mb-2">Email Us</h3>
-              <a href="mailto:contact@turf45.in" className="text-green-50 hover:text-white transition-colors">
-                contact@turf45.in
+              <a href="mailto:support@turf45.in" className="text-green-50 hover:text-white transition-colors">
+                support@turf45.in
               </a>
             </div>
           </div>
 
           <Button
             onClick={() => navigate('/public/booking')}
-              size="lg"
+            size="lg"
             className="bg-white text-green-600 hover:bg-green-50 rounded-full px-12 py-7 text-xl font-bold shadow-2xl transition-all duration-300 hover:scale-110"
           >
             Book Your Court Now
             <ArrowRight className="ml-2 h-6 w-6" />
           </Button>
-          </div>
-      </section>
-
-      {/* Pickleball Promotion Section - NEW */}
-      <section className="py-20 px-4 bg-gradient-to-b from-blue-50 to-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Book Your Pickleball Court 🎾
-            </h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {['Pickleball45 Book slot.jpg', 'Pickleball45 book slot 3.jpg', 'Pickleball45 Book slot 2.jpg'].map((img, idx) => (
-              <div 
-                key={idx}
-                className="cursor-pointer transform hover:scale-105 transition-transform duration-500 rounded-2xl overflow-hidden shadow-xl"
-                onClick={() => navigate('/public/booking')}
-              >
-                <img src={`/${img}`} alt={`Book Pickleball Slot ${idx + 1}`} className="w-full" />
-              </div>
-            ))}
-          </div>
-          
-          <div className="text-center">
-            <img src="/Pickleball45 team.jpg" alt="Pickleball Team" className="max-w-4xl mx-auto rounded-2xl shadow-2xl" />
-          </div>
         </div>
       </section>
 
@@ -1682,23 +1658,23 @@ const Index: React.FC = () => {
               <ul className="space-y-4">
                 <li className="flex items-start gap-3 text-gray-400">
                   <Phone className="h-5 w-5 flex-shrink-0 mt-0.5" />
-                  <a href="tel:+919345187098" className="hover:text-green-400 transition-colors">
-                    +91 93451 87098
+                  <a href="tel:+919159991592" className="hover:text-green-400 transition-colors">
+                    +91 91599 91592
                   </a>
                 </li>
                 <li className="flex items-start gap-3 text-gray-400">
                   <Mail className="h-5 w-5 flex-shrink-0 mt-0.5" />
-                  <a href="mailto:contact@turf45.in" className="hover:text-green-400 transition-colors">
-                    contact@turf45.in
+                  <a href="mailto:support@turf45.in" className="hover:text-green-400 transition-colors">
+                    support@turf45.in
                   </a>
                 </li>
                 <li className="flex items-start gap-3 text-gray-400">
                   <MapPin className="h-5 w-5 flex-shrink-0 mt-0.5" />
-                  <span>Chennai, Tamil Nadu, India</span>
+                  <span>3rd Cross, RPF Road, K K Nagar<br/>Tiruchirappalli, Tamil Nadu 620021</span>
                 </li>
                 <li className="flex items-start gap-3 text-gray-400">
                   <Clock className="h-5 w-5 flex-shrink-0 mt-0.5" />
-                  <span>Open Daily: 6 AM - 11 PM</span>
+                  <span>Open Daily: 6:00 AM - 10:00 PM</span>
                 </li>
               </ul>
             </div>

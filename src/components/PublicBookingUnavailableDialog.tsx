@@ -68,7 +68,7 @@ const PublicBookingUnavailableDialog: React.FC<PublicBookingUnavailableDialogPro
                     href="tel:+919345187098"
                     className="text-nerfturf-lightpurple hover:text-nerfturf-magenta font-bold text-lg underline transition-colors flex items-center gap-2"
                   >
-                    +91 93451 87098
+                    +91 91599 91592
                     <span className="text-xs text-gray-400">(Tap to call)</span>
                   </a>
                 </div>

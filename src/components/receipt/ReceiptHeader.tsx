@@ -28,14 +28,14 @@ const ReceiptHeader: React.FC<ReceiptHeaderProps> = ({ bill }) => {
           <MapPin className="h-3 w-3 text-nerfturf-purple" />
           <p>
             40, S W Boag Rd, CIT Nagar West,<br />
-            T. Nagar, Chennai, Tamil Nadu 600035
+            T. Nagar, 3rd Cross, RPF Road, K K Nagar, Tiruchirappalli, Tamil Nadu 620021 600035
           </p>
         </div>
         
         <div className="flex items-center justify-center gap-3 mt-2">
           <div className="flex items-center gap-1">
             <Phone className="h-3 w-3 text-nerfturf-purple" />
-            <span>+91 93451 87098</span>
+            <span>+91 91599 91592</span>
           </div>
         </div>
         
