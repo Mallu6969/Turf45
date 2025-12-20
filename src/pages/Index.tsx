@@ -229,12 +229,12 @@ const Index: React.FC = () => {
 
       {/* Hero Section - Premium Design */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        {/* Dynamic Background - Real Aerial Photo */}
+        {/* Dynamic Background - Original */}
         <div className="absolute inset-0 z-0">
           <img
-            src="/T45 TOP VIEW.jpeg"
-            alt="Turf45 Aerial View - FIFA Approved Football Court"
-            className="w-full h-full object-cover opacity-30"
+            src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=80"
+            alt="FIFA Approved Football Court"
+            className="w-full h-full object-cover"
             />
           <div className="absolute inset-0 bg-gradient-to-br from-green-900/90 via-green-800/85 to-emerald-900/90"></div>
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.3)_100%)]"></div>
@@ -440,7 +440,7 @@ const Index: React.FC = () => {
             {/* Football */}
             <Card 
               onClick={() => navigate('/public/booking?sport=football')}
-              className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500"
+              className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500 animate-fade-in"
             >
               <div className="relative h-72">
               <img
@@ -450,6 +450,13 @@ const Index: React.FC = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                 <Badge className="absolute top-4 left-4 bg-green-500 text-white border-0">FIFA Approved</Badge>
+                
+                {/* Mini Gallery Overlay */}
+                <div className="absolute bottom-4 left-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <img src="/FB MODEL 1.jpeg" alt="Football Action" className="w-16 h-16 object-cover rounded-lg border-2 border-white" />
+                  <img src="/FB MODEL 2.jpeg" alt="Football Action" className="w-16 h-16 object-cover rounded-lg border-2 border-white" />
+                  <img src="/FB MODEL 3.jpeg" alt="Football Action" className="w-16 h-16 object-cover rounded-lg border-2 border-white" />
+                </div>
               </div>
               <CardContent className="p-8">
                 <h3 className="text-3xl font-bold text-gray-900 mb-3">Football Courts</h3>
@@ -474,16 +481,23 @@ const Index: React.FC = () => {
             {/* Cricket */}
             <Card 
               onClick={() => navigate('/public/booking?sport=cricket')}
-              className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500"
+              className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500 animate-fade-in delay-100"
             >
               <div className="relative h-72">
               <img
-                src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&q=80"
-                  alt="Professional Cricket Turf"
+                src="/Cricket.jpeg"
+                  alt="Professional Cricket Turf Action"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                 <Badge className="absolute top-4 left-4 bg-blue-500 text-white border-0">Professional Grade</Badge>
+                
+                {/* Mini Gallery Overlay */}
+                <div className="absolute bottom-4 left-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <img src="/Cricket.jpeg" alt="Cricket Match" className="w-16 h-16 object-cover rounded-lg border-2 border-white" />
+                  <img src="/Cricket 2.jpeg" alt="Cricket Action" className="w-16 h-16 object-cover rounded-lg border-2 border-white" />
+                  <img src="/Practice Match.jpg" alt="Practice" className="w-16 h-16 object-cover rounded-lg border-2 border-white" />
+                </div>
               </div>
               <CardContent className="p-8">
                 <h3 className="text-3xl font-bold text-gray-900 mb-3">Cricket Turfs</h3>
@@ -508,16 +522,24 @@ const Index: React.FC = () => {
             {/* Pickleball */}
             <Card 
               onClick={() => navigate('/public/booking?sport=pickleball')}
-              className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500"
+              className="group cursor-pointer overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 border-transparent hover:border-green-500 animate-fade-in delay-200"
             >
               <div className="relative h-72">
               <img
-                src="https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80"
-                  alt="Premium Pickleball Court"
+                src="/Pickleball top view.jpeg"
+                  alt="Premium Pickleball Court - Aerial View"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                 <Badge className="absolute top-4 left-4 bg-purple-500 text-white border-0">Indoor Court</Badge>
+                
+                {/* Mini Gallery Overlay */}
+                <div className="absolute bottom-4 left-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <img src="/Pickleball model.jpeg" alt="Pickleball" className="w-16 h-16 object-cover rounded-lg border-2 border-white" />
+                  <img src="/Pickleball model 2.jpeg" alt="Pickleball" className="w-16 h-16 object-cover rounded-lg border-2 border-white" />
+                  <img src="/Pickleball model 3.jpeg" alt="Pickleball" className="w-16 h-16 object-cover rounded-lg border-2 border-white" />
+                  <img src="/Pickleball model 4.jpeg" alt="Pickleball" className="w-16 h-16 object-cover rounded-lg border-2 border-white" />
+                </div>
               </div>
               <CardContent className="p-8">
                 <h3 className="text-3xl font-bold text-gray-900 mb-3">Pickleball Courts</h3>
@@ -561,7 +583,115 @@ const Index: React.FC = () => {
               </Card>
             ))}
           </div>
-                              </div>
+        </div>
+      </section>
+
+      {/* Women's Football Team Highlight - Integrated */}
+      <section className="py-20 px-4 bg-gradient-to-b from-pink-50 via-purple-50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <Badge className="mb-4 bg-pink-500/10 text-pink-700 border-pink-300">Empowering Women in Sports</Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Women's Football Excellence 💪⚽
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Celebrating our champion women's football team
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in">
+            <div className="relative group overflow-hidden rounded-2xl shadow-2xl border-2 border-pink-200">
+              <img src="/Football 1.jpeg" alt="Women's Football Team" className="w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-pink-900/90 via-pink-800/30 to-transparent">
+                <div className="absolute bottom-6 left-6 right-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Trophy className="h-6 w-6 text-pink-300" />
+                    <span className="bg-pink-500/30 text-pink-200 px-3 py-1 rounded-full text-xs font-bold">CHAMPIONS</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white">Team Unity</h3>
+                  <p className="text-pink-100 text-sm">Together we achieve greatness</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative group overflow-hidden rounded-2xl shadow-2xl border-2 border-purple-200 animate-fade-in delay-100">
+              <img src="/Football 2.jpeg" alt="Women's Football Action" className="w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-purple-900/90 via-purple-800/30 to-transparent">
+                <div className="absolute bottom-6 left-6 right-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Heart className="h-6 w-6 text-purple-300" />
+                    <span className="bg-purple-500/30 text-purple-200 px-3 py-1 rounded-full text-xs font-bold">TEAM SPIRIT</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white">Game Day</h3>
+                  <p className="text-purple-100 text-sm">Excellence in every match</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Professional Coaching - Animated Section */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16 animate-fade-in">
+            <Badge className="mb-4 bg-orange-500/10 text-orange-700 border-orange-300">Expert Training</Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Professional Coaching Programs
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Transform your game with certified coaches and structured training
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Football Coaching */}
+            <div className="relative rounded-2xl overflow-hidden group shadow-2xl border-2 border-green-200 animate-slide-up">
+              <img src="/FB Coaching 1.jpg" alt="Football Coaching" className="w-full h-[500px] object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-green-950/95 via-green-900/50 to-transparent group-hover:from-green-950/90 transition-all">
+                <div className="absolute bottom-8 left-8 right-8">
+                  <div className="flex items-center gap-2 mb-3 animate-slide-up delay-100">
+                    <Trophy className="h-8 w-8 text-green-400" />
+                    <span className="bg-green-500/30 text-green-200 px-4 py-2 rounded-full text-sm font-bold">⚽ FOOTBALL</span>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-3 animate-slide-up delay-150">Elite Football Training</h3>
+                  <p className="text-green-100 text-lg mb-4 animate-slide-up delay-200">Professional coaching with certified trainers</p>
+                  <ul className="text-green-200 space-y-2 text-sm mb-4 animate-slide-up delay-250">
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4" /> Individual & Group Sessions</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4" /> Skill Development Programs</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4" /> Match Preparation & Tactics</li>
+                  </ul>
+                  <Button className="bg-green-600 hover:bg-green-700 text-white animate-slide-up delay-300">
+                    Enroll Now
+                  </Button>
+                </div>
+              </div>
+            </div>
+            
+            {/* Multi-Sport Coaching */}
+            <div className="relative rounded-2xl overflow-hidden group shadow-2xl border-2 border-orange-200 animate-slide-up delay-100">
+              <img src="/FB Coaching 2.jpeg" alt="Sports Coaching" className="w-full h-[500px] object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-orange-950/95 via-orange-900/50 to-transparent group-hover:from-orange-950/90 transition-all">
+                <div className="absolute bottom-8 left-8 right-8">
+                  <div className="flex items-center gap-2 mb-3 animate-slide-up delay-150">
+                    <Trophy className="h-8 w-8 text-orange-400" />
+                    <span className="bg-orange-500/30 text-orange-200 px-4 py-2 rounded-full text-sm font-bold">🏏 MULTI-SPORT</span>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-3 animate-slide-up delay-200">Cricket & Sports Mastery</h3>
+                  <p className="text-orange-100 text-lg mb-4 animate-slide-up delay-250">Expert training across multiple disciplines</p>
+                  <ul className="text-orange-200 space-y-2 text-sm mb-4 animate-slide-up delay-300">
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4" /> Cricket Fundamentals</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4" /> Batting & Bowling Techniques</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4" /> Fitness & Conditioning</li>
+                  </ul>
+                  <Button className="bg-orange-600 hover:bg-orange-700 text-white animate-slide-up delay-350">
+                    Enroll Now
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Why Choose Turf45 */}
@@ -816,7 +946,7 @@ const Index: React.FC = () => {
           </div>
           
           {/* Ricky - Large and Centered */}
-          <div className="flex justify-center mb-12">
+          <div className="flex justify-center mb-12 animate-fade-in">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-emerald-400 rounded-full blur-3xl opacity-30 animate-pulse"></div>
               <div className="relative bg-gradient-to-br from-green-100 to-emerald-100 rounded-3xl p-12 md:p-16 shadow-2xl">
@@ -828,6 +958,88 @@ const Index: React.FC = () => {
                   />
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Ricky in Action - Photo Gallery */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="relative group overflow-hidden rounded-2xl shadow-xl border-2 border-green-200 animate-fade-in">
+              <img src="/Ricky.jpg" alt="Meet Ricky" className="w-full h-[300px] object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-green-900/90 via-green-800/30 to-transparent">
+                <div className="absolute bottom-4 left-4 right-4">
+                  <p className="text-white font-bold text-lg">👋 Meet Ricky!</p>
+                  <p className="text-green-200 text-sm">Your friendly guide</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative group overflow-hidden rounded-2xl shadow-xl border-2 border-blue-200 animate-fade-in delay-100">
+              <img src="/Ricky Playing.jpg" alt="Ricky Playing" className="w-full h-[300px] object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-800/30 to-transparent">
+                <div className="absolute bottom-4 left-4 right-4">
+                  <p className="text-white font-bold text-lg">🎾 Ricky Plays!</p>
+                  <p className="text-blue-200 text-sm">Watch and learn</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative group overflow-hidden rounded-2xl shadow-xl border-2 border-purple-200 animate-fade-in delay-200">
+              <img src="/Ricky Coaching.jpeg" alt="Ricky Coaching" className="w-full h-[300px] object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-purple-900/90 via-purple-800/30 to-transparent">
+                <div className="absolute bottom-4 left-4 right-4">
+                  <p className="text-white font-bold text-lg">📚 Coach Ricky!</p>
+                  <p className="text-purple-200 text-sm">Expert tips</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Learn with Ricky - Educational Content */}
+          <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-8 mb-12 border-2 border-blue-200">
+            <h3 className="text-3xl font-bold text-center mb-3 text-blue-600 animate-fade-in">
+              📖 Learn with Ricky
+            </h3>
+            <p className="text-center text-gray-600 mb-8">
+              Ricky explains everything you need to know!
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="relative group overflow-hidden rounded-xl shadow-xl border-2 border-blue-300 animate-slide-up">
+                <img src="/Rules.jpg" alt="Ricky Explains Rules" className="w-full h-[280px] object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-blue-900/40 to-transparent">
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <p className="text-white font-bold">📜 Rules Explained</p>
+                    <p className="text-blue-200 text-xs">Game basics</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="relative group overflow-hidden rounded-xl shadow-xl border-2 border-yellow-300 animate-slide-up delay-100">
+                <img src="/Wow.jpg" alt="Ricky Pro Tips" className="w-full h-[280px] object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-yellow-950/90 via-yellow-900/40 to-transparent">
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <p className="text-white font-bold">✨ Pro Tips</p>
+                    <p className="text-yellow-200 text-xs">Amazing techniques</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="relative group overflow-hidden rounded-xl shadow-xl border-2 border-purple-300 animate-slide-up delay-200">
+                <img src="/Proposal.jpg" alt="Ricky Game Plans" className="w-full h-[280px] object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-purple-950/90 via-purple-900/40 to-transparent">
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <p className="text-white font-bold">💡 Game Plans</p>
+                    <p className="text-purple-200 text-xs">Strategy tips</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Play with Ricky Promo Banner */}
+          <div className="text-center mb-8">
+            <div className="relative inline-block rounded-2xl overflow-hidden shadow-2xl border-4 border-green-300 max-w-4xl mx-auto animate-fade-in">
+              <img src="/PLAY WITH RICKY Code.jpg" alt="Play with Ricky Promo" className="w-full" />
             </div>
           </div>
 
@@ -941,196 +1153,6 @@ const Index: React.FC = () => {
               <p className="text-4xl font-bold text-green-600 mb-2">99%</p>
               <p className="text-gray-600">Satisfaction Rate</p>
             </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Women's Football Team Section - NEW */}
-      <section className="py-20 px-4 bg-gradient-to-b from-pink-50 via-purple-50 to-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Women's Football Team 💪⚽
-            </h2>
-            <p className="text-xl text-gray-600">
-              Empowering women through sports
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <div className="relative group overflow-hidden rounded-2xl shadow-2xl">
-              <img src="/Football 1.jpeg" alt="Women's Football Team" className="w-full h-[450px] object-cover group-hover:scale-110 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-pink-950/90 via-pink-900/40 to-transparent">
-                <div className="absolute bottom-8 left-8 right-8">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Trophy className="h-7 w-7 text-pink-400" />
-                    <span className="bg-pink-500/20 text-pink-300 px-3 py-1 rounded-full text-sm font-bold">
-                      WOMEN'S TEAM
-                    </span>
-                  </div>
-                  <h3 className="text-3xl font-bold text-white mb-2">Girls Football Squad</h3>
-                  <p className="text-pink-100 text-lg">Champions on and off the field</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="relative group overflow-hidden rounded-2xl shadow-2xl">
-              <img src="/Football 2.jpeg" alt="Women's Football Action" className="w-full h-[450px] object-cover group-hover:scale-110 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-pink-950/90 via-pink-900/40 to-transparent">
-                <div className="absolute bottom-8 left-8 right-8">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Trophy className="h-7 w-7 text-pink-400" />
-                    <span className="bg-pink-500/20 text-pink-300 px-3 py-1 rounded-full text-sm font-bold">
-                      TEAM SPIRIT
-                    </span>
-                  </div>
-                  <h3 className="text-3xl font-bold text-white mb-2">Team Unity</h3>
-                  <p className="text-pink-100 text-lg">Together we achieve more</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="text-center bg-gradient-to-r from-pink-50 to-purple-50 border-2 border-pink-200 rounded-2xl p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">Join Our Women's Football Program</h3>
-            <p className="text-gray-600 mb-6">Professional training and a supportive community await you</p>
-            <Button className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-8 py-3 text-lg">
-              Learn More
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Players in Action Section - NEW */}
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Players in Action
-            </h2>
-            <p className="text-xl text-gray-600">
-              Real players, real passion
-            </p>
-          </div>
-          
-          {/* Men's Football */}
-          <div className="mb-16">
-            <div className="flex items-center gap-3 mb-8">
-              <Trophy className="h-8 w-8 text-green-600" />
-              <h3 className="text-3xl font-bold text-gray-900">Men's Football Action</h3>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {['FB MODEL 1.jpeg', 'FB MODEL 2.jpeg', 'FB MODEL 3.jpeg'].map((img, idx) => (
-                <div key={idx} className="relative group overflow-hidden rounded-2xl shadow-xl">
-                  <img src={`/${img}`} alt={`Football Model ${idx + 1}`} className="w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-green-950/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="absolute bottom-6 left-6">
-                      <p className="text-white font-bold text-lg">⚽ Football Pro</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            {/* Cricket Action */}
-            <div className="mt-12">
-              <div className="flex items-center gap-3 mb-8">
-                <Trophy className="h-8 w-8 text-orange-600" />
-                <h3 className="text-3xl font-bold text-gray-900">Cricket Action</h3>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {['Cricket.jpeg', 'Cricket 2.jpeg'].map((img, idx) => (
-                  <div key={idx} className="relative group overflow-hidden rounded-2xl shadow-xl">
-                    <img src={`/${img}`} alt={`Cricket Match ${idx + 1}`} className="w-full h-[350px] object-cover group-hover:scale-110 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-orange-950/70 to-transparent">
-                      <div className="absolute bottom-4 left-4">
-                        <p className="text-white font-bold text-lg">🏏 Cricket Action</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          
-          {/* Pickleball Champions */}
-          <div>
-            <div className="flex items-center gap-3 mb-8">
-              <Target className="h-8 w-8 text-blue-600" />
-              <h3 className="text-3xl font-bold text-gray-900">Pickleball Champions</h3>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              {['Pickleball model.jpeg', 'Pickleball model 2.jpeg', 'Pickleball model 3.jpeg', 'Pickleball model 4.jpeg'].map((img, idx) => (
-                <div key={idx} className="relative group overflow-hidden rounded-2xl shadow-xl">
-                  <img src={`/${img}`} alt={`Pickleball Model ${idx + 1}`} className="w-full h-[350px] object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-950/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="absolute bottom-4 left-4">
-                      <p className="text-white font-bold">🎾 Pickleball Pro</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Professional Coaching Section - NEW */}
-      <section className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Professional Coaching Programs
-            </h2>
-            <p className="text-xl text-gray-600">
-              Expert training sessions for all skill levels
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Football Coaching */}
-            <div className="relative rounded-2xl overflow-hidden group shadow-2xl">
-              <img src="/FB Coaching 1.jpg" alt="Football Coaching Session" className="w-full h-[450px] object-cover group-hover:scale-110 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-green-950/95 via-green-900/50 to-transparent">
-                <div className="absolute bottom-8 left-8 right-8">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Trophy className="h-7 w-7 text-green-400" />
-                    <span className="bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-sm font-bold">
-                      FOOTBALL
-                    </span>
-                  </div>
-                  <h3 className="text-3xl font-bold text-white mb-2">Football Coaching</h3>
-                  <p className="text-green-100 text-lg mb-4">Professional training with certified coaches</p>
-                  <ul className="text-green-200 space-y-1 text-sm">
-                    <li>✓ Individual & Group Sessions</li>
-                    <li>✓ Skill Development Programs</li>
-                    <li>✓ Match Preparation</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            
-            {/* Multi-Sport Coaching */}
-            <div className="relative rounded-2xl overflow-hidden group shadow-2xl">
-              <img src="/FB Coaching 2.jpeg" alt="Sports Coaching Session" className="w-full h-[450px] object-cover group-hover:scale-110 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-orange-950/95 via-orange-900/50 to-transparent">
-                <div className="absolute bottom-8 left-8 right-8">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Trophy className="h-7 w-7 text-orange-400" />
-                    <span className="bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-sm font-bold">
-                      MULTI-SPORT
-                    </span>
-                  </div>
-                  <h3 className="text-3xl font-bold text-white mb-2">Cricket & Sports Coaching</h3>
-                  <p className="text-orange-100 text-lg mb-4">Expert training across multiple sports</p>
-                  <ul className="text-orange-200 space-y-1 text-sm">
-                    <li>✓ Cricket Fundamentals</li>
-                    <li>✓ Batting & Bowling Techniques</li>
-                    <li>✓ Fitness & Conditioning</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -1302,116 +1324,6 @@ const Index: React.FC = () => {
             <ArrowRight className="ml-2 h-6 w-6" />
           </Button>
           </div>
-      </section>
-
-      {/* Meet Ricky Section - NEW */}
-      <section className="py-20 px-4 bg-gradient-to-b from-blue-50 via-purple-50 to-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Meet Ricky - Your Sports Guide 🎾
-            </h2>
-            <p className="text-xl text-gray-600">
-              Our friendly mascot here to help you learn and play!
-            </p>
-          </div>
-          
-          {/* Ricky Introduction */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            <div className="relative group">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-blue-200">
-                <img src="/Ricky.jpg" alt="Ricky Mascot" className="w-full h-[400px] object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-blue-900/30 to-transparent">
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <p className="text-white font-bold text-2xl">Meet Ricky! 👋</p>
-                    <p className="text-blue-200 text-sm mt-1">Your friendly pickleball guide</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="relative group">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-green-200">
-                <img src="/Ricky Playing.jpg" alt="Ricky Playing" className="w-full h-[400px] object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-green-950/90 via-green-900/30 to-transparent">
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <p className="text-white font-bold text-2xl">Ricky Plays! 🎾</p>
-                    <p className="text-green-200 text-sm mt-1">Watch and learn from Ricky</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="relative group">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-orange-200">
-                <img src="/Ricky Coaching.jpeg" alt="Ricky Coaching" className="w-full h-[400px] object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-orange-950/90 via-orange-900/30 to-transparent">
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <p className="text-white font-bold text-2xl">Coach Ricky! 📚</p>
-                    <p className="text-orange-200 text-sm mt-1">Expert tips and guidance</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Learn with Ricky */}
-          <div className="bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200 rounded-3xl p-8 mb-12">
-            <h3 className="text-3xl font-bold text-center mb-3 text-purple-600">
-              📖 Learn with Ricky
-            </h3>
-            <p className="text-center text-gray-600 mb-8">
-              Ricky explains everything you need to know!
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="relative group overflow-hidden rounded-xl shadow-xl border-2 border-blue-200">
-                <img src="/Rules.jpg" alt="Ricky Explains Rules" className="w-full h-[350px] object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-blue-900/50 to-transparent">
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <p className="text-white font-bold text-xl">📜 Rules Explained</p>
-                    <p className="text-blue-200 text-sm mt-1">Learn the game basics</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="relative group overflow-hidden rounded-xl shadow-xl border-2 border-yellow-200">
-                <img src="/Wow.jpg" alt="Ricky Amazing Tips" className="w-full h-[350px] object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-orange-950/90 via-orange-900/50 to-transparent">
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <p className="text-white font-bold text-xl">✨ Wow! Pro Tips</p>
-                    <p className="text-yellow-200 text-sm mt-1">Amazing tricks & techniques</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="relative group overflow-hidden rounded-xl shadow-xl border-2 border-purple-200">
-                <img src="/Proposal.jpg" alt="Ricky Proposals" className="w-full h-[350px] object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-purple-950/90 via-purple-900/50 to-transparent">
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <p className="text-white font-bold text-xl">💡 Game Plans</p>
-                    <p className="text-purple-200 text-sm mt-1">Strategy & proposals</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Play with Ricky Promo */}
-          <div className="text-center">
-            <div className="relative inline-block rounded-2xl overflow-hidden shadow-2xl border-4 border-blue-300 max-w-3xl mx-auto">
-              <img src="/PLAY WITH RICKY Code.jpg" alt="Play with Ricky Promo" className="w-full" />
-            </div>
-            <div className="mt-8">
-              <Button 
-                onClick={() => navigate('/public/booking')}
-                className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white px-10 py-4 text-lg font-bold rounded-full shadow-xl"
-              >
-                🎾 Play with Ricky Today!
-              </Button>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* Achievements Carousel - NEW */}
