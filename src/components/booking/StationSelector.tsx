@@ -48,11 +48,11 @@ export const StationSelector: React.FC<StationSelectorProps> = ({
   const getStationTypeBadgeColor = (type: string) => {
     switch (type) {
       case 'ps5':
-        return 'bg-cuephoria-purple/15 text-cuephoria-purple border-cuephoria-purple/20';
+        return 'bg-green-500/15 text-green-400 border-green-500/20';
       case 'vr':
-        return 'bg-blue-400/15 text-blue-300 border-blue-400/20';
+        return 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20';
       default:
-        return 'bg-emerald-400/15 text-emerald-300 border-emerald-400/20';
+        return 'bg-green-500/15 text-green-300 border-green-500/20';
     }
   };
 
@@ -83,7 +83,7 @@ export const StationSelector: React.FC<StationSelectorProps> = ({
             key={station.id}
             className={`cursor-pointer transition-all duration-200 hover:shadow-md border-white/10 bg-white/5 backdrop-blur-sm ${
               isSelected 
-                ? 'ring-2 ring-cuephoria-purple bg-cuephoria-purple/10' 
+                ? 'ring-2 ring-green-500 bg-green-500/10' 
                 : 'hover:bg-white/10'
             }`}
             onClick={() => onStationToggle(station.id)}
@@ -95,7 +95,7 @@ export const StationSelector: React.FC<StationSelectorProps> = ({
                   {station.name}
                 </CardTitle>
                 {isSelected && (
-                  <Badge variant="default" className="text-xs bg-cuephoria-purple text-white">
+                  <Badge variant="default" className="text-xs bg-green-500 text-white">
                     Selected
                   </Badge>
                 )}
@@ -109,7 +109,7 @@ export const StationSelector: React.FC<StationSelectorProps> = ({
                 >
                   {getStationTypeLabel(station.type)}
                 </Badge>
-                <div className="text-sm font-medium text-cuephoria-lightpurple">
+                <div className="text-sm font-medium text-green-300">
                   {getPriceDisplay(station)}
                 </div>
               </div>

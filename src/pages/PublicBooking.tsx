@@ -48,11 +48,10 @@ import { format, parse, getDay } from "date-fns";
 /* =========================
    Types
    ========================= */
-type StationType = "turf" | "pickleball";
 interface Station {
   id: string;
   name: string;
-  type: StationType;
+  type: 'ps5' | '8ball' | 'vr' | 'turf' | 'pickleball';
   hourly_rate: number;
 }
 interface TimeSlot {
@@ -129,7 +128,7 @@ const validatePhoneNumber = (phone: string): { valid: boolean; error?: string } 
   return { valid: true };
 };
 
-const getSlotDuration = (stationType: StationType) => {
+const getSlotDuration = (stationType: string) => {
   return 30; // All slots are now 30 minutes
 };
 
@@ -144,7 +143,7 @@ export default function PublicBooking() {
   const { hasBookingAccess, isLoading: subscriptionLoading } = useSubscription();
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const [stations, setStations] = useState<Station[]>([]);
-  const [stationType, setStationType] = useState<"all" | StationType>("all");
+  const [stationType, setStationType] = useState<"all" | "ps5" | "8ball" | "vr">("all");
   const [selectedStations, setSelectedStations] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
@@ -329,10 +328,7 @@ export default function PublicBooking() {
         // If same type, sort by name
         return a.name.localeCompare(b.name);
       });
-      setStations(sortedStations.map(station => ({
-        ...station,
-        type: station.type as StationType
-      })));
+      setStations(sortedStations as Station[]);
     } catch (e) {
       console.error(e);
       toast.error("Failed to load stations");
@@ -516,11 +512,6 @@ export default function PublicBooking() {
   const handleStationToggle = (id: string) => {
     const station = stations.find(s => s.id === id);
     if (!station) return;
-    
-    // Don't allow VR stations to be selected
-    if (station.type === 'vr') {
-      return;
-    }
     
     setSelectedStations((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
@@ -1754,6 +1745,19 @@ export default function PublicBooking() {
                   >
                     Cricket
                   </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setStationType("vr")}
+                    className={cn(
+                      "h-9 rounded-full border-white/15 text-[12px]",
+                      stationType === "vr"
+                        ? "bg-green-500/15 text-emerald-400"
+                        : "bg-transparent text-emerald-400"
+                    )}
+                  >
+                    Pickleball
+                  </Button>
                 </div>
 
                 {!isStationSelectionAvailable() ? (
@@ -1768,8 +1772,8 @@ export default function PublicBooking() {
                     <StationSelector
                       stations={
                         stationType === "all"
-                          ? stations.filter((s) => s.type !== 'vr')
-                          : stations.filter((s) => s.type === stationType && s.type !== 'vr')
+                          ? stations
+                          : stations.filter((s) => s.type === stationType)
                       }
                       selectedStations={selectedStations}
                       onStationToggle={handleStationToggle}
