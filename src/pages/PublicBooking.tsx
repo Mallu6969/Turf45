@@ -129,11 +129,11 @@ const validatePhoneNumber = (phone: string): { valid: boolean; error?: string } 
 };
 
 const getSlotDuration = (stationType: string) => {
-  return 30; // All slots are now 30 minutes
+  return 60; // All slots are now 1 hour
 };
 
 const getBookingDuration = (stationIds: string[], stations: Station[]) => {
-  return 30; // All bookings are now 30 minutes per slot
+  return 60; // All bookings are now 1 hour per slot
 };
 
 /* =========================
@@ -342,7 +342,7 @@ export default function PublicBooking() {
       const dateStr = format(selectedDate, "yyyy-MM-dd");
       const isToday = dateStr === format(new Date(), "yyyy-MM-dd");
       
-      const slotDuration = 30; // All slots are 30 minutes
+      const slotDuration = 60; // All slots are 1 hour
       
       if (selectedStations.length === 1) {
         const { data, error } = await supabase.rpc("get_available_slots", {
@@ -524,7 +524,7 @@ export default function PublicBooking() {
     if (selectedStations.length === 0) return selectedStations;
     const dateStr = format(selectedDate, "yyyy-MM-dd");
     
-    const slotDuration = 30; // All slots are 30 minutes
+    const slotDuration = 60; // All slots are 1 hour
     
     const checks = await Promise.all(
       selectedStations.map(async (stationId) => {
@@ -759,7 +759,7 @@ export default function PublicBooking() {
     const stationPrice = stations
       .filter((s) => selectedStations.includes(s.id))
       .reduce((sum, s) => {
-        // Price per 30-minute slot (half of hourly rate)
+        // Price per 1-hour slot
         return sum + (s.hourly_rate / 2);
       }, 0);
     return stationPrice * numberOfSlots;
@@ -880,8 +880,8 @@ export default function PublicBooking() {
 
   // Calculate number of selected slots
   const numberOfSelectedSlots = selectedSlotRange.length > 0 ? selectedSlotRange.length : (selectedSlot ? 1 : 0);
-  // Allow 30-minute (1 slot) bookings when pay at venue is enabled, otherwise require 2 slots (60 minutes)
-  const hasMinimumSlots = payAtVenueEnabled ? numberOfSelectedSlots >= 1 : numberOfSelectedSlots >= 2;
+  // Allow 1-hour (1 slot) bookings
+  const hasMinimumSlots = numberOfSelectedSlots >= 1;
 
   const isCustomerInfoComplete = () =>
     hasSearched && customerNumber.trim() !== "" && customerInfo.name.trim() !== "";
@@ -895,12 +895,9 @@ export default function PublicBooking() {
     try {
       // Check minimum slots requirement
       const slotsToBook = selectedSlotRange.length > 0 ? selectedSlotRange : [selectedSlot!];
-      const minSlotsRequired = payAtVenueEnabled ? 1 : 2;
+      const minSlotsRequired = 1;
       if (slotsToBook.length < minSlotsRequired) {
-        const errorMessage = payAtVenueEnabled 
-          ? "Please select at least 1 slot (30 minutes)."
-          : "Minimum booking is 2 slots (60 minutes). Please select at least 2 consecutive slots.";
-        toast.error(errorMessage);
+        toast.error("Please select at least 1 slot (1 hour).");
         setLoading(false);
         return;
       }
@@ -959,7 +956,7 @@ export default function PublicBooking() {
       }
 
       const couponCodes = Object.values(appliedCoupons).join(",");
-      const bookingDuration = 30; // 30 minutes per slot
+      const bookingDuration = 60; // 1 hour per slot
       
       // Validate booking slots for conflicts BEFORE creating
       for (const slot of slotsToBook) {
@@ -1077,7 +1074,7 @@ export default function PublicBooking() {
         selectedStations.includes(s.id)
       );
       
-      const sessionDuration = `${slotsToBook.length * 30} minutes (${slotsToBook.length} slots)`;
+      const sessionDuration = `${slotsToBook.length} hour${slotsToBook.length > 1 ? 's' : ''} (${slotsToBook.length} slot${slotsToBook.length > 1 ? 's' : ''})`;
       
       setBookingConfirmationData({
         bookingId: inserted[0].id.slice(0, 8).toUpperCase(),
@@ -1124,8 +1121,8 @@ export default function PublicBooking() {
     const slotsToBook = selectedSlotRange.length > 0 ? selectedSlotRange : (selectedSlot ? [selectedSlot] : []);
     
     // Check minimum slots requirement
-    if (slotsToBook.length < 2) {
-      toast.error("Minimum booking is 2 slots (60 minutes). Please select at least 2 consecutive slots.");
+    if (slotsToBook.length < 1) {
+      toast.error("Please select at least 1 slot (1 hour).");
       return;
     }
     
@@ -1298,8 +1295,8 @@ export default function PublicBooking() {
     }
     if (!hasMinimumSlots) {
       const errorMessage = payAtVenueEnabled 
-        ? "Please select at least 1 slot (30 minutes)."
-        : "Minimum booking is 2 slots (60 minutes). Please select at least 2 consecutive slots.";
+        ? "Please select at least 1 slot (1 hour)."
+        : "Minimum booking is 1 slot (1 hour). Please select at least 1 slot.";
       toast.error(errorMessage);
       return;
     }
@@ -1567,7 +1564,7 @@ export default function PublicBooking() {
           <p>
             Turf 45 offers <span className="font-medium">time-based rentals</span> of
             Football courts, Cricket turfs, and Pickleball courts. Book 
-            30-minute sessions for Football/Cricket or Pickleball.
+            1-hour sessions for Football, Cricket, or Pickleball.
           </p>
           <p className="mt-2 text-gray-400">
             <span className="font-medium text-gray-200">Pricing:</span> All prices are
@@ -1718,45 +1715,6 @@ export default function PublicBooking() {
                     )}
                   >
                     All
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setStationType("ps5")}
-                    className={cn(
-                      "h-9 rounded-full border-white/15 text-[12px]",
-                      stationType === "ps5"
-                        ? "bg-green-500/15 text-green-400"
-                        : "bg-transparent text-green-400"
-                    )}
-                  >
-                    Football
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setStationType("8ball")}
-                    className={cn(
-                      "h-9 rounded-full border-white/15 text-[12px]",
-                      stationType === "8ball"
-                        ? "bg-green-500/15 text-green-300"
-                        : "bg-transparent text-green-300"
-                    )}
-                  >
-                    Cricket
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setStationType("vr")}
-                    className={cn(
-                      "h-9 rounded-full border-white/15 text-[12px]",
-                      stationType === "vr"
-                        ? "bg-green-500/15 text-emerald-400"
-                        : "bg-transparent text-emerald-400"
-                    )}
-                  >
-                    Pickleball
                   </Button>
                 </div>
 
@@ -1909,8 +1867,8 @@ export default function PublicBooking() {
                     </Label>
                     <p className="mt-1 text-sm text-gray-200">
                       {selectedSlotRange.length > 1 
-                        ? `${selectedSlotRange.length} slots (${selectedSlotRange.length * 30} minutes)`
-                        : '30 minutes'}
+                        ? `${selectedSlotRange.length} hour${selectedSlotRange.length > 1 ? 's' : ''} (${selectedSlotRange.length} slot${selectedSlotRange.length > 1 ? 's' : ''})`
+                        : '1 hour'}
                     </p>
                     <p className="text-sm text-gray-200">
                       {new Date(`2000-01-01T${selectedSlotRange[0]?.start_time || selectedSlot.start_time}`).toLocaleTimeString(
@@ -2134,8 +2092,8 @@ export default function PublicBooking() {
                 {selectedSlot && !hasMinimumSlots && (
                   <p className="text-xs text-amber-400 text-center mt-2">
                     {payAtVenueEnabled 
-                      ? "⚠️ Please select at least 1 slot (30 minutes)."
-                      : "⚠️ Minimum booking is 2 slots (60 minutes). Please select at least 2 consecutive slots."}
+                      ? "⚠️ Please select at least 1 slot (1 hour)."
+                      : "⚠️ Minimum booking is 1 slot (1 hour). Please select at least 1 slot."}
                   </p>
                 )}
 
@@ -2156,7 +2114,7 @@ export default function PublicBooking() {
               Terms & Conditions (Summary)
             </h3>
             <ul className="ml-5 list-disc text-sm text-gray-300 space-y-1.5">
-              <li>Bookings are for specified time slots (30 min for Football/Cricket/Pickleball); extensions subject to availability.</li>
+              <li>Bookings are for specified time slots (1 hour for Football/Cricket/Pickleball); extensions subject to availability.</li>
               <li>Arrive on time; late arrivals may reduce play time without fee adjustment.</li>
               <li>Damage to equipment may incur charges as per in-store policy.</li>
               <li>Management may refuse service in cases of misconduct or safety concerns.</li>
