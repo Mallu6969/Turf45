@@ -318,7 +318,7 @@ export default function PublicBooking() {
         .select("id, name, type, hourly_rate")
         .order("name");
       if (error) throw error;
-      // Sort stations: 8ball (Tables) first, then PS5, then VR
+      // Sort stations: 8ball (Cricket) first, then ps5 (Football), then vr (Pickleball)
       const sortedStations = (data || []).sort((a, b) => {
         const typeOrder: Record<string, number> = { '8ball': 0, 'ps5': 1, 'vr': 2 };
         const aOrder = typeOrder[a.type] ?? 99;
@@ -616,7 +616,7 @@ export default function PublicBooking() {
 
   function validateStudentID() {
     return window.confirm(
-      "🎓 NerfTurf50 is for other college & school students ONLY.\nShow a valid student ID card during your visit for this discount. Apply?"
+      "🎓 NerfTurf50 is for other college & school students ONLY.\nShow a valid student ID card during your visit for this discount at Turf 45. Apply?"
     );
   }
 
@@ -641,6 +641,15 @@ export default function PublicBooking() {
     const selectedHasPickleball = selectedStations.some(
       (id) => stations.find((s) => s.id === id && s.type === "pickleball")
     );
+    const selectedHasPS5 = selectedStations.some(
+      (id) => stations.find((s) => s.id === id && s.type === "ps5")
+    );
+    const selectedHas8Ball = selectedStations.some(
+      (id) => stations.find((s) => s.id === id && s.type === "8ball")
+    );
+    const selectedHasVR = selectedStations.some(
+      (id) => stations.find((s) => s.id === id && s.type === "vr")
+    );
     const happyHourActive = isHappyHour(selectedDate, selectedSlot);
 
     if (code === "TES1342") {
@@ -653,7 +662,7 @@ export default function PublicBooking() {
       if (!validateStudentID()) return;
       setAppliedCoupons({ all: "NerfTurf50" });
       toast.success(
-        "📚 NerfTurf50 applied: 50% OFF for students with valid ID!\nShow your student ID when you visit! 🤝"
+        "📚 NerfTurf50 applied: 50% OFF for students with valid ID at Turf 45!\nShow your student ID when you visit! 🤝"
       );
       return;
     }
@@ -670,17 +679,17 @@ export default function PublicBooking() {
 
     if (code === "NerfTurf25") {
       setAppliedCoupons({ all: "NerfTurf25" });
-      toast.success("🎉 NerfTurf25 applied: 25% OFF! Book more, play more! 🕹️");
+      toast.success("🎉 NerfTurf25 applied: 25% OFF at Turf 45! Book more, play more! ⚽");
       return;
     }
 
     if (code === "HH99") {
       if (selectedHasVR) {
-        toast.error("⏰ HH99 is not applicable to VR gaming stations.");
+        toast.error("⏰ HH99 is not applicable to Pickleball courts.");
         return;
       }
       if (!(selectedHas8Ball || selectedHasPS5)) {
-        toast.error("⏰ HH99 applies to PS5 and 8-Ball stations during Happy Hours.");
+        toast.error("⏰ HH99 applies to Football and Cricket turfs during Happy Hours.");
         return;
       }
       if (!happyHourActive) {
@@ -694,7 +703,7 @@ export default function PublicBooking() {
         return updated;
       });
       toast.success(
-        "⏰ HH99 applied! PS5 & 8-Ball stations at ₹99/hour during Happy Hours! ✨"
+        "⏰ HH99 applied! Football & Cricket turfs at ₹99/hour during Happy Hours! ✨"
       );
       return;
     }
@@ -702,7 +711,7 @@ export default function PublicBooking() {
     if (code === "NIT50") {
       if (!(selectedHas8Ball || selectedHasPS5 || selectedHasVR)) {
         toast.error(
-          "NIT50 can be applied to PS5, 8-Ball, or VR stations in your selection."
+          "NIT50 can be applied to Football, Cricket, or Pickleball courts in your selection."
         );
         return;
       }
@@ -715,10 +724,10 @@ export default function PublicBooking() {
       });
       let msg = "🎓 NIT50 applied! 50% OFF for ";
       const types = [];
-      if (selectedHasPS5) types.push("PS5");
-      if (selectedHas8Ball) types.push("8-Ball");
-      if (selectedHasVR) types.push("VR");
-      msg += types.join(" & ") + " stations!";
+      if (selectedHasPS5) types.push("Football");
+      if (selectedHas8Ball) types.push("Cricket");
+      if (selectedHasVR) types.push("Pickleball");
+      msg += types.join(" & ") + " courts!";
       toast.success(msg);
       return;
     }
@@ -726,7 +735,7 @@ export default function PublicBooking() {
     if (code === "ALMA50") {
       if (!(selectedHas8Ball || selectedHasPS5 || selectedHasVR)) {
         toast.error(
-          "ALMA50 can be applied to PS5, 8-Ball, or VR stations in your selection."
+          "ALMA50 can be applied to Football, Cricket, or Pickleball courts in your selection."
         );
         return;
       }
@@ -739,10 +748,10 @@ export default function PublicBooking() {
       });
       let msg = "🏫 ALMA50 applied! 50% OFF for ";
       const types = [];
-      if (selectedHasPS5) types.push("PS5");
-      if (selectedHas8Ball) types.push("8-Ball");
-      if (selectedHasVR) types.push("VR");
-      msg += types.join(" & ") + " stations!";
+      if (selectedHasPS5) types.push("Football");
+      if (selectedHas8Ball) types.push("Cricket");
+      if (selectedHasVR) types.push("Pickleball");
+      msg += types.join(" & ") + " courts!";
       toast.success(msg);
       return;
     }
@@ -804,7 +813,7 @@ export default function PublicBooking() {
       const d = sum - eightBalls.length * 99;
       if (d > 0) {
         totalDiscount += d;
-        breakdown["8-Ball (HH99)"] = d;
+        breakdown["Cricket (HH99)"] = d;
       }
       const turfs = stations.filter(
         (s) => selectedStations.includes(s.id) && s.type === "turf"
@@ -822,7 +831,7 @@ export default function PublicBooking() {
         const d = sum - eightBalls.length * 99;
         if (d > 0) {
           totalDiscount += d;
-          breakdown["8-Ball (HH99)"] = d;
+          breakdown["Cricket (HH99)"] = d;
         }
       }
 
@@ -845,7 +854,7 @@ export default function PublicBooking() {
         const sum = balls.reduce((x, s) => x + s.hourly_rate, 0);
         const d = sum * 0.5;
         totalDiscount += d;
-        breakdown[`8-Ball (${appliedCoupons["8ball"]})`] = d;
+        breakdown[`Cricket (${appliedCoupons["8ball"]})`] = d;
       }
 
       if (appliedCoupons["turf"] === "NIT50" || appliedCoupons["turf"] === "ALMA50") {
@@ -1205,7 +1214,7 @@ export default function PublicBooking() {
         key: keyData.keyId,
         amount: orderData.amount,
         currency: orderData.currency || "INR",
-        name: "NerfTurf Gaming Lounge",
+        name: "Turf 45 Sports Turf",
         description: `Booking for ${slotsToBook.length} slot(s)`,
         order_id: orderData.orderId,
         handler: async function (response: any) {
@@ -1541,20 +1550,20 @@ export default function PublicBooking() {
 
             <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs tracking-widest uppercase text-gray-300 backdrop-blur-md">
               <Sparkles className="h-3.5 w-3.5 text-nerfturf-magenta" />
-              Premium Gaming Lounge
+              Premium Sports Turf
             </span>
 
             <h1 className="mt-3 text-4xl md:text-5xl font-extrabold text-white">
-              Book Your Gaming Session
+              Book Your Sports Session
             </h1>
             <p className="mt-2 text-lg text-gray-300/90 max-w-2xl text-center">
-              Reserve PlayStation 5, Pool Table, or VR Gaming sessions at NerfTurf
+              Reserve Football, Cricket, or Pickleball sessions at Turf 45
             </p>
 
             <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-gray-300 backdrop-blur-md">
               <span className="font-semibold tracking-wide">Line of Business:</span>
               <span>
-                Amusement & Gaming Lounge Services (time-based PS5, 8-Ball & VR rentals)
+                Sports Turf Services (time-based Football, Cricket & Pickleball rentals)
               </span>
             </div>
           </div>
@@ -1563,11 +1572,11 @@ export default function PublicBooking() {
 
       <main className="px-4 sm:px-6 md:px-8 max-w-7xl mx-auto pb-14 relative z-10">
         <section className="mb-6 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-sm text-gray-300">
-          <h2 className="mb-1 text-base font-semibold text-white">About NerfTurf</h2>
+          <h2 className="mb-1 text-base font-semibold text-white">About Turf 45</h2>
           <p>
-            NerfTurf offers <span className="font-medium">time-based rentals</span> of
-            PlayStation 5 stations, 8-Ball pool tables, and VR Gaming stations. Book 
-            60-minute sessions for PS5/Pool or 15-minute sessions for VR Gaming.
+            Turf 45 offers <span className="font-medium">time-based rentals</span> of
+            Football courts, Cricket turfs, and Pickleball courts. Book 
+            30-minute sessions for Football/Cricket or Pickleball.
           </p>
           <p className="mt-2 text-gray-400">
             <span className="font-medium text-gray-200">Pricing:</span> All prices are
@@ -1730,7 +1739,7 @@ export default function PublicBooking() {
                         : "bg-transparent text-nerfturf-purple"
                     )}
                   >
-                    PS5
+                    Football
                   </Button>
                   <Button
                     size="sm"
@@ -1743,7 +1752,7 @@ export default function PublicBooking() {
                         : "bg-transparent text-nerfturf-lightpurple"
                     )}
                   >
-                    Tables
+                    Cricket
                   </Button>
                 </div>
 
@@ -2143,7 +2152,7 @@ export default function PublicBooking() {
               Terms & Conditions (Summary)
             </h3>
             <ul className="ml-5 list-disc text-sm text-gray-300 space-y-1.5">
-              <li>Bookings are for specified time slots (60 min for PS5/Pool, 15 min for VR); extensions subject to availability.</li>
+              <li>Bookings are for specified time slots (30 min for Football/Cricket/Pickleball); extensions subject to availability.</li>
               <li>Arrive on time; late arrivals may reduce play time without fee adjustment.</li>
               <li>Damage to equipment may incur charges as per in-store policy.</li>
               <li>Management may refuse service in cases of misconduct or safety concerns.</li>
