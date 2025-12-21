@@ -1449,7 +1449,7 @@ export default function PublicBooking() {
           <span
             className={cn(
               base,
-              "bg-nerfturf-purple/15 text-nerfturf-lightpurple border border-nerfturf-purple/20"
+              "bg-green-500/15 text-green-300 border border-green-500/20"
             )}
           >
             completed
@@ -1525,11 +1525,11 @@ export default function PublicBooking() {
         </DialogContent>
       </Dialog>
 
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#1a1a1a] via-[#1a0f1a] to-[#1a1a1a]">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#0a1a0f] via-[#0f1a14] to-[#0a1a0f]">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-nerfturf-purple/20 blur-3xl" />
-        <div className="absolute top-1/3 -right-24 h-64 w-64 rounded-full bg-nerfturf-cyan/20 blur-3xl" />
-        <div className="absolute bottom-10 left-1/3 h-56 w-56 rounded-full bg-nerfturf-magenta/20 blur-3xl" />
+        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-green-500/20 blur-3xl" />
+        <div className="absolute top-1/3 -right-24 h-64 w-64 rounded-full bg-emerald-400/20 blur-3xl" />
+        <div className="absolute bottom-10 left-1/3 h-56 w-56 rounded-full bg-green-600/20 blur-3xl" />
       </div>
 
       {/* Coupon Promotional Popup - Hidden for now */}
@@ -1542,14 +1542,14 @@ export default function PublicBooking() {
               <img
                 src="/Turf45_transparent.png"
                 alt="TURF 45 Logo"
-                className="h-24 drop-shadow-[0_0_25px_rgba(168,85,247,0.15)] cursor-pointer transition-transform hover:scale-105"
+                className="h-24 drop-shadow-[0_0_25px_rgba(16,185,129,0.3)] cursor-pointer transition-transform hover:scale-105"
                 onClick={() => setShowPinDialog(true)}
                 title="Click for secret feature"
               />
             </div>
 
             <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs tracking-widest uppercase text-gray-300 backdrop-blur-md">
-              <Sparkles className="h-3.5 w-3.5 text-nerfturf-magenta" />
+              <Sparkles className="h-3.5 w-3.5 text-green-400" />
               Premium Sports Turf
             </span>
 
@@ -1589,8 +1589,8 @@ export default function PublicBooking() {
             <Card className="bg-white/5 backdrop-blur-xl border-white/10 rounded-2xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
-                  <div className="w-8 h-8 rounded-lg bg-nerfturf-purple/20 ring-1 ring-white/10 flex items-center justify-center">
-                    <User className="h-4 w-4 text-nerfturf-purple" />
+                  <div className="w-8 h-8 rounded-lg bg-green-500/20 ring-1 ring-white/10 flex items-center justify-center">
+                    <User className="h-4 w-4 text-green-400" />
                   </div>
                   Step 1: Customer Information
                   {isCustomerInfoComplete() && (
@@ -1599,8 +1599,8 @@ export default function PublicBooking() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="bg-nerfturf-purple/10 border border-nerfturf-purple/20 rounded-xl p-3">
-                  <p className="text-sm text-nerfturf-purple/90 font-medium flex items-center gap-2">
+                <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-3">
+                  <p className="text-sm text-green-400 font-medium flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4" /> Please complete customer
                     information to proceed with booking
                   </p>
@@ -1632,7 +1632,7 @@ export default function PublicBooking() {
                   <Button
                     onClick={searchCustomer}
                     disabled={searchingCustomer}
-                    className="rounded-xl bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta"
+                    className="rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
                   >
                     {searchingCustomer ? "Searching..." : "Search"}
                   </Button>
@@ -1688,19 +1688,19 @@ export default function PublicBooking() {
               <CardHeader className="relative pb-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg ring-1 ring-white/10 bg-gradient-to-br from-nerfturf-cyan/25 to-transparent">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg ring-1 ring-white/10 bg-gradient-to-br from-emerald-400/25 to-transparent">
                       {!isStationSelectionAvailable() ? (
                         <Lock className="h-4 w-4 text-gray-500" />
                       ) : (
-                        <MapPin className="h-4 w-4 text-nerfturf-cyan" />
+                        <MapPin className="h-4 w-4 text-emerald-400" />
                       )}
                     </div>
                     <CardTitle className="m-0 p-0 text-white">
-                      Step 2: Select Gaming Stations
+                      Step 2: Select Sports Courts
                     </CardTitle>
                   </div>
                   {isStationSelectionAvailable() && selectedStations.length > 0 && (
-                    <div className="inline-flex items-center gap-2 rounded-full border border-nerfturf-purple/20 bg-nerfturf-purple/10 px-2.5 py-1 text-xs text-nerfturf-lightpurple">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-2.5 py-1 text-xs text-green-300">
                       <CheckCircle className="h-3.5 w-3.5" />
                       {selectedStations.length} selected
                     </div>
@@ -1735,8 +1735,8 @@ export default function PublicBooking() {
                     className={cn(
                       "h-9 rounded-full border-white/15 text-[12px]",
                       stationType === "ps5"
-                        ? "bg-nerfturf-purple/15 text-nerfturf-purple"
-                        : "bg-transparent text-nerfturf-purple"
+                        ? "bg-green-500/15 text-green-400"
+                        : "bg-transparent text-green-400"
                     )}
                   >
                     Football
@@ -1748,8 +1748,8 @@ export default function PublicBooking() {
                     className={cn(
                       "h-9 rounded-full border-white/15 text-[12px]",
                       stationType === "8ball"
-                        ? "bg-nerfturf-purple/15 text-nerfturf-lightpurple"
-                        : "bg-transparent text-nerfturf-lightpurple"
+                        ? "bg-green-500/15 text-green-300"
+                        : "bg-transparent text-green-300"
                     )}
                   >
                     Cricket
@@ -1782,11 +1782,11 @@ export default function PublicBooking() {
             <Card className="bg-white/5 backdrop-blur-xl border-white/10 rounded-2xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
-                  <div className="w-8 h-8 rounded-lg bg-nerfturf-magenta/20 ring-1 ring-white/10 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 ring-1 ring-white/10 flex items-center justify-center">
                     {!isTimeSelectionAvailable() ? (
                       <Lock className="h-4 w-4 text-gray-500" />
                     ) : (
-                      <CalendarIcon className="h-4 w-4 text-nerfturf-magenta" />
+                      <CalendarIcon className="h-4 w-4 text-emerald-400" />
                     )}
                   </div>
                   Step 3: Choose Date & Time
@@ -1868,7 +1868,7 @@ export default function PublicBooking() {
                         if (!s) return null;
                         return (
                           <div key={id} className="flex items-center gap-2">
-                            <div className="w-5 h-5 rounded-md bg-nerfturf-purple/20 border border-white/10 flex items-center justify-center">
+                            <div className="w-5 h-5 rounded-md bg-green-500/20 border border-white/10 flex items-center justify-center">
                               {s.type === "turf" ? (
                                 <Trophy className="h-3.5 w-3.5 text-green-500" />
                               ) : s.type === "pickleball" ? (
@@ -1984,9 +1984,9 @@ export default function PublicBooking() {
                             <button
                               onClick={() => removeCoupon(key)}
                               aria-label="Remove coupon"
-                              className="ml-2 p-1 hover:bg-[#3B2159] rounded-full"
+                              className="ml-2 p-1 hover:bg-green-900/30 rounded-full"
                             >
-                              <X className="h-4 w-4 text-purple-200" />
+                              <X className="h-4 w-4 text-green-300" />
                             </button>
                           </div>
                         );
@@ -2102,7 +2102,7 @@ export default function PublicBooking() {
                         <Label className="text-base font-semibold text-gray-100">
                           Total Amount
                         </Label>
-                        <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta">
+                        <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-emerald-500">
                           {INR(finalPrice)}
                         </span>
                       </div>
@@ -2115,7 +2115,7 @@ export default function PublicBooking() {
                   disabled={
                     !selectedSlot || selectedStations.length === 0 || !customerNumber || !hasMinimumSlots || loading
                   }
-                  className="w-full rounded-xl bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta"
+                  className="w-full rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
                   size="lg"
                 >
                   {loading
@@ -2163,7 +2163,7 @@ export default function PublicBooking() {
                 setLegalDialogType("terms");
                 setShowLegalDialog(true);
               }}
-              className="mt-3 text-sm text-nerfturf-magenta hover:underline"
+              className="mt-3 text-sm text-green-400 hover:text-green-300 hover:underline"
             >
               View full Terms & Conditions
             </button>
@@ -2181,7 +2181,7 @@ export default function PublicBooking() {
                 setLegalDialogType("privacy");
                 setShowLegalDialog(true);
               }}
-              className="mt-3 text-sm text-nerfturf-magenta hover:underline"
+              className="mt-3 text-sm text-green-400 hover:text-green-300 hover:underline"
             >
               View full Privacy Policy
             </button>
@@ -2192,7 +2192,7 @@ export default function PublicBooking() {
           <Card className="bg-white/5 backdrop-blur-xl border-white/10 rounded-2xl">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-white flex items-center gap-2">
-                <Clock className="h-5 w-5 text-nerfturf-magenta" />
+                <Clock className="h-5 w-5 text-green-400" />
                 Today's Bookings
               </CardTitle>
               <span className="text-xs text-gray-300 rounded-full border border-white/10 px-2 py-0.5">
@@ -2212,7 +2212,7 @@ export default function PublicBooking() {
                   >
                     <summary className="list-none cursor-pointer select-none px-3 sm:px-4 py-3 sm:py-3.5 flex items-center justify-between">
                       <div className="flex items-center gap-2 text-gray-200">
-                        <Clock className="h-4 w-4 text-nerfturf-magenta" />
+                        <Clock className="h-4 w-4 text-green-400" />
                         <span className="font-medium">{timeLabel}</span>
                       </div>
                       <span className="text-xs text-gray-300 rounded-full border border-white/10 px-2 py-0.5">
@@ -2498,7 +2498,7 @@ export default function PublicBooking() {
                     }
                   }}
                   disabled={pinInput.length !== 4}
-                  className="flex-1 rounded-xl bg-gradient-to-r from-nerfturf-purple to-nerfturf-magenta"
+                  className="flex-1 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
                 >
                   Verify
                 </Button>
