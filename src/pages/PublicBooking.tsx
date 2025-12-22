@@ -1543,22 +1543,22 @@ export default function PublicBooking() {
         </DialogContent>
       </Dialog>
 
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-indigo-900 via-purple-900 via-emerald-900 to-teal-900">
-      {/* Royal gradient mesh overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-800/40 via-transparent via-emerald-700/30 to-blue-800/40"></div>
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-black via-gray-900 via-green-950 to-black">
+      {/* Green gradient mesh overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-green-900/30 via-transparent via-emerald-900/20 to-green-800/30"></div>
       
-      {/* Animated gradient orbs */}
+      {/* Animated green gradient orbs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-gradient-to-br from-purple-500/30 via-pink-500/20 to-transparent blur-3xl animate-pulse" style={{ animationDuration: '8s' }} />
-        <div className="absolute top-1/4 -right-32 h-80 w-80 rounded-full bg-gradient-to-br from-emerald-400/30 via-teal-400/20 to-transparent blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
-        <div className="absolute bottom-1/4 left-1/4 h-72 w-72 rounded-full bg-gradient-to-br from-blue-500/25 via-indigo-500/20 to-transparent blur-3xl animate-pulse" style={{ animationDuration: '7s', animationDelay: '2s' }} />
-        <div className="absolute top-1/2 right-1/3 h-64 w-64 rounded-full bg-gradient-to-br from-violet-500/25 via-purple-500/20 to-transparent blur-3xl animate-pulse" style={{ animationDuration: '9s', animationDelay: '0.5s' }} />
-        <div className="absolute -bottom-24 right-1/4 h-80 w-80 rounded-full bg-gradient-to-br from-teal-500/30 via-cyan-500/20 to-transparent blur-3xl animate-pulse" style={{ animationDuration: '8s', animationDelay: '1.5s' }} />
+        <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-gradient-to-br from-green-500/20 via-emerald-500/15 to-transparent blur-3xl animate-pulse" style={{ animationDuration: '8s' }} />
+        <div className="absolute top-1/4 -right-32 h-80 w-80 rounded-full bg-gradient-to-br from-emerald-400/25 via-green-400/15 to-transparent blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
+        <div className="absolute bottom-1/4 left-1/4 h-72 w-72 rounded-full bg-gradient-to-br from-green-600/20 via-emerald-600/15 to-transparent blur-3xl animate-pulse" style={{ animationDuration: '7s', animationDelay: '2s' }} />
+        <div className="absolute top-1/2 right-1/3 h-64 w-64 rounded-full bg-gradient-to-br from-emerald-500/20 via-green-500/15 to-transparent blur-3xl animate-pulse" style={{ animationDuration: '9s', animationDelay: '0.5s' }} />
+        <div className="absolute -bottom-24 right-1/4 h-80 w-80 rounded-full bg-gradient-to-br from-green-500/25 via-emerald-500/20 to-transparent blur-3xl animate-pulse" style={{ animationDuration: '8s', animationDelay: '1.5s' }} />
       </div>
       
       {/* Subtle mesh gradient overlay for depth */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-purple-600/20 via-transparent to-transparent"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-emerald-600/20 via-transparent to-transparent"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-green-600/15 via-transparent to-transparent"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-emerald-600/15 via-transparent to-transparent"></div>
 
       {/* Coupon Promotional Popup - Hidden for now */}
       {/* <CouponPromotionalPopup onCouponSelect={applyCoupon} /> */}
@@ -1614,7 +1614,7 @@ export default function PublicBooking() {
 
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <Card className="bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl shadow-purple-500/10">
+            <Card className="bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl shadow-green-500/20">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
                   <div className="w-8 h-8 rounded-lg bg-emerald-500/20 ring-1 ring-white/20 flex items-center justify-center">
@@ -1756,7 +1756,7 @@ export default function PublicBooking() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl shadow-purple-500/10">
+            <Card className="bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl shadow-green-500/20">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
                   <div className="w-8 h-8 rounded-lg bg-emerald-500/20 ring-1 ring-white/20 flex items-center justify-center">
@@ -1830,7 +1830,7 @@ export default function PublicBooking() {
           </div>
 
           <div className="lg:col-span-1">
-            <Card className="sticky top-4 bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl shadow-purple-500/10">
+            <Card className="sticky top-4 bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl shadow-green-500/20">
               <CardHeader>
                 <CardTitle className="text-white">Booking Summary</CardTitle>
               </CardHeader>
