@@ -1519,22 +1519,22 @@ export default function PublicBooking() {
               <div className="p-2 bg-red-500/20 rounded-full">
                 <AlertTriangle className="h-6 w-6 text-red-400 animate-pulse" />
               </div>
-              <DialogTitle className="text-2xl font-bold text-red-100">
+              <DialogTitle className="text-2xl font-bold text-red-600">
                 ⚠️ IMPORTANT WARNING
               </DialogTitle>
             </div>
-            <DialogDescription className="text-orange-100 text-base font-semibold leading-relaxed space-y-3 pt-2">
-              <p className="text-lg font-bold text-white">
+            <DialogDescription className="text-orange-700 text-base font-semibold leading-relaxed space-y-3 pt-2">
+              <p className="text-lg font-bold text-gray-800">
                 DO NOT CLOSE OR REFRESH THIS PAGE!
               </p>
-              <p className="text-orange-200">
+              <p className="text-orange-600">
                 Your booking is being processed. Please wait until you see the booking confirmation page.
               </p>
-              <p className="text-yellow-200 font-medium">
+              <p className="text-yellow-700 font-medium">
                 Closing or refreshing now may result in payment failure or incomplete booking.
               </p>
-              <div className="bg-black/30 rounded-lg p-3 mt-4 border border-yellow-500/30">
-                <p className="text-sm text-yellow-100">
+              <div className="bg-yellow-50 rounded-lg p-3 mt-4 border border-yellow-300">
+                <p className="text-sm text-yellow-800">
                   💡 <strong>Tip:</strong> Keep this page open until you see "Booking Confirmed" message.
                 </p>
               </div>
@@ -1543,11 +1543,11 @@ export default function PublicBooking() {
         </DialogContent>
       </Dialog>
 
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#0a1a0f] via-[#0f1a14] to-[#0a1a0f]">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-green-50">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-green-500/20 blur-3xl" />
-        <div className="absolute top-1/3 -right-24 h-64 w-64 rounded-full bg-emerald-400/20 blur-3xl" />
-        <div className="absolute bottom-10 left-1/3 h-56 w-56 rounded-full bg-green-600/20 blur-3xl" />
+        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-green-200/30 blur-3xl" />
+        <div className="absolute top-1/3 -right-24 h-64 w-64 rounded-full bg-emerald-200/30 blur-3xl" />
+        <div className="absolute bottom-10 left-1/3 h-56 w-56 rounded-full bg-green-300/30 blur-3xl" />
       </div>
 
       {/* Coupon Promotional Popup - Hidden for now */}
@@ -1556,52 +1556,29 @@ export default function PublicBooking() {
       <header className="py-10 px-4 sm:px-6 md:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center mb-8">
-            <div className="mb-6 relative inline-block">
+            <div className="mb-6">
               <img
                 src="/Turf45_transparent.png"
                 alt="TURF 45 Logo"
-                className="h-24 cursor-pointer transition-transform hover:scale-105 relative z-10"
-                style={{
-                  filter: "drop-shadow(0 0 10px rgba(16,185,129,0.15))",
-                }}
+                className="h-24 cursor-pointer transition-transform hover:scale-105"
                 onClick={() => setShowPinDialog(true)}
                 title="Click for secret feature"
               />
-              {/* White glow overlay only for the "45" part (right side) */}
-              <div 
-                className="absolute top-0 right-0 h-24 pointer-events-none overflow-hidden"
-                style={{
-                  width: '35%',
-                  zIndex: 5,
-                }}
-              >
-                <img
-                  src="/Turf45_transparent.png"
-                  alt=""
-                  className="h-24 absolute right-0"
-                  style={{
-                    filter: 'brightness(0) invert(1) drop-shadow(0 0 12px rgba(255,255,255,0.9)) drop-shadow(0 0 8px rgba(255,255,255,0.7)) drop-shadow(0 0 5px rgba(255,255,255,0.8))',
-                    mixBlendMode: 'screen',
-                    opacity: 0.7,
-                  }}
-                  aria-hidden="true"
-                />
-              </div>
             </div>
 
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs tracking-widest uppercase text-gray-300 backdrop-blur-md">
-              <Sparkles className="h-3.5 w-3.5 text-green-400" />
+            <span className="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 py-1 text-xs tracking-widest uppercase text-green-700 backdrop-blur-md">
+              <Sparkles className="h-3.5 w-3.5 text-green-600" />
               Premium Sports Turf
             </span>
 
-            <h1 className="mt-3 text-4xl md:text-5xl font-extrabold text-white">
+            <h1 className="mt-3 text-4xl md:text-5xl font-extrabold text-gray-800">
               Book Your Sports Session
             </h1>
-            <p className="mt-2 text-lg text-gray-300/90 max-w-2xl text-center">
+            <p className="mt-2 text-lg text-gray-600 max-w-2xl text-center">
               Reserve Football, Cricket, or Pickleball sessions at Turf 45
             </p>
 
-            <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-gray-300 backdrop-blur-md">
+            <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 py-1 text-[11px] text-gray-700 backdrop-blur-md">
               <span className="font-semibold tracking-wide">Line of Business:</span>
               <span>
                 Sports Turf Services (time-based Football, Cricket & Pickleball rentals)
@@ -1612,25 +1589,25 @@ export default function PublicBooking() {
       </header>
 
       <main className="px-4 sm:px-6 md:px-8 max-w-7xl mx-auto pb-14 relative z-10">
-        <section className="mb-6 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-sm text-gray-300">
-          <h2 className="mb-1 text-base font-semibold text-white">About Turf 45</h2>
+        <section className="mb-6 rounded-2xl border border-green-200 bg-green-50/50 px-4 py-4 text-sm text-gray-700">
+          <h2 className="mb-1 text-base font-semibold text-gray-800">About Turf 45</h2>
           <p>
             Turf 45 offers <span className="font-medium">time-based rentals</span> of
             Football courts, Cricket turfs, and Pickleball courts. Book 
             1-hour sessions for Football, Cricket, or Pickleball.
           </p>
-          <p className="mt-2 text-gray-400">
-            <span className="font-medium text-gray-200">Pricing:</span> All prices are
+          <p className="mt-2 text-gray-600">
+            <span className="font-medium text-gray-800">Pricing:</span> All prices are
             displayed in <span className="ml-1 font-semibold">INR (₹)</span>.
           </p>
         </section>
 
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <Card className="bg-white/5 backdrop-blur-xl border-white/10 rounded-2xl">
+            <Card className="bg-white/80 backdrop-blur-xl border-green-200 rounded-2xl">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-white">
-                  <div className="w-8 h-8 rounded-lg bg-green-500/20 ring-1 ring-white/10 flex items-center justify-center">
+                <CardTitle className="flex items-center gap-2 text-gray-800">
+                  <div className="w-8 h-8 rounded-lg bg-green-500/20 ring-1 ring-green-200 flex items-center justify-center">
                     <User className="h-4 w-4 text-green-400" />
                   </div>
                   Step 1: Customer Information
@@ -1667,7 +1644,7 @@ export default function PublicBooking() {
                       }
                     }}
                     placeholder="Enter 10-digit phone number"
-                    className="bg-black/30 border-white/10 text-white placeholder:text-gray-400 rounded-xl flex-1"
+                    className="bg-white border-green-200 text-gray-800 placeholder:text-gray-600 rounded-xl flex-1"
                     maxLength={10}
                   />
                   <Button
@@ -1682,7 +1659,7 @@ export default function PublicBooking() {
                 {hasSearched && (
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <Label className="text-xs font-semibold text-gray-300 uppercase">
+                      <Label className="text-xs font-semibold text-gray-700 uppercase">
                         Full Name{" "}
                         {isReturningCustomer && (
                           <CheckCircle className="inline h-4 w-4 text-green-400 ml-1" />
@@ -1694,12 +1671,12 @@ export default function PublicBooking() {
                           setCustomerInfo((prev) => ({ ...prev, name: e.target.value }))
                         }
                         placeholder="Enter your full name"
-                        className="mt-1 bg-black/30 border-white/10 text-white placeholder:text-gray-500 rounded-xl"
+                        className="mt-1 bg-white border-green-200 text-gray-800 placeholder:text-gray-600 rounded-xl"
                         disabled={isReturningCustomer}
                       />
                     </div>
                     <div>
-                      <Label className="text-xs font-semibold text-gray-300 uppercase">
+                      <Label className="text-xs font-semibold text-gray-700 uppercase">
                         Email (Optional)
                       </Label>
                       <Input
@@ -1709,7 +1686,7 @@ export default function PublicBooking() {
                           setCustomerInfo((prev) => ({ ...prev, email: e.target.value }))
                         }
                         placeholder="Enter your email address"
-                        className="mt-1 bg-black/30 border-white/10 text-white placeholder:text-gray-500 rounded-xl"
+                        className="mt-1 bg-white border-green-200 text-gray-800 placeholder:text-gray-600 rounded-xl"
                         disabled={isReturningCustomer}
                       />
                     </div>
@@ -1725,18 +1702,18 @@ export default function PublicBooking() {
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl">
+            <Card className="relative overflow-hidden rounded-2xl border border-green-200 bg-white/5 backdrop-blur-xl">
               <CardHeader className="relative pb-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg ring-1 ring-white/10 bg-gradient-to-br from-emerald-400/25 to-transparent">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg ring-1 ring-green-200 bg-gradient-to-br from-emerald-400/25 to-transparent">
                       {!isStationSelectionAvailable() ? (
-                        <Lock className="h-4 w-4 text-gray-500" />
+                        <Lock className="h-4 w-4 text-gray-600" />
                       ) : (
                         <MapPin className="h-4 w-4 text-emerald-400" />
                       )}
                     </div>
-                    <CardTitle className="m-0 p-0 text-white">
+                    <CardTitle className="m-0 p-0 text-gray-800">
                       Step 2: Select Sports Courts
                     </CardTitle>
                   </div>
@@ -1751,14 +1728,14 @@ export default function PublicBooking() {
               </CardHeader>
               <CardContent className="relative pt-3">
                 {!isStationSelectionAvailable() ? (
-                  <div className="bg-black/30 border border-white/10 rounded-xl p-6 text-center">
-                    <Lock className="h-8 w-8 text-gray-500 mx-auto mb-2" />
-                    <p className="text-gray-400">
+                  <div className="bg-white/90 border border-green-200 rounded-xl p-6 text-center">
+                    <Lock className="h-8 w-8 text-gray-600 mx-auto mb-2" />
+                    <p className="text-gray-600">
                       Complete customer information to unlock station selection
                     </p>
                   </div>
                 ) : (
-                  <div className="rounded-2xl border border-white/10 p-3 sm:p-4 bg-white/6">
+                  <div className="rounded-2xl border border-green-200 p-3 sm:p-4 bg-white/6">
                     <StationSelector
                       stations={stations}
                       selectedStations={selectedStations}
@@ -1769,12 +1746,12 @@ export default function PublicBooking() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white/5 backdrop-blur-xl border-white/10 rounded-2xl">
+            <Card className="bg-white/80 backdrop-blur-xl border-green-200 rounded-2xl">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-white">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 ring-1 ring-white/10 flex items-center justify-center">
+                <CardTitle className="flex items-center gap-2 text-gray-800">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 ring-1 ring-green-200 flex items-center justify-center">
                     {!isTimeSelectionAvailable() ? (
-                      <Lock className="h-4 w-4 text-gray-500" />
+                      <Lock className="h-4 w-4 text-gray-600" />
                     ) : (
                       <CalendarIcon className="h-4 w-4 text-emerald-400" />
                     )}
@@ -1787,16 +1764,16 @@ export default function PublicBooking() {
               </CardHeader>
               <CardContent className="space-y-6">
                 {!isTimeSelectionAvailable() ? (
-                  <div className="bg-black/30 border border-white/10 rounded-xl p-6 text-center">
-                    <Lock className="h-8 w-8 text-gray-500 mx-auto mb-2" />
-                    <p className="text-gray-400">
+                  <div className="bg-white/90 border border-green-200 rounded-xl p-6 text-center">
+                    <Lock className="h-8 w-8 text-gray-600 mx-auto mb-2" />
+                    <p className="text-gray-600">
                       Select stations to unlock date and time selection
                     </p>
                   </div>
                 ) : (
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <Label className="text-base font-medium text-gray-200">
+                      <Label className="text-base font-medium text-gray-800">
                         Choose Date
                       </Label>
                       <div className="mt-2">
@@ -1813,14 +1790,14 @@ export default function PublicBooking() {
                             return compareDate < today;
                           }}
                           className={cn(
-                            "rounded-xl border bg-black/30 border-white/10 pointer-events-auto"
+                            "rounded-xl border bg-white/90 border-green-200 pointer-events-auto"
                           )}
                         />
                       </div>
                     </div>
                     {selectedStations.length > 0 && (
                       <div>
-                        <Label className="text-base font-medium text-gray-200">
+                        <Label className="text-base font-medium text-gray-800">
                           Available Time Slots
                         </Label>
                         <div className="mt-2">
@@ -1843,14 +1820,14 @@ export default function PublicBooking() {
           </div>
 
           <div className="lg:col-span-1">
-            <Card className="sticky top-4 bg-white/10 backdrop-blur-xl border-white/10 rounded-2xl">
+            <Card className="sticky top-4 bg-white/10 backdrop-blur-xl border-green-200 rounded-2xl">
               <CardHeader>
-                <CardTitle className="text-white">Booking Summary</CardTitle>
+                <CardTitle className="text-gray-800">Booking Summary</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {selectedStations.length > 0 && (
                   <div>
-                    <Label className="text-xs font-semibold text-gray-400 uppercase">
+                    <Label className="text-xs font-semibold text-gray-600 uppercase">
                       Selected Stations
                     </Label>
                     <div className="mt-2 space-y-1">
@@ -1859,16 +1836,16 @@ export default function PublicBooking() {
                         if (!s) return null;
                         return (
                           <div key={id} className="flex items-center gap-2">
-                            <div className="w-5 h-5 rounded-md bg-green-500/20 border border-white/10 flex items-center justify-center">
+                            <div className="w-5 h-5 rounded-md bg-green-500/20 border border-green-200 flex items-center justify-center">
                               {s.type === "turf" ? (
                                 <Trophy className="h-3.5 w-3.5 text-green-500" />
                               ) : s.type === "pickleball" ? (
                                 <Target className="h-3.5 w-3.5 text-blue-400" />
                               ) : (
-                                <Timer className="h-3.5 w-3.5 text-gray-400" />
+                                <Timer className="h-3.5 w-3.5 text-gray-600" />
                               )}
                             </div>
-                            <Badge className="bg-white/5 border-white/10 text-gray-200 rounded-full px-2.5 py-1">
+                            <Badge className="bg-green-50 border-green-200 text-gray-800 rounded-full px-2.5 py-1">
                               {s.name}
                             </Badge>
                           </div>
@@ -1880,10 +1857,10 @@ export default function PublicBooking() {
 
                 {selectedDate && (
                   <div>
-                    <Label className="text-xs font-semibold text-gray-400 uppercase">
+                    <Label className="text-xs font-semibold text-gray-600 uppercase">
                       Date
                     </Label>
-                    <p className="mt-1 text-sm text-gray-200">
+                    <p className="mt-1 text-sm text-gray-800">
                       {format(selectedDate, "EEEE, MMMM d, yyyy")}
                     </p>
                   </div>
@@ -1891,15 +1868,15 @@ export default function PublicBooking() {
 
                 {selectedSlot && (
                   <div>
-                    <Label className="text-xs font-semibold text-gray-400 uppercase">
+                    <Label className="text-xs font-semibold text-gray-600 uppercase">
                       Session Duration & Time
                     </Label>
-                    <p className="mt-1 text-sm text-gray-200">
+                    <p className="mt-1 text-sm text-gray-800">
                       {selectedSlotRange.length > 1 
                         ? `${selectedSlotRange.length} hour${selectedSlotRange.length > 1 ? 's' : ''} (${selectedSlotRange.length} slot${selectedSlotRange.length > 1 ? 's' : ''})`
                         : '1 hour'}
                     </p>
-                    <p className="text-sm text-gray-200">
+                    <p className="text-sm text-gray-800">
                       {new Date(`2000-01-01T${selectedSlotRange[0]?.start_time || selectedSlot.start_time}`).toLocaleTimeString(
                         "en-US",
                         { hour: "numeric", minute: "2-digit", hour12: true }
@@ -1922,7 +1899,7 @@ export default function PublicBooking() {
 
                 {/* Coupon Code Section */}
                 <div>
-                  <Label className="text-xs font-semibold text-gray-400 uppercase">
+                  <Label className="text-xs font-semibold text-gray-600 uppercase">
                     Coupon Code
                   </Label>
                   <div className="flex gap-2 mt-1">
@@ -1930,7 +1907,7 @@ export default function PublicBooking() {
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                       placeholder="Enter coupon code"
-                      className="bg-black/30 border-white/10 text-white placeholder:text-gray-500 rounded-xl flex-1"
+                      className="bg-white border-green-200 text-gray-800 placeholder:text-gray-600 rounded-xl flex-1"
                     />
                     <Button
                       onClick={handleCouponApply}
@@ -1940,7 +1917,7 @@ export default function PublicBooking() {
                       Apply
                     </Button>
                   </div>
-                  <p className="mt-1 text-[11px] text-gray-400">
+                  <p className="mt-1 text-[11px] text-gray-600">
                     All discounts and totals are calculated in INR (₹).
                   </p>
 
@@ -1987,7 +1964,7 @@ export default function PublicBooking() {
                 </div>
 
                 <div className="mt-2">
-                  <Label className="text-xs font-semibold text-gray-400 uppercase">
+                  <Label className="text-xs font-semibold text-gray-600 uppercase">
                     Payment Method
                   </Label>
                   <div className="mt-2">
@@ -1998,8 +1975,8 @@ export default function PublicBooking() {
                           className={cn(
                             "rounded-lg px-3 py-2 text-sm border transition-colors",
                             paymentMethod === "venue"
-                              ? "bg-white/10 border-white/20 text-white"
-                              : "bg-black/20 border-white/10 text-gray-300 hover:bg-black/30"
+                              ? "bg-green-100 border-green-300 text-gray-800"
+                              : "bg-white/70 border-green-200 text-gray-700 hover:bg-green-100"
                           )}
                         >
                           Pay at Venue
@@ -2009,8 +1986,8 @@ export default function PublicBooking() {
                           className={cn(
                             "rounded-lg px-3 py-2 text-sm border transition-colors",
                             paymentMethod === "razorpay"
-                              ? "bg-blue-500/20 border-blue-500/30 text-white"
-                              : "bg-black/20 border-white/10 text-gray-300 hover:bg-black/30"
+                              ? "bg-blue-500/20 border-blue-500/30 text-gray-800"
+                              : "bg-white/70 border-green-200 text-gray-700 hover:bg-green-100"
                           )}
                         >
                           Pay Online
@@ -2022,20 +1999,20 @@ export default function PublicBooking() {
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <CreditCard className="h-5 w-5 text-blue-400" />
-                            <span className="text-sm font-semibold text-white">Pay Online</span>
+                            <span className="text-sm font-semibold text-gray-800">Pay Online</span>
                           </div>
                           <div className="flex items-center gap-1">
                             <span className="text-xs font-bold text-blue-400">Razorpay</span>
                             <div className="h-4 w-4 rounded bg-blue-500 flex items-center justify-center">
-                              <span className="text-[8px] text-white font-bold">✓</span>
+                              <span className="text-[8px] text-gray-800 font-bold">✓</span>
                             </div>
                           </div>
                         </div>
-                        <p className="text-[11px] text-gray-300 leading-relaxed">
+                        <p className="text-[11px] text-gray-700 leading-relaxed">
                           Secure payment powered by <span className="font-semibold text-blue-400">Razorpay</span>. 
                           Accepts all major credit/debit cards, UPI, netbanking, and digital wallets.
                         </p>
-                        <div className="mt-2 flex items-center gap-2 text-[10px] text-gray-400">
+                        <div className="mt-2 flex items-center gap-2 text-[10px] text-gray-600">
                           <div className="flex items-center gap-1">
                             <div className="h-3 w-3 rounded-full bg-green-500/20 border border-green-500/50 flex items-center justify-center">
                               <span className="text-[6px] text-green-400">🔒</span>
@@ -2057,8 +2034,8 @@ export default function PublicBooking() {
                     <Separator className="bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
-                        <Label className="text-sm text-gray-300">Subtotal</Label>
-                        <span className="text-sm text-gray-200">
+                        <Label className="text-sm text-gray-700">Subtotal</Label>
+                        <span className="text-sm text-gray-800">
                           {INR(originalPrice)}
                         </span>
                       </div>
@@ -2066,7 +2043,7 @@ export default function PublicBooking() {
                       {/* Discount Breakdown - Hidden for now */}
                       {discount > 0 && (
                         <div className="hidden">
-                          <div className="border p-2 rounded bg-black/10 text-green-400">
+                          <div className="border p-2 rounded bg-green-50 text-green-400">
                             <Label className="font-semibold text-xs uppercase">
                               Discount Breakdown
                             </Label>
@@ -2090,7 +2067,7 @@ export default function PublicBooking() {
                       <Separator className="bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
                       <div className="flex justify-between items-center">
-                        <Label className="text-base font-semibold text-gray-100">
+                        <Label className="text-base font-semibold text-gray-800">
                           Total Amount
                         </Label>
                         <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-emerald-500">
@@ -2119,7 +2096,7 @@ export default function PublicBooking() {
                 </Button>
                 
 
-                <p className="text-xs text-gray-400 text-center">
+                <p className="text-xs text-gray-600 text-center">
                   All prices are shown in <span className="font-semibold">INR (₹)</span>.{" "}
                   {paymentMethod === "venue" 
                     ? "Payment will be collected at the venue."
@@ -2131,11 +2108,11 @@ export default function PublicBooking() {
         </div>
 
         <section className="mt-10 grid gap-4 md:grid-cols-2">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <h3 className="text-white font-semibold mb-2">
+          <div className="rounded-2xl border border-green-200 bg-white/5 p-4">
+            <h3 className="text-gray-800 font-semibold mb-2">
               Terms & Conditions (Summary)
             </h3>
-            <ul className="ml-5 list-disc text-sm text-gray-300 space-y-1.5">
+            <ul className="ml-5 list-disc text-sm text-gray-700 space-y-1.5">
               <li>Bookings are for specified time slots (1 hour for Football/Cricket/Pickleball); extensions subject to availability.</li>
               <li>Arrive on time; late arrivals may reduce play time without fee adjustment.</li>
               <li>Damage to equipment may incur charges as per in-store policy.</li>
@@ -2152,9 +2129,9 @@ export default function PublicBooking() {
               View full Terms & Conditions
             </button>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <h3 className="text-white font-semibold mb-2">Privacy Policy (Summary)</h3>
-            <ul className="ml-5 list-disc text-sm text-gray-300 space-y-1.5">
+          <div className="rounded-2xl border border-green-200 bg-white/5 p-4">
+            <h3 className="text-gray-800 font-semibold mb-2">Privacy Policy (Summary)</h3>
+            <ul className="ml-5 list-disc text-sm text-gray-700 space-y-1.5">
               <li>We collect minimal personal data (name, phone, optional email).</li>
               <li>Data is stored securely and used only for bookings/updates.</li>
               <li>No selling of data; limited sharing only to fulfill your booking.</li>
@@ -2173,13 +2150,13 @@ export default function PublicBooking() {
         </section>
 
         <div className="mt-10">
-          <Card className="bg-white/5 backdrop-blur-xl border-white/10 rounded-2xl">
+          <Card className="bg-white/80 backdrop-blur-xl border-green-200 rounded-2xl">
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-gray-800 flex items-center gap-2">
                 <Clock className="h-5 w-5 text-green-400" />
                 Today's Bookings
               </CardTitle>
-              <span className="text-xs text-gray-300 rounded-full border border-white/10 px-2 py-0.5">
+              <span className="text-xs text-gray-700 rounded-full border border-green-200 px-2 py-0.5">
                 {todayRows.length} total
               </span>
             </CardHeader>
@@ -2187,26 +2164,26 @@ export default function PublicBooking() {
               {todayLoading ? (
                 <div className="h-12 rounded-md bg-white/5 animate-pulse" />
               ) : groupedByTime.length === 0 ? (
-                <div className="text-sm text-gray-400">No bookings today.</div>
+                <div className="text-sm text-gray-600">No bookings today.</div>
               ) : (
                 groupedByTime.map(([timeLabel, rows]) => (
                   <details
                     key={timeLabel}
-                    className="group rounded-xl border border-white/10 bg-black/30 open:bg-black/40"
+                    className="group rounded-xl border border-green-200 bg-white/70 open:bg-green-100"
                   >
                     <summary className="list-none cursor-pointer select-none px-3 sm:px-4 py-3 sm:py-3.5 flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-gray-200">
+                      <div className="flex items-center gap-2 text-gray-800">
                         <Clock className="h-4 w-4 text-green-400" />
                         <span className="font-medium">{timeLabel}</span>
                       </div>
-                      <span className="text-xs text-gray-300 rounded-full border border-white/10 px-2 py-0.5">
+                      <span className="text-xs text-gray-700 rounded-full border border-green-200 px-2 py-0.5">
                         {rows.length} booking{rows.length !== 1 ? "s" : ""}
                       </span>
                     </summary>
                     <div className="px-3 sm:px-4 pb-3 sm:pb-4 overflow-x-auto">
                       <table className="min-w-[520px] w-full text-sm">
                         <thead>
-                          <tr className="text-left text-gray-400">
+                          <tr className="text-left text-gray-600">
                             <th className="py-2 pr-3 font-medium">Customer</th>
                             <th className="py-2 pr-3 font-medium">Station</th>
                             <th className="py-2 font-medium">Status</th>
@@ -2214,13 +2191,13 @@ export default function PublicBooking() {
                         </thead>
                         <tbody>
                           {rows.map((r) => (
-                            <tr key={r.id} className="border-t border-white/10">
+                            <tr key={r.id} className="border-t border-green-200">
                               <td className="py-2 pr-3">
-                                <div className="text-gray-100">{r.customerName}</div>
-                                <div className="text-xs text-gray-400">{r.customerPhone}</div>
+                                <div className="text-gray-800">{r.customerName}</div>
+                                <div className="text-xs text-gray-600">{r.customerPhone}</div>
                               </td>
                               <td className="py-2 pr-3">
-                                <Badge className="bg-white/5 border-white/10 text-gray-200 rounded-full">
+                                <Badge className="bg-green-50 border-green-200 text-gray-800 rounded-full">
                                   {r.stationName}
                                 </Badge>
                               </td>
@@ -2238,7 +2215,7 @@ export default function PublicBooking() {
         </div>
       </main>
 
-      <footer className="py-10 px-4 sm:px-6 md:px-8 border-t border-white/10 backdrop-blur-md bg-black/30 relative z-10">
+      <footer className="py-10 px-4 sm:px-6 md:px-8 border-t border-green-200 backdrop-blur-md bg-white/80 relative z-10">
         <div className="max-w-7xl mx-auto space-y-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="flex items-center mb-4 md:mb-0">
@@ -2249,13 +2226,13 @@ export default function PublicBooking() {
                 onClick={() => setShowPinDialog(true)}
                 title="Click for secret feature"
               />
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-600 text-sm">
                 © {new Date().getFullYear()} Turf45. All rights reserved.
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="flex items-center text-gray-400 text-sm">
-                <Clock className="h-4 w-4 text-gray-400 mr-1.5" />
+              <div className="flex items-center text-gray-600 text-sm">
+                <Clock className="h-4 w-4 text-gray-600 mr-1.5" />
                 <span>Book anytime, anywhere</span>
               </div>
             </div>
@@ -2265,56 +2242,56 @@ export default function PublicBooking() {
             <div className="flex flex-wrap justify-center md:justify-start gap-6">
               <a
                 href="/terms"
-                className="text-gray-400 hover:text-white hover:underline text-sm flex items-center gap-1 transition"
+                className="text-gray-600 hover:text-gray-800 hover:underline text-sm flex items-center gap-1 transition"
               >
                 Terms & Conditions
               </a>
               <a
                 href="/privacy"
-                className="text-gray-400 hover:text-white hover:underline text-sm flex items-center gap-1 transition"
+                className="text-gray-600 hover:text-gray-800 hover:underline text-sm flex items-center gap-1 transition"
               >
                 Privacy Policy
               </a>
               <a
                 href="/support"
-                className="text-gray-400 hover:text-white hover:underline text-sm flex items-center gap-1 transition"
+                className="text-gray-600 hover:text-gray-800 hover:underline text-sm flex items-center gap-1 transition"
               >
                 Contact Us
               </a>
               <a
                 href="/refund-policy"
-                className="text-gray-400 hover:text-white hover:underline text-sm flex items-center gap-1 transition"
+                className="text-gray-600 hover:text-gray-800 hover:underline text-sm flex items-center gap-1 transition"
               >
                 Refund Policy
               </a>
               <a
                 href="/login"
-                className="text-gray-400 hover:text-white hover:underline text-sm flex items-center gap-2 transition"
+                className="text-gray-600 hover:text-gray-800 hover:underline text-sm flex items-center gap-2 transition"
               >
                 <LogIn className="h-4 w-4" />
                 Management Login
               </a>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-400">
+            <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-600">
               <div className="flex items-center gap-1">
                 <Phone className="h-4 w-4" />
-                <a href="tel:+919159991592" className="hover:text-white transition-colors">
+                <a href="tel:+919159991592" className="hover:text-gray-800 transition-colors">
                   +91 91599 91592
                 </a>
               </div>
               <div className="flex items-center gap-1">
                 <Mail className="h-4 w-4" />
-                <a href="mailto:contact@turf45.in" className="hover:text-white transition-colors">
+                <a href="mailto:contact@turf45.in" className="hover:text-gray-800 transition-colors">
                   contact@turf45.in
                 </a>
               </div>
             </div>
           </div>
 
-          <div className="border-t border-white/10 pt-6">
+          <div className="border-t border-green-200 pt-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <p className="text-xs text-gray-500">Powered by</p>
+              <p className="text-xs text-gray-600">Powered by</p>
               <a 
                 href="https://cuephoriatech.in" 
                 target="_blank" 
@@ -2323,7 +2300,7 @@ export default function PublicBooking() {
               >
                 <span>&lt; &gt;</span>
                 <span className="text-green-400">Cuephoria</span>
-                <span className="text-gray-300">Tech</span>
+                <span className="text-gray-700">Tech</span>
                 <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
@@ -2343,27 +2320,27 @@ export default function PublicBooking() {
 
       {/* Sport Selection Dialog for Multi Sport Turf */}
       <Dialog open={showSportSelectionDialog} onOpenChange={setShowSportSelectionDialog}>
-        <DialogContent className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 border-white/10 shadow-2xl max-w-md">
+        <DialogContent className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 border-green-200 shadow-2xl max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-xl font-bold text-white flex items-center gap-2">
+            <DialogTitle className="text-xl font-bold text-gray-800 flex items-center gap-2">
               <Trophy className="h-5 w-5 text-green-400" />
               Select Sport
             </DialogTitle>
-            <DialogDescription className="text-gray-300">
+            <DialogDescription className="text-gray-700">
               Please select which sport you want to play on Multi Sport Turf
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <RadioGroup value={selectedSport} onValueChange={(value: 'cricket' | 'football') => setSelectedSport(value)}>
-              <div className="flex items-center space-x-3 p-4 rounded-lg border border-white/10 hover:bg-white/5 cursor-pointer transition-colors">
+              <div className="flex items-center space-x-3 p-4 rounded-lg border border-green-200 hover:bg-white/5 cursor-pointer transition-colors">
                 <RadioGroupItem value="cricket" id="cricket" className="border-green-400 text-green-400" />
-                <Label htmlFor="cricket" className="text-white font-medium cursor-pointer flex-1">
+                <Label htmlFor="cricket" className="text-gray-800 font-medium cursor-pointer flex-1">
                   Cricket
                 </Label>
               </div>
-              <div className="flex items-center space-x-3 p-4 rounded-lg border border-white/10 hover:bg-white/5 cursor-pointer transition-colors">
+              <div className="flex items-center space-x-3 p-4 rounded-lg border border-green-200 hover:bg-white/5 cursor-pointer transition-colors">
                 <RadioGroupItem value="football" id="football" className="border-green-400 text-green-400" />
-                <Label htmlFor="football" className="text-white font-medium cursor-pointer flex-1">
+                <Label htmlFor="football" className="text-gray-800 font-medium cursor-pointer flex-1">
                   Football
                 </Label>
               </div>
@@ -2375,7 +2352,7 @@ export default function PublicBooking() {
                   setShowSportSelectionDialog(false);
                   setPendingStationId(null);
                 }}
-                className="flex-1 rounded-xl bg-black/30 border-white/10 text-gray-300 hover:bg-black/50"
+                className="flex-1 rounded-xl bg-white/90 border-green-200 text-gray-700 hover:bg-green-100"
               >
                 Cancel
               </Button>
@@ -2398,51 +2375,51 @@ export default function PublicBooking() {
 
       {showRefundDialog && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4">
-          <div className="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-white/10 bg-[#0c0c13] p-5 shadow-2xl">
+          <div className="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-green-200 bg-[#0c0c13] p-5 shadow-2xl">
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">Refund & Cancellation Policy</h3>
+              <h3 className="text-lg font-semibold text-gray-800">Refund & Cancellation Policy</h3>
               <button
                 aria-label="Close refund policy"
                 onClick={() => setShowRefundDialog(false)}
-                className="rounded-md p-1 text-gray-400 hover:bg-white/10 hover:text-white"
+                className="rounded-md p-1 text-gray-600 hover:bg-white/10 hover:text-gray-800"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <div className="prose prose-invert max-w-none text-sm text-gray-300">
-              <p className="text-gray-400">
+            <div className="prose prose-invert max-w-none text-sm text-gray-700">
+              <p className="text-gray-600">
                 This policy outlines how a booking for a gaming service made through the Platform can be canceled or refunded.
               </p>
               
-              <h4 className="mt-4 text-white">Cancellations</h4>
+              <h4 className="mt-4 text-gray-800">Cancellations</h4>
               <ul className="ml-5 list-disc">
                 <li>Requests must be made within <strong>1 day</strong> of placing the booking.</li>
                 <li>Cancellation may not be possible if the session is already confirmed or about to commence.</li>
               </ul>
 
-              <h4 className="mt-4 text-white">Non-Cancellable Services</h4>
+              <h4 className="mt-4 text-gray-800">Non-Cancellable Services</h4>
               <ul className="ml-5 list-disc">
                 <li>No cancellations for time-sensitive or non-refundable bookings.</li>
                 <li>Refunds/rescheduling may be considered if the session wasn't provided as described.</li>
               </ul>
 
-              <h4 className="mt-4 text-white">Service Quality Issues</h4>
+              <h4 className="mt-4 text-gray-800">Service Quality Issues</h4>
               <ul className="ml-5 list-disc">
                 <li>Report issues within <strong>1 day</strong> of the scheduled session.</li>
               </ul>
 
-              <h4 className="mt-4 text-white">Refund Processing</h4>
+              <h4 className="mt-4 text-gray-800">Refund Processing</h4>
               <ul className="ml-5 list-disc">
                 <li>If approved, refunds are processed within <strong>3 days</strong> to the original payment method.</li>
               </ul>
 
-              <p className="mt-4 text-xs text-gray-400">
+              <p className="mt-4 text-xs text-gray-600">
                 Need help? Call{' '}
-                <a className="underline hover:text-white" href="tel:+919159991592">
+                <a className="underline hover:text-gray-800" href="tel:+919159991592">
                   +91 91599 91592
                 </a>{' '}
                 or email{' '}
-                <a className="ml-1 underline hover:text-white" href="mailto:contact@nerfturf.in">
+                <a className="ml-1 underline hover:text-gray-800" href="mailto:contact@nerfturf.in">
                   contact@nerfturf.in
                 </a>
                 .
@@ -2460,23 +2437,23 @@ export default function PublicBooking() {
       {/* Secret PIN Dialog */}
       {showPinDialog && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4">
-          <div className="max-w-md w-full rounded-2xl border border-white/10 bg-[#0c0c13] p-6 shadow-2xl">
+          <div className="max-w-md w-full rounded-2xl border border-green-200 bg-[#0c0c13] p-6 shadow-2xl">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">Enter Secret PIN</h3>
+              <h3 className="text-lg font-semibold text-gray-800">Enter Secret PIN</h3>
               <button
                 aria-label="Close PIN dialog"
                 onClick={() => {
                   setShowPinDialog(false);
                   setPinInput("");
                 }}
-                className="rounded-md p-1 text-gray-400 hover:bg-white/10 hover:text-white"
+                className="rounded-md p-1 text-gray-600 hover:bg-white/10 hover:text-gray-800"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
             <div className="space-y-4">
               <div>
-                <Label className="text-sm text-gray-300 mb-2 block">PIN</Label>
+                <Label className="text-sm text-gray-700 mb-2 block">PIN</Label>
                 <Input
                   type="password"
                   value={pinInput}
@@ -2488,7 +2465,7 @@ export default function PublicBooking() {
                   }}
                   placeholder="Enter 4-digit PIN"
                   maxLength={4}
-                  className="bg-black/30 border-white/10 text-white placeholder:text-gray-500 rounded-xl"
+                  className="bg-white border-green-200 text-gray-800 placeholder:text-gray-600 rounded-xl"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && pinInput.length === 4) {
                       if (pinInput === '1342') {
@@ -2513,7 +2490,7 @@ export default function PublicBooking() {
                     setShowPinDialog(false);
                     setPinInput("");
                   }}
-                  className="flex-1 rounded-xl bg-black/30 border-white/10 text-gray-300 hover:bg-black/50"
+                  className="flex-1 rounded-xl bg-white/90 border-green-200 text-gray-700 hover:bg-green-100"
                 >
                   Cancel
                 </Button>
