@@ -1629,38 +1629,38 @@ export default function PublicBooking() {
       </header>
 
       {/* News Ticker */}
-      <div className="relative z-10 overflow-hidden border-y border-emerald-400/30 bg-gradient-to-r from-emerald-500/10 via-green-500/10 to-emerald-500/10 backdrop-blur-sm">
+      <div className="relative z-10 overflow-hidden border-y border-emerald-400/30 bg-gradient-to-r from-emerald-500/10 via-green-500/10 to-emerald-500/10 backdrop-blur-sm -mt-2">
         <div className="flex animate-scroll" style={{ width: '200%' }}>
-          <div className="flex items-center gap-8 whitespace-nowrap py-3 px-4" style={{ width: '50%' }}>
+          <div className="flex items-center gap-8 whitespace-nowrap py-2.5 px-4" style={{ width: '50%' }}>
             <div className="flex items-center gap-2 text-emerald-300">
-              <Sparkles className="h-4 w-4 animate-pulse" />
+              <Sparkles className="h-4 w-4 animate-pulse flex-shrink-0" />
               <span className="text-sm font-medium">Book MULTITURF if you want to book slots for Cricket and Football</span>
             </div>
-            <div className="h-4 w-px bg-emerald-400/30"></div>
+            <div className="h-4 w-px bg-emerald-400/30 flex-shrink-0"></div>
             <div className="flex items-center gap-2 text-emerald-300">
-              <Sparkles className="h-4 w-4 animate-pulse" />
+              <Sparkles className="h-4 w-4 animate-pulse flex-shrink-0" />
               <span className="text-sm font-medium">Pay online and get 10 mins free time</span>
             </div>
-            <div className="h-4 w-px bg-emerald-400/30"></div>
+            <div className="h-4 w-px bg-emerald-400/30 flex-shrink-0"></div>
             <div className="flex items-center gap-2 text-emerald-300">
-              <Sparkles className="h-4 w-4 animate-pulse" />
+              <Sparkles className="h-4 w-4 animate-pulse flex-shrink-0" />
               <span className="text-sm font-medium">Early bird discount: Book before 6 PM and save 15%</span>
             </div>
           </div>
           {/* Duplicate for seamless loop */}
-          <div className="flex items-center gap-8 whitespace-nowrap py-3 px-4" style={{ width: '50%' }}>
+          <div className="flex items-center gap-8 whitespace-nowrap py-2.5 px-4" style={{ width: '50%' }}>
             <div className="flex items-center gap-2 text-emerald-300">
-              <Sparkles className="h-4 w-4 animate-pulse" />
+              <Sparkles className="h-4 w-4 animate-pulse flex-shrink-0" />
               <span className="text-sm font-medium">Book MULTITURF if you want to book slots for Cricket and Football</span>
             </div>
-            <div className="h-4 w-px bg-emerald-400/30"></div>
+            <div className="h-4 w-px bg-emerald-400/30 flex-shrink-0"></div>
             <div className="flex items-center gap-2 text-emerald-300">
-              <Sparkles className="h-4 w-4 animate-pulse" />
+              <Sparkles className="h-4 w-4 animate-pulse flex-shrink-0" />
               <span className="text-sm font-medium">Pay online and get 10 mins free time</span>
             </div>
-            <div className="h-4 w-px bg-emerald-400/30"></div>
+            <div className="h-4 w-px bg-emerald-400/30 flex-shrink-0"></div>
             <div className="flex items-center gap-2 text-emerald-300">
-              <Sparkles className="h-4 w-4 animate-pulse" />
+              <Sparkles className="h-4 w-4 animate-pulse flex-shrink-0" />
               <span className="text-sm font-medium">Early bird discount: Book before 6 PM and save 15%</span>
             </div>
           </div>
