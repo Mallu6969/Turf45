@@ -1560,7 +1560,10 @@ export default function PublicBooking() {
               <img
                 src="/Turf45_transparent.png"
                 alt="TURF 45 Logo"
-                className="h-24 drop-shadow-[0_0_25px_rgba(16,185,129,0.3)] cursor-pointer transition-transform hover:scale-105"
+                className="h-24 cursor-pointer transition-transform hover:scale-105"
+                style={{
+                  filter: "drop-shadow(0 0 25px rgba(16,185,129,0.3)) drop-shadow(0 0 8px rgba(255,255,255,0.6)) drop-shadow(0 0 4px rgba(255,255,255,0.8))",
+                }}
                 onClick={() => setShowPinDialog(true)}
                 title="Click for secret feature"
               />
