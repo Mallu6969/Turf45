@@ -616,13 +616,13 @@ const Index: React.FC = () => {
               <div className="h-1 w-24 bg-gradient-to-r from-transparent via-pink-500 to-pink-500"></div>
               <div className="text-center">
                 <div className="flex items-center justify-center gap-4 mb-3">
-                  <h3 className="text-4xl md:text-5xl font-black text-white">WOMEN'S FOOTBALL</h3>
+                  <h3 className="text-4xl md:text-5xl font-black text-black">WOMEN'S FOOTBALL</h3>
                   {/* Adidas Branding */}
                   <div className="bg-white px-4 py-2 rounded-lg shadow-2xl animate-pulse">
                     <span className="text-black font-black text-2xl">adidas</span>
                   </div>
                 </div>
-                <p className="text-pink-400 text-xl font-semibold">Official Partner</p>
+                <p className="text-black text-xl font-semibold">Official Partner</p>
               </div>
               <div className="h-1 w-24 bg-gradient-to-l from-transparent via-pink-500 to-pink-500"></div>
             </div>
@@ -680,8 +680,8 @@ const Index: React.FC = () => {
           <div className="mb-32">
             <div className="flex items-center justify-center gap-6 mb-12">
               <div className="h-1 w-24 bg-gradient-to-r from-transparent via-green-500 to-green-500"></div>
-              <h3 className="text-4xl md:text-5xl font-black text-transparent bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text">
-                ⚽ MEN'S FOOTBALL
+              <h3 className="text-4xl md:text-5xl font-black text-black">
+                ⚽ FOOTBALL
               </h3>
               <div className="h-1 w-24 bg-gradient-to-l from-transparent via-green-500 to-green-500"></div>
             </div>
@@ -712,7 +712,7 @@ const Index: React.FC = () => {
           <div className="mb-32">
             <div className="flex items-center justify-center gap-6 mb-12">
               <div className="h-1 w-24 bg-gradient-to-r from-transparent via-orange-500 to-orange-500"></div>
-              <h3 className="text-4xl md:text-5xl font-black text-transparent bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text">
+              <h3 className="text-4xl md:text-5xl font-black text-black">
                 🏏 CRICKET CHAMPIONS
               </h3>
               <div className="h-1 w-24 bg-gradient-to-l from-transparent via-orange-500 to-orange-500"></div>
@@ -741,7 +741,7 @@ const Index: React.FC = () => {
           <div className="mb-32">
             <div className="flex items-center justify-center gap-6 mb-12">
               <div className="h-1 w-24 bg-gradient-to-r from-transparent via-blue-500 to-blue-500"></div>
-              <h3 className="text-4xl md:text-5xl font-black text-transparent bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text">
+              <h3 className="text-4xl md:text-5xl font-black text-black">
                 🎾 PICKLEBALL STARS
               </h3>
               <div className="h-1 w-24 bg-gradient-to-l from-transparent via-blue-500 to-blue-500"></div>
@@ -771,7 +771,7 @@ const Index: React.FC = () => {
               <h3 className="text-4xl md:text-5xl font-black text-black mb-4">
                 🎾 BOOK YOUR PICKLEBALL COURT
               </h3>
-              <p className="text-2xl text-gray-300">Reserve your spot for the ultimate pickleball experience</p>
+              <p className="text-2xl text-black">Reserve your spot for the ultimate pickleball experience</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
