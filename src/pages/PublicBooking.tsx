@@ -35,6 +35,8 @@ import {
   LogIn,
   Trophy,
   Target,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import {
   Dialog,
@@ -1861,39 +1863,49 @@ export default function PublicBooking() {
                         Choose Date
                       </Label>
                       <div className="mt-2">
-                        <Calendar
-                          mode="single"
-                          selected={selectedDate}
-                          onSelect={(date) => date && setSelectedDate(date)}
-                          disabled={(date) => {
-                            const today = new Date();
-                            today.setHours(0, 0, 0, 0);
-                            const compareDate = new Date(date);
-                            compareDate.setHours(0, 0, 0, 0);
-                            
-                            return compareDate < today;
-                          }}
-                          className={cn(
-                            "rounded-xl border bg-white/10 border-white/20 pointer-events-auto backdrop-blur-sm text-white"
-                          )}
-                          classNames={{
-                            months: "text-white",
-                            month: "text-white",
-                            caption: "text-white",
-                            caption_label: "text-white font-medium",
-                            nav_button: "text-white hover:bg-white/20",
-                            table: "text-white",
-                            head_row: "text-gray-300",
-                            head_cell: "text-gray-300",
-                            row: "text-white",
-                            cell: "text-white",
-                            day: "text-white hover:bg-white/20 hover:text-white",
-                            day_selected: "bg-emerald-500 text-white hover:bg-emerald-600",
-                            day_today: "bg-white/10 text-white border border-emerald-400/50",
-                            day_outside: "text-gray-500 opacity-50",
-                            day_disabled: "text-gray-600 opacity-30",
-                          }}
-                        />
+                        <div className="rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm p-3">
+                          <Calendar
+                            mode="single"
+                            selected={selectedDate}
+                            onSelect={(date) => date && setSelectedDate(date)}
+                            disabled={(date) => {
+                              const today = new Date();
+                              today.setHours(0, 0, 0, 0);
+                              const compareDate = new Date(date);
+                              compareDate.setHours(0, 0, 0, 0);
+                              
+                              return compareDate < today;
+                            }}
+                            className="text-white"
+                            classNames={{
+                              months: "text-white",
+                              month: "text-white",
+                              caption: "flex justify-center pt-1 relative items-center text-white",
+                              caption_label: "text-sm font-medium text-white",
+                              nav: "space-x-1 flex items-center",
+                              nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 text-white border-white/20 hover:bg-white/10",
+                              nav_button_previous: "absolute left-1",
+                              nav_button_next: "absolute right-1",
+                              table: "w-full border-collapse space-y-1",
+                              head_row: "flex",
+                              head_cell: "text-gray-300 rounded-md w-8 sm:w-9 font-normal text-[0.8rem] flex items-center justify-center",
+                              row: "flex w-full mt-2",
+                              cell: "h-8 w-8 sm:h-9 sm:w-9 text-center text-sm p-0 relative",
+                              day: "h-8 w-8 sm:h-9 sm:w-9 p-0 font-normal text-xs sm:text-sm text-white hover:bg-white/20 hover:text-white rounded-md",
+                              day_range_end: "day-range-end",
+                              day_selected: "bg-emerald-500 text-white hover:bg-emerald-600 hover:text-white focus:bg-emerald-500 focus:text-white rounded-md",
+                              day_today: "bg-white/10 text-white border border-emerald-400/50 rounded-md font-semibold",
+                              day_outside: "text-gray-500 opacity-50",
+                              day_disabled: "text-gray-600 opacity-30 cursor-not-allowed",
+                              day_range_middle: "bg-white/5 text-white",
+                              day_hidden: "invisible",
+                            }}
+                            components={{
+                              IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4 text-white" {...props} />,
+                              IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4 text-white" {...props} />,
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
                     {selectedStations.length > 0 && (
