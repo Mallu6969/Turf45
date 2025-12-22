@@ -1770,12 +1770,61 @@ export default function PublicBooking() {
                     </p>
                   </div>
                 ) : (
-                  <div className="rounded-2xl border border-white/20 p-3 sm:p-4 bg-white/6">
-                    <StationSelector
-                      stations={stations}
-                      selectedStations={selectedStations}
-                      onStationToggle={handleStationToggle}
-                    />
+                  <div className="space-y-4">
+                    {/* Sport Selection for Multi Sport Turf - Inline */}
+                    {pendingStationId && showSportSelectionDialog && (
+                      <div className="rounded-xl border border-emerald-400/30 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 p-4 backdrop-blur-sm">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Trophy className="h-5 w-5 text-emerald-300" />
+                          <h3 className="text-white font-semibold">Select Sport for Multi Sport Turf</h3>
+                        </div>
+                        <p className="text-gray-200 text-sm mb-4">
+                          Please select which sport you want to play on Multi Sport Turf
+                        </p>
+                        <div className="space-y-3 mb-4">
+                          <RadioGroup value={selectedSport} onValueChange={(value: 'cricket' | 'football') => setSelectedSport(value)}>
+                            <div className="flex items-center space-x-3 p-3 rounded-lg border border-white/20 hover:bg-white/10 cursor-pointer transition-colors bg-white/5">
+                              <RadioGroupItem value="cricket" id="cricket" className="border-emerald-400 text-emerald-300" />
+                              <Label htmlFor="cricket" className="text-white font-medium cursor-pointer flex-1">
+                                Cricket
+                              </Label>
+                            </div>
+                            <div className="flex items-center space-x-3 p-3 rounded-lg border border-white/20 hover:bg-white/10 cursor-pointer transition-colors bg-white/5">
+                              <RadioGroupItem value="football" id="football" className="border-emerald-400 text-emerald-300" />
+                              <Label htmlFor="football" className="text-white font-medium cursor-pointer flex-1">
+                                Football
+                              </Label>
+                            </div>
+                          </RadioGroup>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            onClick={() => {
+                              setShowSportSelectionDialog(false);
+                              setPendingStationId(null);
+                            }}
+                            className="flex-1 rounded-xl bg-white/10 border-white/20 text-white hover:bg-white/20"
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            onClick={handleSportSelectionConfirm}
+                            className="flex-1 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
+                          >
+                            Confirm
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="rounded-2xl border border-white/20 p-3 sm:p-4 bg-white/6">
+                      <StationSelector
+                        stations={stations}
+                        selectedStations={selectedStations}
+                        onStationToggle={handleStationToggle}
+                      />
+                    </div>
                   </div>
                 )}
               </CardContent>
@@ -2370,54 +2419,6 @@ export default function PublicBooking() {
         />
       )}
 
-      {/* Sport Selection Dialog for Multi Sport Turf */}
-      <Dialog open={showSportSelectionDialog} onOpenChange={setShowSportSelectionDialog}>
-        <DialogContent className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 border-white/20 shadow-2xl max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold text-white flex items-center gap-2">
-              <Trophy className="h-5 w-5 text-emerald-300" />
-              Select Sport
-            </DialogTitle>
-            <DialogDescription className="text-gray-200">
-              Please select which sport you want to play on Multi Sport Turf
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <RadioGroup value={selectedSport} onValueChange={(value: 'cricket' | 'football') => setSelectedSport(value)}>
-              <div className="flex items-center space-x-3 p-4 rounded-lg border border-white/20 hover:bg-white/5 cursor-pointer transition-colors">
-                <RadioGroupItem value="cricket" id="cricket" className="border-green-400 text-emerald-300" />
-                <Label htmlFor="cricket" className="text-white font-medium cursor-pointer flex-1">
-                  Cricket
-                </Label>
-              </div>
-              <div className="flex items-center space-x-3 p-4 rounded-lg border border-white/20 hover:bg-white/5 cursor-pointer transition-colors">
-                <RadioGroupItem value="football" id="football" className="border-green-400 text-emerald-300" />
-                <Label htmlFor="football" className="text-white font-medium cursor-pointer flex-1">
-                  Football
-                </Label>
-              </div>
-            </RadioGroup>
-            <div className="flex gap-2 pt-2">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setShowSportSelectionDialog(false);
-                  setPendingStationId(null);
-                }}
-                className="flex-1 rounded-xl bg-white/90 border-white/20 text-gray-200 hover:bg-white/20"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleSportSelectionConfirm}
-                className="flex-1 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
-              >
-                Confirm
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       <LegalDialog 
         isOpen={showLegalDialog}
