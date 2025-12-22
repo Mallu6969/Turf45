@@ -3668,8 +3668,26 @@ export default function BookingManagement() {
                                                         </Button>
                                                       </div>
 
+                                                      {/* Sport indicator for Multi Sport Turf */}
+                                                      {booking.notes && booking.notes.includes('Sport:') && (
+                                                        <TooltipProvider>
+                                                          <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                                              <div className="ml-2">
+                                                                <Badge variant="outline" className="text-xs cursor-help bg-emerald-500/20 border-emerald-400/30 text-emerald-300">
+                                                                  ⚽ {booking.notes.match(/Sport: (\w+)/)?.[1] || 'Sport'}
+                                                                </Badge>
+                                                              </div>
+                                                            </TooltipTrigger>
+                                                            <TooltipContent className="max-w-xs">
+                                                              <p className="font-medium mb-1">Selected Sport:</p>
+                                                              <p className="text-sm">{booking.notes.match(/Sport: (\w+)/)?.[1] || booking.notes}</p>
+                                                            </TooltipContent>
+                                                          </Tooltip>
+                                                        </TooltipProvider>
+                                                      )}
                                                       {/* Notes indicator */}
-                                                      {booking.notes && (
+                                                      {booking.notes && !booking.notes.includes('Sport:') && (
                                                         <TooltipProvider>
                                                           <Tooltip>
                                                             <TooltipTrigger asChild>

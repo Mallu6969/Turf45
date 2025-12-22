@@ -189,6 +189,7 @@ export default function PublicBooking() {
   const [showSportSelectionDialog, setShowSportSelectionDialog] = useState(false);
   const [pendingStationId, setPendingStationId] = useState<string | null>(null);
   const [selectedSport, setSelectedSport] = useState<'cricket' | 'football'>('cricket');
+  const [stationSports, setStationSports] = useState<Record<string, 'cricket' | 'football'>>({});
   
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -519,6 +520,11 @@ export default function PublicBooking() {
     // If deselecting, just remove it
     if (selectedStations.includes(id)) {
       setSelectedStations((prev) => prev.filter((x) => x !== id));
+      setStationSports((prev) => {
+        const updated = { ...prev };
+        delete updated[id];
+        return updated;
+      });
       setSelectedSlot(null);
       setSelectedSlotRange([]);
       return;
@@ -540,6 +546,12 @@ export default function PublicBooking() {
 
   const handleSportSelectionConfirm = () => {
     if (!pendingStationId) return;
+    
+    // Store the selected sport for this station
+    setStationSports((prev) => ({
+      ...prev,
+      [pendingStationId]: selectedSport
+    }));
     
     setSelectedStations((prev) => [...prev, pendingStationId]);
     setSelectedSlot(null);
@@ -1071,6 +1083,10 @@ export default function PublicBooking() {
       const rows: any[] = [];
       slotsToBook.forEach((slot) => {
         selectedStations.forEach((stationId) => {
+          const station = stations.find(s => s.id === stationId);
+          const sport = station?.type === '8ball' ? stationSports[stationId] : null;
+          const notes = sport ? `Sport: ${sport.charAt(0).toUpperCase() + sport.slice(1)}` : null;
+          
           rows.push({
             station_id: stationId,
             customer_id: customerId!,
@@ -1083,6 +1099,7 @@ export default function PublicBooking() {
             discount_percentage: discount > 0 ? (discount / originalPrice) * 100 : null,
             final_price: finalPrice / slotsToBook.length / selectedStations.length,
             coupon_code: couponCodes || null,
+            notes: notes,
           });
         });
       });
@@ -1176,6 +1193,7 @@ export default function PublicBooking() {
       const bookingDuration = getBookingDuration(selectedStations, stations);
       const pendingBooking = {
         selectedStations,
+        stationSports, // Include sport selections for Multi Sport Turf
         selectedDateISO: format(selectedDate, "yyyy-MM-dd"),
         slots: slotsToBook.map(slot => ({
           start_time: slot.start_time,
@@ -1614,11 +1632,11 @@ export default function PublicBooking() {
 
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <Card className="bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl shadow-green-500/20">
+            <Card className="bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl shadow-green-500/20 transition-all duration-300 hover:shadow-green-500/40 hover:shadow-2xl hover:border-emerald-400/30 group">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 ring-1 ring-white/20 flex items-center justify-center">
-                    <User className="h-4 w-4 text-emerald-300" />
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 ring-1 ring-white/20 flex items-center justify-center group-hover:bg-emerald-500/30 group-hover:ring-emerald-400/50 transition-all duration-300">
+                    <User className="h-4 w-4 text-emerald-300 group-hover:text-emerald-200 transition-colors" />
                   </div>
                   Step 1: Customer Information
                   {isCustomerInfoComplete() && (
@@ -1712,18 +1730,18 @@ export default function PublicBooking() {
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl shadow-xl">
+            <Card className="relative overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl shadow-xl transition-all duration-300 hover:shadow-green-500/40 hover:shadow-2xl hover:border-emerald-400/30 group">
               <CardHeader className="relative pb-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg ring-1 ring-white/20 bg-gradient-to-br from-emerald-400/25 to-transparent">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg ring-1 ring-white/20 bg-gradient-to-br from-emerald-400/25 to-transparent group-hover:from-emerald-400/35 group-hover:ring-emerald-400/50 transition-all duration-300">
                       {!isStationSelectionAvailable() ? (
-                        <Lock className="h-4 w-4 text-gray-300" />
+                        <Lock className="h-4 w-4 text-gray-300 group-hover:text-gray-200 transition-colors" />
                       ) : (
-                        <MapPin className="h-4 w-4 text-emerald-400" />
+                        <MapPin className="h-4 w-4 text-emerald-400 group-hover:text-emerald-300 transition-colors" />
                       )}
                     </div>
-                    <CardTitle className="m-0 p-0 text-white">
+                    <CardTitle className="m-0 p-0 text-white group-hover:text-emerald-100 transition-colors">
                       Step 2: Select Sports Courts
                     </CardTitle>
                   </div>
@@ -1756,14 +1774,14 @@ export default function PublicBooking() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl shadow-green-500/20">
+            <Card className="bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl shadow-green-500/20 transition-all duration-300 hover:shadow-green-500/40 hover:shadow-2xl hover:border-emerald-400/30 group">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 ring-1 ring-white/20 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 ring-1 ring-white/20 flex items-center justify-center group-hover:bg-emerald-500/30 group-hover:ring-emerald-400/50 transition-all duration-300">
                     {!isTimeSelectionAvailable() ? (
-                      <Lock className="h-4 w-4 text-gray-300" />
+                      <Lock className="h-4 w-4 text-gray-300 group-hover:text-gray-200 transition-colors" />
                     ) : (
-                      <CalendarIcon className="h-4 w-4 text-emerald-400" />
+                      <CalendarIcon className="h-4 w-4 text-emerald-400 group-hover:text-emerald-300 transition-colors" />
                     )}
                   </div>
                   Step 3: Choose Date & Time

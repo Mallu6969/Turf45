@@ -194,6 +194,13 @@ async function createBookingFromWebhook(paymentId: string, orderId: string, book
   
   bookingData.selectedStations.forEach((station_id: string) => {
     bookingData.slots.forEach((slot: any) => {
+      // Check if this station has a sport selection (Multi Sport Turf)
+      const sport = bookingData.stationSports?.[station_id];
+      const sportNote = sport ? `Sport: ${sport.charAt(0).toUpperCase() + sport.slice(1)}` : '';
+      const notes = sportNote 
+        ? `${sportNote}. Razorpay Order ID: ${orderId}`
+        : `Razorpay Order ID: ${orderId}`;
+      
       rows.push({
         station_id,
         customer_id: customerId!,
@@ -210,7 +217,7 @@ async function createBookingFromWebhook(paymentId: string, orderId: string, book
         coupon_code: bookingData.pricing.coupons || null,
         payment_mode: "razorpay",
         payment_txn_id: paymentId,
-        notes: `Razorpay Order ID: ${orderId}`,
+        notes: notes,
       });
     });
   });
