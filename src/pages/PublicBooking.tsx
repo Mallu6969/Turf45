@@ -2373,9 +2373,6 @@ export default function PublicBooking() {
           </div>
         </DialogContent>
       </Dialog>
-    </>
-  );
-}
 
       <LegalDialog 
         isOpen={showLegalDialog}
