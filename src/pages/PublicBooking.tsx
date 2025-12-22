@@ -43,6 +43,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
 import { format, parse, getDay } from "date-fns";
 /* =========================
@@ -143,7 +144,6 @@ export default function PublicBooking() {
   const { hasBookingAccess, isLoading: subscriptionLoading } = useSubscription();
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const [stations, setStations] = useState<Station[]>([]);
-  const [stationType, setStationType] = useState<"all" | "ps5" | "8ball" | "vr">("all");
   const [selectedStations, setSelectedStations] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
@@ -186,6 +186,9 @@ export default function PublicBooking() {
   const [showRefundDialog, setShowRefundDialog] = useState(false);
   const [todayRows, setTodayRows] = useState<TodayBookingRow[]>([]);
   const [todayLoading, setTodayLoading] = useState(false);
+  const [showSportSelectionDialog, setShowSportSelectionDialog] = useState(false);
+  const [pendingStationId, setPendingStationId] = useState<string | null>(null);
+  const [selectedSport, setSelectedSport] = useState<'cricket' | 'football'>('cricket');
   
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -513,11 +516,36 @@ export default function PublicBooking() {
     const station = stations.find(s => s.id === id);
     if (!station) return;
     
-    setSelectedStations((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
+    // If deselecting, just remove it
+    if (selectedStations.includes(id)) {
+      setSelectedStations((prev) => prev.filter((x) => x !== id));
+      setSelectedSlot(null);
+      setSelectedSlotRange([]);
+      return;
+    }
+    
+    // If selecting an 8ball station (Multi Sport Turf), show sport selection dialog
+    if (station.type === '8ball') {
+      setPendingStationId(id);
+      setSelectedSport('cricket'); // Default to cricket
+      setShowSportSelectionDialog(true);
+      return;
+    }
+    
+    // For other station types, directly add to selection
+    setSelectedStations((prev) => [...prev, id]);
     setSelectedSlot(null);
     setSelectedSlotRange([]);
+  };
+
+  const handleSportSelectionConfirm = () => {
+    if (!pendingStationId) return;
+    
+    setSelectedStations((prev) => [...prev, pendingStationId]);
+    setSelectedSlot(null);
+    setSelectedSlotRange([]);
+    setShowSportSelectionDialog(false);
+    setPendingStationId(null);
   };
 
   async function filterStationsForSlot(slot: TimeSlot) {
@@ -570,12 +598,14 @@ export default function PublicBooking() {
       return;
     }
     
+    // Limit to 1 hour (1 slot) only - ignore range parameter
+    const singleSlot = [slot];
+    
     if (selectedStations.length > 0) {
-      // Check availability for all slots in range
-      const slotsToCheck = range && range.length > 1 ? range : [slot];
+      // Check availability for the single slot
       let allAvailable = true;
       
-      for (const checkSlot of slotsToCheck) {
+      for (const checkSlot of singleSlot) {
         const filtered = await filterStationsForSlot(checkSlot);
         if (filtered.length === 0) {
           allAvailable = false;
@@ -592,7 +622,7 @@ export default function PublicBooking() {
     }
     
     setSelectedSlot(slot);
-    setSelectedSlotRange(range || [slot]);
+    setSelectedSlotRange([slot]); // Only allow 1 hour (1 slot)
   }
 
   const allowedCoupons = [
@@ -760,7 +790,7 @@ export default function PublicBooking() {
       .filter((s) => selectedStations.includes(s.id))
       .reduce((sum, s) => {
         // Price per 1-hour slot
-        return sum + (s.hourly_rate / 2);
+        return sum + s.hourly_rate;
       }, 0);
     return stationPrice * numberOfSlots;
   };
@@ -1697,27 +1727,6 @@ export default function PublicBooking() {
                 <div className="mt-3 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
               </CardHeader>
               <CardContent className="relative pt-3">
-                <div
-                  className={cn(
-                    "grid grid-cols-3 gap-2 sm:gap-3 mb-4",
-                    !isStationSelectionAvailable() && "pointer-events-none"
-                  )}
-                >
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setStationType("all")}
-                    className={cn(
-                      "h-9 rounded-full border-white/15 text-[12px]",
-                      stationType === "all"
-                        ? "bg-white/12 text-gray-100"
-                        : "bg-transparent text-gray-300"
-                    )}
-                  >
-                    All
-                  </Button>
-                </div>
-
                 {!isStationSelectionAvailable() ? (
                   <div className="bg-black/30 border border-white/10 rounded-xl p-6 text-center">
                     <Lock className="h-8 w-8 text-gray-500 mx-auto mb-2" />
@@ -1728,11 +1737,7 @@ export default function PublicBooking() {
                 ) : (
                   <div className="rounded-2xl border border-white/10 p-3 sm:p-4 bg-white/6">
                     <StationSelector
-                      stations={
-                        stationType === "all"
-                          ? stations
-                          : stations.filter((s) => s.type === stationType)
-                      }
+                      stations={stations}
                       selectedStations={selectedStations}
                       onStationToggle={handleStationToggle}
                     />
@@ -1803,6 +1808,7 @@ export default function PublicBooking() {
                           onSlotSelect={handleSlotSelect}
                           loading={slotsLoading}
                           payAtVenueEnabled={payAtVenueEnabled}
+                          singleSlotOnly={true}
                         />
                         </div>
                       </div>
@@ -2318,6 +2324,58 @@ export default function PublicBooking() {
           bookingData={bookingConfirmationData}
         />
       )}
+
+      {/* Sport Selection Dialog for Multi Sport Turf */}
+      <Dialog open={showSportSelectionDialog} onOpenChange={setShowSportSelectionDialog}>
+        <DialogContent className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 border-white/10 shadow-2xl max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-white flex items-center gap-2">
+              <Trophy className="h-5 w-5 text-green-400" />
+              Select Sport
+            </DialogTitle>
+            <DialogDescription className="text-gray-300">
+              Please select which sport you want to play on Multi Sport Turf
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <RadioGroup value={selectedSport} onValueChange={(value: 'cricket' | 'football') => setSelectedSport(value)}>
+              <div className="flex items-center space-x-3 p-4 rounded-lg border border-white/10 hover:bg-white/5 cursor-pointer transition-colors">
+                <RadioGroupItem value="cricket" id="cricket" className="border-green-400 text-green-400" />
+                <Label htmlFor="cricket" className="text-white font-medium cursor-pointer flex-1">
+                  Cricket
+                </Label>
+              </div>
+              <div className="flex items-center space-x-3 p-4 rounded-lg border border-white/10 hover:bg-white/5 cursor-pointer transition-colors">
+                <RadioGroupItem value="football" id="football" className="border-green-400 text-green-400" />
+                <Label htmlFor="football" className="text-white font-medium cursor-pointer flex-1">
+                  Football
+                </Label>
+              </div>
+            </RadioGroup>
+            <div className="flex gap-2 pt-2">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowSportSelectionDialog(false);
+                  setPendingStationId(null);
+                }}
+                className="flex-1 rounded-xl bg-black/30 border-white/10 text-gray-300 hover:bg-black/50"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSportSelectionConfirm}
+                className="flex-1 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
+              >
+                Confirm
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
 
       <LegalDialog 
         isOpen={showLegalDialog}

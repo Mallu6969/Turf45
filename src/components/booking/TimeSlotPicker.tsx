@@ -16,6 +16,7 @@ interface TimeSlotPickerProps {
   onSlotSelect: (slot: TimeSlot, range?: TimeSlot[]) => void;
   loading?: boolean;
   payAtVenueEnabled?: boolean;
+  singleSlotOnly?: boolean; // If true, only allow selecting 1 slot at a time
 }
 
 // Helper to format a "HH:mm" string into a localized time (e.g., 11:00 AM)
@@ -37,6 +38,7 @@ export const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({
   onSlotSelect,
   loading = false,
   payAtVenueEnabled = false,
+  singleSlotOnly = false,
 }) => {
   const [startSlot, setStartSlot] = React.useState<TimeSlot | null>(null);
 
@@ -68,6 +70,20 @@ export const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({
 
   const handleSlotClick = (slot: TimeSlot) => {
     if (!slot.is_available) return;
+
+    // If single slot only mode, just toggle the selected slot
+    if (singleSlotOnly) {
+      // If clicking the same slot, deselect it
+      if (selectedSlot?.start_time === slot.start_time) {
+        setStartSlot(null);
+        onSlotSelect(null!, []);
+        return;
+      }
+      // Otherwise, select this slot only
+      setStartSlot(slot);
+      onSlotSelect(slot, [slot]);
+      return;
+    }
 
     // Check if clicking on the first slot of an existing range - if so, deselect
     if (selectedSlotRange.length > 0 && selectedSlotRange[0].start_time === slot.start_time) {
