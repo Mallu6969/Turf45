@@ -2160,13 +2160,13 @@ export default function PublicBooking() {
         </section>
 
         <div className="mt-10">
-          <Card className="bg-white/80 backdrop-blur-xl border-white/20 rounded-2xl">
+          <Card className="bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border-white/20 rounded-2xl shadow-2xl shadow-green-500/20">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-white flex items-center gap-2">
                 <Clock className="h-5 w-5 text-emerald-300" />
                 Today's Bookings
               </CardTitle>
-              <span className="text-xs text-gray-200 rounded-full border border-white/20 px-2 py-0.5">
+              <span className="text-xs text-gray-200 rounded-full border border-white/20 px-2 py-0.5 bg-white/10">
                 {todayRows.length} total
               </span>
             </CardHeader>
@@ -2179,7 +2179,7 @@ export default function PublicBooking() {
                 groupedByTime.map(([timeLabel, rows]) => (
                   <details
                     key={timeLabel}
-                    className="group rounded-xl border border-white/20 bg-white/70 open:bg-white/15"
+                    className="group rounded-xl border border-white/20 bg-white/10 open:bg-white/15 backdrop-blur-sm"
                   >
                     <summary className="list-none cursor-pointer select-none px-3 sm:px-4 py-3 sm:py-3.5 flex items-center justify-between">
                       <div className="flex items-center gap-2 text-white">
@@ -2225,7 +2225,7 @@ export default function PublicBooking() {
         </div>
       </main>
 
-      <footer className="py-10 px-4 sm:px-6 md:px-8 border-t border-white/20 backdrop-blur-md bg-white/80 relative z-10">
+      <footer className="py-10 px-4 sm:px-6 md:px-8 border-t border-white/20 backdrop-blur-md bg-gradient-to-br from-white/10 via-white/5 to-white/10 relative z-10">
         <div className="max-w-7xl mx-auto space-y-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="flex items-center mb-4 md:mb-0">
