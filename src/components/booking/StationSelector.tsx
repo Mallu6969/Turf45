@@ -103,12 +103,6 @@ export const StationSelector: React.FC<StationSelectorProps> = ({
             </CardHeader>
             <CardContent className="pt-0">
               <div className="space-y-2">
-                <Badge 
-                  variant="secondary" 
-                  className={`text-xs border ${getStationTypeBadgeColor(station.type)}`}
-                >
-                  {getStationTypeLabel(station.type)}
-                </Badge>
                 <div className="text-sm font-medium text-green-300">
                   {getPriceDisplay(station)}
                 </div>

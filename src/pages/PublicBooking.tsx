@@ -1598,6 +1598,9 @@ export default function PublicBooking() {
                 src="/Turf45_transparent.png"
                 alt="TURF 45 Logo"
                 className="h-24 cursor-pointer transition-transform hover:scale-105"
+                style={{
+                  filter: "drop-shadow(0 0 15px rgba(16, 185, 129, 0.5)) drop-shadow(0 0 8px rgba(16, 185, 129, 0.3))",
+                }}
                 onClick={() => setShowPinDialog(true)}
                 title="Click for secret feature"
               />
@@ -2336,6 +2339,9 @@ export default function PublicBooking() {
                 src="/Turf45_transparent.png"
                 alt="TURF 45 Logo"
                 className="h-8 mr-3 cursor-pointer transition-transform hover:scale-105"
+                style={{
+                  filter: "drop-shadow(0 0 10px rgba(16, 185, 129, 0.5)) drop-shadow(0 0 5px rgba(16, 185, 129, 0.3))",
+                }}
                 onClick={() => setShowPinDialog(true)}
                 title="Click for secret feature"
               />
