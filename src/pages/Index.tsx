@@ -587,7 +587,7 @@ const Index: React.FC = () => {
       </section>
 
       {/* PLAYERS IN ACTION - MEGA SECTION */}
-      <section className="relative py-32 px-4 overflow-hidden bg-gradient-to-b from-black via-gray-900 to-black">
+      <section className="relative py-32 px-4 overflow-hidden bg-gradient-to-br from-green-900 via-emerald-900 via-green-800 to-green-900">
         {/* Animated Background Effects */}
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-20 left-20 w-96 h-96 bg-green-500 rounded-full blur-3xl animate-pulse"></div>
