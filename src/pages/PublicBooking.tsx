@@ -530,8 +530,12 @@ export default function PublicBooking() {
       return;
     }
     
-    // If selecting an 8ball station (Multi Sport Turf), show sport selection dialog
-    if (station.type === '8ball') {
+    // If selecting an 8ball station (Multi Sport Turf) or station name contains "Multi Sport", show sport selection dialog
+    const isMultiSport = station.type === '8ball' || 
+                        (station.type === 'turf' && station.name.toLowerCase().includes('multi')) ||
+                        station.name.toLowerCase().includes('multi sport');
+    if (isMultiSport) {
+      console.log('Multi Sport Turf detected:', { id, name: station.name, type: station.type });
       setPendingStationId(id);
       setSelectedSport('cricket'); // Default to cricket
       setShowSportSelectionDialog(true);
@@ -1084,7 +1088,10 @@ export default function PublicBooking() {
       slotsToBook.forEach((slot) => {
         selectedStations.forEach((stationId) => {
           const station = stations.find(s => s.id === stationId);
-          const sport = station?.type === '8ball' ? stationSports[stationId] : null;
+          const isMultiSport = station?.type === '8ball' || 
+                              (station?.type === 'turf' && station?.name.toLowerCase().includes('multi')) ||
+                              station?.name.toLowerCase().includes('multi sport');
+          const sport = isMultiSport ? stationSports[stationId] : null;
           const notes = sport ? `Sport: ${sport.charAt(0).toUpperCase() + sport.slice(1)}` : null;
           
           rows.push({
@@ -1818,8 +1825,25 @@ export default function PublicBooking() {
                             return compareDate < today;
                           }}
                           className={cn(
-                            "rounded-xl border bg-white/90 border-white/20 pointer-events-auto"
+                            "rounded-xl border bg-white/10 border-white/20 pointer-events-auto backdrop-blur-sm text-white"
                           )}
+                          classNames={{
+                            months: "text-white",
+                            month: "text-white",
+                            caption: "text-white",
+                            caption_label: "text-white font-medium",
+                            nav_button: "text-white hover:bg-white/20",
+                            table: "text-white",
+                            head_row: "text-gray-300",
+                            head_cell: "text-gray-300",
+                            row: "text-white",
+                            cell: "text-white",
+                            day: "text-white hover:bg-white/20 hover:text-white",
+                            day_selected: "bg-emerald-500 text-white hover:bg-emerald-600",
+                            day_today: "bg-white/10 text-white border border-emerald-400/50",
+                            day_outside: "text-gray-500 opacity-50",
+                            day_disabled: "text-gray-600 opacity-30",
+                          }}
                         />
                       </div>
                     </div>
