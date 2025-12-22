@@ -605,7 +605,7 @@ const Index: React.FC = () => {
                 </h2>
               </div>
             </div>
-            <p className="text-2xl text-gray-300 max-w-3xl mx-auto animate-slide-up delay-100">
+            <p className="text-2xl text-black max-w-3xl mx-auto animate-slide-up delay-100">
               Witness excellence, passion, and dedication in every frame
             </p>
           </div>
@@ -768,7 +768,7 @@ const Index: React.FC = () => {
           {/* BOOK YOUR PICKLEBALL - SUB-SECTION */}
           <div className="bg-gradient-to-br from-blue-900/30 via-purple-900/30 to-pink-900/30 backdrop-blur-sm rounded-3xl p-12 border-2 border-blue-500/30 shadow-2xl animate-fade-in">
             <div className="text-center mb-12">
-              <h3 className="text-4xl md:text-5xl font-black text-white mb-4">
+              <h3 className="text-4xl md:text-5xl font-black text-black mb-4">
                 🎾 BOOK YOUR PICKLEBALL COURT
               </h3>
               <p className="text-2xl text-gray-300">Reserve your spot for the ultimate pickleball experience</p>
