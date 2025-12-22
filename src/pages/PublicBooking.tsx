@@ -1556,17 +1556,37 @@ export default function PublicBooking() {
       <header className="py-10 px-4 sm:px-6 md:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center mb-8">
-            <div className="mb-6">
+            <div className="mb-6 relative inline-block">
               <img
                 src="/Turf45_transparent.png"
                 alt="TURF 45 Logo"
-                className="h-24 cursor-pointer transition-transform hover:scale-105"
+                className="h-24 cursor-pointer transition-transform hover:scale-105 relative z-10"
                 style={{
-                  filter: "drop-shadow(0 0 10px rgba(16,185,129,0.15)) drop-shadow(0 0 15px rgba(255,255,255,0.7)) drop-shadow(0 0 10px rgba(255,255,255,0.5)) drop-shadow(0 0 6px rgba(255,255,255,0.8))",
+                  filter: "drop-shadow(0 0 10px rgba(16,185,129,0.15))",
                 }}
                 onClick={() => setShowPinDialog(true)}
                 title="Click for secret feature"
               />
+              {/* White glow overlay only for the "45" part (right side) */}
+              <div 
+                className="absolute top-0 right-0 h-24 pointer-events-none overflow-hidden"
+                style={{
+                  width: '35%',
+                  zIndex: 5,
+                }}
+              >
+                <img
+                  src="/Turf45_transparent.png"
+                  alt=""
+                  className="h-24 absolute right-0"
+                  style={{
+                    filter: 'brightness(0) invert(1) drop-shadow(0 0 12px rgba(255,255,255,0.9)) drop-shadow(0 0 8px rgba(255,255,255,0.7)) drop-shadow(0 0 5px rgba(255,255,255,0.8))',
+                    mixBlendMode: 'screen',
+                    opacity: 0.7,
+                  }}
+                  aria-hidden="true"
+                />
+              </div>
             </div>
 
             <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs tracking-widest uppercase text-gray-300 backdrop-blur-md">
