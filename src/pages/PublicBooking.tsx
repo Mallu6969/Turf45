@@ -2095,13 +2095,6 @@ export default function PublicBooking() {
                     : "Confirm & Pay Online"}
                 </Button>
                 
-                {selectedSlot && !hasMinimumSlots && (
-                  <p className="text-xs text-amber-400 text-center mt-2">
-                    {payAtVenueEnabled 
-                      ? "⚠️ Please select at least 1 slot (1 hour)."
-                      : "⚠️ Minimum booking is 1 slot (1 hour). Please select at least 1 slot."}
-                  </p>
-                )}
 
                 <p className="text-xs text-gray-400 text-center">
                   All prices are shown in <span className="font-semibold">INR (₹)</span>.{" "}

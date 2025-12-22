@@ -160,13 +160,6 @@ export const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({
         )}
       </div>
       
-      {selectedSlot && ((payAtVenueEnabled && numberOfSelectedSlots < 1) || (!payAtVenueEnabled && numberOfSelectedSlots < 2)) && (
-        <div className="bg-amber-500/10 border border-amber-500/20 rounded-md p-2 text-xs text-amber-400">
-          {payAtVenueEnabled 
-            ? "⚠️ Please select at least 1 slot (30 minutes)."
-            : "⚠️ Minimum booking is 2 slots (60 minutes). Click another consecutive slot to complete your selection."}
-        </div>
-      )}
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
         {slots.map((slot, index) => {
