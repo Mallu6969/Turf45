@@ -133,8 +133,8 @@ const Index: React.FC = () => {
       {/* Premium Navigation Bar */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled 
-          ? 'backdrop-blur-xl bg-white/80 border-b border-gray-100 shadow-lg' 
-          : 'backdrop-blur-md bg-white/95 border-b border-gray-50'
+          ? 'backdrop-blur-xl bg-gradient-to-br from-green-900 via-green-800 via-white/15 via-green-600/90 via-white/10 to-green-900/90 border-b border-green-700/30 shadow-lg' 
+          : 'backdrop-blur-md bg-gradient-to-br from-green-900 via-green-800 via-white/15 via-green-600/90 via-white/10 to-green-900 border-b border-green-700/30'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
@@ -153,19 +153,19 @@ const Index: React.FC = () => {
             {/* Desktop Navigation */}
             {!isMobile && (
               <nav className="hidden md:flex items-center gap-8">
-                <button onClick={() => scrollToSection('facilities')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                <button onClick={() => scrollToSection('facilities')} className="text-white hover:text-green-300 transition-colors font-medium">
                   Facilities
                 </button>
-                <button onClick={() => scrollToSection('pricing')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                <button onClick={() => scrollToSection('pricing')} className="text-white hover:text-green-300 transition-colors font-medium">
                   Pricing
                 </button>
-                <button onClick={() => scrollToSection('about')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                <button onClick={() => scrollToSection('about')} className="text-white hover:text-green-300 transition-colors font-medium">
                   About
                 </button>
-                <button onClick={() => scrollToSection('reviews')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                <button onClick={() => scrollToSection('reviews')} className="text-white hover:text-green-300 transition-colors font-medium">
                   Reviews
                 </button>
-                <button onClick={() => navigate('/support')} className="text-gray-700 hover:text-green-600 transition-colors font-medium">
+                <button onClick={() => navigate('/support')} className="text-white hover:text-green-300 transition-colors font-medium">
                   Contact
                 </button>
               </nav>
@@ -194,7 +194,7 @@ const Index: React.FC = () => {
               {isMobile && (
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="p-2 rounded-lg hover:bg-green-800/50 text-white transition-colors"
                 >
                   {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                 </button>
@@ -205,21 +205,21 @@ const Index: React.FC = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && isMobile && (
-          <div className="md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-xl">
+          <div className="md:hidden border-t border-green-700/30 bg-gradient-to-br from-green-900 via-green-800 via-white/15 via-green-600/90 via-white/10 to-green-900 backdrop-blur-xl">
             <div className="px-4 py-4 space-y-3">
-              <button onClick={() => scrollToSection('facilities')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+              <button onClick={() => scrollToSection('facilities')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-800/50 text-white font-medium">
                 Facilities
               </button>
-              <button onClick={() => scrollToSection('pricing')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+              <button onClick={() => scrollToSection('pricing')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-800/50 text-white font-medium">
                 Pricing
               </button>
-              <button onClick={() => scrollToSection('about')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+              <button onClick={() => scrollToSection('about')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-800/50 text-white font-medium">
                 About
               </button>
-              <button onClick={() => scrollToSection('reviews')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+              <button onClick={() => scrollToSection('reviews')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-800/50 text-white font-medium">
                 Reviews
               </button>
-              <button onClick={() => navigate('/support')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700 font-medium">
+              <button onClick={() => navigate('/support')} className="block w-full text-left px-4 py-2 rounded-lg hover:bg-green-800/50 text-white font-medium">
                 Contact
               </button>
             </div>
